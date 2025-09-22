@@ -26,3 +26,16 @@ instance embeddable_list (a:Type) (ea : embeddable a) : embeddable (list a) = {
   embed = e_list;
   typ = (`list (`#ea.typ));
 }
+
+module BV = FStar.BV
+
+instance embeddable_bv (#n:nat) : embeddable (FStar.BV.bv_t n) = {
+  embed = (fun v ->
+    if n = 0 then
+      `(BV.bv_zero #0)
+    else
+      let tm = embeddable_int.embed (BV.bv2int v) in
+      `(FStar.BV.int2bv #(`#(embeddable_int.embed n)) (`#tm))
+  );
+  typ = (`FStar.BV.bv_t (`#(embeddable_int.embed n)));
+}
