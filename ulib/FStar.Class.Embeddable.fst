@@ -29,7 +29,7 @@ instance embeddable_list (a:Type) (ea : embeddable a) : embeddable (list a) = {
 
 module BV = FStar.BV
 
-instance embeddable_bv (#n:nat) : embeddable (FStar.BV.bv_t n) = {
+instance embeddable_bv (n:nat) : embeddable (FStar.BV.bv_t n) = {
   embed = (fun v ->
     if n = 0 then
       `(BV.bv_zero #0)
