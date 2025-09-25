@@ -159,6 +159,7 @@ let builtin_embeddings : list (Ident.lident & embedding_data) =
     (PC.string_lid,                       {arity=0; syn_emb=syn_emb_lid  "e_string";     nbe_emb=Some(nbe_emb_lid "e_string")});
     (PC.norm_step_lid,                    {arity=0; syn_emb=syn_emb_lid  "e_norm_step";  nbe_emb=Some(nbe_emb_lid "e_norm_step")});
     (PC.__range_lid,                      {arity=0; syn_emb=syn_emb_lid  "e___range";    nbe_emb=Some(nbe_emb_lid "e___range")});
+    (PC.bv_t_lid,                         {arity=1; syn_emb=syn_emb_lid  "e_bv_t";       nbe_emb=Some(nbe_emb_lid "e_bv_t")});
 
     (PC.vconfig_lid,                      {arity=0; syn_emb=syn_emb_lid  "e_vconfig";    nbe_emb=Some(nbe_emb_lid "e_vconfig")});
 

@@ -1,6 +1,7 @@
 module FStar.Class.Embeddable
 
 open FStar.Reflection.V2
+module BV = FStar.BV
 
 instance embeddable_string : embeddable string = {
   embed = (fun s -> pack_ln (Tv_Const (C_String s)));
@@ -17,19 +18,7 @@ instance embeddable_int : embeddable int = {
   typ = (`int);
 }
 
-let rec e_list #a {| ea : embeddable a |} (xs : list a) : term =
-  match xs with
-  | [] -> `(Nil #(`# ea.typ))
-  | x::xs -> `(Cons #(`#(ea.typ)) (`#(embed x)) (`#(e_list xs)))
-
-instance embeddable_list (a:Type) (ea : embeddable a) : embeddable (list a) = {
-  embed = e_list;
-  typ = (`list (`#ea.typ));
-}
-
-module BV = FStar.BV
-
-instance embeddable_bv (n:nat) : embeddable (FStar.BV.bv_t n) = {
+instance embeddable_bv_t (n:nat) : embeddable (FStar.BV.bv_t n) = {
   embed = (fun v ->
     if n = 0 then
       `(BV.bv_zero #0)
@@ -38,4 +27,14 @@ instance embeddable_bv (n:nat) : embeddable (FStar.BV.bv_t n) = {
       `(FStar.BV.int2bv #(`#(embeddable_int.embed n)) (`#tm))
   );
   typ = (`FStar.BV.bv_t (`#(embeddable_int.embed n)));
+}
+
+let rec e_list #a {| ea : embeddable a |} (xs : list a) : term =
+  match xs with
+  | [] -> `(Nil #(`# ea.typ))
+  | x::xs -> `(Cons #(`#(ea.typ)) (`#(embed x)) (`#(e_list xs)))
+
+instance embeddable_list (a:Type) (ea : embeddable a) : embeddable (list a) = {
+  embed = e_list;
+  typ = (`list (`#ea.typ));
 }

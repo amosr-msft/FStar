@@ -1090,6 +1090,44 @@ let e_order =
   in
   mk_emb embed_order unembed_order (lid_as_fv PC.order_lid None)
 
+let e_bv_t (n: nat) =
+    let open FStar.BV in
+    let n' = S.t_int in
+    let n' () = U.exp_int (Prims.string_of_int n) in
+    let ty () = S.t_bv_t_of (n' ()) in
+    let emb_t_bv () = ET_app(PC.bv_t_lid |> Ident.string_of_lid, []) in
+    let pretty (bv: bv_t n): Tot string = "(int2bv " ^ (Prims.string_of_int (bv2int bv)) ^ ")" in
+
+    let em (bv: bv_t n) (rng:range) _shadow _norm : term =
+        lazy_embed
+            pretty
+            emb_t_bv
+            rng
+            ty
+            bv
+            (fun () -> U.mk_app (U.fvar_const PC.nat_to_bv_lid) [U.exp_int (Prims.string_of_int (bv2int bv)), None])
+    in
+    let un (t:term) _norm : option (bv_t n) =
+        lazy_unembed
+            pretty
+            emb_t_bv
+            t
+            ty
+            (fun t ->
+                let hd, args = U.head_and_args t in
+                match (U.un_uinst hd).n, args with
+                | Tm_fvar fv, [{ n = Tm_constant (FStarC.Const.Const_int (s, _)) }, None]
+                  when S.fv_eq_lid fv PC.nat_to_bv_lid ->
+                    Some (int2bv (BU.int_of_string s))
+                | _ -> None)
+    in
+    mk_emb_full
+        em
+        un
+        ty
+        pretty
+        emb_t_bv
+
 let or_else (f: option 'a) (g:unit -> 'a) =
     match f with
     | Some x -> x

@@ -905,6 +905,7 @@ val t_bv            : term
 val t_tac_of        : term -> term -> term
 val t_tactic_of     : term -> term
 val t_tactic_unit   : term
+val t_bv_t_of       : term -> term
 val t_list_of       : term -> term
 val t_option_of     : term -> term
 val t_tuple2_of     : term -> term -> term

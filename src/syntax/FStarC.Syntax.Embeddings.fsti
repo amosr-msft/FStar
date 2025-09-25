@@ -39,6 +39,7 @@ instance val e_real        : embedding Real.real
 instance val e_norm_step   : embedding NormSteps.norm_step
 instance val e_vconfig     : embedding FStarC.VConfig.vconfig
 instance val e_order       : embedding FStarC.Order.order
+instance val e_bv_t        : (n: nat) -> Tot (embedding (FStar.BV.bv_t n))
 
 instance val e_option      : embedding 'a -> Tot (embedding (option 'a))
 instance val e_list        : embedding 'a -> Tot (embedding (list 'a))

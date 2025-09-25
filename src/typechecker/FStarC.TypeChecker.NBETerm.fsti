@@ -303,6 +303,7 @@ val e_arrow : embedding 'a -> embedding 'b -> embedding ('a -> 'b)
 
 instance val e_abstract_nbe_term : embedding abstract_nbe_term
 instance val e_order : embedding FStarC.Order.order
+instance val e_bv_t  : (n: nat) -> embedding (FStar.BV.bv_t n)
 
 (* Unconditionally fails raising an exception when called *)
 val e_unsupported : #a:Type -> embedding a

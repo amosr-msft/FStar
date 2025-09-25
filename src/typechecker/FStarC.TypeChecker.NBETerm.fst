@@ -958,3 +958,24 @@ let e_order =
   let fv_as_emb_typ fv = S.ET_app (FStarC.Ident.string_of_lid fv.fv_name, []) in
   let fv = lid_as_fv PC.order_lid None in
   mk_emb embed_order unembed_order (fun () -> mkFV fv [] []) (fun () -> fv_as_emb_typ fv)
+
+let e_bv_t (n: nat): embedding (FStar.BV.bv_t n) =
+  let open FStar.BV in
+  let int2bv_lid = PC.nat_to_bv_lid in
+  let int2bv_fv = lid_as_fv int2bv_lid None in
+  let em _cb bv =
+    let i = Constant (Int (bv2int bv)) in
+    mkFV int2bv_fv [] [as_arg (mk_t i)]
+  in
+  let un _cb c =
+    match c.nbe_t with
+    | FV (fv, _, [(arg, None)]) when S.fv_eq_lid fv int2bv_lid ->
+      begin
+        match arg.nbe_t with
+        | Constant (Int i) -> Some (int2bv #n i)
+        | _ -> None
+      end
+    | _ -> None
+  in
+  let ty () = lid_as_typ PC.bv_t_lid [] [as_iarg (mk_t (Constant (Int n)))] in
+  mk_emb em un ty (SE.emb_typ_of int)

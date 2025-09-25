@@ -515,6 +515,11 @@ let t_tactic_of t =
 
 let t_tactic_unit = t_tactic_of t_unit
 
+let t_bv_t_of t = mk_Tm_app
+  (mk_Tm_uinst (tabbrev PC.bv_t_lid) [])
+  [as_arg t]
+  Range.dummyRange
+
 (*
  * AR: what's up with all the U_zero below?
  *)
