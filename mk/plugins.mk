@@ -9,6 +9,7 @@ EXTRACT += --extract ',*' # keep the comma (https://github.com/FStarLang/FStar/p
 EXTRACT += --extract -Prims
 EXTRACT += --extract -FStar.Pervasives.Native
 EXTRACT += --extract -FStar.All
+EXTRACT += --extract -FStar.BV
 EXTRACT += --extract -FStar.Ghost
 EXTRACT += --extract -FStar.Heap
 EXTRACT += --extract -FStar.Bytes

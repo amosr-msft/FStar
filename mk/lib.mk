@@ -6,6 +6,7 @@ FSTAR_OPTIONS += --no_default_includes
 FSTAR_OPTIONS += --include $(SRC)
 
 EXTRACT_NS :=
+EXTRACT_NS += -FStar.BV
 EXTRACT_NS += -FStar.Buffer
 EXTRACT_NS += -FStar.Bytes
 EXTRACT_NS += -FStar.Char
