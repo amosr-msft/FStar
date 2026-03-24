@@ -24,10 +24,10 @@ depends: [
 ]
 depexts: ["coreutils"] {os = "macos" & os-distribution = "homebrew"}
 build: [
-  [make "-j" jobs "ADMIT=1"]
+  [make "-j" jobs "ADMIT=1" "FSTAR_DEFAULT_GOAL=stage1"]
 ]
 install: [
-  [make "PREFIX=%{prefix}%" "install"]
+  [make "PREFIX=%{prefix}%" "install" "FSTAR_DEFAULT_GOAL=stage1"]
 ]
 post-messages: [
   """

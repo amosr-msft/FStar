@@ -431,8 +431,13 @@ stage3: .install-stage3.touch
 install: export PREFIX?=/usr/local
 install: export FSTAR_LINK_LIBDIRS=0 # default is false, but set anyway
 install:
+ifeq ($(FSTAR_DEFAULT_GOAL),stage1)
+	$(call bold_msg, "INSTALL", "STAGE 1")
+	$(MAKE) -C stage1 install
+else
 	$(call bold_msg, "INSTALL", "STAGE 2")
 	$(MAKE) -C stage2 install FSTAR_DUNE_RELEASE=1
+endif
 
 __do-install-stage1:
 	$(call bold_msg, "INSTALL", "STAGE 1")
