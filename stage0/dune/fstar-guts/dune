@@ -17,6 +17,10 @@
     mtime.clock
  )
  (modes native byte)
+ ; Propagated to clients as jsoo_runtime in the installed META, so that
+ ; anything linking fstar.compiler with js_of_ocaml picks up the C-stub
+ ; replacements automatically.
+ (js_of_ocaml (javascript_files jsoo/fstar_jsoo_runtime.js))
  (preprocess (pps ppx_deriving.show ppx_deriving_yojson sedlex.ppx))
 )
 

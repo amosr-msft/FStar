@@ -20,8 +20,8 @@
  (link_flags "-linkall")
  (modes (native exe) (byte exe) (byte js))
  (js_of_ocaml
-   ; --effects=cps: the compiler uses OCaml 5 effect handlers.
-   (flags (:standard --effects=cps))
-   (javascript_files jsoo/fstar_jsoo_runtime.js))
+   ; --effects=cps: the compiler uses OCaml 5 effect handlers. The C-stub
+   ; replacements come from the fstarcompiler library's jsoo_runtime.
+   (flags (:standard --effects=cps)))
  (preprocess (pps ppx_deriving.show ppx_deriving_yojson sedlex.ppx))
 )

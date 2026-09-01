@@ -194,7 +194,8 @@ function uint128_max_int() { return (1n << 128n) - 1n; }
 // throwing stub reports that at the call site.
 //Provides: caml_unix_getpid
 function caml_unix_getpid(unit) {
-  return (typeof process === "object" && process.pid) ? process.pid : 0;
+  return (typeof globalThis.process === "object" && globalThis.process.pid)
+    ? globalThis.process.pid : 0;
 }
 //Provides: caml_unix_gethostname
 //Requires: caml_string_of_jsstring
@@ -206,8 +207,9 @@ function caml_unix_gethostname(unit) {
 //Provides: caml_unix_putenv
 //Requires: caml_jsstring_of_string
 function caml_unix_putenv(name, value) {
-  if (typeof process === "object" && process.env) {
-    process.env[caml_jsstring_of_string(name)] = caml_jsstring_of_string(value);
+  var p = globalThis.process;
+  if (typeof p === "object" && p.env) {
+    p.env[caml_jsstring_of_string(name)] = caml_jsstring_of_string(value);
   }
   return 0;
 }

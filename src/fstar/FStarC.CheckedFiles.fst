@@ -301,16 +301,24 @@ let load_checked_file_with_tc_result
 =
   debug (fun _ -> Format.print1 "Trying to load checked file with tc result %s\n" checked_fn);
 
-  let load_tc_result' (fn:string) : ML (list (string & string) & tc_result) =
-    match load_tc_result fn with
-    | Some x -> x
-    | None -> failwith "Impossible! if first phase of loading was unknown, it should have succeeded"
+  (* The first phase only reads the first value of the checked file; reading the
+     rest can still fail, and not only because the file is missing or truncated.
+     A js_of_ocaml build, for instance, cannot unmarshal an OCaml int that does
+     not fit in 32 bits, which a natively-written checked file may well contain
+     (memoized Hash.hash_code values are full-width native ints). Report that as
+     an invalid checked file so the caller rechecks from source, rather than
+     killing the process. *)
+  let unreadable (fn:string) : string =
+    Format.fmt1 "the tc data in %s could not be read" fn
   in
 
   let elt = load_checked_file fn checked_fn in  //first step, in case some client calls it directly
   match elt with
   | Invalid msg, _ -> Inl msg
-  | Valid _, _ -> checked_fn |> load_tc_result' |> snd |> Inr
+  | Valid _, _ ->
+    (match load_tc_result checked_fn with
+     | Some x -> Inr (snd x)
+     | None -> Inl (unreadable checked_fn))
   | Unknown checked_digest, parsing_data ->
     match hash_dependences deps fn (Dep.deps_of deps fn) with
     | Inl msg ->
@@ -318,7 +326,13 @@ let load_checked_file_with_tc_result
       let _ = add_and_return checked_fn elt in
       Inl msg
     | Inr deps_dig' ->
-      let deps_dig, tc_result = checked_fn |> load_tc_result' in
+    match load_tc_result checked_fn with
+    | None ->
+      let msg = unreadable checked_fn in
+      let elt = (Invalid msg, parsing_data) in
+      let _ = add_and_return checked_fn elt in
+      Inl msg
+    | Some (deps_dig, tc_result) ->
       let module_name = fn |> Dep.module_name_of_file in
       if deps_dig = deps_dig'
       || Options.should_be_already_cached module_name
