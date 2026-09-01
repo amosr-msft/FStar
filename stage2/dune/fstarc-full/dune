@@ -8,8 +8,15 @@
     ; library to link here. -linkall still pulls in the plugin registrations.
     fstarcompiler
     memtrace
+    ; zarith is C stubs; zarith_stubs_js supplies a JavaScript implementation.
+    ; Harmless for the native build, which never consults it.
+    zarith_stubs_js
  )
  (link_flags "-linkall")
- (modes (native exe))
+ (modes (native exe) (byte exe) (byte js))
+ (js_of_ocaml
+   ; --effects=cps: the compiler uses OCaml 5 effect handlers.
+   (flags (:standard --effects=cps))
+   (javascript_files jsoo/fstar_jsoo_runtime.js))
  (preprocess (pps ppx_deriving.show ppx_deriving_yojson sedlex.ppx))
 )
