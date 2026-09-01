@@ -42,15 +42,30 @@ function caml_unix_umask(mask) { return 0; }
 //
 // uint32 is the width whose arithmetic is actually reachable, so it is
 // represented as a plain JS number: every uint32 is exactly representable as a
-// double, and OCaml structural comparison (which stdint's Str_conv uses when
-// building to_string out of repeated div/rem) works on numbers but not on
-// BigInt under js_of_ocaml. Its full uint32 external surface is implemented.
+// double, and stdint's Str_conv builds to_string out of repeated div/rem
+// compared with OCaml's generic comparison, which treats a number and a BigInt
+// as different shapes (see below).
 //
 // The wider types are only ever constructed -- Stdint.IntN.one / max_int /
 // min_int are module-level bindings, so their constructors run at
 // initialisation -- and use BigInt so the 64- and 128-bit constants are exact.
 // Cross-width conversions are not provided: they would have to bridge the two
 // representations, and nothing reaches them.
+//
+// On mixing the two representations: js_of_ocaml's caml_compare_val classifies
+// a BigInt as an abstract value and compares it with <, > and !==, which are
+// value-correct between two BigInts. What is not value-correct is comparing a
+// BigInt against a plain number: the tags differ, so the result is decided by
+// tag order rather than by magnitude. Keeping each width to a single
+// representation is what avoids that.
+//
+// Whether any wide-stdint value reaches a comparison at all was checked by
+// instrumenting caml_compare_val and caml_hash to report BigInt operands, over
+// lang-co3's export_json_exe suite and over fstar_co3 typechecking Co3 modules.
+// No stdint value reached either. The BigInts that do arrive there are zarith's
+// (Prims.int is Z.t), from FStarC.TypeChecker.Primops.division_modulus_op and
+// from Z.of_substring. FStarC.Hash is not among them: its hash_code is a plain
+// OCaml int.
 
 //Provides: fstar_stdint_wrap
 function fstar_stdint_wrap(v, bits, signed) {
@@ -137,10 +152,12 @@ function uint56_of_int(i) { return fstar_stdint_wrap(i, 56, false); }
 //Provides: uint64_of_int
 //Requires: fstar_stdint_wrap
 function uint64_of_int(i) { return fstar_stdint_wrap(i, 64, false); }
-// uint64 arithmetic is reachable: FStar_UInt64 is Stdint.Uint64, and the
-// compiler's hashing (FStarC.Hash) accumulates into it. BigInt is used because
-// uint64 values exceed the exact range of a double; the results are wrapped so
-// they match the C stubs' two's-complement behaviour.
+// Arithmetic is provided for these widths because stdint's own initialisation
+// uses it: FStar_UInt64.ones is Uint64.pred zero, which is `sub x one`, and
+// Str_conv builds each width's constants by repeated mul/add when parsing and
+// div/rem when printing. Results are wrapped so they match the C stubs'
+// two's-complement behaviour. BigInt is used because the constants exceed the
+// exact range of a double.
 //Provides: uint64_add
 //Requires: fstar_stdint_wrap
 function uint64_add(a, b) { return fstar_stdint_wrap(a + b, 64, false); }
