@@ -309,16 +309,23 @@ let load_checked_file_with_tc_result
      an invalid checked file so the caller rechecks from source, rather than
      killing the process. *)
   let unreadable (fn:string) : string =
-    Format.fmt1 "the tc data in %s could not be read" fn
+    Format.fmt1
+      "the tc data in %s could not be read (the file may be truncated, or \
+       written by a build with a wider native integer than this one)" fn
   in
 
   let elt = load_checked_file fn checked_fn in  //first step, in case some client calls it directly
   match elt with
   | Invalid msg, _ -> Inl msg
-  | Valid _, _ ->
+  | Valid _, parsing_data ->
     (match load_tc_result checked_fn with
      | Some x -> Inr (snd x)
-     | None -> Inl (unreadable checked_fn))
+     | None ->
+       (* Demote the entry: it is recorded as valid, but its tc data cannot be
+          read, so every later lookup would retry and fail the same way. *)
+       let msg = unreadable checked_fn in
+       let _ = add_and_return checked_fn (Invalid msg, parsing_data) in
+       Inl msg)
   | Unknown checked_digest, parsing_data ->
     match hash_dependences deps fn (Dep.deps_of deps fn) with
     | Inl msg ->
