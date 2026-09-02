@@ -237,202 +237,289 @@ function caml_thread_self(unit) { return 0; }
 //Provides: caml_thread_id
 function caml_thread_id(t) { return 0; }
 
-// --- unix, subprocesses ----------------------------------------------------
-// Enough of Unix's process API to run the SMT solver: FStarC.Util keeps one
+
+// --- unix, subprocesses -----------------------------------------------------
+// Enough of Unix's process API to run the SMT solver. FStarC.Util keeps one
 // long-lived solver, writes a query to its stdin, and reads its stdout until a
-// marker line. That needs a pipe whose reads *block*, which is the whole
-// difficulty here.
+// marker line; that read has to block, which is the whole difficulty.
 //
-// Node's own child pipes cannot do it. The fds behind child_process.spawn are
-// non-blocking, so fs.readSync on one fails with EAGAIN as soon as the child
-// has not answered yet -- and F*'s reader is an ordinary input_line that
-// expects to wait. A named FIFO does block, so a pipe here is a FIFO in a
-// per-process temporary directory, handed to js_of_ocaml's own MlNodeFd (which
-// already recognises isFIFO() and refuses to seek on it).
+// Node cannot block on a child's output from the thread that owns the event
+// loop: the descriptors behind child_process.spawn are non-blocking, so a
+// synchronous read fails with EAGAIN whenever the solver has not answered yet,
+// and the callbacks that would deliver the answer cannot run while that thread
+// is blocked. So the solver is owned by a worker thread, which is free to use
+// ordinary asynchronous stream handlers, and this thread blocks on
+// Atomics.wait until the worker publishes a reply into shared memory.
 //
-// Opening a FIFO blocks until the other end is opened, which orders everything
-// below. Both ends cannot be opened before the child exists, so caml_unix_pipe
-// only creates the FIFO, and the fd is opened on first use; by then the child
-// is running and its end is open. The child's ends are opened by a shell doing
-// the redirections, in the order the shell performs them (stdin, stdout,
-// stderr), so caml_unix_spawn opens the parent's ends in that same order. Any
-// other order deadlocks: each side waits for the other on a different FIFO.
+// Requests travel by postMessage and replies through the SharedArrayBuffer,
+// not the reverse: a reply has to reach a thread that is blocked, which only
+// shared memory can do, while a request is posted just before blocking and is
+// picked up by a worker whose event loop is running.
 //
-// This is not a general Unix emulation. It covers the one shape F*'s solver
-// driver uses -- create three pipes, spawn one child on them, read until a
-// marker, kill and restart -- and each function below says where it departs
-// from POSIX.
+// Nothing here is a general Unix emulation. It covers the one shape F*'s
+// solver driver uses -- create three pipes, spawn one child on them, read
+// until a marker, kill and restart -- and each function below says where it
+// departs from POSIX.
 
-//Provides: fstar_proc_state
-var fstar_proc_state = {
-  dir: null,      // per-process temporary directory holding the FIFOs
-  seq: 0,         // FIFO counter, for unique names
-  children: {},   // pid -> { child, status } for waitpid/kill
+// Offsets into the control array. DATA is a byte offset into the same buffer.
+//Provides: fstar_bridge_layout
+var fstar_bridge_layout = { READY: 0, STATUS: 1, LENGTH: 2, DATA: 64, SIZE: 8 << 20 };
+
+// The worker's program. Kept as a string and started with `eval` so that the
+// runtime stays a single file: a separate worker script would have to be found
+// on disk at run time, which a bundled build cannot rely on.
+//Provides: fstar_worker_source
+var fstar_worker_source = [
+  'const { parentPort, workerData } = require("node:worker_threads");',
+  'const cp = require("node:child_process");',
+  'const L = workerData.layout;',
+  'const ctl = new Int32Array(workerData.sab, 0, 16);',
+  'const bytes = new Uint8Array(workerData.sab);',
+  'const procs = new Map();',
+  '',
+  '// Publish a reply and wake the blocked thread. status: 0 ok, 1 error.',
+  'function reply(status, buf) {',
+  '  const b = buf || Buffer.alloc(0);',
+  '  const n = Math.min(b.length, L.SIZE - L.DATA);',
+  '  bytes.set(b.subarray(0, n), L.DATA);',
+  '  Atomics.store(ctl, L.LENGTH, n);',
+  '  Atomics.store(ctl, L.STATUS, status);',
+  '  Atomics.store(ctl, L.READY, 1);',
+  '  Atomics.notify(ctl, L.READY);',
+  '}',
+  '',
+  '// A stream the parent reads from. Output is buffered as it arrives; a read',
+  '// that finds nothing is parked until data or end-of-file arrives.',
+  'function mkStream(s) {',
+  '  const st = { chunks: [], len: 0, ended: false, waiter: null };',
+  '  const end = () => { st.ended = true; serve(st); };',
+  '  s.on("data", (d) => { st.chunks.push(d); st.len += d.length; serve(st); });',
+  '  // close as well as end: a stream can be torn down without ending, and a',
+  '  // read parked on it would otherwise never be answered.',
+  '  s.on("end", end); s.on("close", end); s.on("error", end);',
+  '  return st;',
+  '}',
+  'function take(st, max) {',
+  '  const b = Buffer.concat(st.chunks, st.len);',
+  '  const n = Math.min(max, b.length);',
+  '  const head = b.subarray(0, n), rest = b.subarray(n);',
+  '  st.chunks = rest.length ? [rest] : []; st.len = rest.length;',
+  '  return head;',
+  '}',
+  '// A parked read completes as soon as there is anything to return, or with',
+  '// zero bytes at end-of-file, which is how the reader learns the solver died.',
+  'function serve(st) {',
+  '  if (!st.waiter) return;',
+  '  if (st.len > 0) { const w = st.waiter; st.waiter = null; reply(0, take(st, w)); }',
+  '  else if (st.ended) { st.waiter = null; reply(0, Buffer.alloc(0)); }',
+  '}',
+  '',
+  'parentPort.on("message", (m) => {',
+  '  try {',
+  '    if (m.op === "spawn") {',
+  '      const child = cp.spawn(m.prog, m.args, { stdio: ["pipe", "pipe", "pipe"], env: m.env });',
+  '      const e = { child: child, exited: false, code: 0 };',
+  '      e.out = mkStream(child.stdout);',
+  '      e.err = mkStream(child.stderr);',
+  '      // A solver that has already exited leaves nothing to write to; a real',
+  '      // pipe would report that on the read side, so drop the error here.',
+  '      child.stdin.on("error", () => {});',
+  '      child.on("exit", (code) => {',
+  '        e.exited = true; e.code = code === null ? 0 : code;',
+  '      });',
+  '      child.on("error", (err) => {',
+  '        e.exited = true; e.code = 127;',
+  '        e.out.ended = true; e.err.ended = true; serve(e.out); serve(e.err);',
+  '      });',
+  '      procs.set(m.id, e);',
+  '      reply(0, Buffer.from(String(child.pid || 0)));',
+  '      return;',
+  '    }',
+  '    const e = procs.get(m.id);',
+  '    if (!e) { reply(1, Buffer.from("ESRCH")); return; }',
+  '    switch (m.op) {',
+  '      case "write":',
+  '        try { e.child.stdin.write(Buffer.from(m.data)); } catch (err) {}',
+  '        reply(0, null); return;',
+  '      case "closeStdin":',
+  '        try { e.child.stdin.end(); } catch (err) {}',
+  '        reply(0, null); return;',
+  '      case "read": {',
+  '        const st = m.which === 2 ? e.err : e.out;',
+  '        const max = Math.min(m.max, L.SIZE - L.DATA);',
+  '        if (st.len > 0) { reply(0, take(st, max)); return; }',
+  '        if (st.ended) { reply(0, Buffer.alloc(0)); return; }',
+  '        st.waiter = max; return;   // parked; serve() replies later',
+  '      }',
+  '      case "poll": {',
+  '        const st = m.which === 2 ? e.err : e.out;',
+  '        const max = Math.min(m.max, L.SIZE - L.DATA);',
+  '        reply(0, st.len > 0 ? take(st, max) : Buffer.alloc(0)); return;',
+  '      }',
+  '      case "kill":',
+  '        try { e.child.kill("SIGKILL"); } catch (err) {}',
+  '        // Mark the streams done rather than waiting for their teardown, so a',
+  '        // later read reports end-of-file instead of parking on a dead child.',
+  '        e.out.ended = true; e.err.ended = true; serve(e.out); serve(e.err);',
+  '        reply(0, null); return;',
+  '      case "reap":',
+  '        procs.delete(m.id);',
+  '        reply(0, Buffer.from(e.exited ? String(e.code) : "running")); return;',
+  '      default: reply(1, Buffer.from("EINVAL")); return;',
+  '    }',
+  '  } catch (err) { reply(1, Buffer.from(String(err && err.message))); }',
+  '});',
+  '',
+  '// The caller is blocked in Atomics.wait, so it cannot notice that this',
+  '// thread has died: anything fatal has to be reported through the buffer',
+  '// before the thread goes, or the caller waits for a reply that cannot come.',
+  'process.on("uncaughtException", (err) => {',
+  '  try { reply(1, Buffer.from("worker: " + String(err && err.message))); } catch (e) {}',
+  '  process.exit(1);',
+  '});',
+  '// Nothing kills a child when its parent goes, so do it here: this thread',
+  '// ends when the process does, including when the process is signalled.',
+  'process.on("exit", () => {',
+  '  for (const e of procs.values()) { try { e.child.kill("SIGKILL"); } catch (err) {} }',
+  '});'
+].join("\n");
+
+// The worker and the shared buffer, created when the first process is spawned.
+//Provides: fstar_bridge
+//Requires: fstar_bridge_layout, fstar_worker_source, caml_raise_sys_error
+var fstar_bridge = {
+  worker: null, ctl: null, bytes: null, next_id: 1, pids: {},
+  get: function () {
+    if (this.worker) return this;
+    var L = fstar_bridge_layout;
+    var wt;
+    try { wt = require("node:worker_threads"); }
+    catch (e) { caml_raise_sys_error("subprocesses need Node's worker_threads"); }
+    if (typeof globalThis.SharedArrayBuffer !== "function")
+      caml_raise_sys_error("subprocesses need globalThis.SharedArrayBuffer");
+    var sab = new globalThis.SharedArrayBuffer(L.SIZE);
+    this.ctl = new Int32Array(sab, 0, 16);
+    this.bytes = new Uint8Array(sab);
+    this.worker = new wt.Worker(fstar_worker_source,
+                                { eval: true, workerData: { sab: sab, layout: L } });
+    // Do not let a live worker keep the process alive once F* is done.
+    this.worker.unref();
+    // An unref'd worker is not torn down by a signal that ends the process, and
+    // its children would outlive us. Terminating it runs its exit handler,
+    // which kills them. Nothing can be done about SIGKILL.
+    var self = this, p = globalThis.process;
+    var stop = function () { try { self.worker.terminate(); } catch (e) {} };
+    p.on("exit", stop);
+    ["SIGINT", "SIGTERM", "SIGHUP"].forEach(function (sig) {
+      p.on(sig, function handler() {
+        stop();
+        p.removeListener(sig, handler);
+        p.kill(p.pid, sig);
+      });
+    });
+    return this;
+  },
+  // Post a request and block until the worker answers. The reply is left in
+  // shared memory rather than posted back, because a blocked thread cannot
+  // receive messages.
+  call: function (msg) {
+    var L = fstar_bridge_layout, b = this.get();
+    globalThis.Atomics.store(b.ctl, L.READY, 0);
+    b.worker.postMessage(msg);
+    globalThis.Atomics.wait(b.ctl, L.READY, 0);
+    var n = globalThis.Atomics.load(b.ctl, L.LENGTH);
+    var out = b.bytes.slice(L.DATA, L.DATA + n);
+    if (globalThis.Atomics.load(b.ctl, L.STATUS) !== 0)
+      caml_raise_sys_error("subprocess: " + String.fromCharCode.apply(null, out));
+    return out;
+  }
 };
 
-// Creates the temporary directory on first use and arranges for it to be
-// removed on exit, including on an uncaught exception or a signal, so a run
-// that dies mid-query does not leave FIFOs behind.
-//Provides: fstar_proc_dir
-//Requires: fstar_proc_state
-function fstar_proc_dir() {
-  if (fstar_proc_state.dir) return fstar_proc_state.dir;
-  var fs = require("node:fs"), os = require("node:os"), path = require("node:path");
-  var dir = fs.mkdtempSync(path.join(os.tmpdir(), "fstar-jsoo-"));
-  fstar_proc_state.dir = dir;
-  var cleanup = function () {
-    for (var pid in fstar_proc_state.children) {
-      try { fstar_proc_state.children[pid].child.kill("SIGKILL"); } catch (e) {}
-    }
-    try { fs.rmSync(dir, { recursive: true, force: true }); } catch (e) {}
-  };
-  var p = globalThis.process;
-  p.on("exit", cleanup);
-  // 'exit' does not run for these, so handle them too, then re-raise by
-  // restoring the default disposition.
-  ["SIGINT", "SIGTERM", "SIGHUP"].forEach(function (sig) {
-    var handler = function () {
-      cleanup();
-      // Remove this listener before re-signalling, or the signal is delivered
-      // back to it and the process never terminates.
-      p.removeListener(sig, handler);
-      p.kill(p.pid, sig);
-    };
-    p.on(sig, handler);
-  });
-  p.on("uncaughtException", function (e) {
-    cleanup();
-    console.error(e && e.stack ? e.stack : String(e));
-    p.exit(1);
-  });
-  return dir;
-}
-
-// A FIFO end. The fd is opened lazily (see the note above on ordering); until
-// then every operation that needs it forces the open.
-//Provides: MlFifoEnd
-//Requires: fstar_proc_dir, MlNodeFd, fstar_run_deferred_thread
-function MlFifoEnd(fifo_path, mode) {
-  this.fifo_path = fifo_path;
-  this.mode = mode;   // "r" or "w"
-  this.impl = null;   // MlNodeFd, once opened
+// A pipe end.
+//
+// Both ends of a pipe start out here, holding an in-memory queue: that is what
+// FStarC.Util's signal pipe is, and it needs no child. When the pipe is handed
+// to a child the ends part company -- the child's end is the real stream, and
+// this side reads or writes it through the worker.
+//
+// Departs from POSIX in that a write to an in-memory pipe never blocks and the
+// queue is unbounded, so a reader that never drains costs memory rather than
+// stalling the writer. F*'s signal pipe carries one byte at a time.
+//Provides: MlProcPipe
+//Requires: fstar_bridge, fstar_run_deferred_thread
+function MlProcPipe(readable) {
+  this.readable = readable;   // which end of the pair this is
+  this.queue = [];            // in-memory bytes, before any child is attached
+  this.proc = null;           // set once this end belongs to a spawned child
+  this.which = 0;             // 1 = child's stdout, 2 = child's stderr
   this.closed = false;
-  this.peer = null;   // the other end of the same FIFO
-  this.given_to_child = false;
-  this.pending = null;    // bytes select consumed, not yet handed to a read
-  this.nb_fd = -1;        // non-blocking view of the same FIFO, for select
-  // Read by caml_ml_open_descriptor_out. Buffered: a query is written a piece
-  // at a time and is several hundred lines, so writing through would cost a
-  // syscall per piece. FStarC.Util flushes before waiting for an answer, so
-  // nothing is held back past the point the solver needs it.
-  this.flags = { noSeek: true, buffered: 1, wronly: mode === "w" ? 1 : 0 };
+  this.is_proc_pipe = true;
+  this.flags = { noSeek: true, buffered: 0, wronly: readable ? 0 : 1 };
 }
-// A FIFO has no position; channels ask for one when they are created.
-MlFifoEnd.prototype.pos = function () { return 0; };
-MlFifoEnd.prototype.force = function () {
-  if (this.impl) return this.impl;
-  var fs = require("node:fs");
-  // Opening a FIFO for reading waits for a writer, and for writing waits for a
-  // reader. That pairs up correctly with a child, but not when both ends stay
-  // here: FStarC.Util's signal pipe is written and read by this process alone,
-  // and whichever end opened first would wait for the other. Opening such a
-  // pipe read-write completes immediately and satisfies both. The cost is that
-  // it never reports end-of-file, since this process is always a writer, which
-  // is only acceptable because nothing reads a self-pipe past the byte it
-  // expects. A pipe with a child end keeps the plain mode, so end-of-file still
-  // reports the solver exiting.
-  //
-  // Two limits follow. Which pipe is which is decided at first open, so a pipe
-  // opened before being handed to a child is treated as local and keeps an
-  // internal writer, and would then never report that child's end-of-file. And
-  // an open that is waiting for a child cannot be interrupted, because the
-  // event loop is blocked: a child that dies between being spawned and opening
-  // its redirections leaves this side waiting.
-  var self_pipe = !this.given_to_child && !(this.peer && this.peer.given_to_child);
-  var mode = (this.mode === "r" && self_pipe) ? "r+" : this.mode;
-  var fd = fs.openSync(this.fifo_path, mode);
-  this.impl = new MlNodeFd(fd, { noSeek: true, rdonly: this.mode === "r" ? 1 : 0 });
-  return this.impl;
-};
-MlFifoEnd.prototype.read = function (a, off, len, raise_unix) {
-  // FStarC.Util waits for the reader by blocking on a one-byte pipe that only
+MlProcPipe.prototype.pos = function () { return 0; };
+// in_channel_of_descr and out_channel_of_descr refuse anything that is not
+// stream-like, and a pipe is.
+MlProcPipe.prototype.check_stream_semantics = function (cmd) { return 0; };
+MlProcPipe.prototype.stat = function () { return { kind: 3, size: 0 }; };
+
+MlProcPipe.prototype.read = function (a, off, len, raise_unix) {
+  // FStarC.Util waits for its reader by blocking on a one-byte pipe that only
   // the reader writes. On a single thread that would deadlock, so a read that
-  // is about to block is the point at which the deferred reader is run: it
-  // fills this pipe, and the read then finds its byte. Running it here rather
-  // than at Thread.create keeps the observable order (write query, then read
-  // answer) identical to the threaded version.
-  // select has to consume to find out whether anything is there (see below),
-  // so hand back what it took before reading any more.
-  if (this.pending && this.pending.length) {
-    var k = Math.min(len, this.pending.length);
-    for (var i = 0; i < k; i++) a[off + i] = this.pending[i];
-    this.pending = this.pending.subarray(k);
-    return k;
+  // is about to block is where the deferred reader runs: it fills this pipe,
+  // and the read then finds its byte.
+  if (!this.proc && !this.queue.length) fstar_run_deferred_thread();
+  if (this.queue.length) {
+    var n = Math.min(len, this.queue.length);
+    for (var i = 0; i < n; i++) a[off + i] = this.queue[i];
+    this.queue = this.queue.slice(n);
+    return n;
   }
-  var impl = this.force();
-  fstar_run_deferred_thread();
-  return impl.read(a, off, len, raise_unix);
+  if (!this.proc) return 0;   // in-memory pipe with nothing in it
+  var got = fstar_bridge.call({ op: "read", id: this.proc, which: this.which, max: len });
+  a.set(got, off);
+  return got.length;
 };
-MlFifoEnd.prototype.write = function (buf, off, len, raise_unix) {
-  try {
-    return this.force().write(buf, off, len, raise_unix);
-  } catch (e) {
-    // A solver that has already exited leaves no reader. On a real pipe the
-    // bytes would sit in the kernel buffer and the writer would not notice, so
-    // report them written; the caller then learns of the exit from the
-    // end-of-file on the read side, which is the path it handles.
-    if (e && (e.code === "EPIPE" || String(e).indexOf("EPIPE") >= 0)) return len;
-    throw e;
+
+MlProcPipe.prototype.write = function (buf, off, len, raise_unix) {
+  if (this.proc) {
+    fstar_bridge.call({ op: "write", id: this.proc,
+                        data: Array.prototype.slice.call(buf, off, off + len) });
+    return len;
   }
+  // A write goes to whoever reads the other end.
+  var target = this.peer || this;
+  for (var i = 0; i < len; i++) target.queue.push(buf[off + i]);
+  return len;
 };
-MlFifoEnd.prototype.close = function (raise_unix) {
+
+MlProcPipe.prototype.close = function (raise_unix) {
   if (this.closed) return 0;
   this.closed = true;
-  // An end that was never forced has no fd to close; not opening it is what
-  // lets the parent drop the child's ends without blocking on the open.
-  if (this.impl) { try { this.impl.close(raise_unix); } catch (e) {} }
-  if (this.nb_fd >= 0) {
-    try { require("node:fs").closeSync(this.nb_fd); } catch (e) {}
-    this.nb_fd = -1;
+  if (this.proc && this.which === 0) {
+    try { fstar_bridge.call({ op: "closeStdin", id: this.proc }); } catch (e) {}
   }
   return 0;
 };
-MlFifoEnd.prototype.length = function () { return 0; };
-MlFifoEnd.prototype.seek = function () { return 0; };
-MlFifoEnd.prototype.isatty = function () { return 0; };
-MlFifoEnd.prototype.stat = function () {
-  // Reported as a FIFO so callers that ask do not treat it as seekable.
-  return { kind: 3, size: 0 };
-};
-// in_channel_of_descr / out_channel_of_descr refuse descriptors that are not
-// stream-like. A FIFO is, and answering without forcing the open keeps the
-// channel available before the child exists.
-MlFifoEnd.prototype.check_stream_semantics = function (cmd) { return 0; };
 
 //Provides: caml_unix_pipe
-//Requires: fstar_proc_dir, fstar_proc_state, MlFifoEnd, caml_sys_fds
+//Requires: MlProcPipe, caml_sys_fds
 function caml_unix_pipe(cloexec, vunit) {
-  var cp = require("node:child_process");
-  var p = fstar_proc_dir() + "/fifo" + fstar_proc_state.seq++;
-  cp.execFileSync("mkfifo", [p]);
-  var rf = new MlFifoEnd(p, "r"), wf = new MlFifoEnd(p, "w");
-  rf.peer = wf; wf.peer = rf;
-  var r = caml_sys_fds.length;
-  caml_sys_fds[r] = { file: rf };
-  var w = caml_sys_fds.length;
-  caml_sys_fds[w] = { file: wf };
-  return [0, r, w];
+  var r = new MlProcPipe(true), w = new MlProcPipe(false);
+  r.peer = w; w.peer = r;
+  var rfd = caml_sys_fds.length; caml_sys_fds[rfd] = { file: r };
+  var wfd = caml_sys_fds.length; caml_sys_fds[wfd] = { file: w };
+  return [0, rfd, wfd];
 }
 
-// The child inherits nothing here: caml_unix_spawn passes the FIFO paths to a
-// shell instead of passing fds, so close-on-exec has nothing to act on.
+// The child does not inherit descriptors -- caml_unix_spawn hands the worker a
+// program to run, not a file table -- so close-on-exec has nothing to act on.
 //Provides: caml_unix_set_close_on_exec
 function caml_unix_set_close_on_exec(fd) { return 0; }
 //Provides: caml_unix_clear_close_on_exec
 function caml_unix_clear_close_on_exec(fd) { return 0; }
 
 // Duplicates the descriptor, not the open file: both entries name the same
-// FIFO end, which is all the callers here need.
+// pipe end, which is all the callers here need.
 //Provides: caml_unix_dup
 //Requires: caml_sys_fds, caml_unix_lookup_file
 function caml_unix_dup(cloexec, fd) {
@@ -442,33 +529,22 @@ function caml_unix_dup(cloexec, fd) {
   return n;
 }
 
-// Spawns via a shell that redirects from the FIFO paths, rather than by
-// passing file descriptors, because a descriptor cannot cross into a Node
-// child. The parent's ends are then opened in the shell's redirection order
-// (stdin, stdout, stderr); opening them in any other order deadlocks.
+// Starts the child in the worker and attaches the three descriptors the caller
+// passed to its streams. Those descriptors are the child's ends of pipes made
+// by caml_unix_pipe; from here on this side reads and writes them through the
+// worker rather than from its own queue.
 //
-// Departs from POSIX in that the child is a shell, so prog and args are
-// quoted rather than exec'd directly, and a missing prog is reported by the
-// shell's exit status rather than by ENOENT from spawn.
+// Departs from POSIX in two ways: the returned pid belongs to a process this
+// thread does not own, so only kill and waitpid below understand it; and a
+// program that cannot be run is reported later, as end-of-file on its output,
+// rather than as an error from here.
 //Provides: caml_unix_spawn
-//Requires: fstar_proc_state, caml_unix_lookup_file, caml_jsstring_of_string, caml_raise_system_error
+//Requires: fstar_bridge, caml_unix_lookup_file, caml_jsstring_of_string, caml_raise_system_error
 function caml_unix_spawn(prog, args, optenv, usepath, redirections) {
-  var cp = require("node:child_process");
-  var shq = function (s) { return "'" + String(s).replace(/'/g, "'\\''") + "'"; };
-  // redirections is an OCaml array of the child's three descriptors, tag first.
-  var ends = [1, 2, 3].map(function (i) {
-    var f = caml_unix_lookup_file(redirections[i], "spawn");
-    if (!f.fifo_path) caml_raise_system_error(1, "EINVAL", "spawn");
-    f.given_to_child = true;
-    return f;
-  });
-  var cmd = shq(caml_jsstring_of_string(prog));
-  // args carries argv[0], which the shell supplies itself.
-  for (var i = 2; i < args.length; i++) cmd += " " + shq(caml_jsstring_of_string(args[i]));
-  cmd += " <" + shq(ends[0].fifo_path) +
-         " >" + shq(ends[1].fifo_path) +
-         " 2>" + shq(ends[2].fifo_path);
-
+  var id = fstar_bridge.next_id++;
+  var argv = [];
+  // args carries argv[0], which child_process.spawn supplies itself.
+  for (var i = 2; i < args.length; i++) argv.push(caml_jsstring_of_string(args[i]));
   var env = undefined;
   if (optenv && optenv !== 0) {
     env = {};
@@ -478,48 +554,53 @@ function caml_unix_spawn(prog, args, optenv, usepath, redirections) {
       if (eq > 0) env[kv.slice(0, eq)] = kv.slice(eq + 1);
     }
   }
-  // detached so the shell and the solver share a process group we can signal
-  // as a unit; the shell exec's the solver, so killing the group kills it.
-  var child = cp.spawn("/bin/sh", ["-c", "exec " + cmd],
-                       { stdio: "ignore", detached: true, env: env });
-  fstar_proc_state.children[child.pid] = { child: child, status: null };
-  child.on("exit", function (code, signal) {
-    var e = fstar_proc_state.children[child.pid];
-    if (e) e.status = signal ? [1, 0] : [0, code === null ? 0 : code];
-  });
-  // The descriptors passed here are the child's ends, which the shell opens.
-  // This process must open the opposite end of each, or both sides open the
-  // same direction and neither completes. The shell performs its redirections
-  // left to right, so match that order.
-  ends[0].peer.force(); ends[1].peer.force(); ends[2].peer.force();
-  return child.pid;
+  // redirections is an OCaml array of the child's three descriptors, tag first.
+  // Those ends are the child's; this side talks to the child through their
+  // peers, and closes its copy of the child's ends straight after spawning.
+  // Checked before spawning, so a bad call cannot strand a running child.
+  var ends = [];
+  for (var j = 1; j <= 3; j++) {
+    var f = caml_unix_lookup_file(redirections[j], "spawn");
+    if (!f.is_proc_pipe || !f.peer) caml_raise_system_error(1, "EINVAL", "spawn");
+    ends.push(f.peer);
+  }
+  var pid = fstar_bridge.call({ op: "spawn", id: id, env: env,
+                                prog: caml_jsstring_of_string(prog), args: argv });
+  for (var k = 0; k < 3; k++) { ends[k].proc = id; ends[k].which = k; }
+  var pid_s = String.fromCharCode.apply(null, pid);
+  fstar_bridge.pids[pid_s] = id;
+  return parseInt(pid_s, 10) || 0;
 }
 
-// Only the blocking form is supported, and it reports an exit status that was
-// observed while the event loop last ran. Node delivers 'exit' asynchronously,
-// so a child that has already been killed may not have been reaped yet; report
-// it as exited rather than blocking the single thread forever waiting for a
-// callback that cannot run.
+//Provides: fstar_proc_id_of_pid
+//Requires: fstar_bridge
+function fstar_proc_id_of_pid(pid) {
+  var m = fstar_bridge.pids || {};
+  return m[String(pid)];
+}
+
+// Reports an exit the worker has already seen, as a normal exit whatever ended
+// the child. It does not wait: F* asks only after killing the child, and a
+// thread blocked here is the one that would have to observe the exit.
 //Provides: caml_unix_waitpid
-//Requires: fstar_proc_state
+//Requires: fstar_bridge, fstar_proc_id_of_pid
 function caml_unix_waitpid(flags, pid) {
-  var e = fstar_proc_state.children[pid];
-  if (e && e.status) { delete fstar_proc_state.children[pid]; return [0, pid, e.status]; }
-  if (e) delete fstar_proc_state.children[pid];
-  return [0, pid, [0, 0]];   // WEXITED 0
+  var id = fstar_proc_id_of_pid(pid);
+  if (id === undefined) return [0, pid, [0, 0]];
+  var s = "";
+  try { s = String.fromCharCode.apply(null, fstar_bridge.call({ op: "reap", id: id })); }
+  catch (e) { return [0, pid, [0, 0]]; }
+  delete fstar_bridge.pids[String(pid)];
+  if (s === "running") return [0, pid, [0, 0]];
+  return [0, pid, [0, parseInt(s, 10) || 0]];   // WEXITED
 }
 
 //Provides: caml_unix_kill
-//Requires: fstar_proc_state, caml_raise_system_error
+//Requires: fstar_bridge, fstar_proc_id_of_pid, caml_raise_system_error
 function caml_unix_kill(pid, signum) {
-  var e = fstar_proc_state.children[pid];
-  if (!e) caml_raise_system_error(1, "ESRCH", "kill");
-  try {
-    // Negative pid signals the whole group, so the shell and the solver both go.
-    globalThis.process.kill(-pid, "SIGKILL");
-  } catch (err) {
-    try { e.child.kill("SIGKILL"); } catch (e2) {}
-  }
+  var id = fstar_proc_id_of_pid(pid);
+  if (id === undefined) caml_raise_system_error(1, "ESRCH", "kill");
+  fstar_bridge.call({ op: "kill", id: id });
   return 0;
 }
 
@@ -528,14 +609,11 @@ function caml_unix_kill(pid, signum) {
 // write or except sets, or a non-zero timeout, is refused rather than answered
 // wrongly.
 //
-// There is no way to ask how much a FIFO has buffered -- fstat reports zero and
-// a zero-length read succeeds either way -- so readiness is decided by actually
-// reading. A second descriptor on the same FIFO, opened non-blocking, shares
-// its buffer and so reports EAGAIN exactly when there is nothing there. What it
-// takes is held on the descriptor and handed to the next read, so consuming
-// here is not observable.
+// The poll takes whatever the worker has buffered and keeps it on the
+// descriptor for the following read, since there is no way to ask a stream how
+// much it holds without taking it.
 //Provides: caml_unix_select
-//Requires: caml_unix_lookup_file, caml_raise_system_error
+//Requires: caml_unix_lookup_file, fstar_bridge, caml_raise_system_error
 function caml_unix_select(rfds, wfds, efds, timeout) {
   if (wfds !== 0 || efds !== 0 || timeout > 0)
     caml_raise_system_error(1, "EINVAL", "select");
@@ -543,20 +621,14 @@ function caml_unix_select(rfds, wfds, efds, timeout) {
   if (rfds !== 0) {
     var fd = rfds[1];
     var file = caml_unix_lookup_file(fd, "select");
-    if (file.fifo_path) {
-      if (!file.pending || !file.pending.length) {
-        var fs = require("node:fs");
-        try {
-          if (file.nb_fd < 0) {
-            file.nb_fd = fs.openSync(file.fifo_path,
-                                     fs.constants.O_RDONLY | fs.constants.O_NONBLOCK);
-          }
-          var buf = new Uint8Array(8192);
-          var n = fs.readSync(file.nb_fd, buf, 0, 8192, null);
-          if (n > 0) file.pending = buf.subarray(0, n);
-        } catch (err) { /* EAGAIN: nothing buffered */ }
+    if (file.is_proc_pipe) {
+      if (!file.queue.length && file.proc) {
+        // Take no more than FStarC.Util's non-blocking drain will consume
+        // before it polls again, rather than hoarding the solver's output here.
+        var got = fstar_bridge.call({ op: "poll", id: file.proc, which: file.which, max: 1024 });
+        for (var i = 0; i < got.length; i++) file.queue.push(got[i]);
       }
-      if (file.pending && file.pending.length) ready = [0, fd, 0];
+      if (file.queue.length) ready = [0, fd, 0];
     }
   }
   return [0, ready === 0 ? 0 : ready, 0, 0];
@@ -574,15 +646,15 @@ function caml_unix_select(rfds, wfds, efds, timeout) {
 // was meant to wait for the reader runs it instead. The observable order is the
 // same, and Thread.join then has nothing left to wait for.
 //
-// This is not a threading implementation. It supports one pending closure at a
-// time and runs it at a point the caller chose for other reasons; anything that
-// needs two runnable threads at once will not work.
+// This is not a threading implementation. It holds one closure at a time and
+// rejects a second rather than losing it, and it runs that closure at a point
+// the caller chose for another reason; anything that needs two runnable threads
+// will not work.
 //Provides: fstar_deferred_thread
 var fstar_deferred_thread = { pending: null, next_id: 1 };
 
 //Provides: caml_thread_new
-//Requires: fstar_deferred_thread
-//Requires: caml_failwith
+//Requires: fstar_deferred_thread, caml_failwith
 function caml_thread_new(clos) {
   if (fstar_deferred_thread.pending)
     caml_failwith("caml_thread_new: only one deferred thread is supported");
