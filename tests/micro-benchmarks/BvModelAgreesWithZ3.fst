@@ -2,9 +2,6 @@ module BvModelAgreesWithZ3
 
 // Exhaustive width-3 cases keep the Cartesian operation groups tractable.
 
-friend FStar.BV
-friend FStar.Seq.Base
-
 open FStar.List.Tot
 open FStar.Tactics.V2
 
@@ -95,6 +92,18 @@ let test_bvnatop2 vectors naturals op =
 
 let run_test (prefix:string) (test:string -> Tac decls) : Tac decls =
   test prefix
+
+let check_nbe () : Tac unit =
+  norm [NS.nbe; NS.primops];
+  match term_as_formula (cur_goal ()) with
+  | Comp (Eq _) left right ->
+    if term_eq left right then trefl () else fail "not syntactically equal"
+  | _ -> fail "unexpected goal"
+
+let _ = assert
+  (BV.bv2int (BV.bv_extract #4
+    (BV.bvadd (BV.int2bv #4 7) (BV.int2bv #4 6)) 2 1) == 2)
+  by (check_nbe ())
 
 %splice[] (run_test "bvnot_3" (test_bvop1 unsigned3 (`(fun (a:BV.bv_t 3) -> BV.bvnot a))))
 %splice[] (run_test "bvneg_3" (test_bvop1 unsigned3 (`(fun (a:BV.bv_t 3) -> BV.bvneg a))))
