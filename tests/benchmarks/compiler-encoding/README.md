@@ -101,3 +101,33 @@ encoding measurements used:
 ```sh
 "$FSTAR" --read_checked_file _cache/BenchBvDirect1000.fst.checked
 ```
+
+## Experimental sharing recovery
+
+`sharing_experiment.ml` is a bounded diagnostic prototype, not part of the F*
+compiler. Build it with the same OCaml ABI and exact compiler library that wrote the
+checked files. For example, enter the compiler's opam switch first (or prefix
+the command with the corresponding `opam exec --switch=... --`):
+
+```sh
+FSTAR_ROOT=/path/to/FStar
+BUILD=$FSTAR_ROOT/stage3/dune/_build/default/fstar-guts
+eval "$(opam env --switch=/path/to/matching/switch --set-switch)"
+
+ocamlfind ocamlopt -linkpkg \
+  -package batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime \
+  -package ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint \
+  -package yojson,zarith,unix \
+  -I "$BUILD/.fstarcompiler.objs/byte" \
+  -I "$BUILD/.fstarcompiler.objs/native" \
+  "$BUILD/fstarcompiler.cmxa" sharing_experiment.ml \
+  -o sharing_experiment.exe
+
+./sharing_experiment.exe INPUT.checked OUTPUT.shared.checked
+./sharing_experiment.exe --load OUTPUT.shared.checked
+```
+
+The pass recursively hash-conses structurally equal SMT terms, declarations,
+declaration blocks, pruning summaries, and pruning-index entries. It preserves
+every declaration and index entry in its original order. It does not remove
+duplicate-key blocks, rename symbols, or use alpha-equivalence.

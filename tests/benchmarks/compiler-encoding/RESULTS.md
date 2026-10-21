@@ -224,3 +224,70 @@ constructed term survives serialization, while the thousands of independently
 constructed equal `bv_size_decls` blocks remain distinct. This explains both
 the 14.77 MiB third value and the otherwise surprising 5.48 MiB pruning index
 for a 55 KiB source.
+
+## Experimental exact-sharing recovery
+
+`sharing_experiment.ml` tests the narrow hypothesis that recovering physical
+sharing before serialization shrinks checked files. It recursively rebuilds
+SMT terms, declarations, declaration blocks, pruning summaries, and index
+entries, replacing structurally equal values with a canonical physical
+object. It preserves list lengths, declaration/index ordering, names, ranges,
+and every declaration. It does not remove duplicate-key blocks or attempt
+alpha-equivalence, so key equality alone never authorizes sharing.
+
+The pass requires distinct input and output paths, so it cannot overwrite the
+input artifact. Before saving and after reloading, it checks structural equality of
+the full SMT declaration list, full pruning index, and both metadata stages.
+F* successfully loaded both shared artifacts as cached dependencies and
+verified a dependent module with an SMT query (`excluded_middle`, reported by
+`--query_stats`). The prototype's `--load` mode separately forced and loaded
+both shared SMT payloads.
+
+| Artifact | Original | Shared | Reduction | Pass wall | Peak RSS |
+|---|---:|---:|---:|---:|---:|
+| BV-500 | 21,886,665 B | 2,150,246 B | 90.2% | 4.74 s | 160 MiB |
+| UInt-500 | 4,619,278 B | 1,876,955 B | 59.4% | 1.67 s | 83 MiB |
+
+For BV, structural canonicalization found reuse for 915,764 of 939,508 visited
+term occurrences, 150,978 of 154,840 declarations, 21,554 of 23,761
+declaration blocks, 152,852 of 154,840 pruning summaries, and 23,012 of
+23,761 index entries. These are hash-cons hits during a bottom-up pass, not
+counts of declarations removed.
+
+| Container value | BV original | BV shared | UInt original | UInt shared |
+|---|---:|---:|---:|---:|
+| Stage 1 | 18,533 B | 18,533 B | 18,330 B | 18,330 B |
+| Stage 2 | 6,378,921 B | 1,144,512 B | 1,207,394 B | 1,142,640 B |
+| SMT declarations | 15,489,153 B | 987,143 B | 3,393,496 B | 715,927 B |
+
+The experiment confirms that exact sharing, without changing logical
+contents, recovers most of the BV artifact's redundancy. It also shrinks UInt,
+showing substantial repeated term structure beyond BV's width declarations.
+After sharing, the BV/UInt files are 2.15/1.88 MB; the large representation
+gap nearly disappears, though BV still has all 23,761 declaration and index
+entries.
+
+Loading both metadata and the forced SMT payload also improved:
+
+| Artifact | Load wall | Peak RSS |
+|---|---:|---:|
+| BV original | 0.177 s | 160 MiB |
+| BV shared | 0.029 s | 35 MiB |
+| UInt original | 0.053 s | 59 MiB |
+| UInt shared | 0.027 s | 33 MiB |
+
+These are standalone process measurements and include startup. The pass itself
+uses structural hashing/equality and temporarily holds original and recovered
+graphs, so its bounded memory/time cost should not be interpreted as a
+production implementation result. The remaining ~2 MB includes all list
+spines, names, stage-1 data, checked syntax, and structurally distinct terms;
+this experiment intentionally does not test key-based declaration removal.
+
+Re-serialization recomputes the checked file's outer Merkle digest. Although
+the values are structurally equal, the different physical sharing changes the
+marshalled bytes and therefore the digest. Existing downstream checked files
+that recorded the original digest will be invalidated and must be rebuilt. BV
+changed from `f20e9c5031f035597f4d7dffad808b5b` to
+`935e7f796bbd89839ee94ad09a7e7e04`; UInt changed from
+`423d1ac2ce9ac5255d73d1a7e16e7f38` to
+`32912d2b5dd9fbae4ada93ac263a90f0`.
