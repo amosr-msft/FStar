@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import argparse
+import hashlib
 import json
 import re
 import subprocess
@@ -56,9 +57,12 @@ def run_one(args, source, mode, repeat, generated, cache, results):
     if completed.returncode != 0:
         raise RuntimeError(f"{module} failed with exit {completed.returncode}; see {log_file}")
     row = {
+        "generator_version": 2 if "Live" in module else 1,
+        "shape": "live" if "Live" in module else "sparse",
         "module": module,
         "mode": mode,
         "repeat": repeat,
+        "source_sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
         "source_bytes": source.stat().st_size,
         "checked_bytes": checked.stat().st_size if checked.exists() else 0,
         "command": command,
@@ -75,15 +79,16 @@ def main():
     parser.add_argument("--repeats", type=int, default=3)
     parser.add_argument("--timeout", type=int, default=1800)
     parser.add_argument("--modes", nargs="+", choices=["write", "no-write"], default=["write", "no-write"])
+    parser.add_argument("--shape", choices=["live", "sparse", "all"], default="live")
     parser.add_argument("--only", nargs="*", default=[])
     args = parser.parse_args()
     root = Path(__file__).resolve().parent
     generated = root / "_generated"
     cache = root / "_cache"
-    results = root / "_results"
+    results = root / "_results" / args.shape
     generated.mkdir(exist_ok=True)
     cache.mkdir(exist_ok=True)
-    results.mkdir(exist_ok=True)
+    results.mkdir(parents=True, exist_ok=True)
     subprocess.run(
         [str(root / "generate.py"), "--out-dir", str(generated), "--bindings", *map(str, args.bindings)],
         check=True,
@@ -98,22 +103,32 @@ def main():
         ], check=True)
 
     sources = []
-    for count in args.bindings:
-        sources += [
-            generated / f"BenchBvDirect{count}.fst",
-            generated / f"BenchUIntDirect{count}.fst",
-        ]
+    if args.shape in ("live", "all"):
+        for count in args.bindings:
+            sources += [
+                generated / f"BenchBvLive{count}.fst",
+                generated / f"BenchUIntLive{count}.fst",
+            ]
     largest = max(args.bindings)
-    sources += [
-        generated / f"BenchBvRefined{largest}.fst",
-        generated / f"BenchBvAssert{largest}.fst",
-        generated / "BenchIsolationAssertions400.fst",
-        generated / "BenchIsolationRefinedAssert400.fst",
-        generated / "BenchIsolationRefined400.fst",
-        generated / "BenchIsolationBv400.fst",
-    ]
+    if args.shape in ("sparse", "all"):
+        for count in args.bindings:
+            sources += [
+                generated / f"BenchBvDirect{count}.fst",
+                generated / f"BenchUIntDirect{count}.fst",
+            ]
+        sources += [
+            generated / f"BenchBvRefined{largest}.fst",
+            generated / f"BenchBvAssert{largest}.fst",
+            generated / "BenchIsolationAssertions400.fst",
+            generated / "BenchIsolationRefinedAssert400.fst",
+            generated / "BenchIsolationRefined400.fst",
+            generated / "BenchIsolationBv400.fst",
+        ]
     if args.only:
         sources = [source for source in sources if any(token in source.stem for token in args.only)]
+    for source in sources:
+        for path in results.glob(f"{source.stem}.*"):
+            path.unlink()
 
     output = results / "measurements.jsonl"
     output.unlink(missing_ok=True)
