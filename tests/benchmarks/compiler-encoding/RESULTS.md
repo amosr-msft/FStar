@@ -484,12 +484,41 @@ BV-500 still has measurable overhead and broader error-reporting/plugin
 coverage is warranted before changing the default.
 
 The standard build, exact `boot-diff`, opt-in `BvBinaryOps`, and opt-in
-`ClassicalSugar` pass. A broader `make test-3` run did not complete: the
-Custard `TypeDiverge` rejection expected diagnostic 365 but encountered a
-stack overflow. No baseline full-suite run was made, so this failure is
-unclassified rather than claimed as pre-existing. The tracked
-`GENERAL_SHARING_MEASUREMENTS.json` records tool/source hashes, medians,
-profiles, and this validation outcome.
+`ClassicalSugar` pass. A broader `make test-3` run stopped when the Custard
+`TypeDiverge` rejection expected diagnostic 365 but encountered a stack
+overflow. The focused comparison below did not reproduce that failure.
+
+### Focused `TypeDiverge` comparison
+
+The exact Makefile command uses the prechecked `TypeDiverge.fst.checked`,
+OCaml code generation, `--custard_warn_any --warn_error @367`,
+`--custard_entry TypeDiverge.f`, and `--custard_main TypeDiverge.main`. It has
+no explicit stack or OCaml runtime override. The focused runs inherited an
+8 MiB shell stack and had `OCAMLRUNPARAM` unset; each was bounded to 60
+seconds.
+
+| Compiler | Sharing option passed | Result | Wall | Max-process RSS |
+|---|---:|---|---:|---:|
+| `b1fe663037` | off | Error 365 | 18.02 s | 1,006 MiB |
+| `b1fe663037` | on | Error 365 | 19.26 s | 1,006 MiB |
+| `5b1137a9f1` | off | Error 365 | 15.90 s | 1,005 MiB |
+| `5b1137a9f1` | on | Error 365 | 15.92 s | 1,006 MiB |
+
+All four diagnostics are identical: Custard exceeds its 10,000,000-step
+normalization budget on `t sq`, reached through `TypeDiverge.f`. The original
+full-suite invocation did not pass `--ext smtencoding:share=true`, so the
+opt-in interner was not enabled at the stack overflow. The failure is therefore
+not a general-sharing regression. Moreover, the focused recipe extracts an
+already-checked module, so even the option-present focused runs do not execute
+SMT interning; they only confirm that both compiler revisions reproduce the
+intended Custard diagnostic under the same extraction conditions. The
+order-dependent/transient cause inside the earlier full-suite process remains
+unexplained; no unrelated Custard fix was attempted.
+
+The tracked `GENERAL_SHARING_MEASUREMENTS.json` records tool/source hashes,
+medians, profiles, and validation outcomes.
+`TYPE_DIVERGE_VALIDATION.json` records the exact focused commands, hashes,
+settings, diagnostics, and measurements.
 
 ## Dependent-file loading
 

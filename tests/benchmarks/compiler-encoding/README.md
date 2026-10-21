@@ -226,3 +226,9 @@ fstar.exe --profile ModuleName \
 `GENERAL_SHARING_MEASUREMENTS.json` records the compiler/solver/source hashes,
 medians, artifact sizes, pass profiles, and validation outcomes used by the
 report.
+
+`TYPE_DIVERGE_VALIDATION.json` records the bounded Custard `TypeDiverge`
+comparison, including the exact commands, compiler/input hashes, stack/runtime
+settings, diagnostics, elapsed time, and peak RSS for `b1fe663037` and the
+final compiler with the sharing option absent and present. The focused command
+extracts a prechecked module, so it does not execute SMT interning.

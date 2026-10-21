@@ -185,6 +185,7 @@
     "ClassicalSugar_opt_in": "pass",
     "boot_diff": "pass",
     "build_3": "pass",
-    "full_test_3": "failed: Custard TypeDiverge expected diagnostic 365, got stack overflow; baseline not run"
+    "full_test_3": "failed once: Custard TypeDiverge expected diagnostic 365, got stack overflow; focused b1fe/final default/opt-in comparison all produced Error 365, so not a sharing regression",
+    "typediverge_focused": "pass: b1fe and final focused extraction, with sharing option absent/present, all produced Error 365; extraction of prechecked module does not execute SMT interning; original full-suite command had option absent"
   }
 }
