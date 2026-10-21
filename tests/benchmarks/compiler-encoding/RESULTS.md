@@ -352,3 +352,54 @@ because reuse changes range/fresh metadata, but solver-visible support blocks
 retain their names, keys, and order. The focused `BvBinaryOps` test, exact-tree
 compiler `boot-diff`, and a dependent SMT query loaded from the modified
 checked file all pass.
+
+## Dependent-file loading
+
+The same modified compiler and Z3 5.3.0 checked one identical uncached
+dependent source against each BV artifact. Each isolated cache contained the
+matching child checked file and exactly one `BenchBvLive500.fst.checked`; logs
+confirm that dependency was loaded successfully rather than rechecked. Seven
+sequential repetitions used warm filesystem caches.
+
+Two modes separate eager metadata loading from lazy payload use:
+
+- **Metadata:** the target query is admitted. F* reads stage 2 and installs the
+  deferred encoding, but starts no Z3 process and does not force `me_decls`.
+- **Rooted:** an excluded-middle query mentions `(B.step ...).state`. With
+  normal context pruning enabled, this resolves the exported `step`, forces
+  the full third value, registers relevant declarations, and runs a
+  negligible (<0.01 s reported) solver query.
+
+| BV dependency | Metadata wall | Metadata max-process RSS | Rooted wall | Rooted max-process RSS |
+|---|---:|---:|---:|---:|
+| Original, 21.89 MB | 0.229 s | 130.9 MiB | 1.466 s | 327.7 MiB |
+| Construction reuse, 9.17 MB | 0.218 s | 120.3 MiB | 1.330 s | 274.3 MiB |
+| Post-hoc exact sharing, 2.15 MB | 0.188 s | 103.9 MiB | 1.256 s | 240.3 MiB |
+
+Construction reuse therefore reduces end-to-end rooted dependent checking by
+9.3% and maximum-process RSS by 16.3% relative to the original artifact. Full
+sharing reduces them by 14.3% and 26.7%. The construction result captures most
+of the load-memory benefit without a general interning pass.
+
+`FStarC.CheckedFiles` profiling on diagnostic (not baseline) runs reports 38
+ms, 29 ms, and 6 ms for loading the original, construction-reuse, and post-hoc
+BV metadata respectively. The difference between rooted and metadata medians
+is not a pure payload timer: it also includes deferred registration/pruning,
+Z3 startup, target VC encoding, and process noise.
+
+The matched UInt control shows the smaller artifact has less room to improve:
+
+| UInt dependency | Metadata wall | Metadata max-process RSS | Rooted wall | Rooted max-process RSS |
+|---|---:|---:|---:|---:|
+| Original, 4.62 MB | 0.168 s | 101.8 MiB | 1.155 s | 245.8 MiB |
+| Post-hoc sharing, 1.88 MB | 0.168 s | 101.5 MiB | 1.112 s | 227.6 MiB |
+
+These are ordinary warm-filesystem runs. No attempt was made to flush the
+shared host page cache, so they measure practical repeated invocation rather
+than controlled cold-I/O behavior. GNU time reports the maximum RSS of one
+process in the `timeout`/F*/Z3 tree, not the sum of concurrently resident F*
+and Z3 processes. Every row records the modified F* executable SHA-256, F*
+version output, Z3 executable SHA-256/version, target hash, dependency hash,
+child hash, and command. The BV and UInt target hashes were respectively
+`ff6e3f9ba1aae4c9881b4961a019fc70c4cfdb483688d9d5b33f8e7a3aa5e039`
+and `62bca877c9afdb999ed62bfb683efbc5dcea7f7f83c1f6e9adec03661b7495c6`.
