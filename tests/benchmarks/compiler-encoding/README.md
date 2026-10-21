@@ -195,11 +195,15 @@ before `Pruning.summarize_elts`. It then interns the derived index separately.
 This covers all SMT encoders without per-primitive caches and requires no
 fresh-name replay.
 
-`FStarC.SMTEncoding.Sharing` exposes the typed F* boundary; the OCaml runtime
-uses structural equality and hashing over SMT terms, declarations, declaration
-blocks, summaries, and index entries. Tables are local to one module export
-and released afterward. The pass preserves list lengths and ordering and does
-not use encoding keys, remove declarations, or perform alpha-equivalence.
+`FStarC.SMTEncoding.Sharing` implements the interner in ordinary F*. Each
+visited occurrence returns a bottom-up hash that its parent reuses, and
+collision buckets use typed exact equality with physical equality for
+already-canonical children. Opaque diagnostic messages compare only by
+physical identity. Tables are local to one
+module export and released afterward. The pass preserves list lengths and
+ordering and does not use encoding keys, remove declarations, render opaque
+fields, or perform alpha-equivalence. Abstract lidents compare only by physical
+identity, conservatively preserving unexposed cached fields.
 
 Build and test it with the standard compiler targets:
 
@@ -218,3 +222,7 @@ fstar.exe --profile ModuleName \
   --profile_component FStarC.SMTEncoding.Sharing \
   --ext smtencoding:share=true ModuleName.fst
 ```
+
+`GENERAL_SHARING_MEASUREMENTS.json` records the compiler/solver/source hashes,
+medians, artifact sizes, pass profiles, and validation outcomes used by the
+report.

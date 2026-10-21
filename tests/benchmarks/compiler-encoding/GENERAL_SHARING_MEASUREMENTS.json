@@ -1,0 +1,190 @@
+{
+  "base_commit": "b1fe663037e52564e34d32726045bfc6850a31c4",
+  "dependent_final": {
+    "bv": {
+      "metadata": {
+        "artifact_sha256": "ba22e8d0e6cb57006927d58dc733054a305e743af343553d36e3559010c91358",
+        "fstar_sha256": "6012fd72d190e664118a365ccfce87392ae312f5b9ad418e3f7bf3b450dec22e",
+        "max_process_rss_median_kb": 106604,
+        "repeats": 7,
+        "target_sha256": "ff6e3f9ba1aae4c9881b4961a019fc70c4cfdb483688d9d5b33f8e7a3aa5e039",
+        "wall_median_seconds": 0.17901944601908326
+      },
+      "rooted": {
+        "artifact_sha256": "ba22e8d0e6cb57006927d58dc733054a305e743af343553d36e3559010c91358",
+        "fstar_sha256": "6012fd72d190e664118a365ccfce87392ae312f5b9ad418e3f7bf3b450dec22e",
+        "max_process_rss_median_kb": 245988,
+        "repeats": 7,
+        "target_sha256": "ff6e3f9ba1aae4c9881b4961a019fc70c4cfdb483688d9d5b33f8e7a3aa5e039",
+        "wall_median_seconds": 1.2290237990673631
+      }
+    },
+    "uint": {
+      "metadata": {
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "fstar_sha256": "6012fd72d190e664118a365ccfce87392ae312f5b9ad418e3f7bf3b450dec22e",
+        "max_process_rss_median_kb": 104096,
+        "repeats": 7,
+        "target_sha256": "62bca877c9afdb999ed62bfb683efbc5dcea7f7f83c1f6e9adec03661b7495c6",
+        "wall_median_seconds": 0.16447742586024106
+      },
+      "rooted": {
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "fstar_sha256": "6012fd72d190e664118a365ccfce87392ae312f5b9ad418e3f7bf3b450dec22e",
+        "max_process_rss_median_kb": 232916,
+        "repeats": 7,
+        "target_sha256": "62bca877c9afdb999ed62bfb683efbc5dcea7f7f83c1f6e9adec03661b7495c6",
+        "wall_median_seconds": 1.0848589830566198
+      }
+    }
+  },
+  "implementation_source_sha256": "60f40524f95b41c3e7946e38ab998f860775b138cbed8ed57cf76098bf83d5c2",
+  "ordinary": {
+    "ClassicalSugar.fst": {
+      "default": {
+        "checked_bytes": 605436,
+        "max_process_rss_median_kb": 133204,
+        "repeats": 3,
+        "wall_median_seconds": 1.0568356791045517
+      },
+      "fstar": {
+        "checked_bytes": 502130,
+        "max_process_rss_median_kb": 133864,
+        "repeats": 3,
+        "wall_median_seconds": 1.061809463892132
+      },
+      "ocaml": {
+        "checked_bytes": 502130,
+        "max_process_rss_median_kb": 135728,
+        "repeats": 5,
+        "wall_median_seconds": 2.096615015063435
+      }
+    },
+    "Positivity.fst": {
+      "default": {
+        "checked_bytes": 931243,
+        "max_process_rss_median_kb": 178740,
+        "repeats": 3,
+        "wall_median_seconds": 0.9826131090521812
+      },
+      "fstar": {
+        "checked_bytes": 691657,
+        "max_process_rss_median_kb": 164856,
+        "repeats": 3,
+        "wall_median_seconds": 0.997139492072165
+      },
+      "ocaml": {
+        "checked_bytes": 691714,
+        "max_process_rss_median_kb": 166132,
+        "repeats": 5,
+        "wall_median_seconds": 1.0670213240664452
+      }
+    },
+    "TestWellFoundedRecursion.fst": {
+      "default": {
+        "checked_bytes": 681964,
+        "max_process_rss_median_kb": 127448,
+        "repeats": 3,
+        "wall_median_seconds": 0.8753903859760612
+      },
+      "fstar": {
+        "checked_bytes": 516176,
+        "max_process_rss_median_kb": 128336,
+        "repeats": 3,
+        "wall_median_seconds": 0.8849035750608891
+      },
+      "ocaml": {
+        "checked_bytes": 516209,
+        "max_process_rss_median_kb": 130508,
+        "repeats": 5,
+        "wall_median_seconds": 0.9260116608347744
+      }
+    }
+  },
+  "profiles_ms": {
+    "ClassicalSugar": {
+      "fstar_decls": 2,
+      "fstar_index": 0
+    },
+    "Positivity": {
+      "fstar_decls": 10,
+      "fstar_index": 1
+    },
+    "TestWellFoundedRecursion": {
+      "fstar_decls": 4,
+      "fstar_index": 1
+    },
+    "bv500": {
+      "fstar_decls": 228,
+      "fstar_index": 27,
+      "ocaml_decls": 4553,
+      "ocaml_index": 24
+    },
+    "uint500": {
+      "fstar_decls": 82,
+      "fstar_index": 1,
+      "ocaml_decls": 1416,
+      "ocaml_index": 1
+    }
+  },
+  "schema_version": 1,
+  "sources": {
+    "bv500_sha256": "18cdc6ee13d09da41f99b773151fadae607bd3f899e6e39f3085565471c3ecb1",
+    "uint500_sha256": "a2192641d80c94c58d95c2fce138400c8cc0df589b761a32089b014bf55341de"
+  },
+  "synthetic": {
+    "Bv": {
+      "default": {
+        "checked_bytes": 9165709,
+        "max_process_rss_median_kb": 1334916,
+        "repeats": 3,
+        "wall_median_seconds": 34.32250828598626
+      },
+      "fstar": {
+        "checked_bytes": 2136307,
+        "max_process_rss_median_kb": 1307548,
+        "repeats": 3,
+        "wall_median_seconds": 34.763861001934856
+      },
+      "ocaml": {
+        "checked_bytes": 2136307,
+        "max_process_rss_median_kb": 1307784,
+        "repeats": 3,
+        "wall_median_seconds": 39.81016780389473
+      }
+    },
+    "UInt": {
+      "default": {
+        "checked_bytes": 4619278,
+        "max_process_rss_median_kb": 1331568,
+        "repeats": 3,
+        "wall_median_seconds": 26.950688671087846
+      },
+      "fstar": {
+        "checked_bytes": 1862553,
+        "max_process_rss_median_kb": 1284532,
+        "repeats": 3,
+        "wall_median_seconds": 27.140187710057944
+      },
+      "ocaml": {
+        "checked_bytes": 1862553,
+        "max_process_rss_median_kb": 1283904,
+        "repeats": 3,
+        "wall_median_seconds": 29.199534711893648
+      }
+    }
+  },
+  "tools": {
+    "fstar_sha256": "6012fd72d190e664118a365ccfce87392ae312f5b9ad418e3f7bf3b450dec22e",
+    "fstar_version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 5.2.1\ndate=2026-10-21 01:06:17 +0000\ncommit=5275509e26b2e4c3df3ade7df1e01b3e38f9553a",
+    "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+    "z3_version": "5.3.0"
+  },
+  "validation": {
+    "BvBinaryOps_opt_in": "pass",
+    "ClassicalSugar_opt_in": "pass",
+    "boot_diff": "pass",
+    "build_3": "pass",
+    "full_test_3": "failed: Custard TypeDiverge expected diagnostic 365, got stack overflow; baseline not run"
+  }
+}

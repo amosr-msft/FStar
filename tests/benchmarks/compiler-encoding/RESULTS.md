@@ -426,6 +426,71 @@ Final validation includes exact-tree `boot-diff`, opt-in `BvBinaryOps` and
 `ClassicalSugar`, structural artifact comparisons for all measured modules,
 and dependent rooted queries loaded from both general synthetic artifacts.
 
+### Efficient F* reimplementation
+
+The initial common-boundary prototype at commit `b1fe663037` used recursive
+OCaml polymorphic hashing/equality. The replacement is an ordinary F*
+implementation using `FStarC.Hash`, `FStarC.HashTable`, and
+`FStarC.Util.physical_equality`. Recursive workers return each rebuilt node
+with a cached bottom-up hash; parent hashes combine child hashes once, and
+collision buckets use explicit typed equality over canonical child pointers.
+Hash collisions therefore never authorize merging unequal values.
+
+Ranges compare and hash both definition and use locations. Abstract lidents
+compare only by physical identity, conservatively preserving unexposed cached
+fields. All SMT constructors and pruning-summary variants are handled
+explicitly. Opaque
+diagnostic messages in `Labeled` terms are neither traversed, rendered, nor
+structurally compared: they share only when physically identical and use a
+constant hash contribution. The superseded handwritten OCaml runtime was
+removed.
+
+Compared with three identical runs of `b1fe663037`:
+
+| Live-500 opt-in | OCaml prototype | F* interner | Change |
+|---|---:|---:|---:|
+| BV write wall | 39.81 s | 34.76 s | -12.7% |
+| BV max-process RSS | 1,277 MiB | 1,277 MiB | -0.02% |
+| BV declaration/index pass | 4.55 s / 24 ms | 0.228 s / 27 ms | -95.0% declarations |
+| BV `.checked` | 2,136,307 B | 2,136,307 B | unchanged |
+| UInt write wall | 29.20 s | 27.14 s | -7.1% |
+| UInt max-process RSS | 1,254 MiB | 1,254 MiB | +0.05% |
+| UInt declaration/index pass | 1.42 s / 1 ms | 0.082 s / 1 ms | -94.2% declarations |
+| UInt `.checked` | 1,862,553 B | 1,862,553 B | unchanged |
+
+Against the default BV-only path in the exact same final compiler, F* general
+interning adds 1.3% wall time for BV-500 (34.32 to 34.76 s) and 0.7% for
+UInt-500 (26.95 to 27.14 s). Artifact reductions remain 76.7% and 59.7%.
+
+The F* and OCaml implementations produce structurally equal checked modules,
+indexes, fvar bindings, and declaration ASTs on both synthetic workloads and
+all ordinary controls. Applying the standalone sharing pass to the F*
+artifacts produces no further byte reduction, although Marshal digests differ
+because the exact physical-sharing topology is not identical.
+
+Final same-compiler ordinary-module default/general medians are 0.983/0.997 s
+(`Positivity`), 1.057/1.062 s (`ClassicalSugar`), and 0.875/0.885 s
+(`TestWellFoundedRecursion`). Declaration pass costs are 10, 2, and 4 ms;
+index costs are 1, 0, and 1 ms. Their checked sizes remain approximately
+17–26% below the default compiler.
+
+With the exact final compiler and artifacts, BV dependent metadata/rooted
+medians are 0.179/1.229 s at 104.1/240.2 MiB; UInt medians are 0.164/1.085 s
+at 101.7/227.5 MiB.
+
+The efficient implementation substantially reduces the earlier cost without
+sacrificing sharing or exact collision checks. It remains opt-in because
+BV-500 still has measurable overhead and broader error-reporting/plugin
+coverage is warranted before changing the default.
+
+The standard build, exact `boot-diff`, opt-in `BvBinaryOps`, and opt-in
+`ClassicalSugar` pass. A broader `make test-3` run did not complete: the
+Custard `TypeDiverge` rejection expected diagnostic 365 but encountered a
+stack overflow. No baseline full-suite run was made, so this failure is
+unclassified rather than claimed as pre-existing. The tracked
+`GENERAL_SHARING_MEASUREMENTS.json` records tool/source hashes, medians,
+profiles, and this validation outcome.
+
 ## Dependent-file loading
 
 The same modified compiler and Z3 5.3.0 checked one identical uncached
