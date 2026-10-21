@@ -107,6 +107,8 @@ type env_t = {
        it. Only the names are needed, which lets a module's encoding be
        registered here without deserializing it. *)
     global_cache:HashTable.t string (list string & lident);
+    (* Canonical width support declarations within one module encoding. *)
+    bv_support_decls:HashTable.t (string & int) decls_t;
 }
 
 val print_env : env_t -> ML string

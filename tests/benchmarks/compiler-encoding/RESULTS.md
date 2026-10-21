@@ -73,7 +73,7 @@ have an auxiliary same-width XOR that keeps their result on the live chain.
 Rising-edge, reset, and enable conditions come from previous/current one-bit
 inputs and drive generated conditionals and synchronous state updates.
 
-The final BV and UInt source hashes are
+The final 1,000-binding BV and UInt source hashes are
 `27df0287e51093829bb31f11d4de63535ca2930337b4336809e120693a795d49`
 and `ad24b485152ca343a58c46c0a3305f80cab990219267c771abef79f19be5794d`.
 Their common representation-neutral plan hash is
@@ -291,3 +291,64 @@ changed from `f20e9c5031f035597f4d7dffad808b5b` to
 `935e7f796bbd89839ee94ad09a7e7e04`; UInt changed from
 `423d1ac2ce9ac5255d73d1a7e16e7f38` to
 `32912d2b5dd9fbae4ada93ac263a90f0`.
+
+## Construction-time BV support reuse
+
+The focused compiler experiment memoizes `bv_size_decls` results while
+encoding a module. Its key is `(current_module_name, width)`: width determines
+the `BoxBitVecN` constructor, while the module name scopes generated symbols.
+The mutable table belongs to the SMT encoding environment, is copied by
+environment snapshots, and is cleared together with the module fresh-name
+counter before whole-module export. Cache hits consume the skipped fresh name
+so later generated names retain their sequence. Every declaration-list
+occurrence remains in its original position; only the referenced immutable
+block is physically reused.
+
+The unchanged baseline is the final dynamic-shift BV-500 run above. The
+modified compiler used the identical source and flags. The source SHA-256 was
+`18cdc6ee13d09da41f99b773151fadae607bd3f899e6e39f3085565471c3ecb1`;
+the exact command and uncommitted compiler-diff hash are retained with the raw
+results. The baseline artifact's stored source digest is
+`bb5eeaca1cd04d52f64300ffc91d1464`, equal to the current BV-500 source MD5,
+and the modified artifact records the same digest. This authenticates the
+source used by both artifacts even though the older measurement JSON row did
+not record SHA-256 directly.
+
+| BV-500 | Baseline | Construction reuse | Change |
+|---|---:|---:|---:|
+| Write wall | 35.76 s | 35.44 s median (3 runs) | -0.9% |
+| `step` timer | 31.76 s | 31.93 s median | +0.5% |
+| Peak RSS | 1,466 MiB | 1,304 MiB | -11.1% |
+| `.checked` | 21,886,665 B | 9,165,709 B | -58.1% |
+
+Modified no-write runs had a 35.22 s median, 0.22 s below the write median.
+The difference includes timing noise as well as serialization/hash/write, and
+the baseline had no matching no-write repetition.
+
+| Container value | Baseline | Construction reuse | Reduction |
+|---|---:|---:|---:|
+| Stage 1 | 18,533 B | 18,533 B | 0% |
+| Stage 2 | 6,378,921 B | 3,794,656 B | 40.5% |
+| SMT declarations | 15,489,153 B | 5,352,462 B | 65.4% |
+| Re-marshalled pruning index | 5,481,833 B | 2,897,568 B | 47.1% |
+
+Applying the general post-hoc sharing pass after construction reuse reduces
+9,165,709 B further to 1,974,932 B. Relative to that result, targeted
+construction reuse captures 63.9% of the recoverable byte reduction. Residual
+redundancy includes equal terms and summaries outside `bv_size_decls`, plus
+list spines and other independently allocated structures; the focused change
+intentionally does not intern them.
+
+The UInt-500 control is byte-identical at 4,619,278 B. Its single modified run
+was 28.11 s / 1,302 MiB versus the earlier 27.02 s / 1,302 MiB baseline, which
+is consistent with no size or memory effect and normal single-run timing
+variation.
+
+The baseline and modified BV pruning indexes are structurally equal, as are
+SMT fvar bindings and inclusion information. The first physically reused
+support block has the same hash-consing key and renders to identical SMT. The
+checked syntax module and raw declaration AST are not structurally byte-stable
+because reuse changes range/fresh metadata, but solver-visible support blocks
+retain their names, keys, and order. The focused `BvBinaryOps` test, exact-tree
+compiler `boot-diff`, and a dependent SMT query loaded from the modified
+checked file all pass.

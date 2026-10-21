@@ -874,7 +874,10 @@ let encode_top_level_vals env bindings quals =
 exception Let_rec_unencodeable
 
 //Make a copy of all the mutable state of env_t, central place for keeping track of mutable fields in env_t
-let copy_env (en:env_t) = { en with global_cache = HashTable.copy en.global_cache}
+let copy_env (en:env_t) =
+  { en with
+    global_cache = HashTable.copy en.global_cache;
+    bv_support_decls = HashTable.copy en.bv_support_decls }
 
 let encode_top_level_let :
     env_t -> (bool & list letbinding) -> list qualifier -> ML (decls_t & env_t) =
@@ -2084,7 +2087,8 @@ let init_env tcenv = last_env := [{bvar_bindings=PSMap.empty ();
                                    nolabels=false; use_zfuel_name=false;
                                    encode_non_total_function_typ=true; encoding_quantifier=false;
                                    current_module_name=Env.current_module tcenv |> Ident.string_of_lid;
-                                   global_cache = HashTable.create 100}]
+                                   global_cache = HashTable.create 100;
+                                   bv_support_decls = HashTable.create 10}]
 let get_env cmn tcenv = match !last_env with
     | [] -> failwith "No env; call init first!"
     | e::_ -> {e with tcenv=tcenv; current_module_name=Ident.string_of_lid cmn}
@@ -2312,6 +2316,7 @@ let encode_modul_aux (give_to_z3:bool) tcenv modul =
     let tcenv = Env.set_current_module tcenv modul.name in
     UF.with_uf_enabled (fun () ->
     varops.reset_fresh ();
+    HashTable.clear (get_env modul.name tcenv).bv_support_decls;
     let name = Format.fmt2 "%s %s" (if modul.is_interface then "interface" else "module")  (string_of_lid modul.name) in
     if Debug.medium ()
     then Format.print2 "+++++++++++Encoding externals for %s ... %s declarations\n" name (List.length modul.declarations |> show);
