@@ -126,9 +126,10 @@ Inspecting the 40.32 MiB prototype artifact with `--read_checked_file` did not
 finish after 20 minutes 40 seconds at 100% of one CPU and roughly 1.3 GiB RSS;
 it emitted only 177 KiB before its orphaned process was terminated. Checking
 and cache generation had already completed in about 20 seconds, so the stall
-is on the checked-file read/format/print path, not module checking or cache
-writing. The evidence does not separate payload loading from term formatting
-within that path.
+is not module checking or cache writing. The partial output reached
+`Checked module:` but never `SMT decls:` and ends within the checked-module
+text. The available evidence therefore does not distinguish checked-module
+output from subsequent loading or formatting of the third SMT payload.
 
 `FStarC.Universal.tc_source_file` checks the module and then calls
 `encode_modul`. `FStarC.CheckedFiles.store_module_to_cache` persists the
@@ -141,3 +142,85 @@ SMT-LIB queries are therefore not interchangeable.
 The original approximately 500 MB remains unexplained. A follow-up needs the
 original artifact or an observation that identifies which of those quantities
 was measured.
+
+## Checked-file anatomy
+
+The exact 40.32 MiB constant-shift prototype artifact no longer exists. The
+later uncached final BV-1,000 attempt removed it before checking and did not
+produce a replacement. The largest surviving matched artifacts are the final
+dynamic-shift BV-500 and UInt-500 files. Their 55,437-byte and 56,991-byte
+sources expand to 20.87 MiB and 4.41 MiB checked files: amplification factors
+of 395 and 81 respectively.
+
+Checked files contain a marshalled digest, a byte count, and three marshalled
+values. Stage 1 contains the cache version, source digest, and parsing data.
+Stage 2 contains dependency digests, the checked syntax module, inclusion
+information, the eager SMT pruning index, and SMT fvar bindings. The third
+value is the full exported SMT declaration list.
+
+| Container value | BV-500 bytes | BV share | UInt-500 bytes | UInt share |
+|---|---:|---:|---:|---:|
+| Stage 1: cache/source/parsing data | 18,533 | 0.08% | 18,330 | 0.40% |
+| Stage 2: dependencies and checked result | 6,378,921 | 29.15% | 1,207,394 | 26.14% |
+| Exported SMT declarations | 15,489,153 | 70.77% | 3,393,496 | 73.46% |
+
+The OCaml Marshal headers report the number of serialized heap objects and the
+64-bit heap words required to unmarshal each value. These are format-provided
+in-memory estimates, not measured RSS. BV's metadata and SMT values report
+1,019,398 and 3,016,725 objects, with about 25.10 MiB and 73.06 MiB of
+64-bit heap words. UInt reports 163,783 and 915,425 objects, with about 4.35
+MiB and 20.39 MiB of heap words.
+
+Re-marshalling the second value's fields separately shows what makes BV
+metadata large. The values are not additive because separately marshalling
+them changes cross-field sharing.
+
+| Metadata field | BV-500 | UInt-500 |
+|---|---:|---:|
+| Checked syntax module | 873,066 bytes | 954,671 bytes |
+| Inclusion information | 20,055 bytes | 20,055 bytes |
+| SMT pruning index | 23,761 entries / 5,481,833 bytes | 2,128 entries / 229,606 bytes |
+| SMT fvar bindings | 233 / 50,907 bytes | 233 / 52,729 bytes |
+
+The checked syntax module is therefore not the BV/UInt size difference. The
+dominant difference is exported SMT declarations and their eager index. A
+bounded traversal of the third value found:
+
+| Exported structure | BV-500 | UInt-500 |
+|---|---:|---:|
+| Declaration blocks | 23,761 | 2,128 |
+| Flattened declarations | 154,840 | 3,409 |
+| `Assume` declarations | 45,075 | 1,809 |
+| `DeclFun` declarations | 44,149 | 883 |
+| `DefineFun` declarations | 21,645 | 12 |
+| Term occurrences | 939,508 | 365,413 |
+| Maximum term depth | 261 | 197 |
+
+The same live expression is present in both artifacts: for example, the
+bounded traversal counted 3,704 BV XOR applications and 3,704 UInt
+`logxor` applications. The main step equation is also comparable in size
+(173,330 BV versus 183,326 UInt term occurrences). BV is larger because every
+native BV primitive encoding calls `bv_size_decls` for its input/result
+widths. Those blocks declare the width-specific `BoxBitVecN` constructor and
+projection and add typing-inversion facts. In BV-500, width-one alone appears
+in 12,163 such keyed blocks; the other common widths appear thousands of
+times.
+
+This repetition is directly visible in the hash-consing keys: 21,854 BV
+declaration blocks are keyed, but they contain only 40 unique keys, leaving
+21,814 duplicate keyed blocks. UInt has 221 keyed blocks, 33 unique keys, and
+188 duplicates. During module registration, `give_index_to_z3_and_set_env`
+uses the index keys to drop duplicates before declarations are handed to Z3.
+However, `encode_modul_aux` builds the post-check exported encoding with
+`encode_top_level_facts`, summarizes every block, and retains the full
+declaration list for the checked file. Thus the artifact stores both the
+repeated declarations and one eager summary per block even though the solver
+registration path deduplicates them before sending declarations to Z3.
+
+`Marshal.to_string value []` preserves existing physical sharing with
+backreferences. It does not structurally hash-cons separately allocated but
+equal blocks and does not compress the payload. Consequently sharing within a
+constructed term survives serialization, while the thousands of independently
+constructed equal `bv_size_decls` blocks remain distinct. This explains both
+the 14.77 MiB third value and the otherwise surprising 5.48 MiB pruning index
+for a 55 KiB source.
