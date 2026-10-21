@@ -353,6 +353,79 @@ retain their names, keys, and order. The focused `BvBinaryOps` test, exact-tree
 compiler `boot-diff`, and a dependent SMT query loaded from the modified
 checked file all pass.
 
+## Experimental general SMT interning
+
+The opt-in general prototype (`--ext smtencoding:share=true`) replaces the
+BV-specific cache with one exact structural interning pass over the completed
+exported `decls_t`, immediately before pruning-index construction. A second
+pass interns the derived index. Per-module tables cover terms, declarations,
+declaration blocks, declaration summaries, and index entries; they are
+discarded after export. This boundary is independent of encoding environments,
+snapshots, solver resets, modules, and fresh-name scopes.
+
+The pass preserves every list entry and its order. It uses ordinary structural
+equality, including names, ranges, and labels—not encoding keys, SMT semantic
+hashes, or alpha-equivalence. Equality first checks physical identity and
+treats opaque/function-containing values that reject structural comparison as
+non-shareable. Checked modules, inclusion data, fvar bindings,
+indexes, and declaration ASTs are structurally equal to the original
+pre-optimization artifacts on BV-500, UInt-500, and all three ordinary
+controls. Synthetic dependency digests differ because their child artifacts
+were rebuilt; ordinary controls have equal dependency digests.
+
+Compared with three fresh runs of the BV-only compiler on identical sources:
+
+| Live-500 | BV-only median | General median | Change |
+|---|---:|---:|---:|
+| BV write wall | 34.79 s | 39.81 s | +14.4% |
+| BV max-process RSS | 1,302 MiB | 1,277 MiB | -1.9% |
+| BV `.checked` | 9,165,709 B | 2,136,307 B | -76.7% |
+| UInt write wall | 27.82 s | 29.20 s | +5.0% |
+| UInt max-process RSS | 1,300 MiB | 1,254 MiB | -3.5% |
+| UInt `.checked` | 4,619,278 B | 1,862,553 B | -59.7% |
+
+The standalone post-hoc sharing pass makes no further byte or digest change to
+either general artifact. General construction-time interning therefore
+recovers all exact sharing found post hoc and subsumes the BV-specific cache
+without fresh-name replay. It also closes the synthetic BV/UInt artifact gap.
+With the option absent, final BV and UInt artifacts are byte-identical to
+those produced by the BV-only compiler.
+
+Profiling attributes 4.55 s / 24 ms of BV-500 and 1.42 s / 1 ms of UInt-500
+to declaration/index interning. This accounts for the total-time regression.
+On ordinary
+non-BV modules, declaration/index passes cost only 3–20 ms / 0–1 ms:
+
+| Ordinary module | BV-only size | General size | Size change | Wall medians |
+|---|---:|---:|---:|---:|
+| `Positivity` | 931,243 B | 691,714 B | -25.7% | 1.05 / 1.07 s |
+| `ClassicalSugar` | 605,436 B | 502,130 B | -17.1% | 1.30 / 2.10 s |
+| `TestWellFoundedRecursion` | 681,964 B | 516,209 B | -24.3% | 0.96 / 0.93 s |
+
+`ClassicalSugar` timings were highly variable (general 1.36–2.40 s) despite a
+3 ms measured sharing pass, so that median difference is not attributable to
+interning. These controls show useful size reductions beyond BV/UInt without
+meaningful pass cost at their scale.
+
+Dependent loading of general artifacts is essentially the same as post-hoc
+sharing: BV metadata/rooted medians are 0.184 s / 1.242 s at 104.9 / 242.1 MiB
+maximum-process RSS; UInt is 0.172 s / 1.096 s at 102.3 / 228.1 MiB.
+
+This prototype remains opt-in because its current cost is too high for a
+default optimization. OCaml polymorphic structural hashing/equality revisits
+large subtrees and temporarily holds the original and rebuilt graphs. Equality
+uses a physical fast path and treats opaque/function-containing values that
+reject structural comparison as non-shareable, avoiding a new error-reporting
+failure mode. A production design should retain this common boundary but use
+typed cached hashes, or a bottom-up hash-cons representation that computes
+each node's hash once. Thresholding the pass by declaration count is another
+option, but the ordinary-module reductions show that a BV-only policy would
+leave general benefits behind. List spines, checked syntax modules, fvar
+bindings, and stage-1 data remain outside this prototype's coverage.
+Final validation includes exact-tree `boot-diff`, opt-in `BvBinaryOps` and
+`ClassicalSugar`, structural artifact comparisons for all measured modules,
+and dependent rooted queries loaded from both general synthetic artifacts.
+
 ## Dependent-file loading
 
 The same modified compiler and Z3 5.3.0 checked one identical uncached

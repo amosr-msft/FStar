@@ -564,14 +564,7 @@ and encode_arith_term env head args_e : ML _ =
     let sz = getInteger tm_sz in
     (* Declarations for the boxing/unboxing functions of bitvectors of size n *)
     let bv_size_decls (n:int) : ML decls_t =
-      let cache_key = env.current_module_name, n in
-      match HashTable.try_find env.bv_support_decls cache_key with
-      | Some decls ->
-        (* Encoding the closed [bv_t n] allocates no names; replay the one
-           allocation for the abstracted inversion binder below. *)
-        ignore (varops.fresh env.current_module_name "x");
-        decls
-      | None ->
+      let build () =
         let sz_key = FStarC.Format.fmt1 "BitVector_%s" (show n) in
         let t_decls, constr_name, discriminator_name = mkBvConstructor n in
         //Typing inversion for bv_t n
@@ -592,9 +585,22 @@ and encode_arith_term env head args_e : ML _ =
           let name = "typing_inversion_for_" ^constr_name in
           decls, mkAssume(ax, Some name, name)
         in
-        let decls = decls@mk_decls "" sz_key (t_decls@[typing_inversion]) [] in
-        HashTable.add env.bv_support_decls cache_key decls;
-        decls
+        decls@mk_decls "" sz_key (t_decls@[typing_inversion]) []
+      in
+      if Options.Ext.enabled "smtencoding:share"
+      then build ()
+      else
+        let cache_key = env.current_module_name, n in
+        match HashTable.try_find env.bv_support_decls cache_key with
+        | Some decls ->
+          (* Encoding the closed [bv_t n] allocates no names; replay the one
+             allocation for the abstracted inversion binder in [build]. *)
+          ignore (varops.fresh env.current_module_name "x");
+          decls
+        | None ->
+          let decls = build () in
+          HashTable.add env.bv_support_decls cache_key decls;
+          decls
     in
     (* Widths, indexed arguments, and extract bounds are consumed as constants
        rather than encoded as terms. *)

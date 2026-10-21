@@ -186,3 +186,35 @@ The post-hoc variants use the sharing-recovery command from the preceding
 section. To isolate eager metadata loading, add
 `--profile BenchDependentBv --profile_component FStarC.CheckedFiles` to an
 otherwise equivalent direct F* invocation.
+
+## Experimental general SMT sharing
+
+The opt-in general prototype (`--ext smtencoding:share=true`) moves exact
+interning to the common exported-encoding boundary: after `encode_signature`,
+before `Pruning.summarize_elts`. It then interns the derived index separately.
+This covers all SMT encoders without per-primitive caches and requires no
+fresh-name replay.
+
+`FStarC.SMTEncoding.Sharing` exposes the typed F* boundary; the OCaml runtime
+uses structural equality and hashing over SMT terms, declarations, declaration
+blocks, summaries, and index entries. Tables are local to one module export
+and released afterward. The pass preserves list lengths and ordering and does
+not use encoding keys, remove declarations, or perform alpha-equivalence.
+
+Build and test it with the standard compiler targets:
+
+```sh
+make -j8 3
+make boot-diff
+stage3/out/bin/fstar.exe --z3version 5.3.0 \
+  --ext smtencoding:share=true \
+  tests/micro-benchmarks/BvBinaryOps.fst
+```
+
+Pass cost can be isolated diagnostically with:
+
+```sh
+fstar.exe --profile ModuleName \
+  --profile_component FStarC.SMTEncoding.Sharing \
+  --ext smtencoding:share=true ModuleName.fst
+```
