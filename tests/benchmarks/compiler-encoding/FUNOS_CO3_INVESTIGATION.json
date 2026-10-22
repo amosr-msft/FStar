@@ -1,6 +1,6 @@
 {
   "date": "2026-10-22",
-  "status": "blocked_before_final_target",
+  "status": "stable_verification_fails_before_final_target",
   "revisions": {
     "funos": "3b35ffd1bd2f3e15273cd2ecb06721a648b9ab3b",
     "funsdk": "95f4497cb63823806536c56a072a2d002eb45e59",
@@ -78,8 +78,12 @@
     "co3_pervasives_sha256_all_variants": "bc4b475b24c93866dbf9f2a08cb485335a0bcc231149e9b36691403cfd7b9d55",
     "canonical_packaged_toolchain_has_identical_vc": true,
     "stable_default_CO3_DISABLE_VERIFY": 1,
+    "recent_ci_status": "co3-verify has not run in CI for some time",
+    "recent_ci_omission_reason": "performance regressions",
+    "recent_ci_establishes_verification_passes": false,
     "documented_commands_explicitly_enable_verify": false,
-    "effect": "The documented command reports CO3 VERIFY DISABLED unless CO3_DISABLE_VERIFY=0 is added."
+    "effect": "The documented command reports CO3 VERIFY DISABLED unless CO3_DISABLE_VERIFY=0 is added.",
+    "failure_classification": "A genuine stable proof gap is possible; recent CI does not establish that co3-verify passes."
   },
   "partial_cache": {
     "s3_checked_dependencies_before_failure": {

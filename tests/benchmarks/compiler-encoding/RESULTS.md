@@ -672,10 +672,11 @@ and `62bca877c9afdb999ed62bfb683efbc5dcea7f7f83c1f6e9adec03661b7495c6`.
 ## FunOS Co3 investigation
 
 A matched `make co3-verify` benchmark was prepared but could not produce a
-valid timing comparison because the local setup fails before either
-configuration reaches its final `Config.Main` target. This is an unresolved
-local configuration/toolchain blocker, not evidence that FunOS stable is
-broken and not a measured performance result.
+valid timing comparison because verification fails before either
+configuration reaches its final `Config.Main` target. `co3-verify` has been
+absent from CI for some time because of performance regressions, so recent CI
+does not establish that it passes. The failure may therefore be a genuine
+stable proof gap; it is not a measured performance result.
 
 The exact revisions were:
 
@@ -756,7 +757,10 @@ result excludes it as the cause. The failing source SHA-256 is
 There is also a build/docs inconsistency: stable sets
 `CO3_DISABLE_VERIFY ?= 1`, so the documented `make ... co3-verify` commands
 without `CO3_DISABLE_VERIFY=0` print `CO3 VERIFY DISABLED`. Explicitly
-enabling verification exposes this proof gap.
+enabling verification exposes this proof gap. This default is intentional in
+the current source; separately, `co3-verify` has not run in CI for some time
+because of performance regressions. The documentation still reads as though
+the commands verify.
 
 The proof probes were diagnostic only and fully reverted. Direct calls to the
 F* list lemma also produce Co3 “no shape attribute” warnings, so they are not

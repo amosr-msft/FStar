@@ -282,6 +282,10 @@ timeout to `incomplete quantifiers` but does not prove it. No valid Co3 timing
 comparison is reported because proving or changing this source obligation
 would alter the requested benchmark.
 
+`co3-verify` has not run in CI for some time because of performance
+regressions. Recent CI therefore does not establish that it passes; the
+isolated obligation may be a genuine stable proof gap.
+
 ## PR #4760 worst-offender reruns
 
 `PR4760_WORST_OFFENDERS.json` records alternating local reruns of the three
