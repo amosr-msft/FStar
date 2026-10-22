@@ -672,9 +672,10 @@ and `62bca877c9afdb999ed62bfb683efbc5dcea7f7f83c1f6e9adec03661b7495c6`.
 ## FunOS Co3 investigation
 
 A matched `make co3-verify` benchmark was prepared but could not produce a
-valid timing comparison because current FunOS stable fails before either
-configuration reaches its final `Config.Main` target. This is a source/toolchain
-validation blocker, not a measured performance result.
+valid timing comparison because the local setup fails before either
+configuration reaches its final `Config.Main` target. This is an unresolved
+local configuration/toolchain blocker, not evidence that FunOS stable is
+broken and not a measured performance result.
 
 The exact revisions were:
 
@@ -706,11 +707,14 @@ make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
   -j4 co3-verify
 ```
 
-Both configurations and both compared compilers fail at the same assertion
+Under this local setup, both configurations and both compared compilers fail
+at the same assertion
 in `configs/co3/common/Libs/GuestMemRanges.co3:24-64`. S3 reaches 57 checked
 dependencies and S2 reaches 62 before that failure. The canonical stable
 FunSDK compiler (`fb6ea91eb4`, OCaml 5.4.1) also fails the S3 command at the
-same assertion. Z3 5.3.0 first reports a timeout at the assertion; increasing
+same assertion, but that run shared the same local FunOS configuration and
+host setup, so it does not classify the cause. Z3 5.3.0 first reports a
+timeout at the assertion; increasing
 its rlimit changes the diagnostic to an unproved assertion but does not make
 it pass. The project-pinned Z3 4.13.3 reports the same unproved assertion.
 The failing source SHA-256 is
@@ -776,3 +780,76 @@ counts on a reproducing module are needed before changing the implementation.
 
 `FUNOS_CO3_INVESTIGATION.json` records the exact revisions, commands, tool
 hashes, cache progress, failures, and rejected run.
+
+## PR #4760 worst-offender reruns
+
+The three largest absolute regressions in the enabled PR comparison were
+rerun locally using the workflow's exact test recipes, existing matched
+compiler builds, Z3 5.3.0, compiler-specific caches, and alternating
+baseline/sharing order. Each unprofiled cell has two warm-filesystem runs.
+The baseline is `5275509e26`; sharing is unconditional at `b3f9782a6c`.
+
+| Workload | CI baseline → sharing | Local baseline runs | Local sharing runs | Local median change |
+|---|---:|---:|---:|---:|
+| `NormBudget.rejected` | 139.38 → 157.39 s | 147.49, 159.90 s | 152.11, 144.09 s | -3.6% |
+| `BoolRefinement` | 83.10 → 94.64 s | 58.94, 58.52 s | 59.10, 58.65 s | +0.2% |
+| `DPE.Messages.Spec` | 92.33 → 104.97 s | 61.64, 62.04 s | 60.92, 60.83 s | -1.6% |
+
+None of the three time regressions reproduced. Two repetitions are not enough
+to claim a speedup, especially for `NormBudget`, whose local range is nearly
+16 seconds. These local runs do not provide evidence for a direct 11-18
+second sharing-pass cost; they do not rule out runner-specific interaction,
+GC effects, or a regression that needs more repetitions to detect.
+
+`NormBudget` remained the expected rejection in every run: warning 373,
+including “the argument as written,” with a diagnostic below 100 KB. It loads
+an already checked module and runs Custard extraction, so it never calls SMT
+encoding or the sharing pass. A diagnostic Custard profile attributes
+essentially all time to `split_mono_args`: 160.8 seconds baseline and 148.3
+seconds sharing in one archived run, again within the wide run-to-run spread.
+
+The verification profiles are diagnostic and slower than the lightweight
+runs. They show:
+
+| Workload | Baseline profile | Sharing profile | Sharing declarations/index | Dominant work |
+|---|---:|---:|---:|---|
+| `BoolRefinement` | 70.65 s | 73.52 s | 18/2 ms | phase-2 checking, Z3, normalization |
+| `DPE.Messages.Spec` | 62.42 s | 63.63 s | 4/0 ms | Z3: 60.05/60.97 s aggregate |
+
+`BoolRefinement` issued the same 1,128 profiled query attempts on both sides.
+F*'s aggregate Z3 counters, including the profiled `FStar.Preorder`
+dependency, were 49.99 versus 49.46 seconds. Its largest type-checker counters
+were phase-2 checking and solver calls. The remaining profile delta is spread
+through normalization, phase 1, and relationship checking rather than the 20
+ms interner. `DPE.Messages.Spec` issued the same 86 query attempts; F*'s
+aggregate Z3 counters were 60.05 versus 60.97 seconds. Its 4 ms interner is
+four orders of magnitude smaller than total time; essentially all of this
+diagnostic run's 1.22-second delta is inside solver time.
+
+One additional run per side used OCaml's exit statistics
+(`OCAMLRUNPARAM=v=0x400`). The Bool and DPE GC runs were concurrent pairs, so
+their timing is discarded; allocation and collection counters are retained.
+All allocation values are OCaml words. Peak values below are the separate
+`FSTAR_MEM_REPORT` byte measurements, shown in decimal MB/GB.
+
+| Workload | Allocated words, baseline → sharing | Major words | Major collections | Peak OCaml heap |
+|---|---:|---:|---:|---:|
+| `NormBudget` | 5.867B → 5.865B (-0.02%) | 918.7M → 917.3M | 24 → 23 | 5.781 → 6.238 GB (+7.9%) |
+| `BoolRefinement` | 3.129B → 3.128B (-0.02%) | 89.3M → 85.7M | 16 → 16 | 455.9 → 410.9 MB (-9.9%) |
+| `DPE.Messages.Spec` | 232.5M → 230.4M (-0.9%) | 28.0M → 25.4M | 12 → 11 | 205.5 → 187.6 MB (-8.7%) |
+
+The reproducible `NormBudget` memory increase is not caused by extra
+allocation: total allocation and promotion are essentially unchanged, while
+the OCaml runtime grows the sharing binary's heap to a larger high-water mark.
+Because this path does not invoke sharing, the likely mechanism is binary
+layout changing GC growth/collection timing. The two workloads that do invoke
+sharing retain the PR's expected memory reduction.
+
+The measured evidence does not support changing the interner for these CI
+outliers. A useful next performance experiment would repeat the full PR
+workflow several times or rerun selected tests in randomized alternating
+order on the same runner class. `PR4760_WORST_OFFENDERS.json` records the raw
+local values, reproduction templates, profile counters, GC counters, and
+limitations. The 58 retained raw local files remain in session storage; their
+sorted checksum-manifest digest is
+`e20c64d5b2d02a00d1c24f6f09ba0d580401ea5b462cbbe6069561003925c2dc`.

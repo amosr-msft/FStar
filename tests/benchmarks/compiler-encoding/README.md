@@ -275,8 +275,51 @@ Do not use the apparent successful S2 run with an empty cache: that run lost
 the namespace extension, generated an invalid dependency graph containing no
 resolved `$CONFIG` modules, and did not exercise the intended dependency
 verification. Current stable baseline, sharing, and canonical FunSDK runs all
-fail the same `GuestMemRanges` assertion, so no valid Co3 timing comparison is
-reported.
+fail the same `GuestMemRanges` assertion in the shared local setup. This does
+not establish a stable-source failure; local configuration remains
+unclassified. No valid Co3 timing comparison is reported.
+
+## PR #4760 worst-offender reruns
+
+`PR4760_WORST_OFFENDERS.json` records alternating local reruns of the three
+largest absolute time regressions from the enabled PR comparison:
+`NormBudget.rejected`, `BoolRefinement`, and `DPE.Messages.Spec`. The tests use
+the actual `mk/test.mk` recipes with the existing baseline and sharing
+compilers. `RAMON` was set to a GNU-time/F* memory wrapper; the commands inside
+the recipes remain those recorded by the CI artifact.
+
+The command shape for a checking target is:
+
+```sh
+PATH=/path/containing/z3-5.3.0:$PATH
+rm -f _cache/BoolRefinement.fst.checked
+make _cache/BoolRefinement.fst.checked \
+  'RAMON=FSTAR_MEM_REPORT=/tmp/bool.fstarmem /usr/bin/time -v -o /tmp/bool.time'
+```
+
+The expected Custard rejection is forced similarly by removing only
+`_output/NormBudget.rejected` and building that target. Do not invoke F*
+directly and skip the make assertions: the target checks warning 373, its
+required text, and diagnostic size.
+
+Profiles add `OTHERFLAGS` without changing sources or expectations:
+
+```sh
+OTHERFLAGS='--profile BoolRefinement \
+  --profile_component FStarC.TypeChecker \
+  --profile_component FStarC.SMTEncoding \
+  --profile_component FStarC.SMTEncoding.Sharing \
+  --query_stats'
+```
+
+Use `--profile NormBudget --profile_component FStarC.Custard` for the
+extraction rejection. DPE's command-line `OTHERFLAGS` must also repeat its
+normal `--warn_error @247 --ext optimize_let_vc --ext fly_deps`; otherwise
+Make command-line precedence suppresses them and the profile does not match
+the measured recipe. Include `--warn_error -321` as well. Runtime GC
+statistics use `OCAMLRUNPARAM=v=0x400`.
+Profile and GC runs are diagnostic; do not combine their times with the
+lightweight repetitions.
 
 ## Clean sharing branch benchmarks
 

@@ -1,0 +1,189 @@
+{
+  "date": "2026-10-22",
+  "source_run": 39726978508,
+  "source_comment": 6334379135,
+  "revisions": {
+    "baseline": "5275509e26b2e4c3df3ade7df1e01b3e38f9553a",
+    "sharing": "b3f9782a6c3c02f2a91705aa00ee936361b5df27"
+  },
+  "environment": {
+    "compiler": "OCaml 5.2.1",
+    "solver": "Z3 5.3.0",
+    "filesystem_cache": "warm; not flushed",
+    "order": "baseline then sharing, repeated twice",
+    "cache_policy": "compiler-specific prechecked dependencies; measured target deleted before each checking run"
+  },
+  "raw_evidence": {
+    "local_session_directory": "files/pr4760-local",
+    "local_file_count": 58,
+    "local_total_bytes": 792065,
+    "local_sorted_sha256_manifest_digest": "e20c64d5b2d02a00d1c24f6f09ba0d580401ea5b462cbbe6069561003925c2dc",
+    "ci_artifact_directory": "files/bench-pr-4760",
+    "ci_artifact_file_count": 12133,
+    "ci_artifact_sorted_sha256_manifest_digest": "5ac0b75e0828f6f50ff2f53d9c65a3095183dcdbb092507f0748cb0ab423bcac",
+    "note": "Raw files are retained in session storage, not committed to the repository."
+  },
+  "ci_single_run_seconds": {
+    "NormBudget.rejected": {
+      "baseline": 139.381,
+      "sharing": 157.386
+    },
+    "BoolRefinement": {
+      "baseline": 83.096,
+      "sharing": 94.645
+    },
+    "DPE.Messages.Spec": {
+      "baseline": 92.328,
+      "sharing": 104.970
+    }
+  },
+  "local_repetitions": {
+    "NormBudget.rejected": {
+      "baseline_seconds": [147.49, 159.90],
+      "sharing_seconds": [152.11, 144.09],
+      "baseline_median_seconds": 153.695,
+      "sharing_median_seconds": 148.100,
+      "median_change_percent": -3.64,
+      "expected_warning_373_preserved": true,
+      "required_text_preserved": true,
+      "diagnostic_under_100KB": true,
+      "sharing_pass_executes": false
+    },
+    "BoolRefinement": {
+      "baseline_seconds": [58.94, 58.52],
+      "sharing_seconds": [59.10, 58.65],
+      "baseline_median_seconds": 58.730,
+      "sharing_median_seconds": 58.875,
+      "median_change_percent": 0.25,
+      "query_count_each_lightweight_run": 293,
+      "baseline_reported_query_seconds": [20.54, 20.28],
+      "sharing_reported_query_seconds": [20.45, 20.41]
+    },
+    "DPE.Messages.Spec": {
+      "baseline_seconds": [61.64, 62.04],
+      "sharing_seconds": [60.92, 60.83],
+      "baseline_median_seconds": 61.840,
+      "sharing_median_seconds": 60.875,
+      "median_change_percent": -1.56
+    }
+  },
+  "profiles": {
+    "note": "Diagnostic profile runs are intrusive and are not included in lightweight medians.",
+    "NormBudget.rejected": {
+      "baseline_split_mono_args_ms": 160849,
+      "sharing_split_mono_args_ms": 148345,
+      "smt_sharing_profile_entries": 0
+    },
+    "BoolRefinement": {
+      "baseline_total_ms": 70648,
+      "sharing_total_ms": 73517,
+      "baseline_query_attempts": 1128,
+      "sharing_query_attempts": 1128,
+      "baseline_sum_of_rounded_query_lines_seconds": 46.26,
+      "sharing_sum_of_rounded_query_lines_seconds": 45.69,
+      "baseline_z3_aggregate_ms_including_profiled_dependency": 49994,
+      "sharing_z3_aggregate_ms_including_profiled_dependency": 49464,
+      "sharing_intern_decls_ms": 18,
+      "sharing_intern_index_ms": 2
+    },
+    "DPE.Messages.Spec": {
+      "baseline_total_ms": 62415,
+      "sharing_total_ms": 63632,
+      "baseline_query_attempts": 86,
+      "sharing_query_attempts": 86,
+      "baseline_sum_of_rounded_query_lines_seconds": 59.38,
+      "sharing_sum_of_rounded_query_lines_seconds": 60.26,
+      "baseline_z3_aggregate_ms": 60052,
+      "sharing_z3_aggregate_ms": 60966,
+      "sharing_intern_decls_ms": 4,
+      "sharing_intern_index_ms": 0,
+      "normal_flags_preserved": [
+        "--warn_error -321",
+        "--warn_error @247",
+        "--ext optimize_let_vc",
+        "--ext fly_deps"
+      ]
+    }
+  },
+  "ocaml_gc": {
+    "note": "Counters are OCaml words from one run per side with OCAMLRUNPARAM=v=0x400. BoolRefinement and DPE pairs ran concurrently; their timing is discarded, while runtime allocation and collection counters are retained.",
+    "word_size_bytes": 8,
+    "NormBudget.rejected": {
+      "baseline": {
+        "allocated_words": 5866529425,
+        "promoted_words": 901218755,
+        "major_words": 918731072,
+        "minor_collections": 5650,
+        "major_collections": 24,
+        "top_heap_words": 722639802,
+        "fstar_mempeak_bytes_from_lightweight_runs": [5781183952, 5781183952]
+      },
+      "sharing": {
+        "allocated_words": 5865200025,
+        "promoted_words": 901127296,
+        "major_words": 917305671,
+        "minor_collections": 5650,
+        "major_collections": 23,
+        "top_heap_words": 779688890,
+        "fstar_mempeak_bytes_from_lightweight_runs": [6237511120, 6237511120]
+      }
+    },
+    "BoolRefinement": {
+      "baseline": {
+        "allocated_words": 3128567375,
+        "promoted_words": 66137232,
+        "major_words": 89253175,
+        "minor_collections": 3131,
+        "major_collections": 16,
+        "top_heap_words": 56990666,
+        "fstar_mempeak_bytes_from_lightweight_runs": [455892560, 455925328]
+      },
+      "sharing": {
+        "allocated_words": 3127911604,
+        "promoted_words": 66357330,
+        "major_words": 85670147,
+        "minor_collections": 3132,
+        "major_collections": 16,
+        "top_heap_words": 51352745,
+        "fstar_mempeak_bytes_from_lightweight_runs": [410887496, 410854728]
+      }
+    },
+    "DPE.Messages.Spec": {
+      "baseline": {
+        "allocated_words": 232522122,
+        "promoted_words": 12680483,
+        "major_words": 27995681,
+        "minor_collections": 312,
+        "major_collections": 12,
+        "top_heap_words": 25686168,
+        "fstar_mempeak_bytes_from_lightweight_runs": [205489344, 205489344]
+      },
+      "sharing": {
+        "allocated_words": 230372921,
+        "promoted_words": 12821417,
+        "major_words": 25437963,
+        "minor_collections": 311,
+        "major_collections": 11,
+        "top_heap_words": 23448986,
+        "fstar_mempeak_bytes_from_lightweight_runs": [187591888, 187591888]
+      }
+    }
+  },
+  "commands": {
+    "note": "Templates are run separately in each compiler worktree; substitute distinct output paths for every invocation.",
+    "NormBudget.rejected": "cd <worktree>/tests/custard && rm -f _output/NormBudget.rejected && make _output/NormBudget.rejected 'RAMON=FSTAR_MEM_REPORT=<fstarmem-file> /usr/bin/time -v -o <time-file>'",
+    "BoolRefinement": "cd <worktree>/examples/dsls/bool_refinement && rm -f _cache/BoolRefinement.fst.checked && make _cache/BoolRefinement.fst.checked 'RAMON=FSTAR_MEM_REPORT=<fstarmem-file> /usr/bin/time -v -o <time-file>'",
+    "DPE.Messages.Spec": "cd <worktree>/pulse/share/pulse/examples/dice && rm -f _cache/DPE.Messages.Spec.fst.checked && make _cache/DPE.Messages.Spec.fst.checked 'RAMON=FSTAR_MEM_REPORT=<fstarmem-file> /usr/bin/time -v -o <time-file>'",
+    "NormBudget.profile": "cd <worktree>/tests/custard && rm -f _output/NormBudget.rejected && make _output/NormBudget.rejected OTHERFLAGS='--profile NormBudget --profile_component FStarC.Custard [--profile_component FStarC.SMTEncoding.Sharing]'",
+    "BoolRefinement.profile": "add OTHERFLAGS='--profile BoolRefinement --profile_component FStarC.TypeChecker --profile_component FStarC.SMTEncoding [--profile_component FStarC.SMTEncoding.Sharing] --query_stats' to the BoolRefinement make template",
+    "DPE.Messages.Spec.profile": "add OTHERFLAGS='--warn_error -321 --warn_error @247 --ext optimize_let_vc --ext fly_deps --profile DPE.Messages.Spec --profile_component FStarC.TypeChecker --profile_component FStarC.SMTEncoding [--profile_component FStarC.SMTEncoding.Sharing] --query_stats' to the DPE make template",
+    "gc": "replace the RAMON wrapper with 'OCAMLRUNPARAM=v=0x400 /usr/bin/time -v -o <file>'",
+    "z3_path": "PATH=<directory-containing-z3-5.3.0>:$PATH"
+  },
+  "conclusion": {
+    "time_regressions_reproduced": false,
+    "normbudget_memory_increase_reproduced": true,
+    "direct_interning_cost_explains_ci_outliers": false,
+    "compiler_change_made": false
+  }
+}
