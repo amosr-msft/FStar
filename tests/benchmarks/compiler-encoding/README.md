@@ -233,6 +233,51 @@ settings, diagnostics, elapsed time, and peak RSS for `b1fe663037` and the
 final compiler with the sharing option absent and present. The focused command
 extracts a prechecked module, so it does not execute SMT interning.
 
+## FunOS Co3 investigation
+
+`FUNOS_CO3_INVESTIGATION.json` records the bounded attempt to compare current
+FunOS stable `co3-verify` with upstream F* and unconditional sharing. It
+includes the exact FunOS, FunSDK, FunFM, compiler, and solver revisions;
+isolated-overlay setup; commands; partial checked-cache progress; and the
+common `Libs.GuestMemRanges` assertion failure.
+
+The benchmark requires `CO3_DISABLE_VERIFY=0`. FunOS pins Z3 4.13.3, so these
+newer F* revisions also need `--z3version 4.13.3`. When supplying
+`FSTAR_OPT` on the Make command line, include the configuration namespace
+extension explicitly because command-line variable precedence suppresses the
+makefile's `+=`:
+
+```sh
+make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
+  SDKDIR=/path/to/matched-sdk \
+  FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S2_COCO_QEMU+Chips.S2+Defaults+Stubs --z3version 4.13.3' \
+  -j4 co3-verify
+```
+
+Each SDK overlay used a dereferenced copy of its matching compiler's
+`stage3/out/lib/fstar`, `fstar.exe`, and the project-pinned Z3. FunFM
+`fd92b567` was built separately against each compiler/OCaml ABI and its Co3
+plugin, sources, and checked library were installed into that overlay. Both
+FunFM builds needed the same local, build-only compatibility patch: remove
+the redundant `--include $(FSTAR_LIBDIR)/ulib.checked` from
+`lang-co3/plugin/Makefile` while extracting the plugin. The patch was not
+committed to FunFM.
+
+To force the final measured target after a valid warm-up, remove only
+`build/<machine>/co3/lang-co3/cache/Config.Main.co3.checked` and
+`build/<machine>/co3/lang-co3/Config.Main.value.json.verify`; keep dependency
+checked files. If namespace options were previously wrong, also remove
+`Config.Main.deps.mk` and regenerate it before trusting the cache. This
+procedure was prepared but not timed because dependency verification fails
+first.
+
+Do not use the apparent successful S2 run with an empty cache: that run lost
+the namespace extension, generated an invalid dependency graph containing no
+resolved `$CONFIG` modules, and did not exercise the intended dependency
+verification. Current stable baseline, sharing, and canonical FunSDK runs all
+fail the same `GuestMemRanges` assertion, so no valid Co3 timing comparison is
+reported.
+
 ## Clean sharing branch benchmarks
 
 `CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream

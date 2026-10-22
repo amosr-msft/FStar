@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-22",
+  "status": "blocked_before_final_target",
+  "revisions": {
+    "funos": "3b35ffd1bd2f3e15273cd2ecb06721a648b9ab3b",
+    "funsdk": "95f4497cb63823806536c56a072a2d002eb45e59",
+    "funsdk_tag": "FunSDK-2961",
+    "funfm": "fd92b567b1753ac577ee66712b41fa11fb5cf689",
+    "fstar_baseline": "5275509e26b2e4c3df3ade7df1e01b3e38f9553a",
+    "fstar_sharing": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+    "fstar_canonical_funsdk": "fb6ea91eb4402e2740d2618bbb53fe2732ebe3fb"
+  },
+  "tools": {
+    "baseline_fstar_sha256": "4122a79f39787ffd0474ed38174429d7cfadfd5c741f816eedc32040b2cbd018",
+    "sharing_fstar_sha256": "3aa39782ac81f546b3506daa0a7b2f5928b3cd5f877ab7709aac22e3dc3b9b2a",
+    "ocaml_compared": "5.2.1",
+    "z3_project_version": "4.13.3",
+    "z3_project_sha256": "4c13bd5b2526453ba7f88ffd852bbaec80a8132638cbe60ed3463dbc98952711",
+    "z3_diagnostic_version": "5.3.0",
+    "z3_diagnostic_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3"
+  },
+  "setup": {
+    "separate_funos_worktrees": true,
+    "separate_funsdk_overlays": true,
+    "separate_checked_caches": true,
+    "matched_funfm_plugin_abi": true,
+    "overlay_fstar_library": "dereferenced copy of matching stage3/out/lib/fstar",
+    "overlay_binaries": "matching fstar.exe plus project-pinned Z3 4.13.3",
+    "overlay_co3_payload": "matching FunFM co3.cmxs, sources, and checked library",
+    "funfm_build_only_patch": "remove redundant --include $(FSTAR_LIBDIR)/ulib.checked from lang-co3/plugin/Makefile during extraction",
+    "funfm_patch_committed": false,
+    "verification_forced": "CO3_DISABLE_VERIFY=0",
+    "funsdk_update_workflow": "scripts/bob --sdkup",
+    "funsdk_refresh_needed": false,
+    "filesystem_cache": "ordinary warm filesystem; no page-cache flushing"
+  },
+  "commands": {
+    "s3": "make MACHINE=s3-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 SDKDIR=<matched-overlay> FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S3_QEMU+Chips.S3+Defaults+Stubs --z3version 4.13.3' -j4 co3-verify",
+    "s2": "make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 SDKDIR=<matched-overlay> FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S2_COCO_QEMU+Chips.S2+Defaults+Stubs --z3version 4.13.3' -j4 co3-verify"
+  },
+  "common_failure": {
+    "source": "configs/co3/common/Libs/GuestMemRanges.co3",
+    "source_sha256": "8c8e35ee801c84afeba870da336b996465d80c851cd930765f7987f2c831d415",
+    "range": "24,67-64,72",
+    "error": "Error 19: Assertion failed",
+    "baseline_reproduces": true,
+    "sharing_reproduces": true,
+    "canonical_stable_funsdk_reproduces_s3": true,
+    "z3_5_3_default_result": "SMT query timed out",
+    "z3_5_3_rlimit_20_result": "assertion not proved",
+    "z3_4_13_3_result": "assertion not proved"
+  },
+  "partial_cache": {
+    "s3_checked_dependencies_before_failure": {
+      "baseline": 57,
+      "sharing": 57
+    },
+    "s2_checked_dependencies_before_failure": {
+      "baseline": 62,
+      "sharing": 62
+    },
+    "not_reported_as_benchmark_results": true
+  },
+  "rejected_run": {
+    "configuration": "s2-coco-qemu guest-up",
+    "reason": "Command-line FSTAR_OPT suppressed the makefile namespace extension, dependency discovery left literal $CONFIG unresolved, and direct final verification ran over an invalid empty dependency graph."
+  },
+  "planned_measurement_cache_reset": [
+    "remove build/<machine>/co3/lang-co3/cache/Config.Main.co3.checked",
+    "remove build/<machine>/co3/lang-co3/Config.Main.value.json.verify",
+    "preserve all prechecked dependency artifacts"
+  ],
+  "durable_logs": {
+    "location": "session-state files; raw logs are not repository artifacts",
+    "s3_baseline_pinned_solver": {
+      "name": "funos-baseline-s3-warm5.log",
+      "sha256": "db2f4e787f90d525cdb22ed8421ed1b584282a50a5b5f0ae6609a67e953dd102"
+    },
+    "s3_sharing_pinned_solver": {
+      "name": "funos-sharing-s3-warm5.log",
+      "sha256": "c4c5d5fa6295a1e436600a69e5d9b7b273cadaa6b321d6afeaee5b3aead3c10b"
+    },
+    "s3_canonical": {
+      "name": "funos-canonical-s3-warm.log",
+      "sha256": "439c2c47c92013864d760b2ba62240cfedfc3a66c3a0d6780b4a691118f9cc1c"
+    },
+    "s2_baseline_valid_dependencies": {
+      "name": "funos-baseline-s2-warm4.log",
+      "sha256": "07265de3991824a0fe00788a81e83fcbb788ebdd9ea8a9740fde3fed7c783519"
+    },
+    "s2_sharing_valid_dependencies": {
+      "name": "funos-sharing-s2-warm4.log",
+      "sha256": "a173279acd13d8e988ecc7ddcc4214be940f77618b4974575e252044d07e8b4b"
+    },
+    "rejected_s2_baseline": {
+      "name": "funos-baseline-s2-warm2.log",
+      "sha256": "9ff5a9fdfd5c86f4ca3b6140739f3cd3867c9aae4100a28315942647d332ca04"
+    },
+    "rejected_s2_sharing": {
+      "name": "funos-sharing-s2-warm2.log",
+      "sha256": "20bf14bb52c4bb423a5e7617771f8452a2b175dab88e0f863b473aeaaf08738c"
+    }
+  },
+  "benchmark_results": null,
+  "limitations": [
+    "Neither documented Co3 configuration completed a valid dependency build.",
+    "No failed proof was admitted and no test or source assertion was modified.",
+    "Partial cache size and runtime are not valid end-to-end co3-verify measurements."
+  ]
+}

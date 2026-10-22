@@ -668,3 +668,111 @@ version output, Z3 executable SHA-256/version, target hash, dependency hash,
 child hash, and command. The BV and UInt target hashes were respectively
 `ff6e3f9ba1aae4c9881b4961a019fc70c4cfdb483688d9d5b33f8e7a3aa5e039`
 and `62bca877c9afdb999ed62bfb683efbc5dcea7f7f83c1f6e9adec03661b7495c6`.
+
+## FunOS Co3 investigation
+
+A matched `make co3-verify` benchmark was prepared but could not produce a
+valid timing comparison because current FunOS stable fails before either
+configuration reaches its final `Config.Main` target. This is a source/toolchain
+validation blocker, not a measured performance result.
+
+The exact revisions were:
+
+- FunOS stable `3b35ffd1bd2f3e15273cd2ecb06721a648b9ab3b`.
+- FunSDK stable `95f4497cb63823806536c56a072a2d002eb45e59`
+  (`FunSDK-2961`).
+- FunFM stable `fd92b567b1753ac577ee66712b41fa11fb5cf689`.
+- Baseline F* `5275509e26b2e4c3df3ade7df1e01b3e38f9553a`.
+- Unconditional-sharing F* `b3f9782a6c3c02f2a91705aa00ee936361b5df27`.
+
+Separate FunOS worktrees, FunSDK overlays, compiler libraries, Co3 plugins,
+and checked caches were used for the two compilers. The Co3 plugins were built
+with the matching OCaml 5.2.1 compiler ABI. FunOS pins Z3 4.13.3; both
+compilers require an explicit `--z3version 4.13.3` acknowledgement when using
+that project solver. `CO3_DISABLE_VERIFY=0` was required because stable
+otherwise disables this target.
+
+The intended commands were:
+
+```sh
+make MACHINE=s3-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
+  SDKDIR=/path/to/matched-sdk \
+  FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S3_QEMU+Chips.S3+Defaults+Stubs --z3version 4.13.3' \
+  -j4 co3-verify
+
+make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
+  SDKDIR=/path/to/matched-sdk \
+  FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S2_COCO_QEMU+Chips.S2+Defaults+Stubs --z3version 4.13.3' \
+  -j4 co3-verify
+```
+
+Both configurations and both compared compilers fail at the same assertion
+in `configs/co3/common/Libs/GuestMemRanges.co3:24-64`. S3 reaches 57 checked
+dependencies and S2 reaches 62 before that failure. The canonical stable
+FunSDK compiler (`fb6ea91eb4`, OCaml 5.4.1) also fails the S3 command at the
+same assertion. Z3 5.3.0 first reports a timeout at the assertion; increasing
+its rlimit changes the diagnostic to an unproved assertion but does not make
+it pass. The project-pinned Z3 4.13.3 reports the same unproved assertion.
+The failing source SHA-256 is
+`8c8e35ee801c84afeba870da336b996465d80c851cd930765f7987f2c831d415`.
+
+An apparent successful S2 attempt was rejected as benchmark evidence: a
+command-line Make variable accidentally suppressed the namespace extension,
+so dependency discovery resolved literal `$CONFIG` to no modules and the run
+only invoked the final exporter/verifier over an invalid empty dependency
+graph. Regenerating dependencies with the full namespace option exposes the
+same `GuestMemRanges` failure. No failed proof was admitted, no test was
+disabled or modified, and no partial-cache timings are presented as
+`co3-verify` results.
+
+### Sharing implementation opportunities
+
+Inspection of `FStarC.SMTEncoding.Sharing` found several concrete allocation
+and traversal costs. They are optimization candidates, not demonstrated
+causes of the large single-run regressions in PR-wide benchmarking:
+
+- `intern_term` allocates one `hashed_term` record per visited occurrence.
+  Recursive constructors then allocate an intermediate list of those records
+  and a second list produced by `List.map term_value`; quantifier patterns
+  repeat this at two list levels. `intern_decl`, `intern_elt`, and the pruning
+  summary path use the same intermediate-record/list pattern. A private
+  accumulator returning canonical value and hash together could avoid some
+  allocations, but it must preserve order and collision-checked equality.
+- Every table lookup allocates a key record (`term_key`, `decl_key`,
+  `elt_key`, or summary variants), including hits. A table API that accepts a
+  precomputed hash plus an equality predicate, or a purpose-built local
+  bucket table, could remove these short-lived keys. This requires measured
+  benefit before replacing the compiler's standard hash-table abstraction.
+- `intern_index` creates fresh term and declaration tables, so `Sum_other`
+  declarations can be traversed and hashed again rather than reusing
+  canonical identities from `intern_decls`. Sharing one module-local
+  interning context across declarations and the derived index would avoid
+  that work and could improve cross-field Marshal sharing. The index profile
+  was only about 27 ms on BV-500 and below 1 ms on UInt-500, so the expected
+  gain is bounded.
+- Initial table capacities are multiples of declaration-block count
+  (`4 * blocks` for terms, `2 * blocks` for declarations), although term
+  occurrences can exceed block count by orders of magnitude. Resizing and
+  collision statistics should be instrumented before choosing a larger
+  capacity, because over-allocation would work against the memory benefit on
+  ordinary modules.
+- Abstract lidents and opaque `Labeled` diagnostic messages intentionally use
+  constant hashes with physical-only equality. This is correctness-preserving
+  but can create long collision buckets when many distinct values occur.
+  Identity hashing would improve distribution if the runtime exposes a
+  stable non-retaining physical hash; structural rendering or equality is not
+  a safe substitute.
+- Equality compares canonical children physically but does not first test
+  physical equality of the complete candidate node. Adding that fast path is
+  small and safe, though it only helps repeated references to an already
+  canonical complete node and needs profiling to establish impact.
+
+Earlier profiles put the sharing work at roughly 228 ms declarations plus
+27 ms index for BV-500, 82 ms plus 1 ms for UInt-500, and 2-10 ms plus
+0-1 ms for ordinary controls. Those pass costs cannot directly explain
+10-20 second PR-wide outliers. GC/heap-layout changes, solver variability, and
+single-run noise remain plausible; component timing and allocation/collision
+counts on a reproducing module are needed before changing the implementation.
+
+`FUNOS_CO3_INVESTIGATION.json` records the exact revisions, commands, tool
+hashes, cache progress, failures, and rejected run.
