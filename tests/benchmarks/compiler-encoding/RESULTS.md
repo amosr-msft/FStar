@@ -728,6 +728,28 @@ List.length
    guarded ... @ guarded ...) <= 12
 ```
 
+This is a refinement-precondition failure, not a runtime-exception failure.
+`u64_exn` has no logical precondition: it tests the concrete integer and calls
+`Co3.Base.Error.error` when it does not fit. Standalone `lang_co3` extraction
+evaluates those paths. In contrast, `bounded` returns a refined bounded-array
+type through a `Pure` function whose `requires` clause is
+`normalize (List.length l <= n)`. Applying it causes F*'s WP to emit the
+length condition as an assertion.
+
+The canonical S3 `co3-extract` command succeeds over the same namespace,
+generated config, and source. It emits 12 UP-memory ranges for each of the P
+and UP domains; every numeric field is within `u64`, with the largest value
+exactly `2^64-1`. Its `Config.Main.asserts.json` contains 16 assertions and
+all 16 are `PASS`. Those are Co3 export/value/type assertions and are distinct
+from the F* WP assertion generated while checking `bounded`.
+
+The diagnostic wording is also expected. Numeric Error 19 is
+`Error_Z3SolverError` in `FStarC.Errors.Codes`; SMT error reporting labels a
+failed proof goal “Assertion failed.” Refinement subtyping can also generate
+an SMT guard and eventually use this generic message, so the wording alone
+does not distinguish the source. Here, the printed VC and `bounded` signature
+show specifically that the failed goal is its `Pure` precondition.
+
 `physical` is a three-element list and each helper is `List.map ... physical`,
 but the original VC carries no usable length facts through those maps and
 nested appends. A temporary proof probe attached

@@ -73,6 +73,23 @@
     "z3_4_13_3_rlimit_100_result": "incomplete quantifiers after using rlimit 7-22",
     "classification": "source proof obligation, not a machine-specific configuration value or u64_exn bound"
   },
+  "extraction_vs_verification": {
+    "canonical_s3_extract_exit": 0,
+    "same_target": "Config.Main",
+    "same_namespace": "Machines.S3_QEMU+Chips.S3+Defaults+Stubs",
+    "runtime_u64_exceptions_observed": 0,
+    "p_up_memory_range_count": 12,
+    "up_up_memory_range_count": 12,
+    "largest_numeric_range_field": 18446744073709551615,
+    "co3_export_assertions": 16,
+    "co3_export_assertions_passed": 16,
+    "distinction": "co3-extract concretely evaluates runtime exception paths but does not discharge F* refinement preconditions; co3-verify typechecks bounded's Pure length precondition",
+    "bounded_signature_effect": "Pure",
+    "bounded_precondition": "normalize (List.length l <= n)",
+    "fstar_numeric_error_19": "Error_Z3SolverError",
+    "fstar_message": "Assertion failed",
+    "diagnostic_interpretation": "Error 19 wording alone does not distinguish preconditions from refinement subtyping because both may generate SMT guards. The printed VC and bounded signature identify this goal as the Pure precondition."
+  },
   "configuration_audit": {
     "overlay_funfm_differs_from_packaged_revision": true,
     "co3_pervasives_sha256_all_variants": "bc4b475b24c93866dbf9f2a08cb485335a0bcc231149e9b36691403cfd7b9d55",
@@ -151,6 +168,12 @@
       "name": "funos-guestmem-canonical-diagnostic.log",
       "sha256": "d9f3b7a9e13b64114297fa025fc3819c4516b9eebbbd054c5963cd6b604b0b72"
     },
+    "canonical_s3_extraction": {
+      "name": "funos-canonical-s3-extract.log",
+      "sha256": "6461655cb3c73211e6167c736660c83336dc0cb5a70261405c1ed4a87b865e4b"
+    },
+    "canonical_s3_assertions_sha256": "48c8b945696d07b3831de1af29f1a8d10077e93d179fdcfd28b353ec0fea7500",
+    "canonical_s3_values_sha256": "53ea68dbb6910e9795516654858f7725e567e07620812411eedc2d0af5fd735b",
     "map_refinement_probe": {
       "name": "funos-guestmem-map-refinement-diagnostic.log",
       "sha256": "1cce38cee692b658fdc11ec60ec2262dc63324a3b32009d8915042680dec09d0"

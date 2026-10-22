@@ -286,6 +286,17 @@ would alter the requested benchmark.
 regressions. Recent CI therefore does not establish that it passes; the
 isolated obligation may be a genuine stable proof gap.
 
+The normal S3 `co3-extract` path succeeds on the same inputs. It concretely
+evaluates `u64_exn`, emits 12 P ranges and 12 UP ranges, and reports all 16
+Co3 export assertions as `PASS`. Verification fails later and differently:
+`bounded`'s refined result is exposed through a `Pure` length precondition, so
+F* emits an SMT/WP assertion for the call. Error 19 is
+`Error_Z3SolverError`; “Assertion failed” is the SMT error reporter's generic
+failed-goal message. It is not evidence that a concrete Co3 runtime exception
+was thrown. Refinement subtyping can also produce an SMT assertion; the
+printed VC, rather than the wording alone, identifies this one as
+`bounded`'s `Pure` precondition.
+
 ## PR #4760 worst-offender reruns
 
 `PR4760_WORST_OFFENDERS.json` records alternating local reruns of the three
