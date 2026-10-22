@@ -696,29 +696,74 @@ otherwise disables this target.
 The intended commands were:
 
 ```sh
+FSTAR_OPT='--z3version 4.13.3' \
 make MACHINE=s3-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
   SDKDIR=/path/to/matched-sdk \
-  FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S3_QEMU+Chips.S3+Defaults+Stubs --z3version 4.13.3' \
   -j4 co3-verify
 
+FSTAR_OPT='--z3version 4.13.3' \
 make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
   SDKDIR=/path/to/matched-sdk \
-  FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S2_COCO_QEMU+Chips.S2+Defaults+Stubs --z3version 4.13.3' \
   -j4 co3-verify
 ```
 
-Under this local setup, both configurations and both compared compilers fail
-at the same assertion
-in `configs/co3/common/Libs/GuestMemRanges.co3:24-64`. S3 reaches 57 checked
-dependencies and S2 reaches 62 before that failure. The canonical stable
-FunSDK compiler (`fb6ea91eb4`, OCaml 5.4.1) also fails the S3 command at the
-same assertion, but that run shared the same local FunOS configuration and
-host setup, so it does not classify the cause. Z3 5.3.0 first reports a
-timeout at the assertion; increasing
-its rlimit changes the diagnostic to an unproved assertion but does not make
-it pass. The project-pinned Z3 4.13.3 reports the same unproved assertion.
-The failing source SHA-256 is
+`FSTAR_OPT` is an environment variable here, not a Make command-line
+assignment. Environment origin allows `co3-langco3.mk` to append the resolved
+namespace; a command-line assignment suppresses its `+=` and must spell the
+namespace manually. `co3-debug` confirms the supported S3 resolution:
+`Config.Main`, include roots `configs/co3/{common,funos}`, target name
+`S3.QEMU`, and namespace
+`Machines.S3_QEMU+Chips.S3+Defaults+Stubs`.
+
+Both configurations and both compared compilers stop on the same
+configuration-independent obligation in
+`configs/co3/common/Libs/GuestMemRanges.co3:24-64`. S3 reaches 57 checked
+dependencies and S2 reaches 62 before it. At source level, the failing VC is
+equivalent to the precondition to `bounded 12`:
+
+```text
+List.length
+  (xkphys ... @ xkphys ... @
+   guarded ... @ guarded ...) <= 12
+```
+
+`physical` is a three-element list and each helper is `List.map ... physical`,
+but the original VC carries no usable length facts through those maps and
+nested appends. A temporary proof probe attached
+`FStar.List.Tot.Properties.map_lemma` refinements to both helper results;
+those refinement subgoals succeeded. Even strengthening each helper result
+to length exactly three succeeded at fuel 4, but the final appended-list
+obligation still exhausted rlimit 5. The gap is therefore broader than a
+missing map lemma alone: normalization/SMT does not bridge the helper
+refinements through the nested appends into `bounded`'s precondition. The
+diagnostic has eight preceding `up_memory_range_t` field goals; all succeed
+immediately, so this is not an unclassified `u64_exn` conversion or a
+machine-specific address bound.
+
+At the default rlimit 5, the length query exhausts all four fuel/ifuel retry
+configurations. At rlimit 100 it stops earlier with `incomplete quantifiers`
+after using rlimit 7-22, showing that simply increasing the timeout does not
+close the proof. The unconditional-sharing compiler reaches the same VC
+before module export, so the sharing pass has not executed.
+
+The canonical stable FunSDK combination also produces the identical VC:
+packaged F* `fb6ea91eb4` (OCaml 5.4.1), FunFM `888c614f`, and Z3 4.13.3.
+The benchmark overlays use ABI-matched FunFM `fd92b567`; this was a setup
+difference, but `Co3.Pervasives.fst` is byte-identical and the canonical
+result excludes it as the cause. The failing source SHA-256 is
 `8c8e35ee801c84afeba870da336b996465d80c851cd930765f7987f2c831d415`.
+
+There is also a build/docs inconsistency: stable sets
+`CO3_DISABLE_VERIFY ?= 1`, so the documented `make ... co3-verify` commands
+without `CO3_DISABLE_VERIFY=0` print `CO3 VERIFY DISABLED`. Explicitly
+enabling verification exposes this proof gap.
+
+The proof probes were diagnostic only and fully reverted. Direct calls to the
+F* list lemma also produce Co3 “no shape attribute” warnings, so they are not
+being proposed as a production fix. Making the concatenated length computation
+explicit in Co3-compatible proof structure is one possible direction, not a
+demonstrated required fix; no source change is included in these compiler
+benchmarks.
 
 An apparent successful S2 attempt was rejected as benchmark evidence: a
 command-line Make variable accidentally suppressed the namespace extension,
@@ -728,6 +773,12 @@ graph. Regenerating dependencies with the full namespace option exposes the
 same `GuestMemRanges` failure. No failed proof was admitted, no test was
 disabled or modified, and no partial-cache timings are presented as
 `co3-verify` results.
+
+No matched performance result is possible without changing/proving the FunOS
+source obligation, which would no longer be the requested unchanged-source
+benchmark. This investigation therefore stops at the verified blocker rather
+than adding an admit, disabling assertions, or benchmarking a proof-patched
+source.
 
 ### Sharing implementation opportunities
 

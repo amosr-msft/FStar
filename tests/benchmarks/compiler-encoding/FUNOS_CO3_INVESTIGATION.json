@@ -6,6 +6,7 @@
     "funsdk": "95f4497cb63823806536c56a072a2d002eb45e59",
     "funsdk_tag": "FunSDK-2961",
     "funfm": "fd92b567b1753ac577ee66712b41fa11fb5cf689",
+    "funfm_packaged_by_funsdk": "888c614fbe34fd8cd42ca37c992fd66fea6d326b",
     "fstar_baseline": "5275509e26b2e4c3df3ade7df1e01b3e38f9553a",
     "fstar_sharing": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
     "fstar_canonical_funsdk": "fb6ea91eb4402e2740d2618bbb53fe2732ebe3fb"
@@ -35,20 +36,50 @@
     "filesystem_cache": "ordinary warm filesystem; no page-cache flushing"
   },
   "commands": {
-    "s3": "make MACHINE=s3-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 SDKDIR=<matched-overlay> FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S3_QEMU+Chips.S3+Defaults+Stubs --z3version 4.13.3' -j4 co3-verify",
-    "s2": "make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 SDKDIR=<matched-overlay> FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S2_COCO_QEMU+Chips.S2+Defaults+Stubs --z3version 4.13.3' -j4 co3-verify"
+    "s3": "FSTAR_OPT='--z3version 4.13.3' make MACHINE=s3-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 SDKDIR=<matched-overlay> -j4 co3-verify",
+    "s2": "FSTAR_OPT='--z3version 4.13.3' make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 SDKDIR=<matched-overlay> -j4 co3-verify",
+    "option_origin_note": "FSTAR_OPT must come from the environment so co3-langco3.mk appends CO3_CONFIG_DEFS. A Make command-line assignment suppresses +="
+  },
+  "resolved_s3_configuration": {
+    "target": "Config.Main",
+    "target_name": "S3.QEMU",
+    "include_roots": ["configs/co3/common", "configs/co3/funos"],
+    "namespace": "Machines.S3_QEMU+Chips.S3+Defaults+Stubs",
+    "json_import": "generated_cfg=build/s3-qemu-guest-up/generated/default.cfg"
   },
   "common_failure": {
     "source": "configs/co3/common/Libs/GuestMemRanges.co3",
     "source_sha256": "8c8e35ee801c84afeba870da336b996465d80c851cd930765f7987f2c831d415",
     "range": "24,67-64,72",
     "error": "Error 19: Assertion failed",
+    "source_level_obligation_summary": "List.length (xkphys ... @ xkphys ... @ guarded ... @ guarded ...) <= 12",
+    "emitted_vc_form": "nested matches implementing List.length and append over the four helper applications",
+    "obligation_origin": "precondition of Co3.Pervasives.bounded 12",
+    "physical_list_length": 3,
+    "mapped_list_count": 4,
+    "proof_gap": "Normalization/SMT does not carry mapped-list length facts through the nested appends into bounded's precondition.",
+    "map_lemma_probe": "Temporary map_lemma result refinements succeeded but did not close the final bounded obligation.",
+    "length_three_probe": "Temporary exact-length-three helper refinements succeeded at fuel 4 but the final append/bounded obligation still exhausted rlimit 5.",
+    "probe_source_changes_reverted": true,
+    "probe_production_suitability": "Direct F* map_lemma calls trigger Co3 no-shape-attribute warnings and are not proposed as a production fix.",
+    "u64_field_goals_before_failure": 8,
+    "u64_field_goals_succeeded": 8,
     "baseline_reproduces": true,
     "sharing_reproduces": true,
     "canonical_stable_funsdk_reproduces_s3": true,
-    "z3_5_3_default_result": "SMT query timed out",
-    "z3_5_3_rlimit_20_result": "assertion not proved",
-    "z3_4_13_3_result": "assertion not proved"
+    "canonical_uses_packaged_funfm": true,
+    "sharing_pass_reached": false,
+    "z3_4_13_3_default_result": "all four retries exhaust rlimit 5",
+    "z3_4_13_3_rlimit_100_result": "incomplete quantifiers after using rlimit 7-22",
+    "classification": "source proof obligation, not a machine-specific configuration value or u64_exn bound"
+  },
+  "configuration_audit": {
+    "overlay_funfm_differs_from_packaged_revision": true,
+    "co3_pervasives_sha256_all_variants": "bc4b475b24c93866dbf9f2a08cb485335a0bcc231149e9b36691403cfd7b9d55",
+    "canonical_packaged_toolchain_has_identical_vc": true,
+    "stable_default_CO3_DISABLE_VERIFY": 1,
+    "documented_commands_explicitly_enable_verify": false,
+    "effect": "The documented command reports CO3 VERIFY DISABLED unless CO3_DISABLE_VERIFY=0 is added."
   },
   "partial_cache": {
     "s3_checked_dependencies_before_failure": {
@@ -99,6 +130,30 @@
     "rejected_s2_sharing": {
       "name": "funos-sharing-s2-warm2.log",
       "sha256": "20bf14bb52c4bb423a5e7617771f8452a2b175dab88e0f863b473aeaaf08738c"
+    },
+    "baseline_vc_diagnostic": {
+      "name": "funos-guestmem-baseline-diagnostic3.log",
+      "sha256": "dd280434d4d34da6ac7b9840857cee09f1b036da1df518fc629c6ef545bb8ea3"
+    },
+    "baseline_rlimit_100": {
+      "name": "funos-guestmem-baseline-rlimit100.log",
+      "sha256": "d829a88dd598cda50941f55f406343b984ce9ee1b4c1d6ccadd1a12b336a2776"
+    },
+    "sharing_vc_diagnostic": {
+      "name": "funos-guestmem-sharing-diagnostic.log",
+      "sha256": "865a70279783c6848cf692d64fce895f95457556ecbfeeb5bad925f7811b5976"
+    },
+    "canonical_vc_diagnostic": {
+      "name": "funos-guestmem-canonical-diagnostic.log",
+      "sha256": "d9f3b7a9e13b64114297fa025fc3819c4516b9eebbbd054c5963cd6b604b0b72"
+    },
+    "map_refinement_probe": {
+      "name": "funos-guestmem-map-refinement-diagnostic.log",
+      "sha256": "1cce38cee692b658fdc11ec60ec2262dc63324a3b32009d8915042680dec09d0"
+    },
+    "length_three_probe": {
+      "name": "funos-guestmem-length3-diagnostic.log",
+      "sha256": "eb8849a1061ccaae68798a77d2c1799628635d6555d2f0fae4fea8548b788ee7"
     }
   },
   "benchmark_results": null,

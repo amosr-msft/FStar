@@ -242,15 +242,13 @@ isolated-overlay setup; commands; partial checked-cache progress; and the
 common `Libs.GuestMemRanges` assertion failure.
 
 The benchmark requires `CO3_DISABLE_VERIFY=0`. FunOS pins Z3 4.13.3, so these
-newer F* revisions also need `--z3version 4.13.3`. When supplying
-`FSTAR_OPT` on the Make command line, include the configuration namespace
-extension explicitly because command-line variable precedence suppresses the
-makefile's `+=`:
+newer F* revisions also need `--z3version 4.13.3`. Supply `FSTAR_OPT` through
+the environment so the Makefile still appends the configuration namespace:
 
 ```sh
+FSTAR_OPT='--z3version 4.13.3' \
 make MACHINE=s2-coco-qemu TARGET=guest-up CO3_DISABLE_VERIFY=0 \
   SDKDIR=/path/to/matched-sdk \
-  FSTAR_OPT='--ext co3:namespace:CONFIG=Machines.S2_COCO_QEMU+Chips.S2+Defaults+Stubs --z3version 4.13.3' \
   -j4 co3-verify
 ```
 
@@ -275,9 +273,14 @@ Do not use the apparent successful S2 run with an empty cache: that run lost
 the namespace extension, generated an invalid dependency graph containing no
 resolved `$CONFIG` modules, and did not exercise the intended dependency
 verification. Current stable baseline, sharing, and canonical FunSDK runs all
-fail the same `GuestMemRanges` assertion in the shared local setup. This does
-not establish a stable-source failure; local configuration remains
-unclassified. No valid Co3 timing comparison is reported.
+reach the same `GuestMemRanges` VC: the `bounded 12` precondition lacks
+usable length reasoning through four mapped lists and their nested appends.
+Temporary map-length and exact-length-three refinements discharge themselves
+but still do not close the final append/bounded VC. All eight
+`u64_exn`-related field goals succeed. Rlimit 100 changes the reason from
+timeout to `incomplete quantifiers` but does not prove it. No valid Co3 timing
+comparison is reported because proving or changing this source obligation
+would alter the requested benchmark.
 
 ## PR #4760 worst-offender reruns
 
