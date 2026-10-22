@@ -368,6 +368,27 @@ and rejection checks.
 median/range, F* heap medians, artifact sizes, raw evidence hashes, and the
 final conclusion.
 
+## Fused sharing traversal optimization
+
+`SHARING_OPTIMIZATION_MEASUREMENTS.json` compares unconditional-sharing
+compiler `b3f9782a6c` with optimized commit `befb3db820`. The optimized
+interner fuses child interning, canonical list construction, and list hashing,
+and preserves original nodes/list cells when canonical children are
+physically unchanged. Canonical-table lookup remains unconditional.
+
+Synthetic total-time measurements use five deterministically shuffled
+no-write repetitions per compiler and workload. Diagnostic pass/allocation
+profiles use five separate runs. Two ordinary modules use five write and five
+no-write repetitions per compiler. Raw measurements remain in session
+storage; their hashes are recorded in the JSON.
+
+Structural validation runs the existing exact-sharing experiment on each
+pre-optimization and optimized checked artifact. That tool verifies the
+complete metadata/index/declaration values before and after recovery. The
+recovered BV pair and UInt pair are byte-identical, which establishes
+structural equivalence while allowing physical sharing and the outer digest
+to differ.
+
 ## Clean sharing branch benchmarks
 
 `CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream

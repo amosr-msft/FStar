@@ -967,3 +967,56 @@ peak heap by 3.5-17.1%.
 `PR4760_EXPANDED_MEASUREMENTS.json` contains the individual observations,
 medians, ranges, heap values, artifact sizes, and hashes of the retained raw
 JSONL and campaign log.
+
+## Fused traversal and unchanged-node reuse
+
+Compiler-only commit `befb3db820` implements the two approved interner
+optimizations relative to `b3f9782a6c`:
+
+- one recursive traversal interns children, constructs the canonical list,
+  and computes the existing bottom-up list hash;
+- original list cells and enclosing term/declaration/summary nodes are reused
+  when every canonical child remains physically unchanged.
+
+Collision-checked canonical lookup still runs for every node. No table,
+index, equality, range, ordering, or declaration-cardinality semantics
+changed. The compiler diff is one file:
+`src/smtencoding/FStarC.SMTEncoding.Sharing.fst` (121 insertions, 45
+deletions).
+
+Five deterministically shuffled no-write repetitions give:
+
+| Live-500 | Preopt observations | Optimized observations | Median change | F* heap change |
+|---|---|---|---:|---:|
+| BV | 35.31, 37.53, 36.24, 35.70, 34.68 s | 38.59, 37.49, 38.22, 37.97, 40.90 s | +7.1% | -41.2% |
+| UInt | 29.06, 26.80, 28.46, 27.07, 26.96 s | 29.78, 29.32, 27.97, 29.39, 28.06 s | +8.3% | -28.1% |
+
+Thus the changes are not a total-time optimization in this build. They do
+reduce whole-process allocation: BV allocated words fall 0.19%, UInt 0.29%,
+and minor collection counts fall by 23 and 27. However, major collections
+rise from 43 to 59 for BV and 28 to 32 for UInt. The instrumented declaration
+pass median changes 225 → 229 ms for BV and 83 → 102 ms for UInt; index
+medians remain 31 and 1 ms. These diagnostic timings include profiler noise,
+but provide no evidence of a pass-time gain.
+
+Ordinary modules remain at startup/noise scale:
+
+| Module | Write median preopt → optimized | No-write median | Checked size |
+|---|---:|---:|---:|
+| `Positivity` | 1.02 → 0.99 s | 1.01 → 1.02 s | 691,657 B |
+| `TestWellFoundedRecursion` | 0.91 → 0.90 s | 0.90 → 0.92 s | 516,176 B |
+
+Their optimized F* heap high-water marks increase, from 99.1 to 121.6 MB and
+65.8 to 88.1 MB respectively. As with the earlier extraction-only
+`NormBudget` result, binary/GC layout can move peak heap independently of
+interner-local allocation.
+
+BV/UInt checked sizes are exactly unchanged at 2,136,307 and 1,862,553 bytes.
+Exact-sharing recovery verifies each complete input structurally; recovered
+preopt/optimized pairs are byte-identical (BV
+`bc400558...`, UInt `41ed0673...`). Optimized artifacts also load normally,
+and a rooted BV dependent query completes in 1.261 seconds.
+
+Stage3 build, exact `boot-diff`, `BvBinaryOps`, and `ClassicalSugar` pass.
+`SHARING_OPTIMIZATION_MEASUREMENTS.json` records individual runs, allocation
+counters, artifact evidence, commands/hashes, and limitations.

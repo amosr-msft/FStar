@@ -1,0 +1,123 @@
+{
+  "date": "2026-10-22",
+  "compiler": {
+    "pre_optimization_commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+    "optimized_commit": "befb3db82018af3dadf556fafdd95295b2751081",
+    "pre_optimization_binary_sha256": "3aa39782ac81f546b3506daa0a7b2f5928b3cd5f877ab7709aac22e3dc3b9b2a",
+    "optimized_binary_sha256": "68de73dd2ede7d3312503a2fd1f67ffc1116abbb9a53d0e58f7e356e154e2048",
+    "diff_scope": ["src/smtencoding/FStarC.SMTEncoding.Sharing.fst"],
+    "diff_stat": "121 insertions, 45 deletions"
+  },
+  "synthetic_alternating_no_write": {
+    "repetitions_per_compiler": 5,
+    "order_seed": 4763,
+    "BenchBvLive500": {
+      "preopt_seconds": [35.31, 37.53, 36.24, 35.70, 34.68],
+      "optimized_seconds": [38.59, 37.49, 38.22, 37.97, 40.90],
+      "preopt_median_seconds": 35.70,
+      "optimized_median_seconds": 38.22,
+      "median_time_change_percent": 7.06,
+      "preopt_median_fstar_heap_bytes": 1291025680,
+      "optimized_median_fstar_heap_bytes": 759144448,
+      "median_heap_change_percent": -41.20,
+      "checked_bytes": 2136307
+    },
+    "BenchUIntLive500": {
+      "preopt_seconds": [29.06, 26.80, 28.46, 27.07, 26.96],
+      "optimized_seconds": [29.78, 29.32, 27.97, 29.39, 28.06],
+      "preopt_median_seconds": 27.07,
+      "optimized_median_seconds": 29.32,
+      "median_time_change_percent": 8.31,
+      "preopt_median_fstar_heap_bytes": 1289319680,
+      "optimized_median_fstar_heap_bytes": 926916608,
+      "median_heap_change_percent": -28.11,
+      "checked_bytes": 1862553
+    }
+  },
+  "sharing_profiles": {
+    "repetitions_per_compiler": 5,
+    "note": "Profiler and OCAMLRUNPARAM runs are diagnostic. Allocation is whole-process, not isolated to the pass.",
+    "BenchBvLive500": {
+      "preopt_intern_decls_ms": [224, 244, 225, 223, 243],
+      "optimized_intern_decls_ms": [225, 252, 229, 235, 227],
+      "preopt_median_intern_decls_ms": 225,
+      "optimized_median_intern_decls_ms": 229,
+      "preopt_median_intern_index_ms": 31,
+      "optimized_median_intern_index_ms": 31,
+      "preopt_allocated_words": 16798370061,
+      "optimized_allocated_words": 16766452958,
+      "allocated_words_change_percent": -0.19,
+      "preopt_minor_collections": 16052,
+      "optimized_minor_collections": 16029,
+      "preopt_major_collections": 43,
+      "optimized_major_collections": 59
+    },
+    "BenchUIntLive500": {
+      "preopt_intern_decls_ms": [83, 84, 84, 83, 82],
+      "optimized_intern_decls_ms": [102, 85, 102, 92, 110],
+      "preopt_median_intern_decls_ms": 83,
+      "optimized_median_intern_decls_ms": 102,
+      "preopt_median_intern_index_ms": 1,
+      "optimized_median_intern_index_ms": 1,
+      "preopt_allocated_words": 9980449794,
+      "optimized_allocated_words": 9951455128,
+      "allocated_words_change_percent": -0.29,
+      "preopt_minor_collections": 9544,
+      "optimized_minor_collections": 9517,
+      "preopt_major_collections": 28,
+      "optimized_major_collections": 32
+    }
+  },
+  "ordinary_modules": {
+    "repetitions_per_compiler_mode": 5,
+    "Positivity": {
+      "preopt_write_median_seconds": 1.02,
+      "optimized_write_median_seconds": 0.99,
+      "preopt_no_write_median_seconds": 1.01,
+      "optimized_no_write_median_seconds": 1.02,
+      "preopt_fstar_heap_bytes": 99141512,
+      "optimized_fstar_heap_bytes": 121610240,
+      "checked_bytes": 691657
+    },
+    "TestWellFoundedRecursion": {
+      "preopt_write_median_seconds": 0.91,
+      "optimized_write_median_seconds": 0.90,
+      "preopt_no_write_median_seconds": 0.90,
+      "optimized_no_write_median_seconds": 0.92,
+      "preopt_fstar_heap_bytes": 65786856,
+      "optimized_fstar_heap_bytes": 88055808,
+      "checked_bytes": 516176
+    }
+  },
+  "structural_validation": {
+    "method": "Each artifact was structurally verified before/after deterministic full sharing recovery. Preopt and optimized recovered artifacts are byte-identical.",
+    "bv_recovered_sha256": "bc4005585acb111def28ec9c29926d79c8dc76b6f3c9a00076a4ce10fb20ad6",
+    "uint_recovered_sha256": "41ed0673a42d059df4d152af46eafafe150c0c30c8c4744525f2017a857587bd",
+    "bv_input_bytes": 2136307,
+    "uint_input_bytes": 1862553,
+    "optimized_bv_cache_loaded": true,
+    "optimized_uint_cache_loaded": true,
+    "optimized_bv_rooted_dependent_seconds": 1.261
+  },
+  "validation": {
+    "stage3_build": "pass",
+    "boot_diff": "pass",
+    "BvBinaryOps": "pass",
+    "ClassicalSugar": "pass"
+  },
+  "raw_evidence_sha256": {
+    "preopt_repeated_jsonl": "7ecc8859bbd839bf5e27540306eb32cb95319ee0c450750c890a122076e20110",
+    "optimized_repeated_jsonl": "70aab4a483231486e1d7cd6d5125fe3fedab660b998ca804bde7061da6bc57cd",
+    "pass_profiles_json": "15f405205040bf46206b98860a5f93a381e2172c8761e9e06ffd12d3c093f8c4",
+    "ordinary_json": "bd61c3bdd56beab5960d617edcacdbf447b349eae6bc61f1d26e2c2e0562a0e8",
+    "alternating_json": "81691c7a188e48f92b76deca85d07fe9b52a9977fb6a0991efebba2ac1c9b5e8"
+  },
+  "conclusion": {
+    "allocation_improved": true,
+    "sharing_pass_time_improved": false,
+    "synthetic_total_time_improved": false,
+    "artifact_size_changed": false,
+    "logical_contents_changed": false,
+    "note": "The approved allocation-saving changes reduce allocation and synthetic peak heap, but this build shows more major collections and slower synthetic total time. Ordinary timings remain in startup/noise scale."
+  }
+}
