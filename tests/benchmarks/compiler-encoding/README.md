@@ -339,6 +339,35 @@ statistics use `OCAMLRUNPARAM=v=0x400`.
 Profile and GC runs are diagnostic; do not combine their times with the
 lightweight repetitions.
 
+## Expanded PR #4760 repetitions
+
+`run_pr4760_repeats.py` runs the actual Make targets for seven workloads,
+deleting only the measured output before each invocation. It records GNU-time
+process measurements, `FSTAR_MEM_REPORT`, output-artifact size, command, side, and
+repetition in an append-only JSONL file. Completed
+`(workload, side, repetition)` tuples are skipped on restart.
+
+```sh
+python run_pr4760_repeats.py \
+  --baseline /path/to/baseline \
+  --sharing /path/to/sharing \
+  --z3-bin-dir /path/containing/z3-5.3.0 \
+  --output /durable/results/directory \
+  --repetitions 5
+```
+
+Order is deterministically shuffled within each repetition using seed
+`4760 + repetition`. The selected workloads cover large absolute regressions
+(`NormBudget`, `BoolRefinement`, and `DPE.Messages.Spec`) and high-percentage
+regressions (`CBOR.Pulse`, `CborBoundarySlice`, `RBTreeIntrinsic`, and
+`CBOR.Spec.Map`). The runner relies on each repository's existing
+compiler-specific dependency cache and preserves Make's normal workload flags
+and rejection checks.
+
+`PR4760_EXPANDED_PROGRESS.json` records the durable campaign location and the
+latest pushed completion checkpoint. It is progress metadata, not a final
+performance conclusion.
+
 ## Clean sharing branch benchmarks
 
 `CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream
