@@ -1,0 +1,117 @@
+{
+  "status": "complete",
+  "repetitions_per_side": 5,
+  "total_observations": 70,
+  "order": "deterministically shuffled within each repetition",
+  "order_seed": 4760,
+  "raw_results": {
+    "location": "session-state files/pr4760-repeats/measurements.jsonl",
+    "sha256": "69e0b04c88c6ba07a73f93e9ebcfd1253e954c6dc0c9c079751cde7db70eaf45"
+  },
+  "campaign_log": {
+    "location": "session-state files/pr4760-repeats/campaign.log",
+    "sha256": "0968d5f6b30d971d225de0de970781aa46d7b56a2c16ba70dc39830fcd452e80",
+    "scope": "resumed 60 observations; the JSONL and per-run files cover all 70"
+  },
+  "measurements": {
+    "normbudget": {
+      "baseline_seconds": [143.77, 150.92, 144.24, 146.97, 143.89],
+      "sharing_seconds": [154.57, 143.53, 141.08, 141.35, 153.12],
+      "baseline_median_seconds": 144.24,
+      "sharing_median_seconds": 143.53,
+      "median_time_change_percent": -0.49,
+      "baseline_range_seconds": [143.77, 150.92],
+      "sharing_range_seconds": [141.08, 154.57],
+      "baseline_median_fstar_heap_bytes": 5781183952,
+      "sharing_median_fstar_heap_bytes": 6237511120,
+      "median_heap_change_percent": 7.89,
+      "output_artifact_bytes": {"baseline": 0, "sharing": 0}
+    },
+    "bool-refinement": {
+      "baseline_seconds": [58.83, 58.52, 58.73, 59.38, 59.09],
+      "sharing_seconds": [59.13, 58.23, 58.57, 58.78, 59.26],
+      "baseline_median_seconds": 58.83,
+      "sharing_median_seconds": 58.78,
+      "median_time_change_percent": -0.08,
+      "baseline_range_seconds": [58.52, 59.38],
+      "sharing_range_seconds": [58.23, 59.26],
+      "baseline_median_fstar_heap_bytes": 455925328,
+      "sharing_median_fstar_heap_bytes": 410854728,
+      "median_heap_change_percent": -9.89,
+      "output_artifact_bytes": {"baseline": 4521905, "sharing": 3935239}
+    },
+    "dpe-messages-spec": {
+      "baseline_seconds": [61.51, 61.26, 61.30, 61.36, 61.34],
+      "sharing_seconds": [61.39, 60.92, 61.15, 61.45, 61.48],
+      "baseline_median_seconds": 61.34,
+      "sharing_median_seconds": 61.39,
+      "median_time_change_percent": 0.08,
+      "baseline_range_seconds": [61.26, 61.51],
+      "sharing_range_seconds": [60.92, 61.48],
+      "baseline_median_fstar_heap_bytes": 205489344,
+      "sharing_median_fstar_heap_bytes": 187591888,
+      "median_heap_change_percent": -8.71,
+      "output_artifact_bytes": {"baseline": 663480, "sharing": 626335}
+    },
+    "cbor-pulse": {
+      "baseline_seconds": [19.73, 19.61, 19.43, 19.57, 19.59],
+      "sharing_seconds": [19.46, 19.12, 19.10, 19.43, 19.56],
+      "baseline_median_seconds": 19.59,
+      "sharing_median_seconds": 19.43,
+      "median_time_change_percent": -0.82,
+      "baseline_range_seconds": [19.43, 19.73],
+      "sharing_range_seconds": [19.10, 19.56],
+      "baseline_median_fstar_heap_bytes": 714521408,
+      "sharing_median_fstar_heap_bytes": 604327392,
+      "median_heap_change_percent": -15.42,
+      "output_artifact_bytes": {"baseline": 510784, "sharing": 455538}
+    },
+    "cbor-boundary-slice": {
+      "baseline_seconds": [29.05, 28.70, 28.74, 28.81, 29.08],
+      "sharing_seconds": [28.65, 29.14, 28.62, 28.63, 28.93],
+      "baseline_median_seconds": 28.81,
+      "sharing_median_seconds": 28.65,
+      "median_time_change_percent": -0.56,
+      "baseline_range_seconds": [28.70, 29.08],
+      "sharing_range_seconds": [28.62, 29.14],
+      "baseline_median_fstar_heap_bytes": 454573072,
+      "sharing_median_fstar_heap_bytes": 408015776,
+      "median_heap_change_percent": -10.24,
+      "output_artifact_bytes": {"baseline": 556504, "sharing": 554088}
+    },
+    "rbtree-intrinsic": {
+      "baseline_seconds": [22.25, 22.03, 22.04, 22.09, 22.18],
+      "sharing_seconds": [22.03, 22.28, 22.02, 22.06, 21.99],
+      "baseline_median_seconds": 22.09,
+      "sharing_median_seconds": 22.03,
+      "median_time_change_percent": -0.27,
+      "baseline_range_seconds": [22.03, 22.25],
+      "sharing_range_seconds": [21.99, 22.28],
+      "baseline_median_fstar_heap_bytes": 128651576,
+      "sharing_median_fstar_heap_bytes": 106587912,
+      "median_heap_change_percent": -17.15,
+      "output_artifact_bytes": {"baseline": 885281, "sharing": 754632}
+    },
+    "cbor-spec-map": {
+      "baseline_seconds": [6.51, 6.45, 6.45, 6.48, 6.48],
+      "sharing_seconds": [6.47, 6.46, 6.47, 6.51, 6.48],
+      "baseline_median_seconds": 6.48,
+      "sharing_median_seconds": 6.47,
+      "median_time_change_percent": -0.15,
+      "baseline_range_seconds": [6.45, 6.51],
+      "sharing_range_seconds": [6.46, 6.51],
+      "baseline_median_fstar_heap_bytes": 401779048,
+      "sharing_median_fstar_heap_bytes": 387723736,
+      "median_heap_change_percent": -3.50,
+      "output_artifact_bytes": {"baseline": 1010970, "sharing": 997388}
+    }
+  },
+  "conclusion": {
+    "ci_time_regressions_reproduced": false,
+    "largest_local_median_time_increase_percent": 0.08,
+    "workload_with_largest_local_median_time_increase": "dpe-messages-spec",
+    "normbudget_memory_regression_reproduced": true,
+    "new_intrusive_profiles_required": false,
+    "profile_reason": "No selected workload had a reproducible time regression. Prior separate profiles already cover the three largest CI outliers and the reproducible NormBudget heap effect."
+  }
+}

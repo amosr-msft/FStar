@@ -930,3 +930,40 @@ local values, reproduction templates, profile counters, GC counters, and
 limitations. The 58 retained raw local files remain in session storage; their
 sorted checksum-manifest digest is
 `e20c64d5b2d02a00d1c24f6f09ba0d580401ea5b462cbbe6069561003925c2dc`.
+
+## Expanded PR #4760 repetitions
+
+Seven workloads from the enabled CI comparison were rerun five times per
+compiler using their actual Make targets. The selection covers the three
+largest absolute time deltas and four high-percentage regressions. Each
+compiler has its own dependency cache; only the measured output is deleted.
+Order is deterministically shuffled within each repetition, and all 70
+observations are ordinary warm-filesystem runs.
+
+| Workload | CI base → sharing | Local baseline observations | Local sharing observations | Median change | F* heap change |
+|---|---:|---|---|---:|---:|
+| `NormBudget.rejected` | 139.38 → 157.39 s | 143.77, 150.92, 144.24, 146.97, 143.89 | 154.57, 143.53, 141.08, 141.35, 153.12 | -0.5% | +7.9% |
+| `BoolRefinement` | 83.10 → 94.64 s | 58.83, 58.52, 58.73, 59.38, 59.09 | 59.13, 58.23, 58.57, 58.78, 59.26 | -0.1% | -9.9% |
+| `DPE.Messages.Spec` | 92.33 → 104.97 s | 61.51, 61.26, 61.30, 61.36, 61.34 | 61.39, 60.92, 61.15, 61.45, 61.48 | +0.1% | -8.7% |
+| `CBOR.Pulse` | 20.65 → 24.72 s | 19.73, 19.61, 19.43, 19.57, 19.59 | 19.46, 19.12, 19.10, 19.43, 19.56 | -0.8% | -15.4% |
+| `CborBoundarySlice` | 30.57 → 35.81 s | 29.05, 28.70, 28.74, 28.81, 29.08 | 28.65, 29.14, 28.62, 28.63, 28.93 | -0.6% | -10.2% |
+| `RBTreeIntrinsic` | 24.28 → 28.46 s | 22.25, 22.03, 22.04, 22.09, 22.18 | 22.03, 22.28, 22.02, 22.06, 21.99 | -0.3% | -17.1% |
+| `CBOR.Spec.Map` | 7.26 → 9.02 s | 6.51, 6.45, 6.45, 6.48, 6.48 | 6.47, 6.46, 6.47, 6.51, 6.48 | -0.2% | -3.5% |
+
+No CI time regression reproduces in the expanded local campaign. The largest
+local median increase is 0.08% for `DPE.Messages.Spec`, well inside its
+0.56-second sharing range. This does not prove that the CI observations were
+noise or rule out runner-specific interactions; it shows that none is stable
+under five repetitions on this host.
+
+No new intrusive profile was run because there is no reproducible time
+regression to profile. The separate profiles above already cover the three
+largest CI outliers: sharing itself costs 20 ms for `BoolRefinement`, 4 ms for
+`DPE.Messages.Spec`, and does not execute in `NormBudget`. The reproducible
+`NormBudget` heap increase remains +7.9%, with prior GC statistics showing
+essentially unchanged allocation; all six verification workloads reduce F*
+peak heap by 3.5-17.1%.
+
+`PR4760_EXPANDED_MEASUREMENTS.json` contains the individual observations,
+medians, ranges, heap values, artifact sizes, and hashes of the retained raw
+JSONL and campaign log.

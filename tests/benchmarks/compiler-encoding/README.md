@@ -364,9 +364,9 @@ regressions (`CBOR.Pulse`, `CborBoundarySlice`, `RBTreeIntrinsic`, and
 compiler-specific dependency cache and preserves Make's normal workload flags
 and rejection checks.
 
-`PR4760_EXPANDED_PROGRESS.json` records the durable campaign location and the
-latest pushed completion checkpoint. It is progress metadata, not a final
-performance conclusion.
+`PR4760_EXPANDED_MEASUREMENTS.json` records every elapsed-time observation,
+median/range, F* heap medians, artifact sizes, raw evidence hashes, and the
+final conclusion.
 
 ## Clean sharing branch benchmarks
 
