@@ -520,6 +520,84 @@ medians, profiles, and validation outcomes.
 `TYPE_DIVERGE_VALIDATION.json` records the exact focused commands, hashes,
 settings, diagnostics, and measurements.
 
+## Clean-branch matched benchmark
+
+The delivery branch `users/amos/20261022-fstar-smt-sharing` is based on
+upstream `5275509e26`. Commit `f4decbb8c2` changes exactly two compiler files:
+it adds `FStarC.SMTEncoding.Sharing.fst` and adds the opt-in call in
+`FStarC.SMTEncoding.Encode.fst`. It contains no benchmark files, reports,
+standalone experiments, handwritten runtime, or BV-only cache/fresh replay.
+
+The following medians compare that clean compiler with untouched upstream.
+Both use identical sources and common flags, Z3 5.3.0, prechecked
+dependencies, and an uncached measured target; sharing runs additionally pass
+`--ext smtencoding:share=true`. Three repetitions alternate write/no-write
+order.
+
+| Live-500 | Baseline write | Shared write | Baseline no-write | Shared no-write |
+|---|---:|---:|---:|---:|
+| BV wall | 35.348 s | 35.179 s | 34.873 s | 34.932 s |
+| BV max-process RSS | 1,496 MiB | 1,295 MiB | 1,270 MiB | 1,271 MiB |
+| BV `.checked` | 21,886,665 B | 2,136,307 B | — | — |
+| UInt wall | 27.077 s | 26.931 s | 26.819 s | 26.886 s |
+| UInt max-process RSS | 1,302 MiB | 1,253 MiB | 1,254 MiB | 1,233 MiB |
+| UInt `.checked` | 4,619,278 B | 1,862,553 B | — | — |
+
+Sharing reduces checked size by 90.2% for BV and 59.7% for UInt. Total write
+wall medians change -0.5% for both BV and UInt; no-write medians change +0.2%
+and +0.3%, respectively. These are only three runs per cell and do not isolate
+causation, but they show that persistence savings can offset the instrumented
+240/30 ms BV and 72/<1 ms UInt declaration/index pass costs.
+
+Write-minus-no-write is not treated as isolated persistence time: each run is
+a separate process and includes noise and heap behavior. A five-run diagnostic
+over already constructed values separates the persistence operations:
+
+| Diagnostic median | BV baseline | BV shared | UInt baseline | UInt shared |
+|---|---:|---:|---:|---:|
+| Serialize stage 1/2 | 148.1 ms | 24.5 ms | 39.7 ms | 23.3 ms |
+| Serialize SMT payload | 336.4 ms | 13.2 ms | 58.3 ms | 12.5 ms |
+| Merkle hash | 35.8 ms | 3.6 ms | 8.4 ms | 3.1 ms |
+| Buffered write | 4.0 ms | 0.5 ms | 0.9 ms | 0.5 ms |
+| Sum of medians | 524.3 ms | 41.8 ms | 107.3 ms | 39.3 ms |
+
+Thus diagnostic persistence work falls about 92.0% for BV and 63.4% for UInt.
+The dominant BV saving is SMT serialization (336.4 to 13.2 ms), followed by
+combined stage-1/stage-2 serialization. Hashing also scales with payload size. Actual
+`save_3values_to_file` additionally performs atomic replacement; the
+diagnostic also uses atomic replacement but does not measure `fsync` or
+cold-storage latency.
+
+Ordinary non-BV controls also shrink; with three runs per cell, observed total
+write changes range from -0.7% to +3.7%:
+
+| Module | Baseline/shared write | Baseline/shared size | Size reduction |
+|---|---:|---:|---:|
+| `Positivity` | 1.013 / 1.006 s | 931,243 / 691,657 B | 25.7% |
+| `ClassicalSugar` | 1.082 / 1.082 s | 605,436 / 502,130 B | 17.1% |
+| `TestWellFoundedRecursion` | 0.930 / 0.964 s | 681,964 / 516,176 B | 24.3% |
+
+Their sharing declaration/index profiles are 12/1, 2/0, and 6/1 ms.
+
+Dependent-file loading improves as well. With identical uncached dependent
+sources, five warm-filesystem repetitions give BV metadata/rooted medians of
+0.227/1.527 s baseline versus 0.178/1.322 s shared; maximum-process RSS falls
+from 130/337 MiB to 104/248 MiB. UInt metadata/rooted changes from
+0.166/1.146 s to 0.166/1.087 s, with rooted RSS falling from 245 to 227 MiB.
+
+The exact clean commit was rebuilt after commit: BV/UInt confirmation runs
+produced the same 2,136,307/1,862,553-byte artifacts in 35.58/26.92 s. UInt is
+within the repeated-run range; BV is 0.27 s (0.8%) above its largest repeated
+observation. Default (flag-off) artifacts generated with matched flags are
+byte-identical to upstream for both synthetic targets. Structural comparisons of shared versus
+baseline artifacts preserve checked module, inclusion information, index,
+fvar bindings, and declaration contents/order. Standard build, exact
+`boot-diff`, opt-in `BvBinaryOps`, and opt-in `ClassicalSugar` pass.
+
+`CLEAN_SHARING_MEASUREMENTS.json` records branch/base/commit, exact diff scope,
+compiler/solver/source/artifact hashes, commands, medians, diagnostics, and
+validation outcomes. Raw logs and generated artifacts remain ignored.
+
 ## Dependent-file loading
 
 The same modified compiler and Z3 5.3.0 checked one identical uncached

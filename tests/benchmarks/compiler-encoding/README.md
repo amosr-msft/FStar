@@ -232,3 +232,34 @@ comparison, including the exact commands, compiler/input hashes, stack/runtime
 settings, diagnostics, elapsed time, and peak RSS for `b1fe663037` and the
 final compiler with the sharing option absent and present. The focused command
 extracts a prechecked module, so it does not execute SMT interning.
+
+## Clean sharing branch benchmarks
+
+`CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream
+`5275509e26` with clean commit `f4decbb8c2` on
+`users/amos/20261022-fstar-smt-sharing`. That clean branch contains only
+`FStarC.SMTEncoding.Sharing` and its opt-in `Encode.encode_modul_aux`
+integration.
+
+Synthetic and ordinary baseline runs use the same generated/source files,
+flags, explicit Z3 5.3.0 binary, uncached measured target, and prechecked
+dependencies. Each configuration alternates three `write` and `no-write`
+runs. Sharing runs add only:
+
+```sh
+--ext smtencoding:share=true
+```
+
+Persistence subphases are diagnostic rather than baseline timings:
+
+```sh
+sharing_experiment.exe --persistence-profile \
+  INPUT.checked OUTPUT.checked
+```
+
+This mode loads an existing artifact, then separately times Marshal
+serialization of stage 1/2 and SMT declarations, Merkle hashing, and a
+buffered file write. It verifies structural round-trip equality. The write is
+atomically renamed into place but does not call `fsync`, so it estimates CPU
+serialization/hash and page-cache write cost rather than durable-storage
+latency.

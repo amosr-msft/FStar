@@ -130,8 +130,16 @@ let canonical_path path =
   if Sys.file_exists path then Unix.realpath path
   else Filename.concat (Unix.realpath (Filename.dirname path)) (Filename.basename path)
 
+let same_file input output =
+  canonical_path input = canonical_path output ||
+  (Sys.file_exists output &&
+   let input_stat = Unix.stat input in
+   let output_stat = Unix.stat output in
+   input_stat.Unix.st_dev = output_stat.Unix.st_dev &&
+   input_stat.Unix.st_ino = output_stat.Unix.st_ino)
+
 let run input output =
-  if canonical_path input = canonical_path output then
+  if same_file input output then
     failwith "input and output paths must differ";
   let started = Unix.gettimeofday () in
   let original_digest, stage1, stage2, declarations = load input in
@@ -172,8 +180,60 @@ let load_only input =
     (List.length stage2.C.tc_res.C.stored_smt_index)
     (List.length declarations)
 
+let persistence_profile input output =
+  if same_file input output then
+    failwith "input and output paths must differ";
+  let _, stage1, stage2, declarations = load input in
+  let started = Unix.gettimeofday () in
+  let stage12 =
+    Marshal.to_string stage1 [] ^ Marshal.to_string stage2 [] in
+  let metadata_serialized = Unix.gettimeofday () in
+  let stage3 = Marshal.to_string declarations [] in
+  let smt_serialized = Unix.gettimeofday () in
+  let digest =
+    BatDigest.to_hex
+      (BatDigest.string
+        (BatDigest.string stage12 ^ BatDigest.string stage3)) in
+  let hashed = Unix.gettimeofday () in
+  let temporary =
+    output ^ ".tmp." ^ string_of_int (Unix.getpid ()) in
+  let channel =
+    open_out_gen
+      [Open_wronly; Open_creat; Open_excl; Open_binary]
+      0o600 temporary in
+  (try
+     Marshal.to_channel channel digest [];
+     output_binary_int channel (String.length stage12);
+     output_string channel stage12;
+     output_string channel stage3;
+     close_out channel;
+     Unix.rename temporary output
+   with error ->
+     close_out_noerr channel;
+     (try Sys.remove temporary with _ -> ());
+     raise error);
+  let written = Unix.gettimeofday () in
+  let _, stage1', stage2', declarations' = load output in
+  verify_equal "profiled stage 1" stage1 stage1';
+  verify_equal "profiled stage 2" stage2 stage2';
+  verify_equal "profiled declarations" declarations declarations';
+  Printf.printf
+    "input=%s bytes=%d stage12_bytes=%d stage3_bytes=%d metadata_serialize_s=%.6f smt_serialize_s=%.6f hash_s=%.6f buffered_write_s=%.6f\n"
+    input (Unix.stat input).Unix.st_size
+    (String.length stage12) (String.length stage3)
+    (metadata_serialized -. started)
+    (smt_serialized -. metadata_serialized)
+    (hashed -. smt_serialized)
+    (written -. hashed)
+
 let () =
   match Array.to_list Sys.argv with
   | [_; "--load"; input] -> load_only input
+  | [_; "--persistence-profile"; input; output] ->
+      persistence_profile input output
   | [_; input; output] -> run input output
-  | _ -> failwith "usage: sharing_experiment INPUT.checked OUTPUT.checked"
+  | _ ->
+      failwith
+        "usage: sharing_experiment INPUT.checked OUTPUT.checked | \
+         --load INPUT.checked | \
+         --persistence-profile INPUT.checked OUTPUT.checked"
