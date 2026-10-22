@@ -180,6 +180,31 @@ let load_only input =
     (List.length stage2.C.tc_res.C.stored_smt_index)
     (List.length declarations)
 
+let load_metadata_only input =
+  let started = Unix.gettimeofday () in
+  let header :
+    (string * C.checked_file_entry_stage1 * C.checked_file_entry_stage2) option =
+    U.load_2values_from_file3 input in
+  let elapsed = Unix.gettimeofday () -. started in
+  match header with
+  | Some (_, _, stage2) ->
+      Printf.printf
+        "input=%s load_metadata_s=%.6f index_entries=%d\n"
+        input elapsed (List.length stage2.C.tc_res.C.stored_smt_index)
+  | None -> failwith ("cannot load metadata from " ^ input)
+
+let load_smt_only input =
+  let started = Unix.gettimeofday () in
+  let declarations : T.decls_elt list option =
+    U.load_3rd_value_from_file3 input in
+  let elapsed = Unix.gettimeofday () -. started in
+  match declarations with
+  | Some declarations ->
+      Printf.printf
+        "input=%s load_smt_s=%.6f declaration_blocks=%d\n"
+        input elapsed (List.length declarations)
+  | None -> failwith ("cannot load SMT declarations from " ^ input)
+
 let persistence_profile input output =
   if same_file input output then
     failwith "input and output paths must differ";
@@ -229,6 +254,8 @@ let persistence_profile input output =
 let () =
   match Array.to_list Sys.argv with
   | [_; "--load"; input] -> load_only input
+  | [_; "--load-metadata"; input] -> load_metadata_only input
+  | [_; "--load-smt"; input] -> load_smt_only input
   | [_; "--persistence-profile"; input; output] ->
       persistence_profile input output
   | [_; input; output] -> run input output
@@ -236,4 +263,6 @@ let () =
       failwith
         "usage: sharing_experiment INPUT.checked OUTPUT.checked | \
          --load INPUT.checked | \
+         --load-metadata INPUT.checked | \
+         --load-smt INPUT.checked | \
          --persistence-profile INPUT.checked OUTPUT.checked"

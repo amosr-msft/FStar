@@ -1,4 +1,13 @@
 {
+  "checked_read_method": {
+    "build_command": "cd /workspace/wt11/FStar-smt-sharing && eval \"$(opam env --switch=/workspace/wt11/FunFM --set-switch)\" && ocamlfind ocamlopt -linkpkg -package batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix -I stage3/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte -I stage3/dune/_build/default/fstar-guts/.fstarcompiler.objs/native stage3/dune/_build/default/fstar-guts/fstarcompiler.cmxa /workspace/wt11/FStar/tests/benchmarks/compiler-encoding/sharing_experiment.ml -o /tmp/checked_read_bench.exe",
+    "executable_sha256": "708da6fed945f3f3783db4b45d41b2a7a02b0318627e6388071a974f75efdd02",
+    "filesystem_cache": "warm, not flushed",
+    "internal_timer": "Unix.gettimeofday around FStarC_Util.load_2values_from_file3 or load_3rd_value_from_file3",
+    "repeats": 10,
+    "source_sha256": "19c32b815fdc17e1bcf8392698c7e565bbb87743efe8fe11addcb9d28e2debfc",
+    "whole_process_wrapper": "/usr/bin/time -v"
+  },
   "clean_branch": "users/amos/20261022-fstar-smt-sharing",
   "clean_commit": "f4decbb8c22511b6ab9d056047334f049caffd70",
   "clean_commit_parent": "5275509e26b2e4c3df3ade7df1e01b3e38f9553a",
@@ -13,6 +22,1688 @@
     "rss_semantics": "GNU time maximum RSS of one process in wrapper/child tree"
   },
   "observations": {
+    "checked_read_unmarshal": [
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.036339,
+        "kind": "bv",
+        "max_process_rss_kb": 64000,
+        "mode": "metadata",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.036339 index_entries=23761",
+        "wall_seconds": 0.05360003001987934
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.037696,
+        "kind": "bv",
+        "max_process_rss_kb": 64124,
+        "mode": "metadata",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.037696 index_entries=23761",
+        "wall_seconds": 0.055098504992201924
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.037932,
+        "kind": "bv",
+        "max_process_rss_kb": 63976,
+        "mode": "metadata",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.037932 index_entries=23761",
+        "wall_seconds": 0.05499578290618956
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.037341,
+        "kind": "bv",
+        "max_process_rss_kb": 64156,
+        "mode": "metadata",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.037341 index_entries=23761",
+        "wall_seconds": 0.05446180608123541
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.036463,
+        "kind": "bv",
+        "max_process_rss_kb": 64108,
+        "mode": "metadata",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.036463 index_entries=23761",
+        "wall_seconds": 0.053392460104078054
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.03755,
+        "kind": "bv",
+        "max_process_rss_kb": 64268,
+        "mode": "metadata",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.037550 index_entries=23761",
+        "wall_seconds": 0.05464765406213701
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.037089,
+        "kind": "bv",
+        "max_process_rss_kb": 64132,
+        "mode": "metadata",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.037089 index_entries=23761",
+        "wall_seconds": 0.0544283299241215
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.036376,
+        "kind": "bv",
+        "max_process_rss_kb": 64188,
+        "mode": "metadata",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.036376 index_entries=23761",
+        "wall_seconds": 0.05369160999543965
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.03669,
+        "kind": "bv",
+        "max_process_rss_kb": 64432,
+        "mode": "metadata",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.036690 index_entries=23761",
+        "wall_seconds": 0.054054050939157605
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-metadata-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.03672,
+        "kind": "bv",
+        "max_process_rss_kb": 64124,
+        "mode": "metadata",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_metadata_s=0.036720 index_entries=23761",
+        "wall_seconds": 0.054233422968536615
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.106869,
+        "kind": "bv",
+        "max_process_rss_kb": 137568,
+        "mode": "smt",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.106869 declaration_blocks=23761",
+        "wall_seconds": 0.12795182294212282
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.107528,
+        "kind": "bv",
+        "max_process_rss_kb": 137832,
+        "mode": "smt",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.107528 declaration_blocks=23761",
+        "wall_seconds": 0.12860679300501943
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.106177,
+        "kind": "bv",
+        "max_process_rss_kb": 137500,
+        "mode": "smt",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.106177 declaration_blocks=23761",
+        "wall_seconds": 0.12748019583523273
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.111772,
+        "kind": "bv",
+        "max_process_rss_kb": 137580,
+        "mode": "smt",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.111772 declaration_blocks=23761",
+        "wall_seconds": 0.13315853313542902
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.107981,
+        "kind": "bv",
+        "max_process_rss_kb": 137640,
+        "mode": "smt",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.107981 declaration_blocks=23761",
+        "wall_seconds": 0.12958426401019096
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.107471,
+        "kind": "bv",
+        "max_process_rss_kb": 137876,
+        "mode": "smt",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.107471 declaration_blocks=23761",
+        "wall_seconds": 0.12932622898370028
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.106622,
+        "kind": "bv",
+        "max_process_rss_kb": 137816,
+        "mode": "smt",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.106622 declaration_blocks=23761",
+        "wall_seconds": 0.12799740210175514
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.10546,
+        "kind": "bv",
+        "max_process_rss_kb": 137296,
+        "mode": "smt",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.105460 declaration_blocks=23761",
+        "wall_seconds": 0.12584422808140516
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.104788,
+        "kind": "bv",
+        "max_process_rss_kb": 137552,
+        "mode": "smt",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.104788 declaration_blocks=23761",
+        "wall_seconds": 0.1258305620867759
+      },
+      {
+        "artifact_bytes": 21886665,
+        "artifact_sha256": "ef98f61a5f9a25245818b28a94cd10e8964c30ab86588a77a3ff19f31928cb47",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-bv-smt-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.107248,
+        "kind": "bv",
+        "max_process_rss_kb": 137512,
+        "mode": "smt",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-bv/BenchBvLive500.fst.checked load_smt_s=0.107248 declaration_blocks=23761",
+        "wall_seconds": 0.12862955895252526
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006441,
+        "kind": "uint",
+        "max_process_rss_kb": 31076,
+        "mode": "metadata",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006441 index_entries=2128",
+        "wall_seconds": 0.021734714042395353
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006466,
+        "kind": "uint",
+        "max_process_rss_kb": 31076,
+        "mode": "metadata",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006466 index_entries=2128",
+        "wall_seconds": 0.02123645110987127
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006447,
+        "kind": "uint",
+        "max_process_rss_kb": 31244,
+        "mode": "metadata",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006447 index_entries=2128",
+        "wall_seconds": 0.020463661989197135
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006569,
+        "kind": "uint",
+        "max_process_rss_kb": 31328,
+        "mode": "metadata",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006569 index_entries=2128",
+        "wall_seconds": 0.020897231064736843
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006407,
+        "kind": "uint",
+        "max_process_rss_kb": 30980,
+        "mode": "metadata",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006407 index_entries=2128",
+        "wall_seconds": 0.020348776830360293
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006398,
+        "kind": "uint",
+        "max_process_rss_kb": 31252,
+        "mode": "metadata",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006398 index_entries=2128",
+        "wall_seconds": 0.02081712195649743
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006456,
+        "kind": "uint",
+        "max_process_rss_kb": 31312,
+        "mode": "metadata",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006456 index_entries=2128",
+        "wall_seconds": 0.021375313866883516
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006646,
+        "kind": "uint",
+        "max_process_rss_kb": 31328,
+        "mode": "metadata",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006646 index_entries=2128",
+        "wall_seconds": 0.020400773966684937
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006432,
+        "kind": "uint",
+        "max_process_rss_kb": 31056,
+        "mode": "metadata",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006432 index_entries=2128",
+        "wall_seconds": 0.021201238967478275
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-metadata-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.006624,
+        "kind": "uint",
+        "max_process_rss_kb": 31296,
+        "mode": "metadata",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006624 index_entries=2128",
+        "wall_seconds": 0.021789436927065253
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029565,
+        "kind": "uint",
+        "max_process_rss_kb": 55504,
+        "mode": "smt",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029565 declaration_blocks=2128",
+        "wall_seconds": 0.044904820155352354
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029211,
+        "kind": "uint",
+        "max_process_rss_kb": 55424,
+        "mode": "smt",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029211 declaration_blocks=2128",
+        "wall_seconds": 0.04565264703705907
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.0302,
+        "kind": "uint",
+        "max_process_rss_kb": 55596,
+        "mode": "smt",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.030200 declaration_blocks=2128",
+        "wall_seconds": 0.04683469398878515
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029625,
+        "kind": "uint",
+        "max_process_rss_kb": 55276,
+        "mode": "smt",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029625 declaration_blocks=2128",
+        "wall_seconds": 0.04568242304958403
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029588,
+        "kind": "uint",
+        "max_process_rss_kb": 55616,
+        "mode": "smt",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029588 declaration_blocks=2128",
+        "wall_seconds": 0.04539744998328388
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029877,
+        "kind": "uint",
+        "max_process_rss_kb": 55304,
+        "mode": "smt",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029877 declaration_blocks=2128",
+        "wall_seconds": 0.04660612717270851
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.030112,
+        "kind": "uint",
+        "max_process_rss_kb": 55536,
+        "mode": "smt",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.030112 declaration_blocks=2128",
+        "wall_seconds": 0.047053897054865956
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.036895,
+        "kind": "uint",
+        "max_process_rss_kb": 55552,
+        "mode": "smt",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.036895 declaration_blocks=2128",
+        "wall_seconds": 0.057484716176986694
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029673,
+        "kind": "uint",
+        "max_process_rss_kb": 55528,
+        "mode": "smt",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029673 declaration_blocks=2128",
+        "wall_seconds": 0.046295647975057364
+      },
+      {
+        "artifact_bytes": 4619278,
+        "artifact_sha256": "52c1d7abe346b9761b27fccc065cd9fcaec847c91ac71a7ad73e7ce767822996",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/baseline-uint-smt-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "baseline",
+        "internal_load_seconds": 0.029797,
+        "kind": "uint",
+        "max_process_rss_kb": 55540,
+        "mode": "smt",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-baseline-uint/BenchUIntLive500.fst.checked load_smt_s=0.029797 declaration_blocks=2128",
+        "wall_seconds": 0.046252578031271696
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006542,
+        "kind": "bv",
+        "max_process_rss_kb": 31348,
+        "mode": "metadata",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006542 index_entries=23761",
+        "wall_seconds": 0.02182102110236883
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006504,
+        "kind": "bv",
+        "max_process_rss_kb": 31036,
+        "mode": "metadata",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006504 index_entries=23761",
+        "wall_seconds": 0.021549334982410073
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006498,
+        "kind": "bv",
+        "max_process_rss_kb": 30984,
+        "mode": "metadata",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006498 index_entries=23761",
+        "wall_seconds": 0.020252035930752754
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006593,
+        "kind": "bv",
+        "max_process_rss_kb": 30956,
+        "mode": "metadata",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006593 index_entries=23761",
+        "wall_seconds": 0.02140698302537203
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006516,
+        "kind": "bv",
+        "max_process_rss_kb": 31260,
+        "mode": "metadata",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006516 index_entries=23761",
+        "wall_seconds": 0.02079434902407229
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006555,
+        "kind": "bv",
+        "max_process_rss_kb": 31440,
+        "mode": "metadata",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006555 index_entries=23761",
+        "wall_seconds": 0.02133365604095161
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006565,
+        "kind": "bv",
+        "max_process_rss_kb": 31388,
+        "mode": "metadata",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006565 index_entries=23761",
+        "wall_seconds": 0.02116689900867641
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006492,
+        "kind": "bv",
+        "max_process_rss_kb": 31192,
+        "mode": "metadata",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006492 index_entries=23761",
+        "wall_seconds": 0.0213083119597286
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006701,
+        "kind": "bv",
+        "max_process_rss_kb": 30928,
+        "mode": "metadata",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006701 index_entries=23761",
+        "wall_seconds": 0.021384851075708866
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-metadata-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006506,
+        "kind": "bv",
+        "max_process_rss_kb": 31380,
+        "mode": "metadata",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_metadata_s=0.006506 index_entries=23761",
+        "wall_seconds": 0.020335933193564415
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006683,
+        "kind": "bv",
+        "max_process_rss_kb": 31204,
+        "mode": "smt",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006683 declaration_blocks=23761",
+        "wall_seconds": 0.020471216179430485
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.007126,
+        "kind": "bv",
+        "max_process_rss_kb": 31228,
+        "mode": "smt",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.007126 declaration_blocks=23761",
+        "wall_seconds": 0.02172479801811278
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.00686,
+        "kind": "bv",
+        "max_process_rss_kb": 31092,
+        "mode": "smt",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006860 declaration_blocks=23761",
+        "wall_seconds": 0.022588114021345973
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006858,
+        "kind": "bv",
+        "max_process_rss_kb": 31264,
+        "mode": "smt",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006858 declaration_blocks=23761",
+        "wall_seconds": 0.021937968907877803
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.007239,
+        "kind": "bv",
+        "max_process_rss_kb": 31640,
+        "mode": "smt",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.007239 declaration_blocks=23761",
+        "wall_seconds": 0.022702391957864165
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.007,
+        "kind": "bv",
+        "max_process_rss_kb": 31356,
+        "mode": "smt",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.007000 declaration_blocks=23761",
+        "wall_seconds": 0.02129140798933804
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006881,
+        "kind": "bv",
+        "max_process_rss_kb": 31260,
+        "mode": "smt",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006881 declaration_blocks=23761",
+        "wall_seconds": 0.021436839131638408
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006785,
+        "kind": "bv",
+        "max_process_rss_kb": 31084,
+        "mode": "smt",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006785 declaration_blocks=23761",
+        "wall_seconds": 0.021790325874462724
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006753,
+        "kind": "bv",
+        "max_process_rss_kb": 30932,
+        "mode": "smt",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006753 declaration_blocks=23761",
+        "wall_seconds": 0.02176642813719809
+      },
+      {
+        "artifact_bytes": 2136307,
+        "artifact_sha256": "3d43709b23a857eaa3ab4c9246de1df25dc9a97438728b46e35d4978a6137125",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-bv-smt-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006842,
+        "kind": "bv",
+        "max_process_rss_kb": 31316,
+        "mode": "smt",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-bv/BenchBvLive500.fst.checked load_smt_s=0.006842 declaration_blocks=23761",
+        "wall_seconds": 0.021976826945319772
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006028,
+        "kind": "uint",
+        "max_process_rss_kb": 30548,
+        "mode": "metadata",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006028 index_entries=2128",
+        "wall_seconds": 0.02018655394203961
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.00613,
+        "kind": "uint",
+        "max_process_rss_kb": 30832,
+        "mode": "metadata",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006130 index_entries=2128",
+        "wall_seconds": 0.020597701892256737
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006225,
+        "kind": "uint",
+        "max_process_rss_kb": 30632,
+        "mode": "metadata",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006225 index_entries=2128",
+        "wall_seconds": 0.020759653998538852
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006569,
+        "kind": "uint",
+        "max_process_rss_kb": 30520,
+        "mode": "metadata",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006569 index_entries=2128",
+        "wall_seconds": 0.020423115929588675
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006056,
+        "kind": "uint",
+        "max_process_rss_kb": 30800,
+        "mode": "metadata",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006056 index_entries=2128",
+        "wall_seconds": 0.020121001172810793
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006122,
+        "kind": "uint",
+        "max_process_rss_kb": 30704,
+        "mode": "metadata",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006122 index_entries=2128",
+        "wall_seconds": 0.02085910993628204
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006109,
+        "kind": "uint",
+        "max_process_rss_kb": 30820,
+        "mode": "metadata",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006109 index_entries=2128",
+        "wall_seconds": 0.020443654153496027
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005978,
+        "kind": "uint",
+        "max_process_rss_kb": 30784,
+        "mode": "metadata",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.005978 index_entries=2128",
+        "wall_seconds": 0.01969068800099194
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006061,
+        "kind": "uint",
+        "max_process_rss_kb": 30624,
+        "mode": "metadata",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006061 index_entries=2128",
+        "wall_seconds": 0.020691207144409418
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-metadata-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-metadata",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.006457,
+        "kind": "uint",
+        "max_process_rss_kb": 30544,
+        "mode": "metadata",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_metadata_s=0.006457 index_entries=2128",
+        "wall_seconds": 0.02177695999853313
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-1.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005066,
+        "kind": "uint",
+        "max_process_rss_kb": 29076,
+        "mode": "smt",
+        "repeat": 1,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005066 declaration_blocks=2128",
+        "wall_seconds": 0.020320137962698936
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-2.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005254,
+        "kind": "uint",
+        "max_process_rss_kb": 29740,
+        "mode": "smt",
+        "repeat": 2,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005254 declaration_blocks=2128",
+        "wall_seconds": 0.019883797969669104
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-3.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005151,
+        "kind": "uint",
+        "max_process_rss_kb": 29492,
+        "mode": "smt",
+        "repeat": 3,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005151 declaration_blocks=2128",
+        "wall_seconds": 0.020049659069627523
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-4.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005068,
+        "kind": "uint",
+        "max_process_rss_kb": 29200,
+        "mode": "smt",
+        "repeat": 4,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005068 declaration_blocks=2128",
+        "wall_seconds": 0.019679657882079482
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-5.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.004993,
+        "kind": "uint",
+        "max_process_rss_kb": 29812,
+        "mode": "smt",
+        "repeat": 5,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.004993 declaration_blocks=2128",
+        "wall_seconds": 0.019070410169661045
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-6.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005086,
+        "kind": "uint",
+        "max_process_rss_kb": 29408,
+        "mode": "smt",
+        "repeat": 6,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005086 declaration_blocks=2128",
+        "wall_seconds": 0.019452854990959167
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-7.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005187,
+        "kind": "uint",
+        "max_process_rss_kb": 29204,
+        "mode": "smt",
+        "repeat": 7,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005187 declaration_blocks=2128",
+        "wall_seconds": 0.019930185051634908
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-8.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005022,
+        "kind": "uint",
+        "max_process_rss_kb": 29664,
+        "mode": "smt",
+        "repeat": 8,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005022 declaration_blocks=2128",
+        "wall_seconds": 0.019174274057149887
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-9.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.005077,
+        "kind": "uint",
+        "max_process_rss_kb": 29456,
+        "mode": "smt",
+        "repeat": 9,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005077 declaration_blocks=2128",
+        "wall_seconds": 0.019673637114465237
+      },
+      {
+        "artifact_bytes": 1862553,
+        "artifact_sha256": "3fa233dd3efb5bde3c6b4be781cbe65d5f8bb1a64d7088bff831ce21a9c6e0e9",
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "_results/clean-sharing/read-probes/sharing-uint-smt-10.time",
+          "/tmp/checked_read_bench.exe",
+          "--load-smt",
+          "_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked"
+        ],
+        "config": "sharing",
+        "internal_load_seconds": 0.00507,
+        "kind": "uint",
+        "max_process_rss_kb": 29736,
+        "mode": "smt",
+        "repeat": 10,
+        "stdout": "input=_results/clean-sharing/artifact-sharing-uint/BenchUIntLive500.fst.checked load_smt_s=0.005070 declaration_blocks=2128",
+        "wall_seconds": 0.019278929103165865
+      }
+    ],
     "dependent": {
       "bv": {
         "baseline": {
@@ -4008,6 +5699,56 @@
           "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
         ],
         "equal": true
+      }
+    },
+    "dependent_modes": {
+      "bv-baseline-metadata": {
+        "created_z3": false,
+        "loaded_cached_dependency": true,
+        "log_sha256": "b456dee4ae8740467b889fe14d2dbd8fc338173c9490ca7cc478e36468577b65",
+        "query_stats_step": false
+      },
+      "bv-baseline-rooted": {
+        "created_z3": true,
+        "loaded_cached_dependency": true,
+        "log_sha256": "248ce4aa2af2b71fb4975fd54667d29c81195d7bdc624fe9e68e15798c0843ca",
+        "query_stats_step": true
+      },
+      "bv-sharing-metadata": {
+        "created_z3": false,
+        "loaded_cached_dependency": true,
+        "log_sha256": "f63677bb6e00c94acc228060dcbfbff7163131085204dd283c83ab0b32e7422b",
+        "query_stats_step": false
+      },
+      "bv-sharing-rooted": {
+        "created_z3": true,
+        "loaded_cached_dependency": true,
+        "log_sha256": "042498225340eb84df8ef188d5918575de50d32c997e46b48690b00d4e19ac31",
+        "query_stats_step": true
+      },
+      "uint-baseline-metadata": {
+        "created_z3": false,
+        "loaded_cached_dependency": true,
+        "log_sha256": "3b64e66f0b02a6046d7ea982fd052ce7042d148bc6b525c486ecdad834a59bb8",
+        "query_stats_step": false
+      },
+      "uint-baseline-rooted": {
+        "created_z3": true,
+        "loaded_cached_dependency": true,
+        "log_sha256": "eac4fed1220f846e6477b1b2b55a8bdccb443f84d406c53e31a1502dee4d70f0",
+        "query_stats_step": true
+      },
+      "uint-sharing-metadata": {
+        "created_z3": false,
+        "loaded_cached_dependency": true,
+        "log_sha256": "bd16254e21aa2d7e9f131076e64bdb09d00dd99ff0916e13a715e5fe0d4ac83d",
+        "query_stats_step": false
+      },
+      "uint-sharing-rooted": {
+        "created_z3": true,
+        "loaded_cached_dependency": true,
+        "log_sha256": "cc5dbe52a2c0f95acbaba476998445d86bb36c8a80de1ee7d461e0f3ce50ec0e",
+        "query_stats_step": true
       }
     },
     "logs": {

@@ -585,6 +585,26 @@ sources, five warm-filesystem repetitions give BV metadata/rooted medians of
 from 130/337 MiB to 104/248 MiB. UInt metadata/rooted changes from
 0.166/1.146 s to 0.166/1.087 s, with rooted RSS falling from 245 to 227 MiB.
 
+Direct warm-cache read/unmarshal probes explain part of that end-to-end
+improvement. Internal timings measure only `load_2values_from_file3` (stage
+1/2 metadata) or `load_3rd_value_from_file3` (the lazy SMT payload);
+whole-process wall additionally includes startup.
+
+| Artifact/read | Internal baseline → shared | Process wall baseline → shared | RSS baseline → shared |
+|---|---:|---:|---:|
+| BV stage 1/2 metadata | 36.9 → 6.5 ms | 54.3 → 21.3 ms | 62.6 → 30.5 MiB |
+| BV SMT payload | 107.1 → 6.9 ms | 128.3 → 21.8 ms | 134.3 → 30.5 MiB |
+| UInt stage 1/2 metadata | 6.5 → 6.1 ms | 21.0 → 20.5 ms | 30.5 → 29.9 MiB |
+| UInt SMT payload | 29.7 → 5.1 ms | 46.3 → 19.7 ms | 54.2 → 28.8 MiB |
+
+BV metadata/payload unmarshalling falls 82%/94%; UInt payload unmarshalling
+falls 83%, while its already-small metadata changes little. The speedups are
+not proportional to byte reduction because startup, allocation, GC, target
+checking, pruning/registration, and Z3 remain. The rooted dependent benchmark
+is the end-to-end measure: it issues a query over `B.step` under normal
+pruning, thereby forcing the exported payload; metadata mode admits the query
+and starts no Z3 process.
+
 The exact clean commit was rebuilt after commit: BV/UInt confirmation runs
 produced the same 2,136,307/1,862,553-byte artifacts in 35.58/26.92 s. UInt is
 within the repeated-run range; BV is 0.27 s (0.8%) above its largest repeated

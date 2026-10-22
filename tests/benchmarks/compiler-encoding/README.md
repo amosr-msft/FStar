@@ -263,3 +263,16 @@ buffered file write. It verifies structural round-trip equality. The write is
 atomically renamed into place but does not call `fsync`, so it estimates CPU
 serialization/hash and page-cache write cost rather than durable-storage
 latency.
+
+Checked-file read/unmarshal cost can be isolated with the same executable:
+
+```sh
+sharing_experiment.exe --load-metadata INPUT.checked
+sharing_experiment.exe --load-smt INPUT.checked
+```
+
+`--load-metadata` reads stage 1/2, including the checked module and pruning
+index. `--load-smt` seeks past stage 1/2 and unmarshals the lazy third-value
+SMT declaration payload. Run under `/usr/bin/time -v` to capture whole-process
+wall/RSS; the program's internal timer isolates the load function. Reported
+runs use warm filesystem caches and do not flush the host page cache.
