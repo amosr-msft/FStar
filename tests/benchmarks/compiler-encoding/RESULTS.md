@@ -52,6 +52,75 @@ collections increasing from 32 to 33-35 and top-heap thresholds rising about
 real workload-specific compile-memory regression on UInt. The historical CI
 time slowdown is not reproduced under this matched current-master comparison.
 
+### UInt heap mechanism
+
+Three new matched production-binary repetitions reproduce the UInt peak
+exactly in both modes: master remains at 725,590,016 bytes and main interning
+at 926,916,608 bytes. The corresponding no-write RSS medians are 757,132 and
+951,232 KiB. The normal OCaml 4.14.2 runtime controls are identical
+(`minor_heap_size=262144` words, `major_heap_increment=15`,
+`space_overhead=120`, `allocation_policy=2`) and `OCAMLRUNPARAM` is unset.
+
+The peak is not created by final declaration interning:
+
+- File-boundary traces show all library and benchmark-child caches loaded
+  while both processes still had a 6,812,672-word (54.5 MB) major heap.
+- The historical high-water divergence appears while typechecking the final
+  generated `step` declaration, before final `encode_signature`. In the
+  instrumented run, both variants enter that declaration after 382 minor
+  collections and finish after 7,883. Master completes 21 major collections
+  inside the declaration and grows from 23,589,888 to 94,893,056 words;
+  interning completes 20 and grows from 19,395,584 to 99,087,360 words.
+  Incremental `encode_sig`, final encoding, declaration/index interning,
+  pruning, solver registration, and serialization all occur after that
+  divergence.
+- Absolute instrumented peaks differ from production because adding snapshots
+  perturbs GC thresholds. The phase ordering and matched counter difference,
+  not those absolute peaks, are the diagnostic evidence.
+
+Forced full collections at phase boundaries show less reachable major-heap
+data with interning, despite its higher historical capacity. Immediately
+before final encoding, master has 10,298,678 live words (82.4 MB) versus
+9,888,425 (79.1 MB) with interning. After pruning, master has 13,042,635 live
+words (104.3 MB) versus 10,424,538 (83.4 MB). The UInt declaration graph
+passed to the interner contains 2,672,432 reachable words; its canonical
+output contains 464,588, with 175,947 shared between input and output. The
+index falls from 100,792 to 67,312 reachable words. Thus temporary input/output
+coexistence is real but small relative to the observed 201 MB capacity jump,
+and the canonical graph retained after the pass is much smaller.
+
+A five-run 2×2 compiler/dependency probe confirms threshold sensitivity but
+does not cleanly isolate dependency shape. The interning executable with
+master dependency artifacts stays at 725.6 MB in all five runs, although its
+final interning code is unchanged; the normal interning/compiler-specific
+pairing stays at 926.9 MB. The master executable with interning dependency
+artifacts is bimodal (one 926.9 MB run, four 725.6 MB runs), and even the
+master/master control shifts from the primary campaign's 725.6 MB to 759.1 MB
+in all five probe runs. The probe therefore shows that the high-water result
+is not a stable amount of extra live data, but cannot apportion the
+perturbation among loaded graph shape, executable layout, and campaign
+instrumentation. A controlled full major collection immediately after loading
+the benchmark child does not eliminate the later divergence, so it is not
+merely unreclaimed dependency-loading garbage; allocation, promotion, and
+major-cycle pacing during the large `step` check matter.
+
+The BV control remains at 725.6 MB for both production compilers. Its
+pre-final-encoding live heaps are also close, while declaration interning
+shrinks a much larger 9,575,912-word input graph to 608,927 words. BV therefore
+does not cross the UInt-specific growth threshold in these runs.
+
+**Conclusion:** the +27.7% UInt number is a real peak-capacity/RSS regression,
+but not a 27.7% increase in reachable compiler objects and not retention by
+canonical tables. During the allocation-heavy `step` typecheck, one fewer
+completed major cycle sends OCaml's major heap to a larger capacity bucket.
+Loaded graph shape, executable layout, and diagnostic allocation can perturb
+that schedule, but this experiment does not isolate their individual
+contributions. Forced collections can change the bucket but are diagnostic
+only; this evidence does not justify production GC calls or tuning.
+`UINT_HEAP_ANALYSIS.json` contains the observations, boundary counters,
+reachability measurements, crossed-dependency results, exact evidence hashes,
+and stated limitations.
+
 Dependent checks demonstrate the cache benefit:
 
 | Dependency | Master median | Interning median | Time | Peak RSS |

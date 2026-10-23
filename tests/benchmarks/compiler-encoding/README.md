@@ -83,6 +83,12 @@ Use `run_master_comparison.py` for five shuffled write/no-write repetitions,
 `run_master_ordinary.py` for ordinary controls. Existing
 `measure_dependent.py` measures metadata and rooted dependency loading.
 
+`UINT_HEAP_ANALYSIS.json` is the focused follow-up for the UInt Live-500 peak.
+It uses `run_uint_heap_diagnostics.py` for resumable lightweight,
+phase-snapshot, forced-GC liveness, and crossed-dependency runs. Forced
+collections and reachable-word scans are diagnostic only and are never
+enabled in the production compiler.
+
 Build the detailed-phase binaries from ignored extracted ML:
 
 ```sh
@@ -131,6 +137,93 @@ python summarize_master_comparison.py \
   --master /workspace/wt11/FStar-master-no-intern \
   --interning /workspace/wt11/FStar-master-interning \
   --z3 /path/to/z3-5.3.0
+```
+
+For the heap investigation, first regenerate each compiler's child caches
+after rebuilding its stage3 libraries; a stale child changes GC scheduling and
+invalidates the matched workload. Build the ignored extracted-ML diagnostics
+as above, then run:
+
+```sh
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/uint-heap-diagnostics-valid" \
+  --analysis-mode lightweight --modules BenchUIntLive500 \
+  --modes write no-write --repetitions 3
+
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/uint-heap-diagnostics-valid" \
+  --analysis-mode lightweight --modules BenchBvLive500 \
+  --modes no-write --repetitions 2
+
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --instrumented-dir "$EVIDENCE_ROOT/uint-heap-instrumented" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/uint-decl-phases-v2" \
+  --analysis-mode snapshot --modules BenchUIntLive500 \
+  --modes no-write --repetitions 1
+
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --instrumented-dir "$EVIDENCE_ROOT/uint-heap-instrumented" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/uint-heap-liveness" \
+  --analysis-mode forced --modules BenchUIntLive500 \
+  --modes write no-write --repetitions 1
+
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --instrumented-dir "$EVIDENCE_ROOT/uint-heap-instrumented" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/bv-heap-liveness" \
+  --analysis-mode forced --modules BenchBvLive500 \
+  --modes no-write --repetitions 1
+
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --instrumented-dir "$EVIDENCE_ROOT/uint-heap-instrumented" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/uint-after-cache-gc" \
+  --analysis-mode after-cache-gc --modules BenchUIntLive500 \
+  --modes no-write --repetitions 3
+
+python run_uint_heap_diagnostics.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/uint-heap-cross" \
+  --analysis-mode lightweight --modules BenchUIntLive500 \
+  --modes no-write --repetitions 5 --cross-dependencies
+
+python summarize_uint_heap_diagnostics.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --output UINT_HEAP_ANALYSIS.json
 ```
 
 Generate compiler-specific child caches before the main campaign. For

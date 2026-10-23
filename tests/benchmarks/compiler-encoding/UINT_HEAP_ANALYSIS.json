@@ -1,0 +1,1121 @@
+{
+  "date": "2026-10-23",
+  "question": "Mechanism of the UInt Live-500 compile heap regression",
+  "production_provenance": {
+    "master": {
+      "commit": "9a10b2ccb1f17064ec496ee315acc6a5f99adf2a",
+      "binary_sha256": "6e72b0c3fe8acea856f60426df502a09661a61a28cd418074a813eb27d08c4d8"
+    },
+    "interning": {
+      "commit": "56e8ac31da209fc56899a225f9a9e6a4b5d37619",
+      "binary_sha256": "be0e6836f994c64016a0da886644cf297fc0163ee12abae6e04dbc8e19778788"
+    }
+  },
+  "gc_control": {
+    "minor_heap_size_words": 262144,
+    "major_heap_increment": 15,
+    "space_overhead": 120,
+    "verbose": 0,
+    "max_overhead": 500,
+    "stack_limit": 0,
+    "allocation_policy": 2
+  },
+  "matched_lightweight_uint": {
+    "interning": {
+      "write": {
+        "fstar_mempeak_bytes": {
+          "observations": [
+            926916608,
+            926916608,
+            926916608
+          ],
+          "median": 926916608,
+          "min": 926916608,
+          "max": 926916608
+        },
+        "max_rss_kb": {
+          "observations": [
+            968780,
+            968812,
+            969324
+          ],
+          "median": 968812,
+          "min": 968780,
+          "max": 969324
+        },
+        "wall_seconds": {
+          "observations": [
+            28.28,
+            27.69,
+            28.27
+          ],
+          "median": 28.27,
+          "min": 27.69,
+          "max": 28.28
+        }
+      },
+      "no-write": {
+        "fstar_mempeak_bytes": {
+          "observations": [
+            926916608,
+            926916608,
+            926916608
+          ],
+          "median": 926916608,
+          "min": 926916608,
+          "max": 926916608
+        },
+        "max_rss_kb": {
+          "observations": [
+            951232,
+            951412,
+            950828
+          ],
+          "median": 951232,
+          "min": 950828,
+          "max": 951412
+        },
+        "wall_seconds": {
+          "observations": [
+            27.84,
+            27.76,
+            28.23
+          ],
+          "median": 27.84,
+          "min": 27.76,
+          "max": 28.23
+        }
+      }
+    },
+    "master": {
+      "no-write": {
+        "fstar_mempeak_bytes": {
+          "observations": [
+            725590016,
+            725590016,
+            725590016
+          ],
+          "median": 725590016,
+          "min": 725590016,
+          "max": 725590016
+        },
+        "max_rss_kb": {
+          "observations": [
+            756832,
+            757196,
+            757132
+          ],
+          "median": 757132,
+          "min": 756832,
+          "max": 757196
+        },
+        "wall_seconds": {
+          "observations": [
+            27.61,
+            27.74,
+            28.03
+          ],
+          "median": 27.74,
+          "min": 27.61,
+          "max": 28.03
+        }
+      },
+      "write": {
+        "fstar_mempeak_bytes": {
+          "observations": [
+            725590016,
+            725590016,
+            725590016
+          ],
+          "median": 725590016,
+          "min": 725590016,
+          "max": 725590016
+        },
+        "max_rss_kb": {
+          "observations": [
+            805668,
+            805228,
+            805336
+          ],
+          "median": 805336,
+          "min": 805228,
+          "max": 805668
+        },
+        "wall_seconds": {
+          "observations": [
+            27.73,
+            28.16,
+            27.91
+          ],
+          "median": 27.91,
+          "min": 27.73,
+          "max": 28.16
+        }
+      }
+    }
+  },
+  "forced_gc_liveness": {
+    "master": {
+      "no-write": {
+        "encode_signature_before": {
+          "compactions": 1,
+          "fragments": 0,
+          "free_words": 19061450,
+          "heap_words": 29360128,
+          "live_blocks": 2490247,
+          "live_words": 10298678,
+          "major_collections": 34,
+          "major_words": 613441683,
+          "minor_collections": 8386,
+          "minor_words": 8746882151,
+          "name": "encode_signature.before",
+          "promoted_words": 598893842,
+          "top_heap_words": 90698752
+        },
+        "encode_signature_after": {
+          "compactions": 1,
+          "fragments": 2809,
+          "free_words": 20581309,
+          "heap_words": 33554432,
+          "live_blocks": 3405396,
+          "live_words": 12970314,
+          "major_collections": 37,
+          "major_words": 635732178,
+          "minor_collections": 8855,
+          "minor_words": 9237124998,
+          "name": "encode_signature.after",
+          "promoted_words": 619274898,
+          "top_heap_words": 90698752
+        },
+        "after_declaration_interning": null,
+        "after_pruning_summary": {
+          "compactions": 1,
+          "fragments": 7199,
+          "free_words": 20504598,
+          "heap_words": 33554432,
+          "live_blocks": 3429088,
+          "live_words": 13042635,
+          "major_collections": 41,
+          "major_words": 635806702,
+          "minor_collections": 8861,
+          "minor_words": 9241955667,
+          "name": "summarize_elts.after",
+          "promoted_words": 619349422,
+          "top_heap_words": 90698752
+        },
+        "after_index_interning": null,
+        "reachability": []
+      },
+      "write": {
+        "encode_signature_before": {
+          "compactions": 1,
+          "fragments": 1,
+          "free_words": 19061447,
+          "heap_words": 29360128,
+          "live_blocks": 2490247,
+          "live_words": 10298680,
+          "major_collections": 34,
+          "major_words": 613559173,
+          "minor_collections": 8386,
+          "minor_words": 8746882214,
+          "name": "encode_signature.before",
+          "promoted_words": 599011332,
+          "top_heap_words": 90698752
+        },
+        "encode_signature_after": {
+          "compactions": 1,
+          "fragments": 2808,
+          "free_words": 20581306,
+          "heap_words": 33554432,
+          "live_blocks": 3405397,
+          "live_words": 12970318,
+          "major_collections": 37,
+          "major_words": 635849668,
+          "minor_collections": 8855,
+          "minor_words": 9237125061,
+          "name": "encode_signature.after",
+          "promoted_words": 619392388,
+          "top_heap_words": 90698752
+        },
+        "after_declaration_interning": null,
+        "after_pruning_summary": {
+          "compactions": 1,
+          "fragments": 7201,
+          "free_words": 20504592,
+          "heap_words": 33554432,
+          "live_blocks": 3429089,
+          "live_words": 13042639,
+          "major_collections": 41,
+          "major_words": 635924192,
+          "minor_collections": 8861,
+          "minor_words": 9241955730,
+          "name": "summarize_elts.after",
+          "promoted_words": 619466912,
+          "top_heap_words": 90698752
+        },
+        "after_index_interning": null,
+        "reachability": []
+      }
+    },
+    "interning": {
+      "no-write": {
+        "encode_signature_before": {
+          "compactions": 1,
+          "fragments": 0,
+          "free_words": 15277399,
+          "heap_words": 25165824,
+          "live_blocks": 2352438,
+          "live_words": 9888425,
+          "major_collections": 33,
+          "major_words": 613541455,
+          "minor_collections": 8385,
+          "minor_words": 8746883142,
+          "name": "encode_signature.before",
+          "promoted_words": 599577978,
+          "top_heap_words": 99087360
+        },
+        "encode_signature_after": {
+          "compactions": 1,
+          "fragments": 2876,
+          "free_words": 16797191,
+          "heap_words": 29360128,
+          "live_blocks": 3267587,
+          "live_words": 12560061,
+          "major_collections": 37,
+          "major_words": 635815740,
+          "minor_collections": 8854,
+          "minor_words": 9237125988,
+          "name": "encode_signature.after",
+          "promoted_words": 619942824,
+          "top_heap_words": 99087360
+        },
+        "after_declaration_interning": {
+          "compactions": 1,
+          "fragments": 104,
+          "free_words": 19007788,
+          "heap_words": 29360128,
+          "live_blocks": 2490958,
+          "live_words": 10352236,
+          "major_collections": 41,
+          "major_words": 636334284,
+          "minor_collections": 8867,
+          "minor_words": 9249627140,
+          "name": "decls.after",
+          "promoted_words": 620432693,
+          "top_heap_words": 99087360
+        },
+        "after_pruning_summary": {
+          "compactions": 1,
+          "fragments": 4516,
+          "free_words": 18931074,
+          "heap_words": 29360128,
+          "live_blocks": 2514647,
+          "live_words": 10424538,
+          "major_collections": 45,
+          "major_words": 636408808,
+          "minor_collections": 8873,
+          "minor_words": 9254458022,
+          "name": "summarize_elts.after",
+          "promoted_words": 620507217,
+          "top_heap_words": 99087360
+        },
+        "after_index_interning": {
+          "compactions": 1,
+          "fragments": 3195,
+          "free_words": 18957205,
+          "heap_words": 29360128,
+          "live_blocks": 2506773,
+          "live_words": 10399728,
+          "major_collections": 49,
+          "major_words": 636479856,
+          "minor_collections": 8875,
+          "minor_words": 9254641832,
+          "name": "index.after",
+          "promoted_words": 620541397,
+          "top_heap_words": 99087360
+        },
+        "reachability": [
+          {
+            "input_words": 2672432,
+            "output_words": 464588,
+            "phase": "decls",
+            "shared_words": 175947,
+            "union_words": 2961073
+          },
+          {
+            "input_words": 100792,
+            "output_words": 67312,
+            "phase": "index",
+            "shared_words": 52020,
+            "union_words": 116084
+          }
+        ]
+      },
+      "write": {
+        "encode_signature_before": {
+          "compactions": 1,
+          "fragments": 1,
+          "free_words": 15277395,
+          "heap_words": 25165824,
+          "live_blocks": 2352438,
+          "live_words": 9888428,
+          "major_collections": 33,
+          "major_words": 613541538,
+          "minor_collections": 8385,
+          "minor_words": 8746882960,
+          "name": "encode_signature.before",
+          "promoted_words": 599578067,
+          "top_heap_words": 99087360
+        },
+        "encode_signature_after": {
+          "compactions": 1,
+          "fragments": 2874,
+          "free_words": 16797188,
+          "heap_words": 29360128,
+          "live_blocks": 3267588,
+          "live_words": 12560066,
+          "major_collections": 37,
+          "major_words": 635815823,
+          "minor_collections": 8854,
+          "minor_words": 9237125806,
+          "name": "encode_signature.after",
+          "promoted_words": 619942913,
+          "top_heap_words": 99087360
+        },
+        "after_declaration_interning": {
+          "compactions": 1,
+          "fragments": 102,
+          "free_words": 19007785,
+          "heap_words": 29360128,
+          "live_blocks": 2490959,
+          "live_words": 10352241,
+          "major_collections": 41,
+          "major_words": 636334367,
+          "minor_collections": 8867,
+          "minor_words": 9249626958,
+          "name": "decls.after",
+          "promoted_words": 620432782,
+          "top_heap_words": 99087360
+        },
+        "after_pruning_summary": {
+          "compactions": 1,
+          "fragments": 4541,
+          "free_words": 18931044,
+          "heap_words": 29360128,
+          "live_blocks": 2514648,
+          "live_words": 10424543,
+          "major_collections": 45,
+          "major_words": 636408891,
+          "minor_collections": 8873,
+          "minor_words": 9254457840,
+          "name": "summarize_elts.after",
+          "promoted_words": 620507306,
+          "top_heap_words": 99087360
+        },
+        "after_index_interning": {
+          "compactions": 1,
+          "fragments": 3206,
+          "free_words": 18957189,
+          "heap_words": 29360128,
+          "live_blocks": 2506774,
+          "live_words": 10399733,
+          "major_collections": 49,
+          "major_words": 636479939,
+          "minor_collections": 8875,
+          "minor_words": 9254641650,
+          "name": "index.after",
+          "promoted_words": 620541486,
+          "top_heap_words": 99087360
+        },
+        "reachability": [
+          {
+            "input_words": 2672432,
+            "output_words": 464588,
+            "phase": "decls",
+            "shared_words": 175947,
+            "union_words": 2961073
+          },
+          {
+            "input_words": 100792,
+            "output_words": 67312,
+            "phase": "index",
+            "shared_words": 52020,
+            "union_words": 116084
+          }
+        ]
+      }
+    }
+  },
+  "crossed_compiler_and_dependency_graphs": {
+    "interning_compiler__master_dependencies": {
+      "fstar_mempeak_bytes": {
+        "observations": [
+          725590016,
+          725590016,
+          725590016,
+          725590016,
+          725590016
+        ],
+        "median": 725590016,
+        "min": 725590016,
+        "max": 725590016
+      },
+      "max_rss_kb": {
+        "observations": [
+          757368,
+          757404,
+          757520,
+          757380,
+          757368
+        ],
+        "median": 757380,
+        "min": 757368,
+        "max": 757520
+      }
+    },
+    "master_compiler__interning_dependencies": {
+      "fstar_mempeak_bytes": {
+        "observations": [
+          926916608,
+          725590016,
+          725590016,
+          725590016,
+          725590016
+        ],
+        "median": 725590016,
+        "min": 725590016,
+        "max": 926916608
+      },
+      "max_rss_kb": {
+        "observations": [
+          949456,
+          748128,
+          748004,
+          748308,
+          748252
+        ],
+        "median": 748252,
+        "min": 748004,
+        "max": 949456
+      }
+    },
+    "master_compiler__master_dependencies": {
+      "fstar_mempeak_bytes": {
+        "observations": [
+          759144448,
+          759144448,
+          759144448,
+          759144448,
+          759144448
+        ],
+        "median": 759144448,
+        "min": 759144448,
+        "max": 759144448
+      },
+      "max_rss_kb": {
+        "observations": [
+          762584,
+          763740,
+          763960,
+          763808,
+          763416
+        ],
+        "median": 763740,
+        "min": 762584,
+        "max": 763960
+      }
+    },
+    "interning_compiler__interning_dependencies": {
+      "fstar_mempeak_bytes": {
+        "observations": [
+          926916608,
+          926916608,
+          926916608,
+          926916608,
+          926916608
+        ],
+        "median": 926916608,
+        "min": 926916608,
+        "max": 926916608
+      },
+      "max_rss_kb": {
+        "observations": [
+          952020,
+          951804,
+          951848,
+          952324,
+          952252
+        ],
+        "median": 952020,
+        "min": 951804,
+        "max": 952324
+      }
+    }
+  },
+  "file_phase_trace": {
+    "master": {
+      "after_benchmark_child_load": {
+        "file": "BenchUIntChildren.fst",
+        "heap_words": 6812672,
+        "major_collections": 3,
+        "minor_collections": 19,
+        "phase": "cache.after",
+        "top_heap_words": 6812672
+      },
+      "before_final_encoding": {
+        "compactions": 0,
+        "fragments": 0,
+        "free_words": 0,
+        "heap_words": 94893056,
+        "live_blocks": 0,
+        "live_words": 0,
+        "major_collections": 32,
+        "major_words": 613284374,
+        "minor_collections": 8385,
+        "minor_words": 8747012257,
+        "name": "encode_signature.before",
+        "promoted_words": 598736533,
+        "top_heap_words": 94893056
+      }
+    },
+    "interning": {
+      "after_benchmark_child_load": {
+        "file": "BenchUIntChildren.fst",
+        "heap_words": 6812672,
+        "major_collections": 3,
+        "minor_collections": 19,
+        "phase": "cache.after",
+        "top_heap_words": 6812672
+      },
+      "before_final_encoding": {
+        "compactions": 0,
+        "fragments": 0,
+        "free_words": 0,
+        "heap_words": 99087360,
+        "live_blocks": 0,
+        "live_words": 0,
+        "major_collections": 31,
+        "major_words": 613465361,
+        "minor_collections": 8384,
+        "minor_words": 8747013000,
+        "name": "encode_signature.before",
+        "promoted_words": 599501890,
+        "top_heap_words": 99087360
+      }
+    }
+  },
+  "declaration_phase_trace": {
+    "master": {
+      "event_count": 908,
+      "heap_growth_transitions": [
+        {
+          "event_index": 0,
+          "declaration": "type BenchUIntLive500.input_t",
+          "heap_words": 6812672,
+          "major_collections": 3,
+          "minor_collections": 19,
+          "phase": "tc_decl.before",
+          "top_heap_words": 6812672
+        },
+        {
+          "event_index": 1,
+          "declaration": "type BenchUIntLive500.input_t",
+          "heap_words": 11006976,
+          "major_collections": 6,
+          "minor_collections": 70,
+          "phase": "tc_decl.after",
+          "top_heap_words": 11006976
+        },
+        {
+          "event_index": 253,
+          "declaration": "type BenchUIntLive500.state_t",
+          "heap_words": 19395584,
+          "major_collections": 8,
+          "minor_collections": 292,
+          "phase": "tc_decl.after",
+          "top_heap_words": 19395584
+        },
+        {
+          "event_index": 781,
+          "declaration": "type BenchUIntLive500.output_t",
+          "heap_words": 23589888,
+          "major_collections": 9,
+          "minor_collections": 346,
+          "phase": "tc_decl.after",
+          "top_heap_words": 23589888
+        },
+        {
+          "event_index": 905,
+          "declaration": "let step",
+          "heap_words": 94893056,
+          "major_collections": 31,
+          "minor_collections": 7883,
+          "phase": "tc_decl.after",
+          "top_heap_words": 94893056
+        }
+      ],
+      "final_step": [
+        {
+          "declaration": "let step",
+          "heap_words": 23589888,
+          "major_collections": 10,
+          "minor_collections": 382,
+          "phase": "tc_decl.before",
+          "top_heap_words": 23589888
+        },
+        {
+          "declaration": "let step",
+          "heap_words": 94893056,
+          "major_collections": 31,
+          "minor_collections": 7883,
+          "phase": "tc_decl.after",
+          "top_heap_words": 94893056
+        },
+        {
+          "declaration": "let step",
+          "heap_words": 94893056,
+          "major_collections": 31,
+          "minor_collections": 7932,
+          "phase": "encode_sig.before",
+          "top_heap_words": 94893056
+        },
+        {
+          "declaration": "let step",
+          "heap_words": 94893056,
+          "major_collections": 32,
+          "minor_collections": 8385,
+          "phase": "encode_sig.after",
+          "top_heap_words": 94893056
+        }
+      ]
+    },
+    "interning": {
+      "event_count": 908,
+      "heap_growth_transitions": [
+        {
+          "event_index": 0,
+          "declaration": "type BenchUIntLive500.input_t",
+          "heap_words": 6812672,
+          "major_collections": 3,
+          "minor_collections": 19,
+          "phase": "tc_decl.before",
+          "top_heap_words": 6812672
+        },
+        {
+          "event_index": 1,
+          "declaration": "type BenchUIntLive500.input_t",
+          "heap_words": 11006976,
+          "major_collections": 6,
+          "minor_collections": 70,
+          "phase": "tc_decl.after",
+          "top_heap_words": 11006976
+        },
+        {
+          "event_index": 253,
+          "declaration": "type BenchUIntLive500.state_t",
+          "heap_words": 19395584,
+          "major_collections": 8,
+          "minor_collections": 292,
+          "phase": "tc_decl.after",
+          "top_heap_words": 19395584
+        },
+        {
+          "event_index": 905,
+          "declaration": "let step",
+          "heap_words": 99087360,
+          "major_collections": 30,
+          "minor_collections": 7883,
+          "phase": "tc_decl.after",
+          "top_heap_words": 99087360
+        }
+      ],
+      "final_step": [
+        {
+          "declaration": "let step",
+          "heap_words": 19395584,
+          "major_collections": 10,
+          "minor_collections": 382,
+          "phase": "tc_decl.before",
+          "top_heap_words": 19395584
+        },
+        {
+          "declaration": "let step",
+          "heap_words": 99087360,
+          "major_collections": 30,
+          "minor_collections": 7883,
+          "phase": "tc_decl.after",
+          "top_heap_words": 99087360
+        },
+        {
+          "declaration": "let step",
+          "heap_words": 99087360,
+          "major_collections": 30,
+          "minor_collections": 7932,
+          "phase": "encode_sig.before",
+          "top_heap_words": 99087360
+        },
+        {
+          "declaration": "let step",
+          "heap_words": 99087360,
+          "major_collections": 31,
+          "minor_collections": 8384,
+          "phase": "encode_sig.after",
+          "top_heap_words": 99087360
+        }
+      ]
+    }
+  },
+  "bv_control": {
+    "master": {
+      "fstar_mempeak_bytes": {
+        "observations": [
+          725590016,
+          725590016
+        ],
+        "median": 725590016.0,
+        "min": 725590016,
+        "max": 725590016
+      },
+      "max_rss_kb": {
+        "observations": [
+          738096,
+          737636
+        ],
+        "median": 737866.0,
+        "min": 737636,
+        "max": 738096
+      }
+    },
+    "interning": {
+      "fstar_mempeak_bytes": {
+        "observations": [
+          725590016,
+          725590016
+        ],
+        "median": 725590016.0,
+        "min": 725590016,
+        "max": 725590016
+      },
+      "max_rss_kb": {
+        "observations": [
+          762556,
+          762496
+        ],
+        "median": 762526.0,
+        "min": 762496,
+        "max": 762556
+      }
+    }
+  },
+  "bv_forced_gc_liveness": {
+    "master": {
+      "encode_signature_before": {
+        "compactions": 1,
+        "fragments": 0,
+        "free_words": 19266438,
+        "heap_words": 29360128,
+        "live_blocks": 2423422,
+        "live_words": 10093690,
+        "major_collections": 59,
+        "major_words": 1361555288,
+        "minor_collections": 14653,
+        "minor_words": 15305980488,
+        "name": "encode_signature.before",
+        "promoted_words": 1347681567,
+        "top_heap_words": 90698752
+      },
+      "encode_signature_after": {
+        "compactions": 1,
+        "fragments": 11925,
+        "free_words": 18072448,
+        "heap_words": 37748736,
+        "live_blocks": 5438531,
+        "live_words": 19664363,
+        "major_collections": 63,
+        "major_words": 1395066705,
+        "minor_collections": 15199,
+        "minor_words": 15876688320,
+        "name": "encode_signature.after",
+        "promoted_words": 1379416009,
+        "top_heap_words": 90698752
+      },
+      "after_declaration_interning": null,
+      "after_pruning_summary": {
+        "compactions": 1,
+        "fragments": 92850,
+        "free_words": 15993853,
+        "heap_words": 37748736,
+        "live_blocks": 6111217,
+        "live_words": 21662033,
+        "major_collections": 67,
+        "major_words": 1397067267,
+        "minor_collections": 15222,
+        "minor_words": 15899414219,
+        "name": "summarize_elts.after",
+        "promoted_words": 1381416571,
+        "top_heap_words": 90698752
+      },
+      "reachability": []
+    },
+    "interning": {
+      "encode_signature_before": {
+        "compactions": 1,
+        "fragments": 1,
+        "free_words": 15341966,
+        "heap_words": 25165824,
+        "live_blocks": 2333411,
+        "live_words": 9823857,
+        "major_collections": 59,
+        "major_words": 1358859313,
+        "minor_collections": 14653,
+        "minor_words": 15305981238,
+        "name": "encode_signature.before",
+        "promoted_words": 1345429918,
+        "top_heap_words": 90698752
+      },
+      "encode_signature_after": {
+        "compactions": 1,
+        "fragments": 3694,
+        "free_words": 18350512,
+        "heap_words": 37748736,
+        "live_blocks": 5348520,
+        "live_words": 19394530,
+        "major_collections": 64,
+        "major_words": 1392362556,
+        "minor_collections": 15200,
+        "minor_words": 15876689069,
+        "name": "encode_signature.after",
+        "promoted_words": 1377156186,
+        "top_heap_words": 90698752
+      },
+      "after_declaration_interning": {
+        "compactions": 1,
+        "fragments": 30,
+        "free_words": 27321142,
+        "heap_words": 37748736,
+        "live_blocks": 2514034,
+        "live_words": 10427564,
+        "major_collections": 68,
+        "major_words": 1393212612,
+        "minor_collections": 15241,
+        "minor_words": 15918499208,
+        "name": "decls.after",
+        "promoted_words": 1377776863,
+        "top_heap_words": 90698752
+      },
+      "after_pruning_summary": {
+        "compactions": 1,
+        "fragments": 25545,
+        "free_words": 25297976,
+        "heap_words": 37748736,
+        "live_blocks": 3186717,
+        "live_words": 12425215,
+        "major_collections": 72,
+        "major_words": 1395213174,
+        "minor_collections": 15264,
+        "minor_words": 15941225320,
+        "name": "summarize_elts.after",
+        "promoted_words": 1379777425,
+        "top_heap_words": 90698752
+      },
+      "reachability": [
+        {
+          "input_words": 9575912,
+          "output_words": 608927,
+          "phase": "decls",
+          "shared_words": 215179,
+          "union_words": 9969660
+        },
+        {
+          "input_words": 2046820,
+          "output_words": 132779,
+          "phase": "index",
+          "shared_words": 52413,
+          "union_words": 2127186
+        }
+      ]
+    }
+  },
+  "diagnostic_controls": {
+    "forced_gc_after_benchmark_child_load": [
+      {
+        "variant": "interning",
+        "repeat": 3,
+        "fstar_mempeak_bytes": 893362176,
+        "max_rss_kb": 928340,
+        "before_final_encoding": {
+          "compactions": 0,
+          "fragments": 0,
+          "free_words": 0,
+          "heap_words": 99087360,
+          "live_blocks": 0,
+          "live_words": 0,
+          "major_collections": 32,
+          "major_words": 613546205,
+          "minor_collections": 8382,
+          "minor_words": 8746889479,
+          "name": "encode_signature.before",
+          "promoted_words": 599582734,
+          "top_heap_words": 99087360
+        }
+      },
+      {
+        "variant": "master",
+        "repeat": 1,
+        "fstar_mempeak_bytes": 725590016,
+        "max_rss_kb": 752648,
+        "before_final_encoding": {
+          "compactions": 0,
+          "fragments": 0,
+          "free_words": 0,
+          "heap_words": 90698752,
+          "live_blocks": 0,
+          "live_words": 0,
+          "major_collections": 32,
+          "major_words": 613814923,
+          "minor_collections": 8383,
+          "minor_words": 8746888981,
+          "name": "encode_signature.before",
+          "promoted_words": 599267076,
+          "top_heap_words": 90698752
+        }
+      },
+      {
+        "variant": "interning",
+        "repeat": 2,
+        "fstar_mempeak_bytes": 893362176,
+        "max_rss_kb": 928584,
+        "before_final_encoding": {
+          "compactions": 0,
+          "fragments": 0,
+          "free_words": 0,
+          "heap_words": 99087360,
+          "live_blocks": 0,
+          "live_words": 0,
+          "major_collections": 32,
+          "major_words": 613546205,
+          "minor_collections": 8382,
+          "minor_words": 8746889479,
+          "name": "encode_signature.before",
+          "promoted_words": 599582734,
+          "top_heap_words": 99087360
+        }
+      },
+      {
+        "variant": "interning",
+        "repeat": 1,
+        "fstar_mempeak_bytes": 893362176,
+        "max_rss_kb": 928248,
+        "before_final_encoding": {
+          "compactions": 0,
+          "fragments": 0,
+          "free_words": 0,
+          "heap_words": 99087360,
+          "live_blocks": 0,
+          "live_words": 0,
+          "major_collections": 32,
+          "major_words": 613546205,
+          "minor_collections": 8382,
+          "minor_words": 8746889479,
+          "name": "encode_signature.before",
+          "promoted_words": 599582734,
+          "top_heap_words": 99087360
+        }
+      },
+      {
+        "variant": "master",
+        "repeat": 3,
+        "fstar_mempeak_bytes": 725590016,
+        "max_rss_kb": 751248,
+        "before_final_encoding": {
+          "compactions": 0,
+          "fragments": 0,
+          "free_words": 0,
+          "heap_words": 90698752,
+          "live_blocks": 0,
+          "live_words": 0,
+          "major_collections": 32,
+          "major_words": 613846349,
+          "minor_collections": 8383,
+          "minor_words": 8746888735,
+          "name": "encode_signature.before",
+          "promoted_words": 599298508,
+          "top_heap_words": 90698752
+        }
+      },
+      {
+        "variant": "master",
+        "repeat": 2,
+        "fstar_mempeak_bytes": 725590016,
+        "max_rss_kb": 752940,
+        "before_final_encoding": {
+          "compactions": 0,
+          "fragments": 0,
+          "free_words": 0,
+          "heap_words": 90698752,
+          "live_blocks": 0,
+          "live_words": 0,
+          "major_collections": 32,
+          "major_words": 613814923,
+          "minor_collections": 8383,
+          "minor_words": 8746888981,
+          "name": "encode_signature.before",
+          "promoted_words": 599267076,
+          "top_heap_words": 90698752
+        }
+      }
+    ]
+  },
+  "conclusions": {
+    "proven": [
+      "The normal matched UInt peak repeats at 725590016 bytes on master and 926916608 bytes with main interning.",
+      "The higher historical heap capacity is reached during typechecking of the final step declaration, before final encoding or either interning pass.",
+      "The declaration and index interning passes reduce live retained data; they do not create the peak.",
+      "At the forced-GC boundary before final encoding, interning has fewer live words than master.",
+      "Dependency loading itself finishes while both variants still have the same small heap.",
+      "The final step performs the same number of minor collections, but the interning variant completes one fewer major collection and grows to a larger major-heap capacity bucket.",
+      "The crossed compiler/dependency campaign is threshold-sensitive and does not cleanly isolate dependency shape: its master/master control shifted to 759144448 bytes."
+    ],
+    "inferred": [
+      "The regression is an OCaml major-heap growth/high-water effect caused by allocation and collection pacing during typechecking, not a 27.7% increase in reachable compiler data.",
+      "Loaded graph shape, executable layout, and diagnostic allocation can perturb the promotion schedule enough to cross a different capacity threshold; their individual contributions remain unresolved."
+    ],
+    "limitations": [
+      "Intrusive snapshots change the exact capacity bucket, so production peaks and instrumented absolute peaks are not mixed.",
+      "The 2x2 compiler/dependency probe is threshold-sensitive: one crossed cell was bimodal.",
+      "Production binary hashes were rechecked around the campaign but were not embedded in each legacy measurement row; the runner now rejects resumed rows without matching provenance.",
+      "OCAMLRUNPARAM was observed unset before the campaign but was not stored in each legacy measurement row.",
+      "No production GC tuning or forced collection is recommended from this diagnostic evidence."
+    ]
+  },
+  "evidence": {
+    "matched": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/uint-heap-diagnostics-valid/measurements.jsonl",
+      "sha256": "c12727420c6cbb0c7d644af82e075b8ab38cd9194ba7089dec5103e7314cd459"
+    },
+    "liveness": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/uint-heap-liveness/measurements.jsonl",
+      "sha256": "e3e5afa1418c7d1bb2fcabf924e2a632b5a9faaa53f5279a45c3fa0a3eae28c2"
+    },
+    "cross_dependencies": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/uint-heap-cross/measurements.jsonl",
+      "sha256": "1f603643263a2227ec3ca06d8e096c7821f59d8925b5e83526a324c78672b2ab"
+    },
+    "bv_liveness": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-heap-liveness/measurements.jsonl",
+      "sha256": "14d81221eaed07dd610c003adbf54a2279ccf4d9eb7711e2fc218060ca614eaa"
+    },
+    "file_phases": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/uint-decl-phases-v2/measurements.jsonl",
+      "sha256": "c135f75dfb5dcd3333893a8d50da4736c95e0d12c7436d5930d20ed4ab946508"
+    },
+    "declaration_phases": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/uint-decl-phases-v2/measurements.jsonl",
+      "sha256": "c135f75dfb5dcd3333893a8d50da4736c95e0d12c7436d5930d20ed4ab946508"
+    },
+    "after_cache_gc": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/uint-after-cache-gc/measurements.jsonl",
+      "sha256": "7fe276a65eae572d8493e3d73000fea8daa535c8ce7c09c13c9f517846cc15d3"
+    }
+  }
+}

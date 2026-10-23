@@ -5,26 +5,109 @@ from pathlib import Path
 
 
 PHASE_HELPER = r'''
+let heap_analysis_enabled () =
+  match Sys.getenv_opt "FSTAR_HEAP_ANALYSIS" with
+  | None -> false
+  | Some _ -> true
+
+let heap_force_gc () =
+  match Sys.getenv_opt "FSTAR_HEAP_FORCE_GC" with
+  | None -> ()
+  | Some _ -> Gc.full_major ()
+
+let heap_snapshot name =
+  if heap_analysis_enabled () then
+    let stat =
+      match Sys.getenv_opt "FSTAR_HEAP_FORCE_GC" with
+      | None -> Gc.quick_stat ()
+      | Some _ -> Gc.stat ()
+    in
+    Printf.eprintf
+      "HEAP_SNAPSHOT,%s,%.0f,%.0f,%.0f,%d,%d,%d,%d,%d,%d,%d,%d,%d\n%!"
+      name stat.Gc.minor_words stat.Gc.promoted_words stat.Gc.major_words
+      stat.Gc.minor_collections stat.Gc.major_collections
+      stat.Gc.heap_words stat.Gc.top_heap_words stat.Gc.live_words
+      stat.Gc.live_blocks stat.Gc.free_words stat.Gc.fragments
+      stat.Gc.compactions
+
+let heap_boundary name =
+  heap_force_gc ();
+  heap_snapshot name
+
 let sharing_phase name f =
   match Sys.getenv_opt "FSTAR_SHARING_ANALYSIS" with
   | None -> f ()
   | Some _ ->
+      heap_boundary (name ^ ".before");
       let wall0 = Unix.gettimeofday () in
       let cpu0 = Sys.time () in
       let result = f () in
+      let cpu_ms = 1000. *. (Sys.time () -. cpu0) in
+      let wall_ms = 1000. *. (Unix.gettimeofday () -. wall0) in
+      heap_boundary (name ^ ".after");
       Printf.eprintf "SHARING_PHASE,%s,%.3f,%.3f\n%!" name
-        (1000. *. (Unix.gettimeofday () -. wall0))
-        (1000. *. (Sys.time () -. cpu0));
+        wall_ms cpu_ms;
       result
+
+'''
+
+EXIT_SNAPSHOT = r'''
+let () =
+  if heap_analysis_enabled () then
+    let control = Gc.get () in
+    Printf.eprintf
+      "HEAP_CONTROL,%d,%d,%d,%d,%d,%d,%d\n%!"
+      control.Gc.minor_heap_size control.Gc.major_heap_increment
+      control.Gc.space_overhead control.Gc.verbose control.Gc.max_overhead
+      control.Gc.stack_limit control.Gc.allocation_policy;
+  at_exit (fun () -> heap_boundary "process.exit")
 
 '''
 
 SHARING_WRAPPER = r'''
 
+let sharing_heap_analysis_enabled () =
+  match Sys.getenv_opt "FSTAR_HEAP_ANALYSIS" with
+  | None -> false
+  | Some _ -> true
+
+let sharing_heap_force_gc () =
+  match Sys.getenv_opt "FSTAR_HEAP_FORCE_GC" with
+  | None -> ()
+  | Some _ -> Gc.full_major ()
+
+let sharing_heap_snapshot name =
+  if sharing_heap_analysis_enabled () then
+    let stat =
+      match Sys.getenv_opt "FSTAR_HEAP_FORCE_GC" with
+      | None -> Gc.quick_stat ()
+      | Some _ -> Gc.stat ()
+    in
+    Printf.eprintf
+      "HEAP_SNAPSHOT,%s,%.0f,%.0f,%.0f,%d,%d,%d,%d,%d,%d,%d,%d,%d\n%!"
+      name stat.Gc.minor_words stat.Gc.promoted_words stat.Gc.major_words
+      stat.Gc.minor_collections stat.Gc.major_collections
+      stat.Gc.heap_words stat.Gc.top_heap_words stat.Gc.live_words
+      stat.Gc.live_blocks stat.Gc.free_words stat.Gc.fragments
+      stat.Gc.compactions
+
+let sharing_reachable phase input output =
+  match Sys.getenv_opt "FSTAR_HEAP_REACHABLE" with
+  | None -> ()
+  | Some _ ->
+      let input_words = Obj.reachable_words (Obj.repr input) in
+      let output_words = Obj.reachable_words (Obj.repr output) in
+      let union_words = Obj.reachable_words (Obj.repr (input, output)) in
+      Printf.eprintf "HEAP_REACHABLE,%s,%d,%d,%d,%d\n%!"
+        phase input_words output_words union_words
+        (input_words + output_words - union_words)
+
 let sharing_analysis phase f x =
   match Sys.getenv_opt "FSTAR_SHARING_ANALYSIS" with
   | None -> f x
   | Some _ ->
+      sharing_heap_force_gc ();
+      sharing_heap_snapshot (phase ^ ".before");
       let before = Gc.quick_stat () in
       let allocated0 = Gc.allocated_bytes () in
       let wall0 = Unix.gettimeofday () in
@@ -32,6 +115,9 @@ let sharing_analysis phase f x =
       let output = f x in
       let cpu_ms = 1000. *. (Sys.time () -. cpu0) in
       let wall_ms = 1000. *. (Unix.gettimeofday () -. wall0) in
+      sharing_reachable phase x output;
+      sharing_heap_force_gc ();
+      sharing_heap_snapshot (phase ^ ".after");
       let after = Gc.quick_stat () in
       Printf.eprintf
         "SHARING_ANALYSIS,%s,%.3f,%.3f,%.0f,%.0f,%.0f,%d,%d,%d,%d\n%!"
@@ -46,6 +132,35 @@ let sharing_analysis phase f x =
 
 let intern_decls x = sharing_analysis "decls" intern_decls_impl x
 let intern_index x = sharing_analysis "index" intern_index_impl x
+'''
+
+FILE_HEAP_HELPER = r'''let file_heap_snapshot phase fn =
+    match Sys.getenv_opt "FSTAR_HEAP_ANALYSIS" with
+    | None -> ()
+    | Some _ ->
+        let basename = Filename.basename fn in
+        (match Sys.getenv_opt "FSTAR_HEAP_FORCE_AFTER_BENCH_CACHE" with
+         | Some _ when phase = "cache.after" &&
+             (basename = "BenchUIntChildren.fst" ||
+              basename = "BenchBvChildren.fst") -> Gc.full_major ()
+         | _ -> ());
+        let stat = Gc.quick_stat () in
+        Printf.eprintf "HEAP_FILE,%s,%s,%d,%d,%d,%d\n%!"
+          phase basename stat.Gc.heap_words
+          stat.Gc.top_heap_words stat.Gc.major_collections
+          stat.Gc.minor_collections in
+  '''
+
+DECL_HEAP_HELPER = r'''
+let decl_heap_snapshot phase declaration =
+  match Sys.getenv_opt "FSTAR_HEAP_ANALYSIS" with
+  | None -> ()
+  | Some _ ->
+      let stat = Gc.quick_stat () in
+      Printf.eprintf "HEAP_DECL,%s,%s,%d,%d,%d,%d\n%!"
+        phase declaration stat.Gc.heap_words stat.Gc.top_heap_words
+        stat.Gc.major_collections stat.Gc.minor_collections
+
 '''
 
 
@@ -75,6 +190,7 @@ def instrument(root, sharing_only):
     text = encoding.read_text()
     position = text.index("let encode_modul_aux ")
     text = text[:position] + PHASE_HELPER + text[position:]
+    text = text[:position + len(PHASE_HELPER)] + EXIT_SNAPSHOT + text[position + len(PHASE_HELPER):]
     text = replace_once(
         text, "let tmp5 = (encode_signature {",
         'let tmp5 = (sharing_phase "encode_signature" (fun () -> encode_signature {'
@@ -128,6 +244,78 @@ def instrument(root, sharing_only):
         "(fun () -> store_values_to_cache cache_file stage1 stage2 tmp8)) in"
     )
     checked.write_text(text)
+
+    universal = extracted / "FStarC_Universal.ml"
+    text = universal.read_text()
+    text = replace_once(
+        text,
+        "  let tc_source_file = (fun tmp1 ->",
+        "  " + FILE_HEAP_HELPER + "let tc_source_file = (fun tmp1 ->"
+    )
+    text = replace_once(
+        text,
+        "(FStarC_Profiling.profile (fun tmp4 -> (parse fly_deps env fn)) "
+        'tmp3 "FStarC.Universal.tc_source_file.parse")',
+        "(FStarC_Profiling.profile (fun tmp4 -> "
+        '(file_heap_snapshot "parse.before" fn; '
+        "let result = (parse fly_deps env fn) in "
+        'file_heap_snapshot "parse.after" fn; result)) '
+        'tmp3 "FStarC.Universal.tc_source_file.parse")'
+    )
+    text = replace_once(
+        text,
+        "(FStarC_Profiling.profile (fun tmp6 -> (check env1)) "
+        '(Some ((FStarC_Ident.string_of_lid mname))) '
+        '"FStarC.Universal.tc_source_file.check")',
+        "(FStarC_Profiling.profile (fun tmp6 -> "
+        '(file_heap_snapshot "check.before" fn; '
+        "let result = (check env1) in "
+        'file_heap_snapshot "check.after" fn; result)) '
+        "(Some ((FStarC_Ident.string_of_lid mname))) "
+        '"FStarC.Universal.tc_source_file.check")'
+    )
+    text = replace_once(
+        text,
+        "let r = (if tmp3 then None else "
+        "(FStarC_CheckedFiles.load_module_from_cache env fn)) in",
+        "let r = (if tmp3 then None else "
+        '(file_heap_snapshot "cache.before" fn; '
+        "let result = (FStarC_CheckedFiles.load_module_from_cache env fn) in "
+        'file_heap_snapshot "cache.after" fn; result)) in'
+    )
+    universal.write_text(text)
+
+    typechecker = extracted / "FStarC_TypeChecker_Tc.ml"
+    text = typechecker.read_text()
+    position = text.index("let tc_decls__process_one_decl ")
+    text = text[:position] + DECL_HEAP_HELPER + text[position:]
+    text = replace_once(
+        text,
+        "let tmp8 = (FStarC_Errors.with_ctx tmp7 "
+        "(fun tmp8 -> (tc_decl env1 se))) in",
+        'let tmp8 = (decl_heap_snapshot "tc_decl.before" tmp6; '
+        "let result = (FStarC_Errors.with_ctx tmp7 "
+        "(fun tmp8 -> (tc_decl env1 se))) in "
+        'decl_heap_snapshot "tc_decl.after" tmp6; result) in'
+    )
+    text = replace_once(
+        text,
+        '(FStarC_Profiling.profile (fun tmp12 -> (BatList.iter '
+        "(fun se1 -> (((env3).FStarC_TypeChecker_Env.solver)."
+        "FStarC_TypeChecker_Env.encode_sig env3 se1)) ses'3)) "
+        "(Some ((FStarC_Ident.string_of_lid "
+        "(FStarC_TypeChecker_Env.current_module env3)))) "
+        '"FStarC.TypeChecker.Tc.encode_sig");',
+        '(decl_heap_snapshot "encode_sig.before" tmp6; '
+        "(FStarC_Profiling.profile (fun tmp12 -> (BatList.iter "
+        "(fun se1 -> (((env3).FStarC_TypeChecker_Env.solver)."
+        "FStarC_TypeChecker_Env.encode_sig env3 se1)) ses'3)) "
+        "(Some ((FStarC_Ident.string_of_lid "
+        "(FStarC_TypeChecker_Env.current_module env3)))) "
+        '"FStarC.TypeChecker.Tc.encode_sig"); '
+        'decl_heap_snapshot "encode_sig.after" tmp6);'
+    )
+    typechecker.write_text(text)
 
 
 def main():
