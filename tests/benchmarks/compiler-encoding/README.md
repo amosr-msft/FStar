@@ -395,6 +395,46 @@ fusion-only experiment, and the existing combined fusion+reuse evidence. The
 fusion-only compiler is on
 `users/amos/20261022-fstar-smt-sharing-fusion`; it is not a PR branch.
 
+The decisive isolation uses one executable containing renamed extracted
+copies of all three implementations. It measures pass-local wall/CPU and GC
+allocation deltas on the same already-loaded declarations/index, with 30
+shuffled repetitions per artifact. This avoids compiler-binary, solver, and
+input-construction differences while measuring the algorithm itself.
+
+`sharing_pass_bench.ml` is the driver. Build it in the compiler's Dune
+workspace with three extracted modules named `Sharing_original`,
+`Sharing_fusion`, and `Sharing_combined`, copied respectively from
+`b3f9782a6c`, `206126a6dd`, and `befb3db820`. The evidence JSON records their
+extracted-module and executable hashes. The generated files are:
+
+```text
+stage3/dune/_build/default/fstar-guts/fstarc.ml/FStarC_SMTEncoding_Sharing.ml
+```
+
+Copy that path from each built worktree as
+`sharing_original.ml`, `sharing_fusion.ml`, and `sharing_combined.ml` into a
+temporary directory under `stage3/dune`, copy `sharing_pass_bench.ml` there,
+and use this stanza:
+
+```lisp
+(executable
+ (name sharing_pass_bench)
+ (libraries fstarcompiler unix))
+```
+
+Build and run from `stage3/dune`:
+
+```sh
+dune build sharing-bench/sharing_pass_bench.exe
+_build/default/sharing-bench/sharing_pass_bench.exe \
+  /path/to/BenchBvLive500.fst.checked 30 > bv.csv
+_build/default/sharing-bench/sharing_pass_bench.exe \
+  /path/to/BenchUIntLive500.fst.checked 30 > uint.csv
+```
+
+The measured checked-input SHA-256 values are `bc400558...ad6d` for BV and
+`41ed0673...87bd` for UInt.
+
 ## Clean sharing branch benchmarks
 
 `CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream

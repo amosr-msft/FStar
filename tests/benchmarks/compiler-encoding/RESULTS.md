@@ -1075,3 +1075,48 @@ comparison log SHA-256 is `bfd850ef...`. Stage3,
 
 `FUSION_REUSE_ISOLATION.json` records all observations, pass/GC counters,
 artifact validation, exact code distinctions, and evidence hashes.
+
+#### Same-process pass isolation
+
+A final standalone harness links renamed extracted copies of all three exact
+implementations into one executable. It loads one checked artifact once,
+checks all variant outputs structurally equal, forces a full major GC before
+each measurement, and runs 30 repetitions with shuffled variant order.
+`Gc.allocated_bytes` deltas cover the selected pass plus the identical
+clock/statistics epilogue in the driver.
+
+| Live-500 declarations | Original | Fusion only | Fusion + reuse |
+|---|---:|---:|---:|
+| BV median wall | 225.78 ms | 217.91 ms | 215.48 ms |
+| BV allocated words | 42,038,651 | 40,129,011 | 34,096,313 |
+| UInt median wall | 81.25 ms | 78.78 ms | 75.14 ms |
+| UInt allocated words | 12,528,960 | 12,270,709 | 10,373,307 |
+
+Fusion improves declaration time by 3.5% BV / 3.0% UInt and allocation by
+4.5% / 2.1%. Adding unchanged-node/list reuse improves time another 1.1% /
+4.6% and allocation another 15.0% / 15.5%. Reachable output words are
+identical across variants. **Node reuse is therefore not the slowdown
+cause inside the measured pass; it is the larger pass-local allocation
+improvement.** This does not rule out reuse-induced downstream GC/layout
+effects after the pass returns.
+
+Index effects are smaller. BV median time is 24.83 / 24.01 / 23.98 ms for
+original/fusion/combined, with 6.79M / 7.08M / 6.52M allocated words. UInt is
+0.790 / 0.764 / 0.766 ms and 219.8K / 220.5K / 201.8K words. Fusion's callback
+and recursive-result tuples can outweigh the removed intermediate list for
+these small index lists; reuse recovers the allocation.
+
+Both tuple layers are explicit in extracted OCaml: the callback returns
+`(canonical_child, hash)` and every recursive `intern_list` returns
+`(canonical_tail, tail_hash)`. They are not removed at extraction. They
+partially offset fusion's eliminated intermediate-list allocation, but the
+measured declaration pass still allocates 2-5% less. Native allocation-site
+attribution was not instrumented, so this is a structural explanation rather
+than a per-constructor allocation count.
+
+This resolves the algorithm question but not the earlier whole-program timing:
+both algorithms are faster in-process, while separately built compilers showed
+small-to-large total-time increases. Those increases happen outside the
+measured pass or reflect process-level perturbation; this experiment does not
+distinguish downstream phases, GC/binary layout, solver/runtime noise, or
+their interactions. The PR remains reverted.

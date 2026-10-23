@@ -98,10 +98,83 @@
       "combined_median_intern_index_ms": 1
     }
   },
+  "same_process_pass_comparison": {
+    "method": "One executable links renamed extracted original, fusion-only, and fusion+reuse implementations. It loads each checked artifact once, verifies variant outputs structurally equal, forces a full major GC before each measurement, and runs 30 repetitions with shuffled variant order.",
+    "input_identity": "All variants receive the same already-constructed declarations and pruning index within one process.",
+    "allocation_counter": "Gc.allocated_bytes delta converted to OCaml words. This includes the pass plus identical clock/statistics epilogue overhead.",
+    "limitations": "All variants receive one unmodified shared input and use fresh local tables. Structural checks warm original twice and fusion/combined once before measurement. Shuffling reduces order bias but repeated runs still share process-level CPU caches and runtime state.",
+    "harness": {
+      "tracked_driver": "sharing_pass_bench.ml",
+      "tracked_driver_sha256": "a8f21a3d696845286bd0c6dc4a5fbeaee210f9e3e3c1f09646c8fa994d1116a4",
+      "original_extracted_ml_sha256": "3523cdca202e821261d77c867a29720a3b4eeba5881fe3fdea04ff5101431e00",
+      "fusion_extracted_ml_sha256": "6af88fe330a155682fdb302de7985c7e6ce1c19ca3c5dcf540ed1941159d3630",
+      "combined_extracted_ml_sha256": "4faa9c9d664c5845a6a2d8657622f9ccf7623f64023629cd6e9902936a63d246",
+      "executable_sha256": "9eaad0051a940c3d8c810b43cafa408d98c130411e5b080ceabb6c0df13683b3"
+    },
+    "BenchBvLive500": {
+      "declarations": {
+        "original_median_wall_ms": 225.775,
+        "original_wall_range_ms": [221.403, 232.084],
+        "fusion_median_wall_ms": 217.915,
+        "fusion_wall_range_ms": [214.063, 223.578],
+        "combined_median_wall_ms": 215.477,
+        "combined_wall_range_ms": [211.690, 224.935],
+        "fusion_vs_original_time_percent": -3.48,
+        "reuse_vs_fusion_time_percent": -1.12,
+        "original_allocated_words": 42038651,
+        "fusion_allocated_words": 40129011,
+        "combined_allocated_words": 34096313,
+        "fusion_vs_original_allocation_percent": -4.54,
+        "reuse_vs_fusion_allocation_percent": -15.03,
+        "reachable_words_all_variants": 609077
+      },
+      "index": {
+        "original_median_wall_ms": 24.826,
+        "original_wall_range_ms": [24.681, 25.394],
+        "fusion_median_wall_ms": 24.012,
+        "fusion_wall_range_ms": [23.738, 24.666],
+        "combined_median_wall_ms": 23.975,
+        "combined_wall_range_ms": [23.509, 24.579],
+        "original_allocated_words": 6793843,
+        "fusion_allocated_words": 7075805,
+        "combined_allocated_words": 6516241
+      }
+    },
+    "BenchUIntLive500": {
+      "declarations": {
+        "original_median_wall_ms": 81.246,
+        "original_wall_range_ms": [80.598, 82.764],
+        "fusion_median_wall_ms": 78.785,
+        "fusion_wall_range_ms": [78.159, 80.931],
+        "combined_median_wall_ms": 75.139,
+        "combined_wall_range_ms": [74.230, 75.874],
+        "fusion_vs_original_time_percent": -3.03,
+        "reuse_vs_fusion_time_percent": -4.63,
+        "original_allocated_words": 12528960,
+        "fusion_allocated_words": 12270709,
+        "combined_allocated_words": 10373307,
+        "fusion_vs_original_allocation_percent": -2.06,
+        "reuse_vs_fusion_allocation_percent": -15.46,
+        "reachable_words_all_variants": 464736
+      },
+      "index": {
+        "original_median_wall_ms": 0.790,
+        "original_wall_range_ms": [0.773, 0.810],
+        "fusion_median_wall_ms": 0.764,
+        "fusion_wall_range_ms": [0.750, 0.786],
+        "combined_median_wall_ms": 0.766,
+        "combined_wall_range_ms": [0.751, 0.796],
+        "original_allocated_words": 219813,
+        "fusion_allocated_words": 220546,
+        "combined_allocated_words": 201807
+      }
+    }
+  },
   "adapter_allocation_analysis": {
     "original": "Each child produces a hashed-result record; List.map also creates an intermediate cons cell retaining that record, followed by a canonical-value cons cell.",
     "fusion": "Each child still produces a hashed-result record; the callback additionally returns a (canonical value, hash) tuple, and intern_list creates the canonical-value cons cell.",
-    "interpretation": "The new tuple adapter replaces the eliminated intermediate cons allocation with another similarly sized short-lived block. This explains why fused traversal removes traversals but barely changes whole-process allocation."
+    "extracted_ocaml": "Both tuple layers remain explicit: f x returns (y, hy), and recursive intern_list returns (ys, hys).",
+    "interpretation": "The tuple layers offset part of the removed intermediate-list allocation, but do not erase the benefit: same-process pass-local allocation falls 2.1-4.5% with fusion. Native allocation-site attribution was not measured."
   },
   "ordinary_controls": {
     "repetitions_per_variant_mode": 5,
@@ -143,13 +216,16 @@
   "raw_evidence_sha256": {
     "fusion_alternating": "8daaba7547994ca61deeec2a1ca15bb3fbafb9c20689d30c09c820eef37569f3",
     "fusion_profiles": "00199ae3cd9877886db35c34c237c63d2a08e047c792b1892bb7e8f5f3cfa925",
-    "fusion_ordinary": "3a2e1f7cd41e183f0ed0eddaacbfd43b12d45ede91751ba67c84a97708854754"
+    "fusion_ordinary": "3a2e1f7cd41e183f0ed0eddaacbfd43b12d45ede91751ba67c84a97708854754",
+    "same_process_bv": "086ee9c8de9787d1095502bf1a7125828561989b2e0b219b2096000936d53469",
+    "same_process_uint": "a394af4421d7425d155401a520e4ec971b30675ea83dcd62ca2502e2d09913a2"
   },
   "conclusion": {
-    "node_reuse_isolated_as_slowdown_cause": false,
-    "fusion_only_total_time_improved": false,
-    "fusion_only_pass_time_improved": "BV unchanged; UInt modestly lower",
-    "node_reuse_incremental_effect": "not isolated because combined and fusion-only evidence comes from different compiler builds",
-    "interpretation": "Fusion-only already shows small synthetic total-time increases despite unchanged/lower pass counters. Cross-build combined counters show no consistent pass-time pattern but cannot measure reuse incrementally. The large earlier combined total-time result cannot be assigned to reuse; binary/GC layout, solver/runtime noise, or downstream phase perturbation remain possible."
+    "node_reuse_is_direct_pass_local_slowdown_cause": false,
+    "fusion_pass_time_improved": true,
+    "node_reuse_incremental_pass_time_improved": true,
+    "node_reuse_incremental_declaration_allocation_change": "approximately -15%",
+    "fusion_only_whole_program_total_time_improved": false,
+    "interpretation": "Same-process pass-local measurement shows both optimizations improve declaration interning. This rules out direct pass-local node-reuse overhead as the cause. It does not rule out reuse-induced downstream GC/layout effects. Earlier whole-program slowdowns occur outside the measured pass or arise from process-level perturbation."
   }
 }
