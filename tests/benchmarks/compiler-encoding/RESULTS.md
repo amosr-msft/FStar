@@ -1,5 +1,83 @@
 # Sparse controls and representative live workload
 
+## Primary result: current master versus main interning
+
+The primary comparison pins upstream master
+`9a10b2ccb1f17064ec496ee315acc6a5f99adf2a` and compares it with
+`56e8ac31da`, the exact same tree plus only PR #4760's net two-file main
+interning patch. This is the actual no-interning baseline; earlier references
+to `b3f9782a6c` as a “baseline” were comparisons between interning
+implementations, because that commit already includes unconditional
+interning.
+
+Both compilers use OCaml 4.14.2, Z3 5.3.0, identical non-patch sources and
+flags, and compiler-specific dependency caches. Five shuffled uncached-target
+runs per cell give:
+
+| Live-500 | Master observations | Main interning observations | Median change | Checked size |
+|---|---|---|---:|---:|
+| BV write | 37.95, 38.17, 38.41, 38.37, 38.38 s | 37.75, 37.62, 38.45, 38.00, 38.34 s | -1.0% | 21,886,665 → 2,136,307 B (-90.2%) |
+| BV no-write | 37.71, 37.89, 37.64, 37.76, 38.00 s | 37.67, 37.76, 37.95, 37.89, 38.32 s | +0.3% | — |
+| UInt write | 27.56, 27.59, 27.62, 28.67, 28.79 s | 27.60, 27.96, 27.69, 28.35, 29.10 s | +1.2% | 4,619,278 → 1,862,553 B (-59.7%) |
+| UInt no-write | 27.54, 27.80, 28.42, 28.32, 28.77 s | 27.74, 27.99, 27.87, 27.89, 28.52 s | -1.5% | — |
+
+No consistent compilation slowdown reproduces. Write and no-write directions
+reverse by representation and all changes are within the observed ranges.
+These are descriptive five-run medians without significance testing.
+Generic Marshal comparison verifies stage 1, the stored typechecking
+result/index, and declarations are structurally equal across master and
+interning artifacts while ignoring compiler-specific dependency digests.
+
+Three intrusive profile repetitions per cell show the cost/offset directly:
+
+- Final interning costs about 0.31 s BV and 0.10 s UInt.
+- Whole-process OCaml allocation rises only 0.26-0.28% BV and 0.11-0.12%
+  UInt.
+- Pruning summary time falls from about 207 to 158 ms BV and 66 to 45 ms
+  UInt because summaries traverse physically shared declarations.
+- Checked serialization/write falls from about 555 to 42 ms BV and 114 to
+  26 ms UInt.
+- Typechecking/normalization still dominates (about 50 s BV / 40 s UInt);
+  Z3 is only about 0.35/0.92 s, dependency loading about 20 ms, and solver
+  registration about 3-20 ms.
+
+Profile counters overlap and are intrusive, but explain the neutral total:
+serialization and pruning savings offset much of the interning pass,
+especially in write mode. GC counts and heap thresholds move slightly and are
+not uniform. BV's lightweight F* peak heap is unchanged while write RSS falls
+18%; UInt's F* peak heap rises 725.6 → 926.9 MB (+27.7%) and RSS rises about
+20% write / 24% no-write. Intrusive UInt profiles likewise show major
+collections increasing from 32 to 33-35 and top-heap thresholds rising about
+4-8%. Main interning therefore improves cache/load memory strongly but has a
+real workload-specific compile-memory regression on UInt. The historical CI
+time slowdown is not reproduced under this matched current-master comparison.
+
+Dependent checks demonstrate the cache benefit:
+
+| Dependency | Master median | Interning median | Time | Peak RSS |
+|---|---:|---:|---:|---:|
+| BV metadata only | 0.226 s | 0.189 s | -16.1% | -21.4% |
+| BV rooted SMT payload | 1.426 s | 1.247 s | -12.6% | -23.1% |
+| UInt metadata only | 0.151 s | 0.147 s | -2.5% | approximately unchanged |
+| UInt rooted SMT payload | 1.209 s | 1.118 s | -7.5% | -8.3% |
+
+The rooted mode references `step`, forces the exported SMT payload, and runs a
+small query; metadata mode does not start Z3. These are warm-filesystem
+measurements.
+
+Ordinary controls also shrink without a timing penalty:
+`Positivity` is 931,243 → 691,657 bytes with 0.99 → 0.98 s write medians;
+`TestWellFoundedRecursion` is 681,964 → 516,176 bytes with 0.90 → 0.86 s.
+No-write changes are similarly within 0.02 s.
+
+`MASTER_INTERNING_COMPARISON.json` contains all observations, allocation/GC
+profiles, dependent-load results, exact revisions/binary/build/solver
+provenance, validation, commands, and evidence hashes. The current-master
+experiment branch is `users/amos/20261023-fstar-master-smt-sharing`; no PR was
+opened. PR #4760 remains reverted at `debed4e7a9`.
+
+## Historical investigation
+
 Measured on 2026-10-21 at F* commit
 `5275509e26b2e4c3df3ade7df1e01b3e38f9553a` with OCaml 5.2.1, Z3 5.3.0,
 `--smtencoding.elim_box true`, prechecked dependencies, and an uncached target.

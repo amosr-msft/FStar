@@ -50,6 +50,116 @@ assertion BV variants at the largest requested binding count.
 
 See [RESULTS.md](RESULTS.md) for the initial measurements and diagnosis.
 
+## Primary master-versus-interning comparison
+
+`MASTER_INTERNING_COMPARISON.json` is the primary comparison: pinned upstream
+master `9a10b2ccb1` without interning versus
+`users/amos/20261023-fstar-master-smt-sharing` (`56e8ac31da`), the exact same
+tree plus only PR #4760's net two-file main interning patch.
+
+```sh
+export EVIDENCE_ROOT=/path/to/durable/session-files
+git -C /path/to/FStar worktree add \
+  -b users/amos/20261023-fstar-master-no-intern \
+  /workspace/wt11/FStar-master-no-intern 9a10b2ccb1f
+git -C /path/to/FStar worktree add \
+  -b users/amos/20261023-fstar-master-smt-sharing \
+  /workspace/wt11/FStar-master-interning \
+  56e8ac31da209fc56899a225f9a9e6a4b5d37619
+git -C /workspace/wt11/FStar-master-interning diff --name-status \
+  9a10b2ccb1f17064ec496ee315acc6a5f99adf2a..HEAD
+# Expected: only Encode.fst modified and Sharing.fst added.
+for worktree in /workspace/wt11/FStar-master-{no-intern,interning}; do
+  git -C "$worktree" submodule update --init --recursive
+  (cd "$worktree" &&
+    PATH=/path/containing/z3-5.3.0:$PATH make -j8 3)
+done
+./generate.py --out-dir _generated --bindings 500
+```
+
+Use `run_master_comparison.py` for five shuffled write/no-write repetitions,
+`run_master_profiles.py` with binaries produced by
+`instrument_extracted_analysis.py` for phase/GC analysis, and
+`run_master_ordinary.py` for ordinary controls. Existing
+`measure_dependent.py` measures metadata and rooted dependency loading.
+
+Build the detailed-phase binaries from ignored extracted ML:
+
+```sh
+mkdir -p "$EVIDENCE_ROOT/master-instrumented"
+for variant in no-intern interning; do
+  python instrument_extracted_analysis.py \
+    /workspace/wt11/FStar-master-$variant
+  (cd /workspace/wt11/FStar-master-$variant/stage3/dune &&
+    dune build fstarc-full/fstarc3_full.exe)
+  cp /workspace/wt11/FStar-master-$variant/stage3/dune/_build/default/\
+fstarc-full/fstarc3_full.exe \
+    "$EVIDENCE_ROOT/master-instrumented/fstar-$variant.exe"
+done
+```
+
+Before `run_master_comparison.py`, build `BenchBvChildren.fst` and
+`BenchUIntChildren.fst` once into each variant's
+`$EVIDENCE_ROOT/master-comparison/cache-VARIANT` using that variant's compiler,
+`--cache_checked_modules`, `--already_cached Prims,FStar`, and the shared
+`_generated` include root.
+
+```sh
+python run_master_comparison.py \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --generated "$PWD/_generated" --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/master-comparison" --repetitions 5
+
+python run_master_profiles.py \
+  --master-worktree /workspace/wt11/FStar-master-no-intern \
+  --interning-worktree /workspace/wt11/FStar-master-interning \
+  --instrumented-dir "$EVIDENCE_ROOT/master-instrumented" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/master-comparison" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/master-profiles" --repetitions 3
+
+python run_master_ordinary.py \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/master-ordinary" --repetitions 5
+
+python summarize_master_comparison.py \
+  --evidence-root /path/to/session/files \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --z3 /path/to/z3-5.3.0
+```
+
+Generate compiler-specific child caches before the main campaign. For
+dependent loading, generate one write artifact per compiler, then invoke
+`measure_dependent.py` in both `metadata` and `rooted` modes with five
+repetitions, using the matching child/target artifacts.
+
+```sh
+python measure_dependent.py \
+  --fstar /workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe \
+  --smt /path/to/z3-5.3.0 \
+  --dependency "$EVIDENCE_ROOT/master-artifacts/interning/BenchBvLive500.fst.checked" \
+  --child "$EVIDENCE_ROOT/master-artifacts/interning/BenchBvChildren.fst.checked" \
+  --target BenchDependentBv.fst --module BenchBvLive500 \
+  --child-module BenchBvChildren --label interning-bv \
+  --mode rooted --repeats 5
+```
+
+Structural comparison ignores only stage2's compiler-specific dependency
+digests:
+
+```sh
+ocamlfind ocamlopt -linkpkg -package zarith \
+  compare_checked_structure.ml -o "$EVIDENCE_ROOT/compare_checked_structure"
+"$EVIDENCE_ROOT/compare_checked_structure" \
+  "$EVIDENCE_ROOT/master-artifacts/master/BenchBvLive500.fst.checked" \
+  "$EVIDENCE_ROOT/master-artifacts/interning/BenchBvLive500.fst.checked"
+```
+
 ## Reproduction commands
 
 The sparse-control results can be reproduced with the following separate
@@ -312,7 +422,7 @@ The command shape for a checking target is:
 PATH=/path/containing/z3-5.3.0:$PATH
 rm -f _cache/BoolRefinement.fst.checked
 make _cache/BoolRefinement.fst.checked \
-  'RAMON=FSTAR_MEM_REPORT=/tmp/bool.fstarmem /usr/bin/time -v -o /tmp/bool.time'
+  "RAMON=FSTAR_MEM_REPORT=$EVIDENCE_ROOT/bool.fstarmem /usr/bin/time -v -o $EVIDENCE_ROOT/bool.time"
 ```
 
 The expected Custard rejection is forced similarly by removing only
@@ -453,13 +563,15 @@ encoding, pruning summary/index, solver registration, and checked-file
 storage. Both modes modify ignored extracted compiler ML only.
 
 ```sh
-mkdir -p /tmp/matched-instrumented /tmp/matched-instrumented-phases
+mkdir -p "$EVIDENCE_ROOT/matched-instrumented" \
+         "$EVIDENCE_ROOT/matched-instrumented-phases"
 python instrument_extracted_analysis.py --sharing-only \
   /workspace/wt11/FStar-sharing-VARIANT
 (cd /workspace/wt11/FStar-sharing-VARIANT/stage3/dune &&
   dune build fstarc-full/fstarc3_full.exe)
 cp /workspace/wt11/FStar-sharing-VARIANT/stage3/dune/_build/default/\
-fstarc-full/fstarc3_full.exe /tmp/matched-instrumented/fstar-VARIANT.exe
+fstarc-full/fstarc3_full.exe \
+  "$EVIDENCE_ROOT/matched-instrumented/fstar-VARIANT.exe"
 
 # Restore the three generated ML files from the clean stage1 extraction:
 for file in FStarC_SMTEncoding_Sharing.ml FStarC_SMTEncoding_Encode.ml \
@@ -474,7 +586,7 @@ python instrument_extracted_analysis.py \
   dune build fstarc-full/fstarc3_full.exe)
 cp /workspace/wt11/FStar-sharing-VARIANT/stage3/dune/_build/default/\
 fstarc-full/fstarc3_full.exe \
-  /tmp/matched-instrumented-phases/fstar-VARIANT.exe
+  "$EVIDENCE_ROOT/matched-instrumented-phases/fstar-VARIANT.exe"
 ```
 
 `run_matched_ordinary.py` measures the two ordinary controls. After all raw
@@ -508,25 +620,29 @@ Run the campaigns from this directory (all paths are examples):
 ```sh
 python run_matched_variants.py \
   --worktree-prefix /workspace/wt11/FStar-sharing \
-  --generated "$PWD/_generated" --output /tmp/matched-e2e \
+  --generated "$PWD/_generated" --output "$EVIDENCE_ROOT/matched-e2e" \
   --z3-bin-dir /path/to/z3/bin --repetitions 5
 
 python run_matched_profiles.py \
   --worktree-prefix /workspace/wt11/FStar-sharing \
-  --instrumented-dir /tmp/matched-instrumented --generated "$PWD/_generated" \
-  --cache-root /tmp/matched-e2e --output /tmp/matched-profiles \
+  --instrumented-dir "$EVIDENCE_ROOT/matched-instrumented" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/matched-e2e" \
+  --output "$EVIDENCE_ROOT/matched-profiles" \
   --z3-bin-dir /path/to/z3/bin --repetitions 3
 
 python run_matched_detailed_phases.py \
   --worktree-prefix /workspace/wt11/FStar-sharing \
-  --instrumented-dir /tmp/matched-instrumented-phases \
+  --instrumented-dir "$EVIDENCE_ROOT/matched-instrumented-phases" \
   --generated "$PWD/_generated" \
-  --cache-root /tmp/matched-e2e --output /tmp/matched-phases \
+  --cache-root "$EVIDENCE_ROOT/matched-e2e" \
+  --output "$EVIDENCE_ROOT/matched-phases" \
   --z3-bin-dir /path/to/z3/bin --repetitions 2
 
 python run_matched_ordinary.py \
   --worktree-prefix /workspace/wt11/FStar-sharing \
-  --output /tmp/matched-ordinary --z3-bin-dir /path/to/z3/bin \
+  --output "$EVIDENCE_ROOT/matched-ordinary" \
+  --z3-bin-dir /path/to/z3/bin \
   --repetitions 5
 ```
 

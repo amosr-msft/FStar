@@ -58,10 +58,16 @@ def replace_once(text, old, new):
 def instrument(root, sharing_only):
     extracted = root / "stage2/fstarc.ml"
     sharing = extracted / "FStarC_SMTEncoding_Sharing.ml"
-    text = sharing.read_text()
-    text = replace_once(text, "let intern_decls (declarations :", "let intern_decls_impl (declarations :")
-    text = replace_once(text, "let intern_index (index :", "let intern_index_impl (index :")
-    sharing.write_text(text + SHARING_WRAPPER)
+    if sharing.exists():
+        text = sharing.read_text()
+        text = replace_once(
+            text, "let intern_decls (declarations :",
+            "let intern_decls_impl (declarations :"
+        )
+        text = replace_once(
+            text, "let intern_index (index :", "let intern_index_impl (index :"
+        )
+        sharing.write_text(text + SHARING_WRAPPER)
     if sharing_only:
         return
 
@@ -79,20 +85,36 @@ def instrument(root, sharing_only):
         "(modul).FStarC_Syntax_Syntax.declarations) in",
         "(modul).FStarC_Syntax_Syntax.declarations)) in", 1
     )
-    text = replace_once(
-        text,
-        "let index = (FStarC_SMTEncoding_Pruning.summarize_elts decls1) in",
-        'let index = (sharing_phase "summarize_elts" '
-        "(fun () -> FStarC_SMTEncoding_Pruning.summarize_elts decls1)) in"
-    )
-    text = replace_once(
-        text,
-        "(if give_to_z3 then (give_index_to_z3_and_set_env env2 name index1 "
-        "(fun tmp6 -> decls1)) else ());",
-        '(if give_to_z3 then (sharing_phase "give_index_to_z3" '
-        "(fun () -> give_index_to_z3_and_set_env env2 name index1 "
-        "(fun tmp6 -> decls1))) else ());"
-    )
+    if sharing.exists():
+        text = replace_once(
+            text,
+            "let index = (FStarC_SMTEncoding_Pruning.summarize_elts decls1) in",
+            'let index = (sharing_phase "summarize_elts" '
+            "(fun () -> FStarC_SMTEncoding_Pruning.summarize_elts decls1)) in"
+        )
+        text = replace_once(
+            text,
+            "(if give_to_z3 then (give_index_to_z3_and_set_env env2 name index1 "
+            "(fun tmp6 -> decls1)) else ());",
+            '(if give_to_z3 then (sharing_phase "give_index_to_z3" '
+            "(fun () -> give_index_to_z3_and_set_env env2 name index1 "
+            "(fun tmp6 -> decls1))) else ());"
+        )
+    else:
+        text = replace_once(
+            text,
+            "let index = (FStarC_SMTEncoding_Pruning.summarize_elts decls) in",
+            'let index = (sharing_phase "summarize_elts" '
+            "(fun () -> FStarC_SMTEncoding_Pruning.summarize_elts decls)) in"
+        )
+        text = replace_once(
+            text,
+            "(if give_to_z3 then (give_index_to_z3_and_set_env env2 name index "
+            "(fun tmp6 -> decls)) else ());",
+            '(if give_to_z3 then (sharing_phase "give_index_to_z3" '
+            "(fun () -> give_index_to_z3_and_set_env env2 name index "
+            "(fun tmp6 -> decls))) else ());"
+        )
     encoding.write_text(text)
 
     checked = extracted / "FStarC_CheckedFiles.ml"

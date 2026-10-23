@@ -1,0 +1,3573 @@
+{
+  "date": "2026-10-23",
+  "primary_question": "Pinned current upstream master without interning versus the same master plus only PR #4760's net main interning patch",
+  "provenance": {
+    "master": {
+      "commit": "9a10b2ccb1f17064ec496ee315acc6a5f99adf2a",
+      "version": [
+        "F* 2026.10.18~dev",
+        "platform=Linux_x86_64",
+        "system=Unix",
+        "compiler=OCaml 4.14.2",
+        "date=2026-10-23 04:47:39 +0000",
+        "commit=9a10b2ccb1f17064ec496ee315acc6a5f99adf2a"
+      ],
+      "binary_sha256": "6e72b0c3fe8acea856f60426df502a09661a61a28cd418074a813eb27d08c4d8",
+      "binary_bytes": 54718872
+    },
+    "interning": {
+      "commit": "56e8ac31da209fc56899a225f9a9e6a4b5d37619",
+      "version": [
+        "F* 2026.10.18~dev",
+        "platform=Linux_x86_64",
+        "system=Unix",
+        "compiler=OCaml 4.14.2",
+        "date=2026-10-23 06:17:27 +0000",
+        "commit=56e8ac31da209fc56899a225f9a9e6a4b5d37619"
+      ],
+      "binary_sha256": "be0e6836f994c64016a0da886644cf297fc0163ee12abae6e04dbc8e19778788",
+      "binary_bytes": 54814664
+    }
+  },
+  "patch_scope": [
+    "M\tsrc/smtencoding/FStarC.SMTEncoding.Encode.fst",
+    "A\tsrc/smtencoding/FStarC.SMTEncoding.Sharing.fst"
+  ],
+  "z3": {
+    "version": "Z3 version 5.3.0 - 64 bit",
+    "sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3"
+  },
+  "end_to_end": {
+    "repetitions_per_cell": 5,
+    "modules": {
+      "BenchBvLive500": {
+        "master": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                37.95,
+                38.17,
+                38.41,
+                38.37,
+                38.38
+              ],
+              "median": 38.37,
+              "min": 37.95,
+              "max": 38.41
+            },
+            "user_seconds": {
+              "observations": [
+                37.41,
+                37.61,
+                37.85,
+                37.8,
+                37.79
+              ],
+              "median": 37.79,
+              "min": 37.41,
+              "max": 37.85
+            },
+            "system_seconds": {
+              "observations": [
+                0.57,
+                0.59,
+                0.59,
+                0.59,
+                0.58
+              ],
+              "median": 0.59,
+              "min": 0.57,
+              "max": 0.59
+            },
+            "max_rss_kb": {
+              "observations": [
+                951360,
+                952300,
+                951896,
+                951920,
+                951812
+              ],
+              "median": 951896,
+              "min": 951360,
+              "max": 952300
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "checked_bytes": {
+              "observations": [
+                21886665,
+                21886665,
+                21886665,
+                21886665,
+                21886665
+              ],
+              "median": 21886665,
+              "min": 21886665,
+              "max": 21886665
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                37.71,
+                37.89,
+                37.64,
+                37.76,
+                38.0
+              ],
+              "median": 37.76,
+              "min": 37.64,
+              "max": 38.0
+            },
+            "user_seconds": {
+              "observations": [
+                37.31,
+                37.48,
+                37.21,
+                37.35,
+                37.59
+              ],
+              "median": 37.35,
+              "min": 37.21,
+              "max": 37.59
+            },
+            "system_seconds": {
+              "observations": [
+                0.42,
+                0.44,
+                0.45,
+                0.43,
+                0.44
+              ],
+              "median": 0.44,
+              "min": 0.42,
+              "max": 0.45
+            },
+            "max_rss_kb": {
+              "observations": [
+                738752,
+                738800,
+                739192,
+                738668,
+                739260
+              ],
+              "median": 738800,
+              "min": 738668,
+              "max": 739260
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "interning": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                37.75,
+                37.62,
+                38.45,
+                38.0,
+                38.34
+              ],
+              "median": 38.0,
+              "min": 37.62,
+              "max": 38.45
+            },
+            "user_seconds": {
+              "observations": [
+                37.31,
+                37.2,
+                38.05,
+                37.58,
+                37.91
+              ],
+              "median": 37.58,
+              "min": 37.2,
+              "max": 38.05
+            },
+            "system_seconds": {
+              "observations": [
+                0.46,
+                0.45,
+                0.42,
+                0.45,
+                0.46
+              ],
+              "median": 0.45,
+              "min": 0.42,
+              "max": 0.46
+            },
+            "max_rss_kb": {
+              "observations": [
+                779516,
+                778900,
+                779604,
+                778800,
+                779384
+              ],
+              "median": 779384,
+              "min": 778800,
+              "max": 779604
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "checked_bytes": {
+              "observations": [
+                2136307,
+                2136307,
+                2136307,
+                2136307,
+                2136307
+              ],
+              "median": 2136307,
+              "min": 2136307,
+              "max": 2136307
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                37.67,
+                37.76,
+                37.95,
+                37.89,
+                38.32
+              ],
+              "median": 37.89,
+              "min": 37.67,
+              "max": 38.32
+            },
+            "user_seconds": {
+              "observations": [
+                37.22,
+                37.34,
+                37.53,
+                37.45,
+                37.9
+              ],
+              "median": 37.45,
+              "min": 37.22,
+              "max": 37.9
+            },
+            "system_seconds": {
+              "observations": [
+                0.48,
+                0.45,
+                0.44,
+                0.46,
+                0.44
+              ],
+              "median": 0.45,
+              "min": 0.44,
+              "max": 0.48
+            },
+            "max_rss_kb": {
+              "observations": [
+                778280,
+                762872,
+                763020,
+                763040,
+                778212
+              ],
+              "median": 763040,
+              "min": 762872,
+              "max": 778280
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                759144448,
+                725590016,
+                725590016,
+                725590016,
+                759144448
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 759144448
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        }
+      },
+      "BenchUIntLive500": {
+        "master": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                27.56,
+                27.59,
+                27.62,
+                28.67,
+                28.79
+              ],
+              "median": 27.62,
+              "min": 27.56,
+              "max": 28.79
+            },
+            "user_seconds": {
+              "observations": [
+                27.1,
+                27.11,
+                27.13,
+                28.15,
+                28.28
+              ],
+              "median": 27.13,
+              "min": 27.1,
+              "max": 28.28
+            },
+            "system_seconds": {
+              "observations": [
+                0.48,
+                0.51,
+                0.5,
+                0.54,
+                0.54
+              ],
+              "median": 0.51,
+              "min": 0.48,
+              "max": 0.54
+            },
+            "max_rss_kb": {
+              "observations": [
+                807068,
+                806736,
+                807096,
+                806584,
+                806636
+              ],
+              "median": 806736,
+              "min": 806584,
+              "max": 807096
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "checked_bytes": {
+              "observations": [
+                4619278,
+                4619278,
+                4619278,
+                4619278,
+                4619278
+              ],
+              "median": 4619278,
+              "min": 4619278,
+              "max": 4619278
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                27.54,
+                27.8,
+                28.42,
+                28.32,
+                28.77
+              ],
+              "median": 28.32,
+              "min": 27.54,
+              "max": 28.77
+            },
+            "user_seconds": {
+              "observations": [
+                27.11,
+                27.36,
+                27.98,
+                27.85,
+                28.32
+              ],
+              "median": 27.85,
+              "min": 27.11,
+              "max": 28.32
+            },
+            "system_seconds": {
+              "observations": [
+                0.45,
+                0.46,
+                0.47,
+                0.49,
+                0.47
+              ],
+              "median": 0.47,
+              "min": 0.45,
+              "max": 0.49
+            },
+            "max_rss_kb": {
+              "observations": [
+                758460,
+                758768,
+                757872,
+                746556,
+                746412
+              ],
+              "median": 757872,
+              "min": 746412,
+              "max": 758768
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "interning": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                27.6,
+                27.96,
+                27.69,
+                28.35,
+                29.1
+              ],
+              "median": 27.96,
+              "min": 27.6,
+              "max": 29.1
+            },
+            "user_seconds": {
+              "observations": [
+                27.05,
+                27.36,
+                27.14,
+                27.76,
+                28.56
+              ],
+              "median": 27.36,
+              "min": 27.05,
+              "max": 28.56
+            },
+            "system_seconds": {
+              "observations": [
+                0.57,
+                0.62,
+                0.57,
+                0.61,
+                0.55
+              ],
+              "median": 0.57,
+              "min": 0.55,
+              "max": 0.62
+            },
+            "max_rss_kb": {
+              "observations": [
+                969364,
+                968916,
+                969468,
+                968940,
+                926420
+              ],
+              "median": 968940,
+              "min": 926420,
+              "max": 969468
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                893362176
+              ],
+              "median": 926916608,
+              "min": 893362176,
+              "max": 926916608
+            },
+            "checked_bytes": {
+              "observations": [
+                1862553,
+                1862553,
+                1862553,
+                1862553,
+                1862553
+              ],
+              "median": 1862553,
+              "min": 1862553,
+              "max": 1862553
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                27.74,
+                27.99,
+                27.87,
+                27.89,
+                28.52
+              ],
+              "median": 27.89,
+              "min": 27.74,
+              "max": 28.52
+            },
+            "user_seconds": {
+              "observations": [
+                27.17,
+                27.44,
+                27.34,
+                27.33,
+                27.99
+              ],
+              "median": 27.34,
+              "min": 27.17,
+              "max": 27.99
+            },
+            "system_seconds": {
+              "observations": [
+                0.6,
+                0.57,
+                0.56,
+                0.58,
+                0.55
+              ],
+              "median": 0.57,
+              "min": 0.55,
+              "max": 0.6
+            },
+            "max_rss_kb": {
+              "observations": [
+                939496,
+                939736,
+                939376,
+                939772,
+                939260
+              ],
+              "median": 939496,
+              "min": 939260,
+              "max": 939772
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "profiles": {
+    "repetitions_per_cell": 3,
+    "modules": {
+      "BenchBvLive500": {
+        "master": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                55.43,
+                55.08,
+                55.38
+              ],
+              "median": 55.38,
+              "min": 55.08,
+              "max": 55.43
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                49728,
+                49345,
+                49699
+              ],
+              "median": 49699,
+              "min": 49345,
+              "max": 49728
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                30234,
+                29909,
+                30554
+              ],
+              "median": 30234,
+              "min": 29909,
+              "max": 30554
+            },
+            "encode_sig_ms": {
+              "observations": [
+                4576,
+                4516,
+                4510
+              ],
+              "median": 4516,
+              "min": 4510,
+              "max": 4576
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                4627.203,
+                4611.345,
+                4587.71
+              ],
+              "median": 4611.345,
+              "min": 4587.71,
+              "max": 4627.203
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                206.545,
+                208.759,
+                197.41
+              ],
+              "median": 206.545,
+              "min": 197.41,
+              "max": 208.759
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                20.186,
+                21.91,
+                20.623
+              ],
+              "median": 20.623,
+              "min": 20.186,
+              "max": 21.91
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                539.088,
+                581.72,
+                555.246
+              ],
+              "median": 555.246,
+              "min": 539.088,
+              "max": 581.72
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                378,
+                353,
+                361
+              ],
+              "median": 361,
+              "min": 353,
+              "max": 378
+            },
+            "checked_files_ms": {
+              "observations": [
+                20,
+                19,
+                21
+              ],
+              "median": 20,
+              "min": 19,
+              "max": 21
+            },
+            "allocated_words": {
+              "observations": [
+                17217259672,
+                17217259670,
+                17217259670
+              ],
+              "median": 17217259670,
+              "min": 17217259670,
+              "max": 17217259672
+            },
+            "promoted_words": {
+              "observations": [
+                1372851944,
+                1372851944,
+                1372851944
+              ],
+              "median": 1372851944,
+              "min": 1372851944,
+              "max": 1372851944
+            },
+            "major_words": {
+              "observations": [
+                1392135530,
+                1392135530,
+                1392135530
+              ],
+              "median": 1392135530,
+              "min": 1392135530,
+              "max": 1392135530
+            },
+            "minor_collections": {
+              "observations": [
+                16455,
+                16455,
+                16455
+              ],
+              "median": 16455,
+              "min": 16455,
+              "max": 16455
+            },
+            "major_collections": {
+              "observations": [
+                58,
+                58,
+                58
+              ],
+              "median": 58,
+              "min": 58,
+              "max": 58
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056,
+                94893056
+              ],
+              "median": 94893056,
+              "min": 94893056,
+              "max": 94893056
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                54.88,
+                54.59,
+                55.31
+              ],
+              "median": 54.88,
+              "min": 54.59,
+              "max": 55.31
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                49745,
+                49423,
+                50203
+              ],
+              "median": 49745,
+              "min": 49423,
+              "max": 50203
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                30315,
+                30200,
+                30577
+              ],
+              "median": 30315,
+              "min": 30200,
+              "max": 30577
+            },
+            "encode_sig_ms": {
+              "observations": [
+                4605,
+                4564,
+                4606
+              ],
+              "median": 4605,
+              "min": 4564,
+              "max": 4606
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                4619.061,
+                4635.555,
+                4582.336
+              ],
+              "median": 4619.061,
+              "min": 4582.336,
+              "max": 4635.555
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                191.738,
+                193.03,
+                190.023
+              ],
+              "median": 191.738,
+              "min": 190.023,
+              "max": 193.03
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                19.072,
+                20.691,
+                19.112
+              ],
+              "median": 19.112,
+              "min": 19.072,
+              "max": 20.691
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                353,
+                356,
+                355
+              ],
+              "median": 355,
+              "min": 353,
+              "max": 356
+            },
+            "checked_files_ms": {
+              "observations": [
+                18,
+                19,
+                20
+              ],
+              "median": 19,
+              "min": 18,
+              "max": 20
+            },
+            "allocated_words": {
+              "observations": [
+                17213720050,
+                17213719525,
+                17213719525
+              ],
+              "median": 17213719525,
+              "min": 17213719525,
+              "max": 17213720050
+            },
+            "promoted_words": {
+              "observations": [
+                1370579819,
+                1373789458,
+                1373789458
+              ],
+              "median": 1373789458,
+              "min": 1370579819,
+              "max": 1373789458
+            },
+            "major_words": {
+              "observations": [
+                1386327891,
+                1389537530,
+                1389537530
+              ],
+              "median": 1389537530,
+              "min": 1386327891,
+              "max": 1389537530
+            },
+            "minor_collections": {
+              "observations": [
+                16454,
+                16454,
+                16454
+              ],
+              "median": 16454,
+              "min": 16454,
+              "max": 16454
+            },
+            "major_collections": {
+              "observations": [
+                58,
+                58,
+                58
+              ],
+              "median": 58,
+              "min": 58,
+              "max": 58
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752,
+                90698752
+              ],
+              "median": 90698752,
+              "min": 90698752,
+              "max": 90698752
+            }
+          }
+        },
+        "interning": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                54.8,
+                54.87,
+                55.06
+              ],
+              "median": 54.87,
+              "min": 54.8,
+              "max": 55.06
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                49443,
+                49340,
+                49676
+              ],
+              "median": 49443,
+              "min": 49340,
+              "max": 49676
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                29997,
+                30022,
+                30300
+              ],
+              "median": 30022,
+              "min": 29997,
+              "max": 30300
+            },
+            "encode_sig_ms": {
+              "observations": [
+                4785,
+                4605,
+                4652
+              ],
+              "median": 4652,
+              "min": 4605,
+              "max": 4785
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                4541.711,
+                4687.745,
+                4538.59
+              ],
+              "median": 4541.711,
+              "min": 4538.59,
+              "max": 4687.745
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                155.85,
+                161.063,
+                158.019
+              ],
+              "median": 158.019,
+              "min": 155.85,
+              "max": 161.063
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                14.674,
+                17.309,
+                15.243
+              ],
+              "median": 15.243,
+              "min": 14.674,
+              "max": 17.309
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                39.709,
+                42.912,
+                41.557
+              ],
+              "median": 41.557,
+              "min": 39.709,
+              "max": 42.912
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                354,
+                353,
+                361
+              ],
+              "median": 354,
+              "min": 353,
+              "max": 361
+            },
+            "checked_files_ms": {
+              "observations": [
+                17,
+                18,
+                18
+              ],
+              "median": 18,
+              "min": 17,
+              "max": 18
+            },
+            "allocated_words": {
+              "observations": [
+                17262526657,
+                17262527183,
+                17262526657
+              ],
+              "median": 17262526657,
+              "min": 17262526657,
+              "max": 17262527183
+            },
+            "promoted_words": {
+              "observations": [
+                1380147151,
+                1381678943,
+                1380147151
+              ],
+              "median": 1380147151,
+              "min": 1380147151,
+              "max": 1381678943
+            },
+            "major_words": {
+              "observations": [
+                1396385840,
+                1397917632,
+                1396385840
+              ],
+              "median": 1396385840,
+              "min": 1396385840,
+              "max": 1397917632
+            },
+            "minor_collections": {
+              "observations": [
+                16501,
+                16501,
+                16501
+              ],
+              "median": 16501,
+              "min": 16501,
+              "max": 16501
+            },
+            "major_collections": {
+              "observations": [
+                60,
+                60,
+                60
+              ],
+              "median": 60,
+              "min": 60,
+              "max": 60
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752,
+                90698752
+              ],
+              "median": 90698752,
+              "min": 90698752,
+              "max": 90698752
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                54.82,
+                56.38,
+                54.17
+              ],
+              "median": 54.82,
+              "min": 54.17,
+              "max": 56.38
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                49478,
+                50791,
+                48726
+              ],
+              "median": 49478,
+              "min": 48726,
+              "max": 50791
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                30110,
+                30975,
+                29483
+              ],
+              "median": 30110,
+              "min": 29483,
+              "max": 30975
+            },
+            "encode_sig_ms": {
+              "observations": [
+                4603,
+                4759,
+                4576
+              ],
+              "median": 4603,
+              "min": 4576,
+              "max": 4759
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                4546.014,
+                4793.512,
+                4633.356
+              ],
+              "median": 4633.356,
+              "min": 4546.014,
+              "max": 4793.512
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                154.606,
+                158.696,
+                158.023
+              ],
+              "median": 158.023,
+              "min": 154.606,
+              "max": 158.696
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                16.425,
+                17.039,
+                17.66
+              ],
+              "median": 17.039,
+              "min": 16.425,
+              "max": 17.66
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                351,
+                356,
+                353
+              ],
+              "median": 353,
+              "min": 351,
+              "max": 356
+            },
+            "checked_files_ms": {
+              "observations": [
+                17,
+                18,
+                19
+              ],
+              "median": 18,
+              "min": 17,
+              "max": 19
+            },
+            "allocated_words": {
+              "observations": [
+                17262111877,
+                17262111351,
+                17262111351
+              ],
+              "median": 17262111351,
+              "min": 17262111351,
+              "max": 17262111877
+            },
+            "promoted_words": {
+              "observations": [
+                1382287587,
+                1380496055,
+                1380496055
+              ],
+              "median": 1380496055,
+              "min": 1380496055,
+              "max": 1382287587
+            },
+            "major_words": {
+              "observations": [
+                1398115601,
+                1396324069,
+                1396324069
+              ],
+              "median": 1396324069,
+              "min": 1396324069,
+              "max": 1398115601
+            },
+            "minor_collections": {
+              "observations": [
+                16501,
+                16500,
+                16500
+              ],
+              "median": 16500,
+              "min": 16500,
+              "max": 16501
+            },
+            "major_collections": {
+              "observations": [
+                59,
+                59,
+                59
+              ],
+              "median": 59,
+              "min": 59,
+              "max": 59
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                90698752,
+                90698752
+              ],
+              "median": 90698752,
+              "min": 90698752,
+              "max": 94893056
+            }
+          }
+        },
+        "interning_pass": {
+          "write": {
+            "intern_decls_wall_ms": {
+              "observations": [
+                265.692,
+                278.301,
+                279.368
+              ],
+              "median": 278.301,
+              "min": 265.692,
+              "max": 279.368
+            },
+            "intern_decls_allocated_words": {
+              "observations": [
+                42038647,
+                42038647,
+                42038647
+              ],
+              "median": 42038647,
+              "min": 42038647,
+              "max": 42038647
+            }
+          },
+          "no-write": {
+            "intern_decls_wall_ms": {
+              "observations": [
+                282.86,
+                284.294,
+                286.443
+              ],
+              "median": 284.294,
+              "min": 282.86,
+              "max": 286.443
+            },
+            "intern_decls_allocated_words": {
+              "observations": [
+                42038647,
+                42038647,
+                42038647
+              ],
+              "median": 42038647,
+              "min": 42038647,
+              "max": 42038647
+            }
+          }
+        },
+        "interning_index": [
+          {
+            "mode": "no-write",
+            "repeat": 1,
+            "wall_ms": 29.419,
+            "allocated_words": 6793839
+          },
+          {
+            "mode": "write",
+            "repeat": 2,
+            "wall_ms": 28.792,
+            "allocated_words": 6793839
+          },
+          {
+            "mode": "write",
+            "repeat": 3,
+            "wall_ms": 31.253,
+            "allocated_words": 6793839
+          },
+          {
+            "mode": "no-write",
+            "repeat": 2,
+            "wall_ms": 29.692,
+            "allocated_words": 6793839
+          },
+          {
+            "mode": "no-write",
+            "repeat": 3,
+            "wall_ms": 33.382,
+            "allocated_words": 6793839
+          },
+          {
+            "mode": "write",
+            "repeat": 1,
+            "wall_ms": 31.866,
+            "allocated_words": 6793839
+          }
+        ]
+      },
+      "BenchUIntLive500": {
+        "master": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                44.44,
+                44.49,
+                44.57
+              ],
+              "median": 44.49,
+              "min": 44.44,
+              "max": 44.57
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                40032,
+                39969,
+                40148
+              ],
+              "median": 40032,
+              "min": 39969,
+              "max": 40148
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                12937,
+                13005,
+                13025
+              ],
+              "median": 13005,
+              "min": 12937,
+              "max": 13025
+            },
+            "encode_sig_ms": {
+              "observations": [
+                4007,
+                3952,
+                3921
+              ],
+              "median": 3952,
+              "min": 3921,
+              "max": 4007
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                3909.994,
+                4018.689,
+                3890.558
+              ],
+              "median": 3909.994,
+              "min": 3890.558,
+              "max": 4018.689
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                68.329,
+                64.677,
+                66.232
+              ],
+              "median": 66.232,
+              "min": 64.677,
+              "max": 68.329
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.158,
+                3.15,
+                3.445
+              ],
+              "median": 3.158,
+              "min": 3.15,
+              "max": 3.445
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                113.744,
+                111.424,
+                126.862
+              ],
+              "median": 113.744,
+              "min": 111.424,
+              "max": 126.862
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                948,
+                940,
+                910
+              ],
+              "median": 940,
+              "min": 910,
+              "max": 948
+            },
+            "checked_files_ms": {
+              "observations": [
+                20,
+                20,
+                17
+              ],
+              "median": 20,
+              "min": 17,
+              "max": 20
+            },
+            "allocated_words": {
+              "observations": [
+                10429196596,
+                10429196596,
+                10429195565
+              ],
+              "median": 10429196596,
+              "min": 10429195565,
+              "max": 10429196596
+            },
+            "promoted_words": {
+              "observations": [
+                622868376,
+                622868376,
+                623010654
+              ],
+              "median": 622868376,
+              "min": 622868376,
+              "max": 623010654
+            },
+            "major_words": {
+              "observations": [
+                640135950,
+                640135950,
+                640278215
+              ],
+              "median": 640135950,
+              "min": 640135950,
+              "max": 640278215
+            },
+            "minor_collections": {
+              "observations": [
+                9971,
+                9971,
+                9971
+              ],
+              "median": 9971,
+              "min": 9971,
+              "max": 9971
+            },
+            "major_collections": {
+              "observations": [
+                32,
+                32,
+                32
+              ],
+              "median": 32,
+              "min": 32,
+              "max": 32
+            },
+            "top_heap_words": {
+              "observations": [
+                99087360,
+                99087360,
+                99087360
+              ],
+              "median": 99087360,
+              "min": 99087360,
+              "max": 99087360
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                43.66,
+                44.09,
+                44.09
+              ],
+              "median": 44.09,
+              "min": 43.66,
+              "max": 44.09
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                39340,
+                39801,
+                39671
+              ],
+              "median": 39671,
+              "min": 39340,
+              "max": 39801
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                12784,
+                12771,
+                12887
+              ],
+              "median": 12784,
+              "min": 12771,
+              "max": 12887
+            },
+            "encode_sig_ms": {
+              "observations": [
+                3913,
+                4005,
+                3953
+              ],
+              "median": 3953,
+              "min": 3913,
+              "max": 4005
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                3931.308,
+                3904.383,
+                4037.142
+              ],
+              "median": 3931.308,
+              "min": 3904.383,
+              "max": 4037.142
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                67.047,
+                66.33,
+                68.617
+              ],
+              "median": 67.047,
+              "min": 66.33,
+              "max": 68.617
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                2.984,
+                2.886,
+                3.321
+              ],
+              "median": 2.984,
+              "min": 2.886,
+              "max": 3.321
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                912,
+                924,
+                916
+              ],
+              "median": 916,
+              "min": 912,
+              "max": 924
+            },
+            "checked_files_ms": {
+              "observations": [
+                19,
+                19,
+                17
+              ],
+              "median": 19,
+              "min": 17,
+              "max": 19
+            },
+            "allocated_words": {
+              "observations": [
+                10428460295,
+                10428460819,
+                10428460802
+              ],
+              "median": 10428460802,
+              "min": 10428460295,
+              "max": 10428460819
+            },
+            "promoted_words": {
+              "observations": [
+                622827201,
+                623010727,
+                622953198
+              ],
+              "median": 622953198,
+              "min": 622827201,
+              "max": 623010727
+            },
+            "major_words": {
+              "observations": [
+                639364137,
+                639547663,
+                639490147
+              ],
+              "median": 639490147,
+              "min": 639364137,
+              "max": 639547663
+            },
+            "minor_collections": {
+              "observations": [
+                9971,
+                9971,
+                9971
+              ],
+              "median": 9971,
+              "min": 9971,
+              "max": 9971
+            },
+            "major_collections": {
+              "observations": [
+                32,
+                32,
+                32
+              ],
+              "median": 32,
+              "min": 32,
+              "max": 32
+            },
+            "top_heap_words": {
+              "observations": [
+                99087360,
+                99087360,
+                99087360
+              ],
+              "median": 99087360,
+              "min": 99087360,
+              "max": 99087360
+            }
+          }
+        },
+        "interning": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                44.11,
+                45.44,
+                44.67
+              ],
+              "median": 44.67,
+              "min": 44.11,
+              "max": 45.44
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                39745,
+                40601,
+                39880
+              ],
+              "median": 39880,
+              "min": 39745,
+              "max": 40601
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                12788,
+                13033,
+                12742
+              ],
+              "median": 12788,
+              "min": 12742,
+              "max": 13033
+            },
+            "encode_sig_ms": {
+              "observations": [
+                3844,
+                3923,
+                3838
+              ],
+              "median": 3844,
+              "min": 3838,
+              "max": 3923
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                3850.66,
+                4386.423,
+                4347.296
+              ],
+              "median": 4347.296,
+              "min": 3850.66,
+              "max": 4386.423
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                44.071,
+                47.449,
+                44.983
+              ],
+              "median": 44.983,
+              "min": 44.071,
+              "max": 47.449
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.068,
+                3.055,
+                3.0
+              ],
+              "median": 3.055,
+              "min": 3.0,
+              "max": 3.068
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                45.056,
+                26.228,
+                26.091
+              ],
+              "median": 26.228,
+              "min": 26.091,
+              "max": 45.056
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                930,
+                919,
+                938
+              ],
+              "median": 930,
+              "min": 919,
+              "max": 938
+            },
+            "checked_files_ms": {
+              "observations": [
+                18,
+                18,
+                18
+              ],
+              "median": 18,
+              "min": 18,
+              "max": 18
+            },
+            "allocated_words": {
+              "observations": [
+                10441009687,
+                10441010213,
+                10441010213
+              ],
+              "median": 10441010213,
+              "min": 10441009687,
+              "max": 10441010213
+            },
+            "promoted_words": {
+              "observations": [
+                625324320,
+                625349840,
+                625349840
+              ],
+              "median": 625349840,
+              "min": 625324320,
+              "max": 625349840
+            },
+            "major_words": {
+              "observations": [
+                641718581,
+                641744101,
+                641744101
+              ],
+              "median": 641744101,
+              "min": 641718581,
+              "max": 641744101
+            },
+            "minor_collections": {
+              "observations": [
+                9982,
+                9983,
+                9983
+              ],
+              "median": 9983,
+              "min": 9982,
+              "max": 9983
+            },
+            "major_collections": {
+              "observations": [
+                33,
+                35,
+                35
+              ],
+              "median": 35,
+              "min": 33,
+              "max": 35
+            },
+            "top_heap_words": {
+              "observations": [
+                107475968,
+                103281664,
+                103281664
+              ],
+              "median": 103281664,
+              "min": 103281664,
+              "max": 107475968
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                44.43,
+                44.51,
+                44.85
+              ],
+              "median": 44.51,
+              "min": 44.43,
+              "max": 44.85
+            },
+            "process_one_decl_ms": {
+              "observations": [
+                39961,
+                40042,
+                40268
+              ],
+              "median": 40042,
+              "min": 39961,
+              "max": 40268
+            },
+            "simplify_vc_ms": {
+              "observations": [
+                12906,
+                12783,
+                13010
+              ],
+              "median": 12906,
+              "min": 12783,
+              "max": 13010
+            },
+            "encode_sig_ms": {
+              "observations": [
+                3883,
+                3906,
+                3858
+              ],
+              "median": 3883,
+              "min": 3858,
+              "max": 3906
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                3995.815,
+                3988.728,
+                4104.051
+              ],
+              "median": 3995.815,
+              "min": 3988.728,
+              "max": 4104.051
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                46.278,
+                46.764,
+                44.766
+              ],
+              "median": 46.278,
+              "min": 44.766,
+              "max": 46.764
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.323,
+                3.105,
+                2.705
+              ],
+              "median": 3.105,
+              "min": 2.705,
+              "max": 3.323
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            },
+            "z3_aggregate_ms": {
+              "observations": [
+                918,
+                911,
+                907
+              ],
+              "median": 911,
+              "min": 907,
+              "max": 918
+            },
+            "checked_files_ms": {
+              "observations": [
+                18,
+                18,
+                18
+              ],
+              "median": 18,
+              "min": 18,
+              "max": 18
+            },
+            "allocated_words": {
+              "observations": [
+                10440628396,
+                10440629429,
+                10440628922
+              ],
+              "median": 10440628922,
+              "min": 10440628396,
+              "max": 10440629429
+            },
+            "promoted_words": {
+              "observations": [
+                625320710,
+                625166301,
+                625232894
+              ],
+              "median": 625232894,
+              "min": 625166301,
+              "max": 625320710
+            },
+            "major_words": {
+              "observations": [
+                641338819,
+                641184423,
+                641251003
+              ],
+              "median": 641251003,
+              "min": 641184423,
+              "max": 641338819
+            },
+            "minor_collections": {
+              "observations": [
+                9983,
+                9982,
+                9982
+              ],
+              "median": 9982,
+              "min": 9982,
+              "max": 9983
+            },
+            "major_collections": {
+              "observations": [
+                33,
+                33,
+                34
+              ],
+              "median": 33,
+              "min": 33,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                107475968,
+                107475968,
+                103281664
+              ],
+              "median": 107475968,
+              "min": 103281664,
+              "max": 107475968
+            }
+          }
+        },
+        "interning_pass": {
+          "write": {
+            "intern_decls_wall_ms": {
+              "observations": [
+                93.389,
+                91.7,
+                88.382
+              ],
+              "median": 91.7,
+              "min": 88.382,
+              "max": 93.389
+            },
+            "intern_decls_allocated_words": {
+              "observations": [
+                12528956,
+                12528956,
+                12528956
+              ],
+              "median": 12528956,
+              "min": 12528956,
+              "max": 12528956
+            }
+          },
+          "no-write": {
+            "intern_decls_wall_ms": {
+              "observations": [
+                97.447,
+                96.243,
+                89.1
+              ],
+              "median": 96.243,
+              "min": 89.1,
+              "max": 97.447
+            },
+            "intern_decls_allocated_words": {
+              "observations": [
+                12528956,
+                12528956,
+                12528956
+              ],
+              "median": 12528956,
+              "min": 12528956,
+              "max": 12528956
+            }
+          }
+        },
+        "interning_index": [
+          {
+            "mode": "write",
+            "repeat": 1,
+            "wall_ms": 1.01,
+            "allocated_words": 219809
+          },
+          {
+            "mode": "no-write",
+            "repeat": 2,
+            "wall_ms": 1.065,
+            "allocated_words": 219809
+          },
+          {
+            "mode": "write",
+            "repeat": 2,
+            "wall_ms": 1.012,
+            "allocated_words": 219809
+          },
+          {
+            "mode": "write",
+            "repeat": 3,
+            "wall_ms": 0.999,
+            "allocated_words": 219809
+          },
+          {
+            "mode": "no-write",
+            "repeat": 1,
+            "wall_ms": 1.17,
+            "allocated_words": 219809
+          },
+          {
+            "mode": "no-write",
+            "repeat": 3,
+            "wall_ms": 1.12,
+            "allocated_words": 219809
+          }
+        ]
+      }
+    }
+  },
+  "ordinary_controls": {
+    "Positivity": {
+      "master": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.98,
+              0.99,
+              0.98,
+              1.01,
+              0.99
+            ],
+            "median": 0.99,
+            "min": 0.98,
+            "max": 1.01
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              931243,
+              931243,
+              931243,
+              931243,
+              931243
+            ],
+            "median": 931243,
+            "min": 931243,
+            "max": 931243
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              1.01,
+              0.97,
+              0.98,
+              0.97,
+              0.96
+            ],
+            "median": 0.97,
+            "min": 0.96,
+            "max": 1.01
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "interning": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.98,
+              0.98,
+              0.98,
+              1.0,
+              0.98
+            ],
+            "median": 0.98,
+            "min": 0.98,
+            "max": 1.0
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              691657,
+              691657,
+              691657,
+              691657,
+              691657
+            ],
+            "median": 691657,
+            "min": 691657,
+            "max": 691657
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.99,
+              0.97,
+              0.96,
+              0.96,
+              0.96
+            ],
+            "median": 0.96,
+            "min": 0.96,
+            "max": 0.99
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      }
+    },
+    "TestWellFoundedRecursion": {
+      "master": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.93,
+              0.9,
+              0.89,
+              0.92,
+              0.88
+            ],
+            "median": 0.9,
+            "min": 0.88,
+            "max": 0.93
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              681964,
+              681964,
+              681964,
+              681964,
+              681964
+            ],
+            "median": 681964,
+            "min": 681964,
+            "max": 681964
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.88,
+              0.89,
+              0.87,
+              0.9,
+              0.88
+            ],
+            "median": 0.88,
+            "min": 0.87,
+            "max": 0.9
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "interning": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.88,
+              0.86,
+              0.85,
+              0.86,
+              0.87
+            ],
+            "median": 0.86,
+            "min": 0.85,
+            "max": 0.88
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              516176,
+              516176,
+              516176,
+              516176,
+              516176
+            ],
+            "median": 516176,
+            "min": 516176,
+            "max": 516176
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.87,
+              0.87,
+              0.86,
+              0.86,
+              0.86
+            ],
+            "median": 0.86,
+            "min": 0.86,
+            "max": 0.87
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      }
+    }
+  },
+  "dependent_loading": {
+    "master-bv-metadata": {
+      "wall_seconds": {
+        "observations": [
+          0.2257183138281107,
+          0.22938523185439408,
+          0.22271090210415423,
+          0.2256106201093644,
+          0.2283151801675558
+        ],
+        "median": 0.2257183138281107
+      },
+      "peak_rss_kb": {
+        "observations": [
+          134132,
+          134080,
+          134256,
+          134432,
+          134012
+        ],
+        "median": 134132
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-bv/metadata/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-bv/metadata/cache",
+        "--already_cached",
+        "Prims,FStar,BenchBvChildren,BenchBvLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--admit_smt_queries",
+        "true",
+        "BenchDependentBv.fst"
+      ]
+    },
+    "master-bv-rooted": {
+      "wall_seconds": {
+        "observations": [
+          1.4212902239523828,
+          1.5000081909820437,
+          1.4704239731654525,
+          1.4235543988179415,
+          1.4262140379287302
+        ],
+        "median": 1.4262140379287302
+      },
+      "peak_rss_kb": {
+        "observations": [
+          315308,
+          315192,
+          315204,
+          315380,
+          315148
+        ],
+        "median": 315204
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-bv/rooted/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-bv/rooted/cache",
+        "--already_cached",
+        "Prims,FStar,BenchBvChildren,BenchBvLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "BenchDependentBv.fst"
+      ]
+    },
+    "master-uint-metadata": {
+      "wall_seconds": {
+        "observations": [
+          0.15110397804528475,
+          0.15538097312673926,
+          0.15334563213400543,
+          0.1511113119777292,
+          0.1508450449910015
+        ],
+        "median": 0.1511113119777292
+      },
+      "peak_rss_kb": {
+        "observations": [
+          104884,
+          104580,
+          104700,
+          104772,
+          104448
+        ],
+        "median": 104700
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-uint/metadata/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-uint/metadata/cache",
+        "--already_cached",
+        "Prims,FStar,BenchUIntChildren,BenchUIntLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--admit_smt_queries",
+        "true",
+        "BenchDependentUInt.fst"
+      ]
+    },
+    "master-uint-rooted": {
+      "wall_seconds": {
+        "observations": [
+          1.195722560863942,
+          1.2733967178501189,
+          1.2068672620225698,
+          1.2093406589701772,
+          1.2131511371117085
+        ],
+        "median": 1.2093406589701772
+      },
+      "peak_rss_kb": {
+        "observations": [
+          251228,
+          250884,
+          250888,
+          250724,
+          250856
+        ],
+        "median": 250884
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-uint/rooted/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/master-uint/rooted/cache",
+        "--already_cached",
+        "Prims,FStar,BenchUIntChildren,BenchUIntLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "BenchDependentUInt.fst"
+      ]
+    },
+    "interning-bv-metadata": {
+      "wall_seconds": {
+        "observations": [
+          0.19429336697794497,
+          0.18186657619662583,
+          0.18838709802366793,
+          0.19809987605549395,
+          0.18940113112330437
+        ],
+        "median": 0.18940113112330437
+      },
+      "peak_rss_kb": {
+        "observations": [
+          105252,
+          105628,
+          105728,
+          105412,
+          105480
+        ],
+        "median": 105480
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-bv/metadata/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-bv/metadata/cache",
+        "--already_cached",
+        "Prims,FStar,BenchBvChildren,BenchBvLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--admit_smt_queries",
+        "true",
+        "BenchDependentBv.fst"
+      ]
+    },
+    "interning-bv-rooted": {
+      "wall_seconds": {
+        "observations": [
+          1.2467783610336483,
+          1.2599630190525204,
+          1.2459726319648325,
+          1.2436343601439148,
+          1.2573794410564005
+        ],
+        "median": 1.2467783610336483
+      },
+      "peak_rss_kb": {
+        "observations": [
+          242432,
+          242348,
+          242632,
+          242412,
+          242488
+        ],
+        "median": 242432
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-bv/rooted/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-bv/rooted/cache",
+        "--already_cached",
+        "Prims,FStar,BenchBvChildren,BenchBvLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "BenchDependentBv.fst"
+      ]
+    },
+    "interning-uint-metadata": {
+      "wall_seconds": {
+        "observations": [
+          0.14750056504271924,
+          0.14597578183747828,
+          0.14709078916348517,
+          0.14738048100844026,
+          0.14823818299919367
+        ],
+        "median": 0.14738048100844026
+      },
+      "peak_rss_kb": {
+        "observations": [
+          103048,
+          103092,
+          103048,
+          102972,
+          103156
+        ],
+        "median": 103048
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-uint/metadata/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-uint/metadata/cache",
+        "--already_cached",
+        "Prims,FStar,BenchUIntChildren,BenchUIntLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--admit_smt_queries",
+        "true",
+        "BenchDependentUInt.fst"
+      ]
+    },
+    "interning-uint-rooted": {
+      "wall_seconds": {
+        "observations": [
+          1.1459466149099171,
+          1.1961680841632187,
+          1.118342159083113,
+          1.1100173459853977,
+          1.1038599370513111
+        ],
+        "median": 1.118342159083113
+      },
+      "peak_rss_kb": {
+        "observations": [
+          230256,
+          229972,
+          230760,
+          230044,
+          230128
+        ],
+        "median": 230128
+      },
+      "command": [
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding",
+        "--cache_dir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-uint/rooted/cache",
+        "--odir",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_results/dependent-load/interning-uint/rooted/cache",
+        "--already_cached",
+        "Prims,FStar,BenchUIntChildren,BenchUIntLive500",
+        "--debug",
+        "CheckedFiles",
+        "--query_stats",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "BenchDependentUInt.fst"
+      ]
+    }
+  },
+  "evidence_sha256": {
+    "end_to_end": "024ec1d83de7fa63abb79320dd33b2f054d852a84bc46b8981928b01dc50267b",
+    "profiles": "8ffa871da90f3cabdc303964039fe9d7b334dfaa68ad9bd9df96d735e4404ab4",
+    "ordinary": "457660ade814951fb815f5def86c3e35d008399ea287fc6534de601158104e80",
+    "master_build": "834fc2baa7f3996599e4ad958b4461d1370c64d392bb7d00310fafa1b63c1ba8",
+    "interning_build": "2194926009b1977a3c6c326d8b291bd6dd94810bda0ad93eb6ae247076d0a16c",
+    "boot_diff": "10ddcb4db3887eee5bbf151d919756b631156be114158b6f3f520a7778b677d2",
+    "runner": "c5a72e0b091a994d821f5541218781be27d2e368d0abe648b124ce5e6b0d2a2a",
+    "profile_runner": "e8929970d7cb07cb6e904cf9641cabc5e0c03b7c0991208a417df6693f323465",
+    "ordinary_runner": "6a09ee32559d6a36f6e9bab6f6e0df3efe5dea0fe5f37df125319c1969ba5239",
+    "instrumenter": "f9dac8f053556ab8a60c9153fa615bc383cb823f1a1d4b215370d1796ad8318f",
+    "dependent_runner": "0240c8d04215c6cbed1e3465ca3740bd30854e46368ca2ed5003a2b3b791c6c4",
+    "summarizer": "caebe7ebd3028bdefdc121b6fc66b81b86d9fec297c7944b6427c18f433242b0",
+    "bv_test": "fbb42314e7d7672baa46a0aed7fae3834d429e91d720a3d214de83e576a91672",
+    "classical_test": "e056dca5d5661ff8d37228c5dc3ac1af9949f2fbfebe6098ade4995d61292370",
+    "structural_comparison": "bfd850ef3c7eb5d8c80dd28ba5cfb04875ce881124f584b940623d85cc9fb32b",
+    "dependent_master_bv_metadata": "2d3d6c3b464a047d8f165b44fc9baf431ac9df9a02bfea5c0887b6b0661f781a",
+    "dependent_master_bv_rooted": "c0e8b0d5d6c620ad826b17c67602880230de875a6fcb61e669937ce1d5183f74",
+    "dependent_master_uint_metadata": "5a2ca80c6012ac5084219507089b153d7733e06ddf81b84f52d5ea67ae769789",
+    "dependent_master_uint_rooted": "bdd3b9f507e528e3e248ecb6a2e05dd6f3e62099df0c5bce36c534364beef577",
+    "dependent_interning_bv_metadata": "9e3a25759aa6ef18bbb8c882cf2a03c020c4f5e6f7cb3ddbbd7c5952e693298a",
+    "dependent_interning_bv_rooted": "56ce318424f66d2867e97c3c7c7e2402d10391ee481e8e41ea799e056e0c3080",
+    "dependent_interning_uint_metadata": "6582539ebb71a520dc531ce23106bbdbad33e8897717e14a05cb2b7bdca28430",
+    "dependent_interning_uint_rooted": "2e99d1295a344b60e82ec63ef7e37c9f77b35d7e23a304716484b359edb97289",
+    "comparator_source": "2b09ef8a2ec1cf46cb5661a3cb06ee90042d6e1dcb1fc1e9d85f0c3254d47099"
+  },
+  "validation": {
+    "stage3_builds": "pass",
+    "interning_boot_diff": "pass",
+    "BvBinaryOps": "pass",
+    "ClassicalSugar": "pass",
+    "artifact_structure": "stage 1, stored tc_result/index, and declarations equal; dependency digests excluded"
+  },
+  "instrumented_binaries": {
+    "master": "b7e4a9f72222db1ab3901ef92565647c0fc1a5a258d9933bb6d468cc4fd2e73d",
+    "interning": "cec3fccadeeff2597d16d6345b67d70f1bf555f7b5d8c39fd0a6a3169aaad86d"
+  },
+  "commands": {
+    "end_to_end_examples": {
+      "master-BenchBvLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/02-BenchBvLive500-master-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/02-BenchBvLive500-master-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "master-BenchBvLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/01-BenchBvLive500-master-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/01-BenchBvLive500-master-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "master-BenchUIntLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/02-BenchUIntLive500-master-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/02-BenchUIntLive500-master-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ],
+      "master-BenchUIntLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/05-BenchUIntLive500-master-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/05-BenchUIntLive500-master-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ],
+      "interning-BenchBvLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/03-BenchBvLive500-interning-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/03-BenchBvLive500-interning-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "interning-BenchBvLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/04-BenchBvLive500-interning-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/04-BenchBvLive500-interning-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "interning-BenchUIntLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/04-BenchUIntLive500-interning-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/04-BenchUIntLive500-interning-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ],
+      "interning-BenchUIntLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/04-BenchUIntLive500-interning-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/04-BenchUIntLive500-interning-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--timing",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ]
+    },
+    "profile_examples": {
+      "master-BenchBvLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/1-BenchBvLive500-master-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-no-intern.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchBvLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "master-BenchBvLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/2-BenchBvLive500-master-no-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-no-intern.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchBvLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "master-BenchUIntLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/2-BenchUIntLive500-master-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-no-intern.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchUIntLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ],
+      "master-BenchUIntLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/3-BenchUIntLive500-master-no-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-no-intern.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchUIntLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-master",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ],
+      "interning-BenchBvLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/2-BenchBvLive500-interning-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-interning.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchBvLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "interning-BenchBvLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/1-BenchBvLive500-interning-no-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-interning.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchBvLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchBvLive500.fst"
+      ],
+      "interning-BenchUIntLive500-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/1-BenchUIntLive500-interning-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-interning.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchUIntLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ],
+      "interning-BenchUIntLive500-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-profiles/2-BenchUIntLive500-interning-no-write.time",
+        "env",
+        "OCAMLRUNPARAM=v=0x400",
+        "FSTAR_SHARING_ANALYSIS=1",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-instrumented/fstar-interning.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--query_stats",
+        "--profile",
+        "BenchUIntLive500",
+        "--profile_component",
+        "FStarC.CheckedFiles",
+        "--profile_component",
+        "FStarC.TypeChecker",
+        "--profile_component",
+        "FStarC.SMTEncoding",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-master-interning/stage3/out/lib/fstar/ulib.checked",
+        "--include",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-comparison/cache-interning",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated/BenchUIntLive500.fst"
+      ]
+    },
+    "ordinary_examples": {
+      "master-Positivity-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/5-Positivity-master-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/5-Positivity-master-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-Positivity",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-Positivity",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar-master-no-intern/tests/micro-benchmarks/Positivity.fst"
+      ],
+      "master-Positivity-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/4-Positivity-master-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/4-Positivity-master-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-Positivity",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-Positivity",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar-master-no-intern/tests/micro-benchmarks/Positivity.fst"
+      ],
+      "master-TestWellFoundedRecursion-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/4-TestWellFoundedRecursion-master-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/4-TestWellFoundedRecursion-master-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-TestWellFoundedRecursion",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-TestWellFoundedRecursion",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar-master-no-intern/tests/micro-benchmarks/TestWellFoundedRecursion.fst"
+      ],
+      "master-TestWellFoundedRecursion-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/3-TestWellFoundedRecursion-master-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/3-TestWellFoundedRecursion-master-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-no-intern/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-TestWellFoundedRecursion",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-master-TestWellFoundedRecursion",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar-master-no-intern/tests/micro-benchmarks/TestWellFoundedRecursion.fst"
+      ],
+      "interning-Positivity-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/1-Positivity-interning-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/1-Positivity-interning-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-Positivity",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-Positivity",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar-master-interning/tests/micro-benchmarks/Positivity.fst"
+      ],
+      "interning-Positivity-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/2-Positivity-interning-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/2-Positivity-interning-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-Positivity",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-Positivity",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar-master-interning/tests/micro-benchmarks/Positivity.fst"
+      ],
+      "interning-TestWellFoundedRecursion-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/3-TestWellFoundedRecursion-interning-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/3-TestWellFoundedRecursion-interning-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-TestWellFoundedRecursion",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-TestWellFoundedRecursion",
+        "--already_cached",
+        "Prims,FStar",
+        "--cache_checked_modules",
+        "/workspace/wt11/FStar-master-interning/tests/micro-benchmarks/TestWellFoundedRecursion.fst"
+      ],
+      "interning-TestWellFoundedRecursion-no-write": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/4-TestWellFoundedRecursion-interning-no-write.time",
+        "env",
+        "FSTAR_MEM_REPORT=/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/4-TestWellFoundedRecursion-interning-no-write.fstarmem",
+        "/workspace/wt11/FStar-master-interning/stage3/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--smtencoding.elim_box",
+        "true",
+        "--cache_dir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-TestWellFoundedRecursion",
+        "--odir",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/master-ordinary/cache-interning-TestWellFoundedRecursion",
+        "--already_cached",
+        "Prims,FStar",
+        "/workspace/wt11/FStar-master-interning/tests/micro-benchmarks/TestWellFoundedRecursion.fst"
+      ]
+    }
+  },
+  "artifacts": {
+    "master-Bv": {
+      "sha256": "7e20f931264362d77ea9d03e3de3492f716451cb6894968b0aff56173d3d1a3b",
+      "bytes": 21886665
+    },
+    "master-UInt": {
+      "sha256": "50c65e7a138c0c7bbde96adbda4d0295957849753c2b09897281e5cd401b83d6",
+      "bytes": 4619278
+    },
+    "interning-Bv": {
+      "sha256": "3ec7a4cb630b00b7ed1c41874f38b0ef1a4ea23ea7bf6cb820c8908d3bc8e59f",
+      "bytes": 2136307
+    },
+    "interning-UInt": {
+      "sha256": "7b37f02c3df053b857e369c793e87996dddda5555859290c75dd59fa872030ab",
+      "bytes": 1862553
+    }
+  }
+}
