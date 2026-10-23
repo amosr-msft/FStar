@@ -202,7 +202,7 @@ def main():
                 "The declaration and index interning passes reduce live retained data; they do not create the peak.",
                 "At the forced-GC boundary before final encoding, interning has fewer live words than master.",
                 "Dependency loading itself finishes while both variants still have the same small heap.",
-                "The final step performs the same number of minor collections, but the interning variant completes one fewer major collection and grows to a larger major-heap capacity bucket.",
+                "The final step performs the same number of minor collections; one fewer completed major collection coincides with the interning process landing in a larger major-heap capacity bucket.",
                 "The crossed compiler/dependency campaign is threshold-sensitive and does not cleanly isolate dependency shape: its master/master control shifted to 759144448 bytes.",
             ],
             "inferred": [

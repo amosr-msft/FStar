@@ -60,12 +60,14 @@ at 926,916,608 bytes. The corresponding no-write RSS medians are 757,132 and
 951,232 KiB. The normal OCaml 4.14.2 runtime controls are identical
 (`minor_heap_size=262144` words, `major_heap_increment=15`,
 `space_overhead=120`, `allocation_policy=2`) and `OCAMLRUNPARAM` is unset.
+The latter was observed in the orchestrating environment before the campaign,
+not embedded in each legacy measurement row.
 
 The peak is not created by final declaration interning:
 
 - File-boundary traces show all library and benchmark-child caches loaded
   while both processes still had a 6,812,672-word (54.5 MB) major heap.
-- The historical high-water divergence appears while typechecking the final
+- The large historical high-water divergence appears while typechecking the final
   generated `step` declaration, before final `encode_signature`. In the
   instrumented run, both variants enter that declaration after 382 minor
   collections and finish after 7,883. Master completes 21 major collections
@@ -112,7 +114,8 @@ does not cross the UInt-specific growth threshold in these runs.
 **Conclusion:** the +27.7% UInt number is a real peak-capacity/RSS regression,
 but not a 27.7% increase in reachable compiler objects and not retention by
 canonical tables. During the allocation-heavy `step` typecheck, one fewer
-completed major cycle sends OCaml's major heap to a larger capacity bucket.
+completed major cycle coincides with the interning process landing in a larger
+OCaml major-heap capacity bucket.
 Loaded graph shape, executable layout, and diagnostic allocation can perturb
 that schedule, but this experiment does not isolate their individual
 contributions. Forced collections can change the bucket but are diagnostic
@@ -143,7 +146,8 @@ No-write changes are similarly within 0.02 s.
 profiles, dependent-load results, exact revisions/binary/build/solver
 provenance, validation, commands, and evidence hashes. The current-master
 experiment branch is `users/amos/20261023-fstar-master-smt-sharing`; no PR was
-opened. PR #4760 remains reverted at `debed4e7a9`.
+opened. PR #4760 remains open with main interning; only the later traversal
+optimization remains reverted at `debed4e7a9`.
 
 ## Historical investigation
 
