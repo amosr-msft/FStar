@@ -435,6 +435,144 @@ _build/default/sharing-bench/sharing_pass_bench.exe \
 The measured checked-input SHA-256 values are `bc400558...ad6d` for BV and
 `41ed0673...87bd` for UInt.
 
+## Matched whole-program analysis
+
+`run_matched_variants.py` runs shuffled write/no-write measurements for two
+identical-source original rebuilds, fusion-only, and fusion+reuse. It rejects
+and retries observations when one-second command-line polling flags another
+F* executable on the shared host; false positives and short missed overlaps
+remain possible.
+
+`run_matched_profiles.py` collects intrusive typechecker/SMT/query/GC profiles.
+For its audited `matched-instrumented` binaries,
+`instrument_extracted_analysis.py --sharing-only` added just the production
+interning timing/allocation wrappers. Restore clean extracted ML, then run the
+script without that flag to build the distinct `matched-instrumented-phases`
+binaries used by `run_matched_detailed_phases.py`; those also time final fresh
+encoding, pruning summary/index, solver registration, and checked-file
+storage. Both modes modify ignored extracted compiler ML only.
+
+```sh
+mkdir -p /tmp/matched-instrumented /tmp/matched-instrumented-phases
+python instrument_extracted_analysis.py --sharing-only \
+  /workspace/wt11/FStar-sharing-VARIANT
+(cd /workspace/wt11/FStar-sharing-VARIANT/stage3/dune &&
+  dune build fstarc-full/fstarc3_full.exe)
+cp /workspace/wt11/FStar-sharing-VARIANT/stage3/dune/_build/default/\
+fstarc-full/fstarc3_full.exe /tmp/matched-instrumented/fstar-VARIANT.exe
+
+# Restore the three generated ML files from the clean stage1 extraction:
+for file in FStarC_SMTEncoding_Sharing.ml FStarC_SMTEncoding_Encode.ml \
+            FStarC_CheckedFiles.ml; do
+  cp /workspace/wt11/FStar-sharing-VARIANT/stage1/fstarc.ml/$file \
+     /workspace/wt11/FStar-sharing-VARIANT/stage2/fstarc.ml/$file
+done
+# Then build the detailed-phase binary:
+python instrument_extracted_analysis.py \
+  /workspace/wt11/FStar-sharing-VARIANT
+(cd /workspace/wt11/FStar-sharing-VARIANT/stage3/dune &&
+  dune build fstarc-full/fstarc3_full.exe)
+cp /workspace/wt11/FStar-sharing-VARIANT/stage3/dune/_build/default/\
+fstarc-full/fstarc3_full.exe \
+  /tmp/matched-instrumented-phases/fstar-VARIANT.exe
+```
+
+`run_matched_ordinary.py` measures the two ordinary controls. After all raw
+runs complete, regenerate and validate the structured report:
+
+```sh
+python summarize_matched_analysis.py \
+  --evidence-root /home/amosrobinson/.copilot/session-state/\
+7081de44-8211-4e82-806b-f466934ac8a6/files \
+  --worktree-prefix /workspace/wt11/FStar-sharing \
+  --z3 /home/amosrobinson/.copilot/session-state/\
+7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0
+python -m json.tool MATCHED_END_TO_END_ANALYSIS.json >/dev/null
+```
+
+`MATCHED_END_TO_END_ANALYSIS.json` contains the complete five-run
+write/no-write observations, three-run broad profiles, two-run detailed phase
+measurements, ordinary controls, provenance, and evidence hashes.
+
+For the audited run, `/workspace/wt11/FStar-sharing` was the worktree prefix,
+`/workspace/wt11/FStar/tests/benchmarks/compiler-encoding/_generated` held the
+sources, the evidence root was
+`/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files`,
+and Z3 was that root's `bin/z3-5.3.0`. The output subdirectories were
+`matched-e2e-isolated`, `matched-profiles`, `matched-detailed-phases`, and
+`matched-ordinary`; broad/detailed instrumented binaries were respectively in
+`matched-instrumented` and `matched-instrumented-phases`.
+
+Run the campaigns from this directory (all paths are examples):
+
+```sh
+python run_matched_variants.py \
+  --worktree-prefix /workspace/wt11/FStar-sharing \
+  --generated "$PWD/_generated" --output /tmp/matched-e2e \
+  --z3-bin-dir /path/to/z3/bin --repetitions 5
+
+python run_matched_profiles.py \
+  --worktree-prefix /workspace/wt11/FStar-sharing \
+  --instrumented-dir /tmp/matched-instrumented --generated "$PWD/_generated" \
+  --cache-root /tmp/matched-e2e --output /tmp/matched-profiles \
+  --z3-bin-dir /path/to/z3/bin --repetitions 3
+
+python run_matched_detailed_phases.py \
+  --worktree-prefix /workspace/wt11/FStar-sharing \
+  --instrumented-dir /tmp/matched-instrumented-phases \
+  --generated "$PWD/_generated" \
+  --cache-root /tmp/matched-e2e --output /tmp/matched-phases \
+  --z3-bin-dir /path/to/z3/bin --repetitions 2
+
+python run_matched_ordinary.py \
+  --worktree-prefix /workspace/wt11/FStar-sharing \
+  --output /tmp/matched-ordinary --z3-bin-dir /path/to/z3/bin \
+  --repetitions 5
+```
+
+Original A/B and combined were made as detached worktrees at their commits;
+original A and B both use `b3f9782a6c`. Fusion uses the existing compiler
+built from the fusion-only diff immediately before it was committed unchanged
+as `206126a6dd`; its embedded version therefore reports
+`b3f9782a6c-dirty`. The extracted-module hash audits the exact measured
+implementation. Each matched rebuild copied the completed
+OCaml-4.14.2 `stage0` through `stage3` trees from the fusion worktree using
+`cp -a --reflink=auto`, touched only
+`src/smtencoding/FStarC.SMTEncoding.Sharing.fst`, and resumed:
+
+```sh
+git -C /path/to/FStar worktree add --detach /workspace/wt11/FStar-sharing-VARIANT COMMIT
+git -C /workspace/wt11/FStar-sharing-VARIANT submodule update --init --recursive
+for stage in stage0 stage1 stage2 stage3; do
+  cp -a --reflink=auto \
+    /workspace/wt11/FStar-sharing-fusion/$stage \
+    /workspace/wt11/FStar-sharing-VARIANT/$stage
+done
+touch /workspace/wt11/FStar-sharing-VARIANT/src/smtencoding/\
+FStarC.SMTEncoding.Sharing.fst
+cd /workspace/wt11/FStar-sharing-VARIANT
+PATH=/path/containing/z3-5.3.0:$PATH make -j8 3
+```
+
+The build-log, executable, solver, and extracted-module hashes in the JSON
+audit this setup. Original A/B's extracted sharing modules are byte-identical
+while their final executables differ, providing the build-noise control.
+
+To audit the isolated-pass input, run `sharing_experiment.exe INPUT OUTPUT`
+twice: first on the production checked artifact, then on `OUTPUT`. The first
+pass verifies structural equality and the second establishes the recovered
+digest fixed point. Production ordering is visible in
+`FStarC.SMTEncoding.Encode.encode_modul_aux`; checked storage is in
+`FStarC.CheckedFiles.store_module_to_cache`.
+
+```sh
+sharing_experiment.exe INPUT.checked RECOVERED.checked > recovery.log
+sharing_experiment.exe RECOVERED.checked RECOVERED2.checked > fixed-point.log
+```
+
+The `input_audit_*` hashes in the JSON identify these logs, not the recovered
+checked artifacts.
+
 ## Clean sharing branch benchmarks
 
 `CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream

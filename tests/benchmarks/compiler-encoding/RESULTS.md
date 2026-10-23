@@ -1120,3 +1120,108 @@ small-to-large total-time increases. Those increases happen outside the
 measured pass or reflect process-level perturbation; this experiment does not
 distinguish downstream phases, GC/binary layout, solver/runtime noise, or
 their interactions. The PR remains reverted.
+
+## Matched end-to-end and phase analysis
+
+The earlier whole-program comparison mixed compiler builds from different
+toolchains/build rounds. A new four-way comparison rebuilds original A,
+original B, fusion-only, and fusion+reuse from the same OCaml 4.14.2
+bootstrap, options, non-sharing sources, solver, and host; only the sharing
+module differs between algorithm variants. Original A/B have identical full
+source and extracted sharing code but different executable hashes, giving an
+identical-source build/layout control. The fusion binary was built from its
+uncommitted diff immediately before commit `206126a6dd`, so it reports
+`b3f9782a6c-dirty`; the recorded extracted-module hash identifies the exact
+implementation. Nine attempts were flagged by the
+overlap detector and excluded before recording. No overlap was
+observed by one-second `ps` command-line polling for the 80 accepted
+observations; this is a guard, not a proof, because a short process, command
+text false positive, or another invocation containing the same executable
+path can be missed.
+
+Five shuffled repetitions per cell give:
+
+| Live-500 | Original A | Original B | Fusion only | Fusion + reuse |
+|---|---:|---:|---:|---:|
+| BV write | 37.43 s | 37.88 s | 38.27 s | 38.23 s |
+| BV no-write | 37.33 s | 37.79 s | 37.96 s | 38.29 s |
+| UInt write | 28.08 s | 28.14 s | 28.38 s | 28.19 s |
+| UInt no-write | 27.92 s | 28.07 s | 28.34 s | 28.08 s |
+
+The 7-8% slowdown is gone. Relative to original A, fusion/combined are
+1.7-2.6% slower on BV and 0.4-1.5% on UInt. But original B is itself 1.2%
+slower than original A on BV despite identical source/extracted sharing code.
+Fusion and combined differ by -0.1/+0.9% BV (write/no-write) and
+-0.7/-0.9% UInt. This leaves no evidence that node reuse causes an end-to-end
+slowdown; residual differences are at or near the identical-source build
+control.
+
+All matched variants have the same checked sizes and, for BV, identical
+725,590,016-byte median F* peak heaps. UInt heap medians are also generally
+identical; a single GC-threshold difference moves original B's no-write
+median. Two ordinary controls are indistinguishable: all write/no-write
+medians are within 0.01-0.03 seconds, with identical artifact sizes and peak
+heaps.
+
+### Where the time goes
+
+Three intrusive profiles per variant/module and two separately instrumented
+write/no-write runs locate the work. Representative medians are:
+
+| Phase | BV | UInt |
+|---|---:|---:|
+| Typechecking declarations | 49-50 s | 40-41 s |
+| VC simplification (nested in checking) | 29.8-30.5 s | 12.9-13.3 s |
+| Incremental `encode_sig` (nested in checking) | 4.5-4.7 s | 3.8-4.0 s |
+| Final fresh `encode_signature` | 2.0 s | 1.6-1.7 s |
+| Final `intern_decls` | 0.27-0.29 s | 0.087-0.094 s |
+| Pruning `summarize_elts` | 0.15-0.16 s | 0.044-0.048 s |
+| Final `intern_index` | 0.029-0.032 s | about 0.001 s |
+| Solver registration | about 0.015 s | about 0.003 s |
+| Z3 aggregate query time | about 0.35 s | about 0.91 s |
+| Dependency checked-file loading | about 0.018 s | about 0.018 s |
+| Checked-file serialization/write | 0.038-0.039 s | 0.035-0.037 s |
+
+Counters overlap (for example, simplification is inside declaration checking),
+so they are not additive. They establish the scale: normalization/typechecking
+dominates; final interning is below 1% of total; solver, dependency loading,
+index interning, and persistence are too small to explain multi-second
+changes. Write-minus-no-write medians are 0.04-0.31 seconds and sometimes
+negative, while direct storage timing is only 35-39 ms. Persistence is not the
+slowdown source.
+
+The production wrappers also measure the pass on the fresh graph from
+`encode_signature`. Fusion reduces declaration-pass allocation by 4.5% BV /
+2.1% UInt. Reuse then reduces only another 0.12% / 0.40%, because most fresh
+parents change when children are canonicalized. Whole-process allocation
+changes by only about 0.01% BV / 0.003% UInt; minor/major collection counts
+and peak heap are essentially unchanged across matched variants.
+
+### Why the isolated pass looked different
+
+Production runs `encode_signature → intern_decls → summarize_elts →
+intern_index`, then stores those post-intern values in `.checked`. The
+same-process harness instead loads that serialized post-intern graph, warms
+all variants with structural comparisons, and forces a full major GC before
+each timed pass. It has no parsing, checking, normalization, solver,
+dependency loading, or serialization.
+
+Exact-sharing recovery confirms the loaded artifact is already at the same
+size after another sharing pass; recovery changes representative/digest once,
+then reaches a digest fixed point. On this post-intern graph, reuse saves about
+15% declaration allocation. On the actual fresh production input it saves
+only 0.1-0.4%. Thus the isolated harness correctly measures algorithm behavior
+on its input, but substantially overstates production reuse opportunities.
+
+The remaining 1-2% end-to-end differences are unresolved. Identical-source
+binary rebuilds demonstrate up to 1.2% BV variability; profiling perturbation can move
+another similar amount. No measured phase consistently assigns the remainder
+to fusion or reuse. Build/link layout, downstream normalization/GC
+perturbation, and ordinary runtime noise remain plausible, but none is proven.
+The PR remains reverted.
+
+`MATCHED_END_TO_END_ANALYSIS.json` records all individual observations,
+phase/GC values, build hashes, excluded overlaps, artifact sizes, and raw
+evidence hashes. The matched end-to-end, profile, detailed-phase, and ordinary
+runners, extracted-code instrumentation script, and aggregator provide
+reproduction details.

@@ -1,0 +1,5427 @@
+{
+  "date": "2026-10-23",
+  "variants": {
+    "original-a": {
+      "source_commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "worktree_head": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "binary_embedded_commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "binary_sha256": "0209c63389e6c7344150521994ca28b1ed2af465a120741c80f59b6f10737882",
+      "binary_bytes": 54632496,
+      "extracted_sharing_sha256": "3523cdca202e821261d77c867a29720a3b4eeba5881fe3fdea04ff5101431e00",
+      "extracted_sharing_bytes": 45130,
+      "ocaml": "4.14.2"
+    },
+    "original-b": {
+      "source_commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "worktree_head": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "binary_embedded_commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "binary_sha256": "4d117f01bc83770af6ee375c6a8cd8bae44a269001760ec3a0a7e720dd9a0511",
+      "binary_bytes": 54633704,
+      "extracted_sharing_sha256": "3523cdca202e821261d77c867a29720a3b4eeba5881fe3fdea04ff5101431e00",
+      "extracted_sharing_bytes": 45130,
+      "ocaml": "4.14.2"
+    },
+    "fusion": {
+      "source_commit": "206126a6dd6649765d6980e95609c5fda71888e9",
+      "worktree_head": "206126a6dd6649765d6980e95609c5fda71888e9",
+      "binary_embedded_commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27-dirty",
+      "binary_sha256": "6c7c24101d9a3ff6744a0c6b72097eadd13c7e9c75e00da49995290aa059c24c",
+      "binary_bytes": 54626896,
+      "extracted_sharing_sha256": "6af88fe330a155682fdb302de7985c7e6ce1c19ca3c5dcf540ed1941159d3630",
+      "extracted_sharing_bytes": 45580,
+      "ocaml": "4.14.2"
+    },
+    "combined": {
+      "source_commit": "befb3db82018af3dadf556fafdd95295b2751081",
+      "worktree_head": "befb3db82018af3dadf556fafdd95295b2751081",
+      "binary_embedded_commit": "befb3db82018af3dadf556fafdd95295b2751081",
+      "binary_sha256": "102c5a79ab2ea05547ffdedf9bfa52e006132e62ba3215071d3b066911ac5e52",
+      "binary_bytes": 54627120,
+      "extracted_sharing_sha256": "4faa9c9d664c5845a6a2d8657622f9ccf7623f64023629cd6e9902936a63d246",
+      "extracted_sharing_bytes": 46598,
+      "ocaml": "4.14.2"
+    }
+  },
+  "build": {
+    "matched_build_procedure": "Recorded in README and build-log hashes; same copied bootstrap stages and make target.",
+    "fusion_binary_source_state": "Built from the uncommitted fusion-only diff while HEAD was b3f9782a6c; binary reports b3f9782a6c-dirty. The exact extracted sharing module hash is recorded and matches the source later committed unchanged as 206126a6dd.",
+    "non_sharing_git_diff_verified_empty": true,
+    "original_extracted_modules_identical": true,
+    "original_binaries_identical": false,
+    "z3_version": "Z3 version 5.3.0 - 64 bit",
+    "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+    "measured_rows_z3_path_recorded": false,
+    "z3_limitation": "Audited campaign invocation supplied this z3-bin-dir and successful runs required version 5.3.0, but legacy raw rows record --z3version rather than the resolved PATH executable. Current runners pass --smt explicitly.",
+    "note": "Original A/B are identical-source rebuild controls. Git diffs verify fusion and combined differ only in Sharing.fst. Different original executable hashes/sizes establish residual build-layout nondeterminism."
+  },
+  "end_to_end": {
+    "repetitions_per_cell": 5,
+    "order_seed": 4765,
+    "observed_overlap_attempts_excluded": 9,
+    "overlap_detector_limitations": "One-second polling of ps command-line strings can miss short overlaps, can produce false positives from command text, and does not detect another invocation containing the same compiler path.",
+    "modules": {
+      "BenchBvLive500": {
+        "original-a": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                37.47,
+                37.43,
+                37.56,
+                37.2,
+                37.35
+              ],
+              "median": 37.43,
+              "min": 37.2,
+              "max": 37.56
+            },
+            "user_seconds": {
+              "observations": [
+                37.04,
+                37.01,
+                37.13,
+                36.74,
+                36.92
+              ],
+              "median": 37.01,
+              "min": 36.74,
+              "max": 37.13
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                778780,
+                778860,
+                778464,
+                778636,
+                778608
+              ],
+              "median": 778636,
+              "min": 778464,
+              "max": 778860
+            },
+            "checked_bytes": {
+              "observations": [
+                2136307,
+                2136307,
+                2136307,
+                2136307,
+                2136307
+              ],
+              "median": 2136307,
+              "min": 2136307,
+              "max": 2136307
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                37.33,
+                37.09,
+                37.44,
+                37.32,
+                37.38
+              ],
+              "median": 37.33,
+              "min": 37.09,
+              "max": 37.44
+            },
+            "user_seconds": {
+              "observations": [
+                36.93,
+                36.66,
+                36.98,
+                36.95,
+                36.96
+              ],
+              "median": 36.95,
+              "min": 36.66,
+              "max": 36.98
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                762236,
+                762164,
+                763016,
+                761928,
+                761924
+              ],
+              "median": 762164,
+              "min": 761924,
+              "max": 763016
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "original-b": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                37.97,
+                37.88,
+                38.21,
+                37.83,
+                37.87
+              ],
+              "median": 37.88,
+              "min": 37.83,
+              "max": 38.21
+            },
+            "user_seconds": {
+              "observations": [
+                37.53,
+                37.45,
+                37.76,
+                37.4,
+                37.45
+              ],
+              "median": 37.45,
+              "min": 37.4,
+              "max": 37.76
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                759144448,
+                759144448
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 759144448
+            },
+            "max_rss_kb": {
+              "observations": [
+                778472,
+                778892,
+                778380,
+                803556,
+                803612
+              ],
+              "median": 778892,
+              "min": 778380,
+              "max": 803612
+            },
+            "checked_bytes": {
+              "observations": [
+                2136307,
+                2136307,
+                2136307,
+                2136307,
+                2136307
+              ],
+              "median": 2136307,
+              "min": 2136307,
+              "max": 2136307
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                37.89,
+                37.81,
+                37.59,
+                37.79,
+                37.52
+              ],
+              "median": 37.79,
+              "min": 37.52,
+              "max": 37.89
+            },
+            "user_seconds": {
+              "observations": [
+                37.47,
+                37.45,
+                37.17,
+                37.39,
+                37.15
+              ],
+              "median": 37.39,
+              "min": 37.15,
+              "max": 37.47
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                762572,
+                762496,
+                762476,
+                762380,
+                762784
+              ],
+              "median": 762496,
+              "min": 762380,
+              "max": 762784
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "fusion": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                38.66,
+                38.27,
+                38.1,
+                38.19,
+                38.42
+              ],
+              "median": 38.27,
+              "min": 38.1,
+              "max": 38.66
+            },
+            "user_seconds": {
+              "observations": [
+                38.21,
+                37.82,
+                37.68,
+                37.73,
+                37.98
+              ],
+              "median": 37.82,
+              "min": 37.68,
+              "max": 38.21
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                779036,
+                779052,
+                778680,
+                779064,
+                779280
+              ],
+              "median": 779052,
+              "min": 778680,
+              "max": 779280
+            },
+            "checked_bytes": {
+              "observations": [
+                2136307,
+                2136307,
+                2136307,
+                2136307,
+                2136307
+              ],
+              "median": 2136307,
+              "min": 2136307,
+              "max": 2136307
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                37.96,
+                37.9,
+                38.17,
+                37.96,
+                37.96
+              ],
+              "median": 37.96,
+              "min": 37.9,
+              "max": 38.17
+            },
+            "user_seconds": {
+              "observations": [
+                37.55,
+                37.47,
+                37.75,
+                37.54,
+                37.59
+              ],
+              "median": 37.55,
+              "min": 37.47,
+              "max": 37.75
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                763088,
+                762500,
+                762512,
+                762824,
+                762968
+              ],
+              "median": 762824,
+              "min": 762500,
+              "max": 763088
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "combined": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                38.3,
+                38.01,
+                38.3,
+                38.23,
+                38.12
+              ],
+              "median": 38.23,
+              "min": 38.01,
+              "max": 38.3
+            },
+            "user_seconds": {
+              "observations": [
+                37.89,
+                37.59,
+                37.9,
+                37.81,
+                37.72
+              ],
+              "median": 37.81,
+              "min": 37.59,
+              "max": 37.9
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                778504,
+                778264,
+                778600,
+                778612,
+                778936
+              ],
+              "median": 778600,
+              "min": 778264,
+              "max": 778936
+            },
+            "checked_bytes": {
+              "observations": [
+                2136307,
+                2136307,
+                2136307,
+                2136307,
+                2136307
+              ],
+              "median": 2136307,
+              "min": 2136307,
+              "max": 2136307
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                38.2,
+                38.29,
+                38.34,
+                38.26,
+                38.52
+              ],
+              "median": 38.29,
+              "min": 38.2,
+              "max": 38.52
+            },
+            "user_seconds": {
+              "observations": [
+                37.79,
+                37.85,
+                37.93,
+                37.84,
+                38.08
+              ],
+              "median": 37.85,
+              "min": 37.79,
+              "max": 38.08
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                725590016,
+                725590016,
+                725590016,
+                725590016,
+                725590016
+              ],
+              "median": 725590016,
+              "min": 725590016,
+              "max": 725590016
+            },
+            "max_rss_kb": {
+              "observations": [
+                762120,
+                761704,
+                762028,
+                762204,
+                762400
+              ],
+              "median": 762120,
+              "min": 761704,
+              "max": 762400
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        }
+      },
+      "BenchUIntLive500": {
+        "original-a": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                28.11,
+                28.09,
+                28.08,
+                27.95,
+                27.94
+              ],
+              "median": 28.08,
+              "min": 27.94,
+              "max": 28.11
+            },
+            "user_seconds": {
+              "observations": [
+                27.53,
+                27.51,
+                27.52,
+                27.38,
+                27.37
+              ],
+              "median": 27.51,
+              "min": 27.37,
+              "max": 27.53
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                962064,
+                942664,
+                963284,
+                964516,
+                964120
+              ],
+              "median": 963284,
+              "min": 942664,
+              "max": 964516
+            },
+            "checked_bytes": {
+              "observations": [
+                1862553,
+                1862553,
+                1862553,
+                1862553,
+                1862553
+              ],
+              "median": 1862553,
+              "min": 1862553,
+              "max": 1862553
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                27.91,
+                29.56,
+                27.84,
+                28.06,
+                27.92
+              ],
+              "median": 27.92,
+              "min": 27.84,
+              "max": 29.56
+            },
+            "user_seconds": {
+              "observations": [
+                27.33,
+                28.99,
+                27.3,
+                27.54,
+                27.36
+              ],
+              "median": 27.36,
+              "min": 27.3,
+              "max": 28.99
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                946780,
+                950168,
+                949808,
+                949584,
+                949188
+              ],
+              "median": 949584,
+              "min": 946780,
+              "max": 950168
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "original-b": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                28.23,
+                28.21,
+                28.14,
+                28.0,
+                27.98
+              ],
+              "median": 28.14,
+              "min": 27.98,
+              "max": 28.23
+            },
+            "user_seconds": {
+              "observations": [
+                27.65,
+                27.6,
+                27.55,
+                27.44,
+                27.41
+              ],
+              "median": 27.55,
+              "min": 27.41,
+              "max": 27.65
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                962904,
+                963112,
+                964176,
+                963732,
+                964040
+              ],
+              "median": 963732,
+              "min": 962904,
+              "max": 964176
+            },
+            "checked_bytes": {
+              "observations": [
+                1862553,
+                1862553,
+                1862553,
+                1862553,
+                1862553
+              ],
+              "median": 1862553,
+              "min": 1862553,
+              "max": 1862553
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                28.2,
+                28.18,
+                28.07,
+                28.06,
+                28.07
+              ],
+              "median": 28.07,
+              "min": 28.06,
+              "max": 28.2
+            },
+            "user_seconds": {
+              "observations": [
+                27.64,
+                27.64,
+                27.54,
+                27.53,
+                27.51
+              ],
+              "median": 27.54,
+              "min": 27.51,
+              "max": 27.64
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                893362176,
+                926916608,
+                926916608,
+                893362176,
+                893362176
+              ],
+              "median": 893362176,
+              "min": 893362176,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                922212,
+                946684,
+                947188,
+                922532,
+                922964
+              ],
+              "median": 922964,
+              "min": 922212,
+              "max": 947188
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "fusion": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                28.4,
+                28.38,
+                28.44,
+                28.36,
+                28.25
+              ],
+              "median": 28.38,
+              "min": 28.25,
+              "max": 28.44
+            },
+            "user_seconds": {
+              "observations": [
+                27.84,
+                27.82,
+                27.84,
+                27.76,
+                27.71
+              ],
+              "median": 27.82,
+              "min": 27.71,
+              "max": 27.84
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                965792,
+                965064,
+                964936,
+                968768,
+                965624
+              ],
+              "median": 965624,
+              "min": 964936,
+              "max": 968768
+            },
+            "checked_bytes": {
+              "observations": [
+                1862553,
+                1862553,
+                1862553,
+                1862553,
+                1862553
+              ],
+              "median": 1862553,
+              "min": 1862553,
+              "max": 1862553
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                28.34,
+                28.24,
+                28.61,
+                28.45,
+                28.27
+              ],
+              "median": 28.34,
+              "min": 28.24,
+              "max": 28.61
+            },
+            "user_seconds": {
+              "observations": [
+                27.77,
+                27.65,
+                28.05,
+                27.87,
+                27.74
+              ],
+              "median": 27.77,
+              "min": 27.65,
+              "max": 28.05
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                951176,
+                949512,
+                945932,
+                951340,
+                949136
+              ],
+              "median": 949512,
+              "min": 945932,
+              "max": 951340
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        },
+        "combined": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                28.19,
+                28.35,
+                28.35,
+                28.17,
+                28.17
+              ],
+              "median": 28.19,
+              "min": 28.17,
+              "max": 28.35
+            },
+            "user_seconds": {
+              "observations": [
+                27.59,
+                27.76,
+                27.77,
+                27.6,
+                27.61
+              ],
+              "median": 27.61,
+              "min": 27.59,
+              "max": 27.77
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                942604,
+                942744,
+                942708,
+                968008,
+                965556
+              ],
+              "median": 942744,
+              "min": 942604,
+              "max": 968008
+            },
+            "checked_bytes": {
+              "observations": [
+                1862553,
+                1862553,
+                1862553,
+                1862553,
+                1862553
+              ],
+              "median": 1862553,
+              "min": 1862553,
+              "max": 1862553
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                28.3,
+                28.08,
+                28.52,
+                28.04,
+                28.08
+              ],
+              "median": 28.08,
+              "min": 28.04,
+              "max": 28.52
+            },
+            "user_seconds": {
+              "observations": [
+                27.77,
+                27.54,
+                27.99,
+                27.48,
+                27.53
+              ],
+              "median": 27.54,
+              "min": 27.48,
+              "max": 27.99
+            },
+            "fstar_mempeak_bytes": {
+              "observations": [
+                926916608,
+                926916608,
+                926916608,
+                926916608,
+                926916608
+              ],
+              "median": 926916608,
+              "min": 926916608,
+              "max": 926916608
+            },
+            "max_rss_kb": {
+              "observations": [
+                950024,
+                949872,
+                946236,
+                946756,
+                946588
+              ],
+              "median": 946756,
+              "min": 946236,
+              "max": 950024
+            },
+            "checked_bytes": {
+              "observations": [
+                0,
+                0,
+                0,
+                0,
+                0
+              ],
+              "median": 0,
+              "min": 0,
+              "max": 0
+            }
+          }
+        }
+      }
+    }
+  },
+  "broad_profiles": {
+    "repetitions_per_variant_module": 3,
+    "modules": {
+      "BenchBvLive500": {
+        "original-a": {
+          "total_profile_ms": {
+            "observations": [
+              55196,
+              55419,
+              54757
+            ],
+            "median": 55196,
+            "min": 54757,
+            "max": 55419
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              361,
+              354,
+              356
+            ],
+            "median": 356,
+            "min": 354,
+            "max": 361
+          },
+          "intern_decls_ms": {
+            "observations": [
+              306,
+              298,
+              296
+            ],
+            "median": 298,
+            "min": 296,
+            "max": 306
+          },
+          "intern_index_ms": {
+            "observations": [
+              31,
+              30,
+              29
+            ],
+            "median": 30,
+            "min": 29,
+            "max": 31
+          },
+          "decls_allocated_words": {
+            "observations": [
+              42038647,
+              42038647,
+              42038647
+            ],
+            "median": 42038647,
+            "min": 42038647,
+            "max": 42038647
+          },
+          "index_allocated_words": {
+            "observations": [
+              6793839,
+              6793839,
+              6793839
+            ],
+            "median": 6793839,
+            "min": 6793839,
+            "max": 6793839
+          },
+          "allocated_words": {
+            "observations": [
+              17263175708,
+              17263175708,
+              17263175708
+            ],
+            "median": 17263175708,
+            "min": 17263175708,
+            "max": 17263175708
+          },
+          "promoted_words": {
+            "observations": [
+              1382498958,
+              1382498958,
+              1382498958
+            ],
+            "median": 1382498958,
+            "min": 1382498958,
+            "max": 1382498958
+          },
+          "major_words": {
+            "observations": [
+              1398326760,
+              1398326760,
+              1398326760
+            ],
+            "median": 1398326760,
+            "min": 1398326760,
+            "max": 1398326760
+          },
+          "minor_collections": {
+            "observations": [
+              16501,
+              16501,
+              16501
+            ],
+            "median": 16501,
+            "min": 16501,
+            "max": 16501
+          },
+          "major_collections": {
+            "observations": [
+              59,
+              59,
+              59
+            ],
+            "median": 59,
+            "min": 59,
+            "max": 59
+          },
+          "top_heap_words": {
+            "observations": [
+              94893056,
+              94893056,
+              94893056
+            ],
+            "median": 94893056,
+            "min": 94893056,
+            "max": 94893056
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                49930,
+                50194,
+                49595
+              ],
+              "median": 49930
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                36444,
+                36867,
+                36480
+              ],
+              "median": 36480
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                30227,
+                30570,
+                30331
+              ],
+              "median": 30331
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                4733,
+                4601,
+                4533
+              ],
+              "median": 4601
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3981,
+                3921,
+                3858
+              ],
+              "median": 3921
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                1891,
+                1826,
+                1811
+              ],
+              "median": 1826
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                20,
+                19,
+                19
+              ],
+              "median": 19
+            }
+          }
+        },
+        "original-b": {
+          "total_profile_ms": {
+            "observations": [
+              55838,
+              55325,
+              55583
+            ],
+            "median": 55583,
+            "min": 55325,
+            "max": 55838
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              356,
+              354,
+              352
+            ],
+            "median": 354,
+            "min": 352,
+            "max": 356
+          },
+          "intern_decls_ms": {
+            "observations": [
+              285,
+              283,
+              283
+            ],
+            "median": 283,
+            "min": 283,
+            "max": 285
+          },
+          "intern_index_ms": {
+            "observations": [
+              32,
+              31,
+              32
+            ],
+            "median": 32,
+            "min": 31,
+            "max": 32
+          },
+          "decls_allocated_words": {
+            "observations": [
+              42038647,
+              42038647,
+              42038647
+            ],
+            "median": 42038647,
+            "min": 42038647,
+            "max": 42038647
+          },
+          "index_allocated_words": {
+            "observations": [
+              6793839,
+              6793839,
+              6793839
+            ],
+            "median": 6793839,
+            "min": 6793839,
+            "max": 6793839
+          },
+          "allocated_words": {
+            "observations": [
+              17263175708,
+              17263175708,
+              17263175708
+            ],
+            "median": 17263175708,
+            "min": 17263175708,
+            "max": 17263175708
+          },
+          "promoted_words": {
+            "observations": [
+              1380347345,
+              1380347345,
+              1380347345
+            ],
+            "median": 1380347345,
+            "min": 1380347345,
+            "max": 1380347345
+          },
+          "major_words": {
+            "observations": [
+              1396175147,
+              1396175147,
+              1396175147
+            ],
+            "median": 1396175147,
+            "min": 1396175147,
+            "max": 1396175147
+          },
+          "minor_collections": {
+            "observations": [
+              16502,
+              16502,
+              16502
+            ],
+            "median": 16502,
+            "min": 16502,
+            "max": 16502
+          },
+          "major_collections": {
+            "observations": [
+              61,
+              61,
+              61
+            ],
+            "median": 61,
+            "min": 61,
+            "max": 61
+          },
+          "top_heap_words": {
+            "observations": [
+              94893056,
+              94893056,
+              94893056
+            ],
+            "median": 94893056,
+            "min": 94893056,
+            "max": 94893056
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                50181,
+                49728,
+                49969
+              ],
+              "median": 49969
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                36982,
+                36503,
+                36707
+              ],
+              "median": 36707
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                30751,
+                30290,
+                30514
+              ],
+              "median": 30514
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                4602,
+                4619,
+                4643
+              ],
+              "median": 4619
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3955,
+                3925,
+                3943
+              ],
+              "median": 3943
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                1878,
+                1869,
+                1882
+              ],
+              "median": 1878
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                18,
+                20,
+                18
+              ],
+              "median": 18
+            }
+          }
+        },
+        "fusion": {
+          "total_profile_ms": {
+            "observations": [
+              54973,
+              54529,
+              54699
+            ],
+            "median": 54699,
+            "min": 54529,
+            "max": 54973
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              355,
+              355,
+              369
+            ],
+            "median": 355,
+            "min": 355,
+            "max": 369
+          },
+          "intern_decls_ms": {
+            "observations": [
+              282,
+              281,
+              304
+            ],
+            "median": 282,
+            "min": 281,
+            "max": 304
+          },
+          "intern_index_ms": {
+            "observations": [
+              30,
+              31,
+              27
+            ],
+            "median": 30,
+            "min": 27,
+            "max": 31
+          },
+          "decls_allocated_words": {
+            "observations": [
+              40129007,
+              40129007,
+              40129007
+            ],
+            "median": 40129007,
+            "min": 40129007,
+            "max": 40129007
+          },
+          "index_allocated_words": {
+            "observations": [
+              7075801,
+              7075801,
+              7075801
+            ],
+            "median": 7075801,
+            "min": 7075801,
+            "max": 7075801
+          },
+          "allocated_words": {
+            "observations": [
+              17261546420,
+              17261545894,
+              17261546402
+            ],
+            "median": 17261546402,
+            "min": 17261545894,
+            "max": 17261546420
+          },
+          "promoted_words": {
+            "observations": [
+              1383856794,
+              1383423046,
+              1382653695
+            ],
+            "median": 1383423046,
+            "min": 1382653695,
+            "max": 1383856794
+          },
+          "major_words": {
+            "observations": [
+              1399684605,
+              1399250857,
+              1398481520
+            ],
+            "median": 1399250857,
+            "min": 1398481520,
+            "max": 1399684605
+          },
+          "minor_collections": {
+            "observations": [
+              16499,
+              16499,
+              16499
+            ],
+            "median": 16499,
+            "min": 16499,
+            "max": 16499
+          },
+          "major_collections": {
+            "observations": [
+              59,
+              59,
+              60
+            ],
+            "median": 59,
+            "min": 59,
+            "max": 60
+          },
+          "top_heap_words": {
+            "observations": [
+              94893056,
+              94893056,
+              94893056
+            ],
+            "median": 94893056,
+            "min": 94893056,
+            "max": 94893056
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                49258,
+                49262,
+                49722
+              ],
+              "median": 49262
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                35919,
+                35981,
+                36304
+              ],
+              "median": 35981
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                29722,
+                29830,
+                30056
+              ],
+              "median": 29830
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                4664,
+                4618,
+                4654
+              ],
+              "median": 4654
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                4174,
+                3998,
+                4042
+              ],
+              "median": 4042
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                1805,
+                1846,
+                1815
+              ],
+              "median": 1815
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                19,
+                18,
+                20
+              ],
+              "median": 19
+            }
+          }
+        },
+        "combined": {
+          "total_profile_ms": {
+            "observations": [
+              54626,
+              54833,
+              54387
+            ],
+            "median": 54626,
+            "min": 54387,
+            "max": 54833
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              358,
+              362,
+              354
+            ],
+            "median": 358,
+            "min": 354,
+            "max": 362
+          },
+          "intern_decls_ms": {
+            "observations": [
+              282,
+              284,
+              282
+            ],
+            "median": 282,
+            "min": 282,
+            "max": 284
+          },
+          "intern_index_ms": {
+            "observations": [
+              32,
+              32,
+              32
+            ],
+            "median": 32,
+            "min": 32,
+            "max": 32
+          },
+          "decls_allocated_words": {
+            "observations": [
+              40079610,
+              40079610,
+              40079610
+            ],
+            "median": 40079610,
+            "min": 40079610,
+            "max": 40079610
+          },
+          "index_allocated_words": {
+            "observations": [
+              7059895,
+              7059895,
+              7059895
+            ],
+            "median": 7059895,
+            "min": 7059895,
+            "max": 7059895
+          },
+          "allocated_words": {
+            "observations": [
+              17261481219,
+              17261481219,
+              17261481219
+            ],
+            "median": 17261481219,
+            "min": 17261481219,
+            "max": 17261481219
+          },
+          "promoted_words": {
+            "observations": [
+              1382584882,
+              1382584882,
+              1382584882
+            ],
+            "median": 1382584882,
+            "min": 1382584882,
+            "max": 1382584882
+          },
+          "major_words": {
+            "observations": [
+              1398412684,
+              1398412684,
+              1398412684
+            ],
+            "median": 1398412684,
+            "min": 1398412684,
+            "max": 1398412684
+          },
+          "minor_collections": {
+            "observations": [
+              16499,
+              16499,
+              16499
+            ],
+            "median": 16499,
+            "min": 16499,
+            "max": 16499
+          },
+          "major_collections": {
+            "observations": [
+              59,
+              59,
+              59
+            ],
+            "median": 59,
+            "min": 59,
+            "max": 59
+          },
+          "top_heap_words": {
+            "observations": [
+              94893056,
+              94893056,
+              94893056
+            ],
+            "median": 94893056,
+            "min": 94893056,
+            "max": 94893056
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                49284,
+                49677,
+                49509
+              ],
+              "median": 49509
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                36283,
+                36648,
+                36635
+              ],
+              "median": 36635
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                30131,
+                30464,
+                30508
+              ],
+              "median": 30464
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                4518,
+                4520,
+                4489
+              ],
+              "median": 4518
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3854,
+                3877,
+                3867
+              ],
+              "median": 3867
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                1819,
+                1834,
+                1800
+              ],
+              "median": 1819
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                17,
+                18,
+                19
+              ],
+              "median": 18
+            }
+          }
+        }
+      },
+      "BenchUIntLive500": {
+        "original-a": {
+          "total_profile_ms": {
+            "observations": [
+              45349,
+              46322,
+              45166
+            ],
+            "median": 45349,
+            "min": 45166,
+            "max": 46322
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              896,
+              948,
+              914
+            ],
+            "median": 914,
+            "min": 896,
+            "max": 948
+          },
+          "intern_decls_ms": {
+            "observations": [
+              102,
+              98,
+              101
+            ],
+            "median": 101,
+            "min": 98,
+            "max": 102
+          },
+          "intern_index_ms": {
+            "observations": [
+              1,
+              1,
+              1
+            ],
+            "median": 1,
+            "min": 1,
+            "max": 1
+          },
+          "decls_allocated_words": {
+            "observations": [
+              12528956,
+              12528956,
+              12528956
+            ],
+            "median": 12528956,
+            "min": 12528956,
+            "max": 12528956
+          },
+          "index_allocated_words": {
+            "observations": [
+              219809,
+              219809,
+              219809
+            ],
+            "median": 219809,
+            "min": 219809,
+            "max": 219809
+          },
+          "allocated_words": {
+            "observations": [
+              10441767224,
+              10441767731,
+              10441767224
+            ],
+            "median": 10441767224,
+            "min": 10441767224,
+            "max": 10441767731
+          },
+          "promoted_words": {
+            "observations": [
+              626895493,
+              626661465,
+              626895493
+            ],
+            "median": 626895493,
+            "min": 626661465,
+            "max": 626895493
+          },
+          "major_words": {
+            "observations": [
+              642913390,
+              642679375,
+              642913390
+            ],
+            "median": 642913390,
+            "min": 642679375,
+            "max": 642913390
+          },
+          "minor_collections": {
+            "observations": [
+              9984,
+              9984,
+              9984
+            ],
+            "median": 9984,
+            "min": 9984,
+            "max": 9984
+          },
+          "major_collections": {
+            "observations": [
+              33,
+              35,
+              33
+            ],
+            "median": 33,
+            "min": 33,
+            "max": 35
+          },
+          "top_heap_words": {
+            "observations": [
+              107475968,
+              103281664,
+              107475968
+            ],
+            "median": 107475968,
+            "min": 103281664,
+            "max": 107475968
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                41464,
+                40876,
+                40986
+              ],
+              "median": 40986
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                29473,
+                29037,
+                29022
+              ],
+              "median": 29037
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                13519,
+                13262,
+                13341
+              ],
+              "median": 13341
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                3945,
+                3832,
+                3935
+              ],
+              "median": 3935
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3465,
+                3364,
+                3454
+              ],
+              "median": 3454
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                2351,
+                1825,
+                1856
+              ],
+              "median": 1856
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                18,
+                18,
+                18
+              ],
+              "median": 18
+            }
+          }
+        },
+        "original-b": {
+          "total_profile_ms": {
+            "observations": [
+              44977,
+              44948,
+              45012
+            ],
+            "median": 44977,
+            "min": 44948,
+            "max": 45012
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              909,
+              911,
+              922
+            ],
+            "median": 911,
+            "min": 909,
+            "max": 922
+          },
+          "intern_decls_ms": {
+            "observations": [
+              93,
+              100,
+              91
+            ],
+            "median": 93,
+            "min": 91,
+            "max": 100
+          },
+          "intern_index_ms": {
+            "observations": [
+              1,
+              1,
+              0
+            ],
+            "median": 1,
+            "min": 0,
+            "max": 1
+          },
+          "decls_allocated_words": {
+            "observations": [
+              12528956,
+              12528956,
+              12528956
+            ],
+            "median": 12528956,
+            "min": 12528956,
+            "max": 12528956
+          },
+          "index_allocated_words": {
+            "observations": [
+              219809,
+              219809,
+              219809
+            ],
+            "median": 219809,
+            "min": 219809,
+            "max": 219809
+          },
+          "allocated_words": {
+            "observations": [
+              10441767224,
+              10441767731,
+              10441767224
+            ],
+            "median": 10441767224,
+            "min": 10441767224,
+            "max": 10441767731
+          },
+          "promoted_words": {
+            "observations": [
+              626660860,
+              626689329,
+              626660860
+            ],
+            "median": 626660860,
+            "min": 626660860,
+            "max": 626689329
+          },
+          "major_words": {
+            "observations": [
+              642678757,
+              642707239,
+              642678757
+            ],
+            "median": 642678757,
+            "min": 642678757,
+            "max": 642707239
+          },
+          "minor_collections": {
+            "observations": [
+              9983,
+              9984,
+              9983
+            ],
+            "median": 9983,
+            "min": 9983,
+            "max": 9984
+          },
+          "major_collections": {
+            "observations": [
+              34,
+              33,
+              34
+            ],
+            "median": 34,
+            "min": 33,
+            "max": 34
+          },
+          "top_heap_words": {
+            "observations": [
+              103281664,
+              107475968,
+              103281664
+            ],
+            "median": 103281664,
+            "min": 103281664,
+            "max": 107475968
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                40482,
+                40572,
+                40567
+              ],
+              "median": 40567
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                28599,
+                28701,
+                28622
+              ],
+              "median": 28622
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                13209,
+                13245,
+                13249
+              ],
+              "median": 13245
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                3919,
+                3916,
+                3932
+              ],
+              "median": 3919
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3461,
+                3446,
+                3443
+              ],
+              "median": 3446
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                2010,
+                1847,
+                2007
+              ],
+              "median": 2007
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                18,
+                18,
+                21
+              ],
+              "median": 18
+            }
+          }
+        },
+        "fusion": {
+          "total_profile_ms": {
+            "observations": [
+              45099,
+              44541,
+              45141
+            ],
+            "median": 45099,
+            "min": 44541,
+            "max": 45141
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              953,
+              902,
+              894
+            ],
+            "median": 902,
+            "min": 894,
+            "max": 953
+          },
+          "intern_decls_ms": {
+            "observations": [
+              92,
+              92,
+              94
+            ],
+            "median": 92,
+            "min": 92,
+            "max": 94
+          },
+          "intern_index_ms": {
+            "observations": [
+              1,
+              1,
+              0
+            ],
+            "median": 1,
+            "min": 0,
+            "max": 1
+          },
+          "decls_allocated_words": {
+            "observations": [
+              12270705,
+              12270705,
+              12270705
+            ],
+            "median": 12270705,
+            "min": 12270705,
+            "max": 12270705
+          },
+          "index_allocated_words": {
+            "observations": [
+              220542,
+              220542,
+              220542
+            ],
+            "median": 220542,
+            "min": 220542,
+            "max": 220542
+          },
+          "allocated_words": {
+            "observations": [
+              10441508075,
+              10441508075,
+              10441508075
+            ],
+            "median": 10441508075,
+            "min": 10441508075,
+            "max": 10441508075
+          },
+          "promoted_words": {
+            "observations": [
+              626926005,
+              626926005,
+              626926005
+            ],
+            "median": 626926005,
+            "min": 626926005,
+            "max": 626926005
+          },
+          "major_words": {
+            "observations": [
+              642943924,
+              642943924,
+              642943924
+            ],
+            "median": 642943924,
+            "min": 642943924,
+            "max": 642943924
+          },
+          "minor_collections": {
+            "observations": [
+              9983,
+              9983,
+              9983
+            ],
+            "median": 9983,
+            "min": 9983,
+            "max": 9983
+          },
+          "major_collections": {
+            "observations": [
+              33,
+              33,
+              33
+            ],
+            "median": 33,
+            "min": 33,
+            "max": 33
+          },
+          "top_heap_words": {
+            "observations": [
+              107475968,
+              107475968,
+              107475968
+            ],
+            "median": 107475968,
+            "min": 107475968,
+            "max": 107475968
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                40730,
+                40262,
+                40751
+              ],
+              "median": 40730
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                28701,
+                28384,
+                28700
+              ],
+              "median": 28700
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                13032,
+                12914,
+                13073
+              ],
+              "median": 13032
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                4031,
+                3880,
+                3973
+              ],
+              "median": 3973
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3541,
+                3408,
+                3536
+              ],
+              "median": 3536
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                1790,
+                1782,
+                1801
+              ],
+              "median": 1790
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                18,
+                18,
+                18
+              ],
+              "median": 18
+            }
+          }
+        },
+        "combined": {
+          "total_profile_ms": {
+            "observations": [
+              44592,
+              44719,
+              44587
+            ],
+            "median": 44592,
+            "min": 44587,
+            "max": 44719
+          },
+          "z3_aggregate_ms": {
+            "observations": [
+              950,
+              908,
+              905
+            ],
+            "median": 908,
+            "min": 905,
+            "max": 950
+          },
+          "intern_decls_ms": {
+            "observations": [
+              86,
+              89,
+              89
+            ],
+            "median": 89,
+            "min": 86,
+            "max": 89
+          },
+          "intern_index_ms": {
+            "observations": [
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          },
+          "decls_allocated_words": {
+            "observations": [
+              12221315,
+              12221315,
+              12221315
+            ],
+            "median": 12221315,
+            "min": 12221315,
+            "max": 12221315
+          },
+          "index_allocated_words": {
+            "observations": [
+              204811,
+              204811,
+              204811
+            ],
+            "median": 204811,
+            "min": 204811,
+            "max": 204811
+          },
+          "allocated_words": {
+            "observations": [
+              10441443599,
+              10441443580,
+              10441443580
+            ],
+            "median": 10441443580,
+            "min": 10441443580,
+            "max": 10441443599
+          },
+          "promoted_words": {
+            "observations": [
+              626713682,
+              627261077,
+              627261077
+            ],
+            "median": 627261077,
+            "min": 626713682,
+            "max": 627261077
+          },
+          "major_words": {
+            "observations": [
+              642731579,
+              643278987,
+              643278987
+            ],
+            "median": 643278987,
+            "min": 642731579,
+            "max": 643278987
+          },
+          "minor_collections": {
+            "observations": [
+              9983,
+              9983,
+              9983
+            ],
+            "median": 9983,
+            "min": 9983,
+            "max": 9983
+          },
+          "major_collections": {
+            "observations": [
+              34,
+              33,
+              33
+            ],
+            "median": 33,
+            "min": 33,
+            "max": 34
+          },
+          "top_heap_words": {
+            "observations": [
+              103281664,
+              107475968,
+              107475968
+            ],
+            "median": 107475968,
+            "min": 103281664,
+            "max": 107475968
+          },
+          "phase_counters": {
+            "FStarC.TypeChecker.Tc.process_one_decl": {
+              "observations": [
+                40422,
+                40366,
+                40310
+              ],
+              "median": 40366
+            },
+            "FStarC.TypeChecker.Tc.tc_sig_let-tc-phase2": {
+              "observations": [
+                28681,
+                28739,
+                28618
+              ],
+              "median": 28681
+            },
+            "FStarC.TypeChecker.Rel.simplify_vc": {
+              "observations": [
+                13138,
+                13200,
+                13125
+              ],
+              "median": 13138
+            },
+            "FStarC.TypeChecker.Tc.encode_sig": {
+              "observations": [
+                3868,
+                3834,
+                3823
+              ],
+              "median": 3834
+            },
+            "FStarC.SMTEncoding.EncodeTerm.normalize_refinement": {
+              "observations": [
+                3400,
+                3331,
+                3305
+              ],
+              "median": 3331
+            },
+            "FStarC.SMTEncoding.Encode.norm_before_encoding": {
+              "observations": [
+                1833,
+                1823,
+                1956
+              ],
+              "median": 1833
+            },
+            "FStarC.CheckedFiles.sum": {
+              "observations": [
+                18,
+                18,
+                17
+              ],
+              "median": 18
+            }
+          }
+        }
+      }
+    }
+  },
+  "detailed_phases": {
+    "repetitions_per_variant_module_mode": 2,
+    "modules": {
+      "BenchBvLive500": {
+        "original-a": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                41.18,
+                40.93
+              ],
+              "median": 41.055,
+              "min": 40.93,
+              "max": 41.18
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1996.543,
+                1979.585
+              ],
+              "median": 1988.0639999999999,
+              "min": 1979.585,
+              "max": 1996.543
+            },
+            "decls_wall_ms": {
+              "observations": [
+                277.177,
+                277.065
+              ],
+              "median": 277.121,
+              "min": 277.065,
+              "max": 277.177
+            },
+            "decls_allocated_words": {
+              "observations": [
+                42038647,
+                42038647
+              ],
+              "median": 42038647.0,
+              "min": 42038647,
+              "max": 42038647
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                155.775,
+                164.335
+              ],
+              "median": 160.055,
+              "min": 155.775,
+              "max": 164.335
+            },
+            "index_wall_ms": {
+              "observations": [
+                31.555,
+                30.352
+              ],
+              "median": 30.9535,
+              "min": 30.352,
+              "max": 31.555
+            },
+            "index_allocated_words": {
+              "observations": [
+                6793839,
+                6793839
+              ],
+              "median": 6793839.0,
+              "min": 6793839,
+              "max": 6793839
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.418,
+                15.47
+              ],
+              "median": 15.443999999999999,
+              "min": 15.418,
+              "max": 15.47
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                38.617,
+                37.674
+              ],
+              "median": 38.1455,
+              "min": 37.674,
+              "max": 38.617
+            },
+            "allocated_words": {
+              "observations": [
+                15969035225,
+                15969035225
+              ],
+              "median": 15969035225.0,
+              "min": 15969035225,
+              "max": 15969035225
+            },
+            "promoted_words": {
+              "observations": [
+                1381405598,
+                1381405598
+              ],
+              "median": 1381405598.0,
+              "min": 1381405598,
+              "max": 1381405598
+            },
+            "major_words": {
+              "observations": [
+                1397547847,
+                1397547847
+              ],
+              "median": 1397547847.0,
+              "min": 1397547847,
+              "max": 1397547847
+            },
+            "minor_collections": {
+              "observations": [
+                15270,
+                15270
+              ],
+              "median": 15270.0,
+              "min": 15270,
+              "max": 15270
+            },
+            "major_collections": {
+              "observations": [
+                59,
+                59
+              ],
+              "median": 59.0,
+              "min": 59,
+              "max": 59
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752
+              ],
+              "median": 90698752.0,
+              "min": 90698752,
+              "max": 90698752
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                41.69,
+                41.09
+              ],
+              "median": 41.39,
+              "min": 41.09,
+              "max": 41.69
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                2019.816,
+                1993.008
+              ],
+              "median": 2006.412,
+              "min": 1993.008,
+              "max": 2019.816
+            },
+            "decls_wall_ms": {
+              "observations": [
+                288.721,
+                282.326
+              ],
+              "median": 285.5235,
+              "min": 282.326,
+              "max": 288.721
+            },
+            "decls_allocated_words": {
+              "observations": [
+                42038647,
+                42038647
+              ],
+              "median": 42038647.0,
+              "min": 42038647,
+              "max": 42038647
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                161.058,
+                157.262
+              ],
+              "median": 159.16,
+              "min": 157.262,
+              "max": 161.058
+            },
+            "index_wall_ms": {
+              "observations": [
+                32.351,
+                30.4
+              ],
+              "median": 31.3755,
+              "min": 30.4,
+              "max": 32.351
+            },
+            "index_allocated_words": {
+              "observations": [
+                6793839,
+                6793839
+              ],
+              "median": 6793839.0,
+              "min": 6793839,
+              "max": 6793839
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.137,
+                15.925
+              ],
+              "median": 15.531,
+              "min": 15.137,
+              "max": 15.925
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                15968619937,
+                15968619937
+              ],
+              "median": 15968619937.0,
+              "min": 15968619937,
+              "max": 15968619937
+            },
+            "promoted_words": {
+              "observations": [
+                1380469892,
+                1380469892
+              ],
+              "median": 1380469892.0,
+              "min": 1380469892,
+              "max": 1380469892
+            },
+            "major_words": {
+              "observations": [
+                1396201466,
+                1396201466
+              ],
+              "median": 1396201466.0,
+              "min": 1396201466,
+              "max": 1396201466
+            },
+            "minor_collections": {
+              "observations": [
+                15271,
+                15271
+              ],
+              "median": 15271.0,
+              "min": 15271,
+              "max": 15271
+            },
+            "major_collections": {
+              "observations": [
+                59,
+                59
+              ],
+              "median": 59.0,
+              "min": 59,
+              "max": 59
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          }
+        },
+        "original-b": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                41.02,
+                41.27
+              ],
+              "median": 41.145,
+              "min": 41.02,
+              "max": 41.27
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                2015.851,
+                1989.479
+              ],
+              "median": 2002.665,
+              "min": 1989.479,
+              "max": 2015.851
+            },
+            "decls_wall_ms": {
+              "observations": [
+                279.39,
+                285.151
+              ],
+              "median": 282.27049999999997,
+              "min": 279.39,
+              "max": 285.151
+            },
+            "decls_allocated_words": {
+              "observations": [
+                42038647,
+                42038647
+              ],
+              "median": 42038647.0,
+              "min": 42038647,
+              "max": 42038647
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                157.11,
+                162.599
+              ],
+              "median": 159.8545,
+              "min": 157.11,
+              "max": 162.599
+            },
+            "index_wall_ms": {
+              "observations": [
+                27.537,
+                30.86
+              ],
+              "median": 29.1985,
+              "min": 27.537,
+              "max": 30.86
+            },
+            "index_allocated_words": {
+              "observations": [
+                6793839,
+                6793839
+              ],
+              "median": 6793839.0,
+              "min": 6793839,
+              "max": 6793839
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.966,
+                15.825
+              ],
+              "median": 15.895499999999998,
+              "min": 15.825,
+              "max": 15.966
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                39.318,
+                38.577
+              ],
+              "median": 38.9475,
+              "min": 38.577,
+              "max": 39.318
+            },
+            "allocated_words": {
+              "observations": [
+                15969034698,
+                15969035225
+              ],
+              "median": 15969034961.5,
+              "min": 15969034698,
+              "max": 15969035225
+            },
+            "promoted_words": {
+              "observations": [
+                1381177201,
+                1380762676
+              ],
+              "median": 1380969938.5,
+              "min": 1380762676,
+              "max": 1381177201
+            },
+            "major_words": {
+              "observations": [
+                1397319450,
+                1396904925
+              ],
+              "median": 1397112187.5,
+              "min": 1396904925,
+              "max": 1397319450
+            },
+            "minor_collections": {
+              "observations": [
+                15270,
+                15271
+              ],
+              "median": 15270.5,
+              "min": 15270,
+              "max": 15271
+            },
+            "major_collections": {
+              "observations": [
+                59,
+                59
+              ],
+              "median": 59.0,
+              "min": 59,
+              "max": 59
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                94893056
+              ],
+              "median": 92795904.0,
+              "min": 90698752,
+              "max": 94893056
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                41.26,
+                40.5
+              ],
+              "median": 40.879999999999995,
+              "min": 40.5,
+              "max": 41.26
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1970.486,
+                1941.362
+              ],
+              "median": 1955.924,
+              "min": 1941.362,
+              "max": 1970.486
+            },
+            "decls_wall_ms": {
+              "observations": [
+                279.498,
+                272.81
+              ],
+              "median": 276.154,
+              "min": 272.81,
+              "max": 279.498
+            },
+            "decls_allocated_words": {
+              "observations": [
+                42038647,
+                42038647
+              ],
+              "median": 42038647.0,
+              "min": 42038647,
+              "max": 42038647
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                156.125,
+                152.283
+              ],
+              "median": 154.204,
+              "min": 152.283,
+              "max": 156.125
+            },
+            "index_wall_ms": {
+              "observations": [
+                28.501,
+                29.023
+              ],
+              "median": 28.762,
+              "min": 28.501,
+              "max": 29.023
+            },
+            "index_allocated_words": {
+              "observations": [
+                6793839,
+                6793839
+              ],
+              "median": 6793839.0,
+              "min": 6793839,
+              "max": 6793839
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.292,
+                14.827
+              ],
+              "median": 15.0595,
+              "min": 14.827,
+              "max": 15.292
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                15968619410,
+                15968619937
+              ],
+              "median": 15968619673.5,
+              "min": 15968619410,
+              "max": 15968619937
+            },
+            "promoted_words": {
+              "observations": [
+                1380503343,
+                1380343935
+              ],
+              "median": 1380423639.0,
+              "min": 1380343935,
+              "max": 1380503343
+            },
+            "major_words": {
+              "observations": [
+                1396234917,
+                1396075509
+              ],
+              "median": 1396155213.0,
+              "min": 1396075509,
+              "max": 1396234917
+            },
+            "minor_collections": {
+              "observations": [
+                15270,
+                15270
+              ],
+              "median": 15270.0,
+              "min": 15270,
+              "max": 15270
+            },
+            "major_collections": {
+              "observations": [
+                59,
+                59
+              ],
+              "median": 59.0,
+              "min": 59,
+              "max": 59
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752
+              ],
+              "median": 90698752.0,
+              "min": 90698752,
+              "max": 90698752
+            }
+          }
+        },
+        "fusion": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                42.2,
+                41.75
+              ],
+              "median": 41.975,
+              "min": 41.75,
+              "max": 42.2
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                2049.496,
+                1999.751
+              ],
+              "median": 2024.6235000000001,
+              "min": 1999.751,
+              "max": 2049.496
+            },
+            "decls_wall_ms": {
+              "observations": [
+                266.085,
+                266.939
+              ],
+              "median": 266.512,
+              "min": 266.085,
+              "max": 266.939
+            },
+            "decls_allocated_words": {
+              "observations": [
+                40129007,
+                40129007
+              ],
+              "median": 40129007.0,
+              "min": 40129007,
+              "max": 40129007
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                154.286,
+                146.288
+              ],
+              "median": 150.287,
+              "min": 146.288,
+              "max": 154.286
+            },
+            "index_wall_ms": {
+              "observations": [
+                28.416,
+                28.909
+              ],
+              "median": 28.6625,
+              "min": 28.416,
+              "max": 28.909
+            },
+            "index_allocated_words": {
+              "observations": [
+                7075801,
+                7075801
+              ],
+              "median": 7075801.0,
+              "min": 7075801,
+              "max": 7075801
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.155,
+                14.67
+              ],
+              "median": 14.9125,
+              "min": 14.67,
+              "max": 15.155
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                39.044,
+                37.952
+              ],
+              "median": 38.498,
+              "min": 37.952,
+              "max": 39.044
+            },
+            "allocated_words": {
+              "observations": [
+                15967404864,
+                15967404864
+              ],
+              "median": 15967404864.0,
+              "min": 15967404864,
+              "max": 15967404864
+            },
+            "promoted_words": {
+              "observations": [
+                1379716857,
+                1379716857
+              ],
+              "median": 1379716857.0,
+              "min": 1379716857,
+              "max": 1379716857
+            },
+            "major_words": {
+              "observations": [
+                1395859115,
+                1395859115
+              ],
+              "median": 1395859115.0,
+              "min": 1395859115,
+              "max": 1395859115
+            },
+            "minor_collections": {
+              "observations": [
+                15268,
+                15268
+              ],
+              "median": 15268.0,
+              "min": 15268,
+              "max": 15268
+            },
+            "major_collections": {
+              "observations": [
+                60,
+                60
+              ],
+              "median": 60.0,
+              "min": 60,
+              "max": 60
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752
+              ],
+              "median": 90698752.0,
+              "min": 90698752,
+              "max": 90698752
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                42.11,
+                41.9
+              ],
+              "median": 42.004999999999995,
+              "min": 41.9,
+              "max": 42.11
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1961.91,
+                1992.904
+              ],
+              "median": 1977.4070000000002,
+              "min": 1961.91,
+              "max": 1992.904
+            },
+            "decls_wall_ms": {
+              "observations": [
+                286.425,
+                273.039
+              ],
+              "median": 279.73199999999997,
+              "min": 273.039,
+              "max": 286.425
+            },
+            "decls_allocated_words": {
+              "observations": [
+                40129007,
+                40129007
+              ],
+              "median": 40129007.0,
+              "min": 40129007,
+              "max": 40129007
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                154.288,
+                154.662
+              ],
+              "median": 154.47500000000002,
+              "min": 154.288,
+              "max": 154.662
+            },
+            "index_wall_ms": {
+              "observations": [
+                32.08,
+                28.475
+              ],
+              "median": 30.2775,
+              "min": 28.475,
+              "max": 32.08
+            },
+            "index_allocated_words": {
+              "observations": [
+                7075801,
+                7075801
+              ],
+              "median": 7075801.0,
+              "min": 7075801,
+              "max": 7075801
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                16.334,
+                15.995
+              ],
+              "median": 16.1645,
+              "min": 15.995,
+              "max": 16.334
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                15966989833,
+                15966990105
+              ],
+              "median": 15966989969.0,
+              "min": 15966989833,
+              "max": 15966990105
+            },
+            "promoted_words": {
+              "observations": [
+                1379143423,
+                1380480274
+              ],
+              "median": 1379811848.5,
+              "min": 1379143423,
+              "max": 1380480274
+            },
+            "major_words": {
+              "observations": [
+                1394875014,
+                1396211857
+              ],
+              "median": 1395543435.5,
+              "min": 1394875014,
+              "max": 1396211857
+            },
+            "minor_collections": {
+              "observations": [
+                15268,
+                15268
+              ],
+              "median": 15268.0,
+              "min": 15268,
+              "max": 15268
+            },
+            "major_collections": {
+              "observations": [
+                59,
+                59
+              ],
+              "median": 59.0,
+              "min": 59,
+              "max": 59
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752
+              ],
+              "median": 90698752.0,
+              "min": 90698752,
+              "max": 90698752
+            }
+          }
+        },
+        "combined": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                41.96,
+                41.84
+              ],
+              "median": 41.900000000000006,
+              "min": 41.84,
+              "max": 41.96
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1993.903,
+                1999.807
+              ],
+              "median": 1996.855,
+              "min": 1993.903,
+              "max": 1999.807
+            },
+            "decls_wall_ms": {
+              "observations": [
+                267.398,
+                270.184
+              ],
+              "median": 268.79100000000005,
+              "min": 267.398,
+              "max": 270.184
+            },
+            "decls_allocated_words": {
+              "observations": [
+                40079610,
+                40079610
+              ],
+              "median": 40079610.0,
+              "min": 40079610,
+              "max": 40079610
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                161.97,
+                162.965
+              ],
+              "median": 162.4675,
+              "min": 161.97,
+              "max": 162.965
+            },
+            "index_wall_ms": {
+              "observations": [
+                29.828,
+                30.485
+              ],
+              "median": 30.1565,
+              "min": 29.828,
+              "max": 30.485
+            },
+            "index_allocated_words": {
+              "observations": [
+                7059895,
+                7059895
+              ],
+              "median": 7059895.0,
+              "min": 7059895,
+              "max": 7059895
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.07,
+                15.117
+              ],
+              "median": 15.0935,
+              "min": 15.07,
+              "max": 15.117
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                38.54,
+                39.416
+              ],
+              "median": 38.977999999999994,
+              "min": 38.54,
+              "max": 39.416
+            },
+            "allocated_words": {
+              "observations": [
+                15967340210,
+                15967340210
+              ],
+              "median": 15967340210.0,
+              "min": 15967340210,
+              "max": 15967340210
+            },
+            "promoted_words": {
+              "observations": [
+                1380932023,
+                1380932023
+              ],
+              "median": 1380932023.0,
+              "min": 1380932023,
+              "max": 1380932023
+            },
+            "major_words": {
+              "observations": [
+                1397074272,
+                1397074272
+              ],
+              "median": 1397074272.0,
+              "min": 1397074272,
+              "max": 1397074272
+            },
+            "minor_collections": {
+              "observations": [
+                15268,
+                15268
+              ],
+              "median": 15268.0,
+              "min": 15268,
+              "max": 15268
+            },
+            "major_collections": {
+              "observations": [
+                60,
+                60
+              ],
+              "median": 60.0,
+              "min": 60,
+              "max": 60
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752
+              ],
+              "median": 90698752.0,
+              "min": 90698752,
+              "max": 90698752
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                41.75,
+                41.7
+              ],
+              "median": 41.725,
+              "min": 41.7,
+              "max": 41.75
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                2038.111,
+                2034.6
+              ],
+              "median": 2036.3555000000001,
+              "min": 2034.6,
+              "max": 2038.111
+            },
+            "decls_wall_ms": {
+              "observations": [
+                272.022,
+                272.708
+              ],
+              "median": 272.365,
+              "min": 272.022,
+              "max": 272.708
+            },
+            "decls_allocated_words": {
+              "observations": [
+                40079610,
+                40079610
+              ],
+              "median": 40079610.0,
+              "min": 40079610,
+              "max": 40079610
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                160.501,
+                155.394
+              ],
+              "median": 157.9475,
+              "min": 155.394,
+              "max": 160.501
+            },
+            "index_wall_ms": {
+              "observations": [
+                31.797,
+                29.657
+              ],
+              "median": 30.727,
+              "min": 29.657,
+              "max": 31.797
+            },
+            "index_allocated_words": {
+              "observations": [
+                7059895,
+                7059895
+              ],
+              "median": 7059895.0,
+              "min": 7059895,
+              "max": 7059895
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                15.111,
+                15.579
+              ],
+              "median": 15.345,
+              "min": 15.111,
+              "max": 15.579
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                15966924923,
+                15966924923
+              ],
+              "median": 15966924923.0,
+              "min": 15966924923,
+              "max": 15966924923
+            },
+            "promoted_words": {
+              "observations": [
+                1379927117,
+                1379927117
+              ],
+              "median": 1379927117.0,
+              "min": 1379927117,
+              "max": 1379927117
+            },
+            "major_words": {
+              "observations": [
+                1395658691,
+                1395658691
+              ],
+              "median": 1395658691.0,
+              "min": 1395658691,
+              "max": 1395658691
+            },
+            "minor_collections": {
+              "observations": [
+                15268,
+                15268
+              ],
+              "median": 15268.0,
+              "min": 15268,
+              "max": 15268
+            },
+            "major_collections": {
+              "observations": [
+                60,
+                60
+              ],
+              "median": 60.0,
+              "min": 60,
+              "max": 60
+            },
+            "top_heap_words": {
+              "observations": [
+                90698752,
+                90698752
+              ],
+              "median": 90698752.0,
+              "min": 90698752,
+              "max": 90698752
+            }
+          }
+        }
+      },
+      "BenchUIntLive500": {
+        "original-a": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                33.06,
+                32.99
+              ],
+              "median": 33.025000000000006,
+              "min": 32.99,
+              "max": 33.06
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1725.459,
+                1740.312
+              ],
+              "median": 1732.8854999999999,
+              "min": 1725.459,
+              "max": 1740.312
+            },
+            "decls_wall_ms": {
+              "observations": [
+                88.833,
+                88.893
+              ],
+              "median": 88.863,
+              "min": 88.833,
+              "max": 88.893
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12528956,
+                12528956
+              ],
+              "median": 12528956.0,
+              "min": 12528956,
+              "max": 12528956
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                46.967,
+                45.76
+              ],
+              "median": 46.3635,
+              "min": 45.76,
+              "max": 46.967
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.088,
+                1.307
+              ],
+              "median": 1.1975,
+              "min": 1.088,
+              "max": 1.307
+            },
+            "index_allocated_words": {
+              "observations": [
+                219809,
+                219809
+              ],
+              "median": 219809.0,
+              "min": 219809,
+              "max": 219809
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                2.575,
+                2.645
+              ],
+              "median": 2.6100000000000003,
+              "min": 2.575,
+              "max": 2.645
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                35.071,
+                36.62
+              ],
+              "median": 35.8455,
+              "min": 35.071,
+              "max": 36.62
+            },
+            "allocated_words": {
+              "observations": [
+                9272785552,
+                9272786079
+              ],
+              "median": 9272785815.5,
+              "min": 9272785552,
+              "max": 9272786079
+            },
+            "promoted_words": {
+              "observations": [
+                622117376,
+                622122279
+              ],
+              "median": 622119827.5,
+              "min": 622117376,
+              "max": 622122279
+            },
+            "major_words": {
+              "observations": [
+                638432791,
+                638437694
+              ],
+              "median": 638435242.5,
+              "min": 638432791,
+              "max": 638437694
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                32.93,
+                32.73
+              ],
+              "median": 32.83,
+              "min": 32.73,
+              "max": 32.93
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1705.804,
+                1680.666
+              ],
+              "median": 1693.2350000000001,
+              "min": 1680.666,
+              "max": 1705.804
+            },
+            "decls_wall_ms": {
+              "observations": [
+                89.66,
+                88.15
+              ],
+              "median": 88.905,
+              "min": 88.15,
+              "max": 89.66
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12528956,
+                12528956
+              ],
+              "median": 12528956.0,
+              "min": 12528956,
+              "max": 12528956
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                47.204,
+                45.352
+              ],
+              "median": 46.278,
+              "min": 45.352,
+              "max": 47.204
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.208,
+                1.3
+              ],
+              "median": 1.254,
+              "min": 1.208,
+              "max": 1.3
+            },
+            "index_allocated_words": {
+              "observations": [
+                219809,
+                219809
+              ],
+              "median": 219809.0,
+              "min": 219809,
+              "max": 219809
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                2.681,
+                2.727
+              ],
+              "median": 2.7039999999999997,
+              "min": 2.681,
+              "max": 2.727
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                9272405564,
+                9272405312
+              ],
+              "median": 9272405438.0,
+              "min": 9272405312,
+              "max": 9272405564
+            },
+            "promoted_words": {
+              "observations": [
+                622132259,
+                622191684
+              ],
+              "median": 622161971.5,
+              "min": 622132259,
+              "max": 622191684
+            },
+            "major_words": {
+              "observations": [
+                638071541,
+                638130960
+              ],
+              "median": 638101250.5,
+              "min": 638071541,
+              "max": 638130960
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          }
+        },
+        "original-b": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                32.03,
+                32.54
+              ],
+              "median": 32.285,
+              "min": 32.03,
+              "max": 32.54
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1514.152,
+                1702.314
+              ],
+              "median": 1608.2330000000002,
+              "min": 1514.152,
+              "max": 1702.314
+            },
+            "decls_wall_ms": {
+              "observations": [
+                101.772,
+                86.521
+              ],
+              "median": 94.1465,
+              "min": 86.521,
+              "max": 101.772
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12528956,
+                12528956
+              ],
+              "median": 12528956.0,
+              "min": 12528956,
+              "max": 12528956
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                46.589,
+                44.457
+              ],
+              "median": 45.522999999999996,
+              "min": 44.457,
+              "max": 46.589
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.409,
+                1.209
+              ],
+              "median": 1.3090000000000002,
+              "min": 1.209,
+              "max": 1.409
+            },
+            "index_allocated_words": {
+              "observations": [
+                219809,
+                219809
+              ],
+              "median": 219809.0,
+              "min": 219809,
+              "max": 219809
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.162,
+                2.59
+              ],
+              "median": 2.876,
+              "min": 2.59,
+              "max": 3.162
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                35.604,
+                36.736
+              ],
+              "median": 36.17,
+              "min": 35.604,
+              "max": 36.736
+            },
+            "allocated_words": {
+              "observations": [
+                9272786079,
+                9272785552
+              ],
+              "median": 9272785815.5,
+              "min": 9272785552,
+              "max": 9272786079
+            },
+            "promoted_words": {
+              "observations": [
+                622363893,
+                622111533
+              ],
+              "median": 622237713.0,
+              "min": 622111533,
+              "max": 622363893
+            },
+            "major_words": {
+              "observations": [
+                638679308,
+                638426948
+              ],
+              "median": 638553128.0,
+              "min": 638426948,
+              "max": 638679308
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                33,
+                34
+              ],
+              "median": 33.5,
+              "min": 33,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                32.59,
+                32.52
+              ],
+              "median": 32.55500000000001,
+              "min": 32.52,
+              "max": 32.59
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1674.722,
+                1711.016
+              ],
+              "median": 1692.8690000000001,
+              "min": 1674.722,
+              "max": 1711.016
+            },
+            "decls_wall_ms": {
+              "observations": [
+                87.583,
+                89.953
+              ],
+              "median": 88.768,
+              "min": 87.583,
+              "max": 89.953
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12528956,
+                12528956
+              ],
+              "median": 12528956.0,
+              "min": 12528956,
+              "max": 12528956
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                46.349,
+                46.395
+              ],
+              "median": 46.372,
+              "min": 46.349,
+              "max": 46.395
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.218,
+                1.264
+              ],
+              "median": 1.241,
+              "min": 1.218,
+              "max": 1.264
+            },
+            "index_allocated_words": {
+              "observations": [
+                219809,
+                219809
+              ],
+              "median": 219809.0,
+              "min": 219809,
+              "max": 219809
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                2.615,
+                2.61
+              ],
+              "median": 2.6125,
+              "min": 2.61,
+              "max": 2.615
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                9272405564,
+                9272405312
+              ],
+              "median": 9272405438.0,
+              "min": 9272405312,
+              "max": 9272405564
+            },
+            "promoted_words": {
+              "observations": [
+                622254400,
+                622145384
+              ],
+              "median": 622199892.0,
+              "min": 622145384,
+              "max": 622254400
+            },
+            "major_words": {
+              "observations": [
+                638193682,
+                638084660
+              ],
+              "median": 638139171.0,
+              "min": 638084660,
+              "max": 638193682
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          }
+        },
+        "fusion": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                32.6,
+                33.05
+              ],
+              "median": 32.825,
+              "min": 32.6,
+              "max": 33.05
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1694.631,
+                1677.855
+              ],
+              "median": 1686.243,
+              "min": 1677.855,
+              "max": 1694.631
+            },
+            "decls_wall_ms": {
+              "observations": [
+                88.315,
+                85.314
+              ],
+              "median": 86.8145,
+              "min": 85.314,
+              "max": 88.315
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12270705,
+                12270705
+              ],
+              "median": 12270705.0,
+              "min": 12270705,
+              "max": 12270705
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                44.295,
+                43.181
+              ],
+              "median": 43.738,
+              "min": 43.181,
+              "max": 44.295
+            },
+            "index_wall_ms": {
+              "observations": [
+                0.977,
+                0.974
+              ],
+              "median": 0.9755,
+              "min": 0.974,
+              "max": 0.977
+            },
+            "index_allocated_words": {
+              "observations": [
+                220542,
+                220542
+              ],
+              "median": 220542.0,
+              "min": 220542,
+              "max": 220542
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                2.928,
+                2.885
+              ],
+              "median": 2.9065,
+              "min": 2.885,
+              "max": 2.928
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                37.048,
+                35.788
+              ],
+              "median": 36.418,
+              "min": 35.788,
+              "max": 37.048
+            },
+            "allocated_words": {
+              "observations": [
+                9272526129,
+                9272525877
+              ],
+              "median": 9272526003.0,
+              "min": 9272525877,
+              "max": 9272526129
+            },
+            "promoted_words": {
+              "observations": [
+                622186631,
+                622501710
+              ],
+              "median": 622344170.5,
+              "min": 622186631,
+              "max": 622501710
+            },
+            "major_words": {
+              "observations": [
+                638502061,
+                638817134
+              ],
+              "median": 638659597.5,
+              "min": 638502061,
+              "max": 638817134
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                32.94,
+                32.45
+              ],
+              "median": 32.695,
+              "min": 32.45,
+              "max": 32.94
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1667.667,
+                1646.162
+              ],
+              "median": 1656.9144999999999,
+              "min": 1646.162,
+              "max": 1667.667
+            },
+            "decls_wall_ms": {
+              "observations": [
+                86.689,
+                87.148
+              ],
+              "median": 86.9185,
+              "min": 86.689,
+              "max": 87.148
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12270705,
+                12270705
+              ],
+              "median": 12270705.0,
+              "min": 12270705,
+              "max": 12270705
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                44.958,
+                44.922
+              ],
+              "median": 44.94,
+              "min": 44.922,
+              "max": 44.958
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.15,
+                0.929
+              ],
+              "median": 1.0394999999999999,
+              "min": 0.929,
+              "max": 1.15
+            },
+            "index_allocated_words": {
+              "observations": [
+                220542,
+                220542
+              ],
+              "median": 220542.0,
+              "min": 220542,
+              "max": 220542
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.114,
+                2.979
+              ],
+              "median": 3.0465,
+              "min": 2.979,
+              "max": 3.114
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                9272145640,
+                9272145366
+              ],
+              "median": 9272145503.0,
+              "min": 9272145366,
+              "max": 9272145640
+            },
+            "promoted_words": {
+              "observations": [
+                622451353,
+                622425333
+              ],
+              "median": 622438343.0,
+              "min": 622425333,
+              "max": 622451353
+            },
+            "major_words": {
+              "observations": [
+                638390638,
+                638364624
+              ],
+              "median": 638377631.0,
+              "min": 638364624,
+              "max": 638390638
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          }
+        },
+        "combined": {
+          "write": {
+            "wall_seconds": {
+              "observations": [
+                33.16,
+                33.22
+              ],
+              "median": 33.19,
+              "min": 33.16,
+              "max": 33.22
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1679.299,
+                1689.535
+              ],
+              "median": 1684.417,
+              "min": 1679.299,
+              "max": 1689.535
+            },
+            "decls_wall_ms": {
+              "observations": [
+                87.623,
+                88.656
+              ],
+              "median": 88.1395,
+              "min": 87.623,
+              "max": 88.656
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12221315,
+                12221315
+              ],
+              "median": 12221315.0,
+              "min": 12221315,
+              "max": 12221315
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                46.41,
+                47.429
+              ],
+              "median": 46.9195,
+              "min": 46.41,
+              "max": 47.429
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.104,
+                1.072
+              ],
+              "median": 1.088,
+              "min": 1.072,
+              "max": 1.104
+            },
+            "index_allocated_words": {
+              "observations": [
+                204811,
+                204811
+              ],
+              "median": 204811.0,
+              "min": 204811,
+              "max": 204811
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.117,
+                3.06
+              ],
+              "median": 3.0885,
+              "min": 3.06,
+              "max": 3.117
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                35.689,
+                35.442
+              ],
+              "median": 35.5655,
+              "min": 35.442,
+              "max": 35.689
+            },
+            "allocated_words": {
+              "observations": [
+                9272461403,
+                9272461403
+              ],
+              "median": 9272461403.0,
+              "min": 9272461403,
+              "max": 9272461403
+            },
+            "promoted_words": {
+              "observations": [
+                622489769,
+                622489769
+              ],
+              "median": 622489769.0,
+              "min": 622489769,
+              "max": 622489769
+            },
+            "major_words": {
+              "observations": [
+                638805184,
+                638805184
+              ],
+              "median": 638805184.0,
+              "min": 638805184,
+              "max": 638805184
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          },
+          "no-write": {
+            "wall_seconds": {
+              "observations": [
+                33.39,
+                33.26
+              ],
+              "median": 33.325,
+              "min": 33.26,
+              "max": 33.39
+            },
+            "encode_signature_wall_ms": {
+              "observations": [
+                1728.112,
+                1704.727
+              ],
+              "median": 1716.4195,
+              "min": 1704.727,
+              "max": 1728.112
+            },
+            "decls_wall_ms": {
+              "observations": [
+                90.216,
+                89.083
+              ],
+              "median": 89.64949999999999,
+              "min": 89.083,
+              "max": 90.216
+            },
+            "decls_allocated_words": {
+              "observations": [
+                12221315,
+                12221315
+              ],
+              "median": 12221315.0,
+              "min": 12221315,
+              "max": 12221315
+            },
+            "summarize_elts_wall_ms": {
+              "observations": [
+                47.535,
+                48.222
+              ],
+              "median": 47.8785,
+              "min": 47.535,
+              "max": 48.222
+            },
+            "index_wall_ms": {
+              "observations": [
+                1.195,
+                1.093
+              ],
+              "median": 1.1440000000000001,
+              "min": 1.093,
+              "max": 1.195
+            },
+            "index_allocated_words": {
+              "observations": [
+                204811,
+                204811
+              ],
+              "median": 204811.0,
+              "min": 204811,
+              "max": 204811
+            },
+            "give_index_to_z3_wall_ms": {
+              "observations": [
+                3.111,
+                3.135
+              ],
+              "median": 3.123,
+              "min": 3.111,
+              "max": 3.135
+            },
+            "store_values_to_cache_wall_ms": {
+              "observations": [
+                0,
+                0
+              ],
+              "median": 0.0,
+              "min": 0,
+              "max": 0
+            },
+            "allocated_words": {
+              "observations": [
+                9272080889,
+                9272080637
+              ],
+              "median": 9272080763.0,
+              "min": 9272080637,
+              "max": 9272080889
+            },
+            "promoted_words": {
+              "observations": [
+                622045922,
+                622152275
+              ],
+              "median": 622099098.5,
+              "min": 622045922,
+              "max": 622152275
+            },
+            "major_words": {
+              "observations": [
+                637985204,
+                638091551
+              ],
+              "median": 638038377.5,
+              "min": 637985204,
+              "max": 638091551
+            },
+            "minor_collections": {
+              "observations": [
+                8870,
+                8870
+              ],
+              "median": 8870.0,
+              "min": 8870,
+              "max": 8870
+            },
+            "major_collections": {
+              "observations": [
+                34,
+                34
+              ],
+              "median": 34.0,
+              "min": 34,
+              "max": 34
+            },
+            "top_heap_words": {
+              "observations": [
+                94893056,
+                94893056
+              ],
+              "median": 94893056.0,
+              "min": 94893056,
+              "max": 94893056
+            }
+          }
+        }
+      }
+    }
+  },
+  "ordinary_controls": {
+    "Positivity": {
+      "original-a": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              1.0,
+              0.99,
+              1.0,
+              1.05,
+              1.0
+            ],
+            "median": 1.0,
+            "min": 0.99,
+            "max": 1.05
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              691657,
+              691657,
+              691657,
+              691657,
+              691657
+            ],
+            "median": 691657,
+            "min": 691657,
+            "max": 691657
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              1.0,
+              0.99,
+              0.99,
+              0.97,
+              0.99
+            ],
+            "median": 0.99,
+            "min": 0.97,
+            "max": 1.0
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "original-b": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.98,
+              1.03,
+              0.98,
+              0.98,
+              0.99
+            ],
+            "median": 0.98,
+            "min": 0.98,
+            "max": 1.03
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              691657,
+              691657,
+              691657,
+              691657,
+              691657
+            ],
+            "median": 691657,
+            "min": 691657,
+            "max": 691657
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.98,
+              0.99,
+              0.99,
+              0.99,
+              1.01
+            ],
+            "median": 0.99,
+            "min": 0.98,
+            "max": 1.01
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "fusion": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.99,
+              1.01,
+              1.01,
+              0.99,
+              1.04
+            ],
+            "median": 1.01,
+            "min": 0.99,
+            "max": 1.04
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              691657,
+              691657,
+              691657,
+              691657,
+              691657
+            ],
+            "median": 691657,
+            "min": 691657,
+            "max": 691657
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              1.0,
+              0.98,
+              0.97,
+              0.99,
+              0.99
+            ],
+            "median": 0.99,
+            "min": 0.97,
+            "max": 1.0
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "combined": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              1.0,
+              0.98,
+              1.0,
+              0.98,
+              0.98
+            ],
+            "median": 0.98,
+            "min": 0.98,
+            "max": 1.0
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              691657,
+              691657,
+              691657,
+              691657,
+              691657
+            ],
+            "median": 691657,
+            "min": 691657,
+            "max": 691657
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              1.0,
+              0.99,
+              1.01,
+              1.01,
+              1.0
+            ],
+            "median": 1.0,
+            "min": 0.99,
+            "max": 1.01
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              121610240,
+              121610240,
+              121610240,
+              121610240,
+              121610240
+            ],
+            "median": 121610240,
+            "min": 121610240,
+            "max": 121610240
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      }
+    },
+    "TestWellFoundedRecursion": {
+      "original-a": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.89,
+              0.88,
+              0.88,
+              0.91,
+              0.9
+            ],
+            "median": 0.89,
+            "min": 0.88,
+            "max": 0.91
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              516176,
+              516176,
+              516176,
+              516176,
+              516176
+            ],
+            "median": 516176,
+            "min": 516176,
+            "max": 516176
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.88,
+              0.91,
+              0.89,
+              0.88,
+              0.89
+            ],
+            "median": 0.89,
+            "min": 0.88,
+            "max": 0.91
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "original-b": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.89,
+              0.89,
+              0.9,
+              0.88,
+              0.88
+            ],
+            "median": 0.89,
+            "min": 0.88,
+            "max": 0.9
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              516176,
+              516176,
+              516176,
+              516176,
+              516176
+            ],
+            "median": 516176,
+            "min": 516176,
+            "max": 516176
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.87,
+              0.87,
+              0.91,
+              0.88,
+              0.88
+            ],
+            "median": 0.88,
+            "min": 0.87,
+            "max": 0.91
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "fusion": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.9,
+              0.89,
+              0.87,
+              0.9,
+              0.88
+            ],
+            "median": 0.89,
+            "min": 0.87,
+            "max": 0.9
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              516176,
+              516176,
+              516176,
+              516176,
+              516176
+            ],
+            "median": 516176,
+            "min": 516176,
+            "max": 516176
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.88,
+              0.87,
+              0.88,
+              0.87,
+              0.86
+            ],
+            "median": 0.87,
+            "min": 0.86,
+            "max": 0.88
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      },
+      "combined": {
+        "write": {
+          "wall_seconds": {
+            "observations": [
+              0.9,
+              0.89,
+              0.9,
+              0.88,
+              0.88
+            ],
+            "median": 0.89,
+            "min": 0.88,
+            "max": 0.9
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              516176,
+              516176,
+              516176,
+              516176,
+              516176
+            ],
+            "median": 516176,
+            "min": 516176,
+            "max": 516176
+          }
+        },
+        "no-write": {
+          "wall_seconds": {
+            "observations": [
+              0.88,
+              0.88,
+              0.87,
+              0.89,
+              0.92
+            ],
+            "median": 0.88,
+            "min": 0.87,
+            "max": 0.92
+          },
+          "fstar_mempeak_bytes": {
+            "observations": [
+              88055808,
+              88055808,
+              88055808,
+              88055808,
+              88055808
+            ],
+            "median": 88055808,
+            "min": 88055808,
+            "max": 88055808
+          },
+          "checked_bytes": {
+            "observations": [
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "median": 0,
+            "min": 0,
+            "max": 0
+          }
+        }
+      }
+    }
+  },
+  "isolated_input_audit": {
+    "production_order": [
+      "encode_signature fresh graph",
+      "intern_decls",
+      "summarize_elts",
+      "intern_index",
+      "optional solver registration",
+      "optional checked serialization"
+    ],
+    "checked_file_contains": "post-intern declarations and index",
+    "isolated_harness_input": "serialized post-intern graph, not production pre-intern graph",
+    "full_gc_before_each_pass": true,
+    "warmup": "original twice; fusion and combined once",
+    "retains_output_until_reachable_words": true,
+    "bv_recovery_bytes_unchanged": true,
+    "uint_recovery_bytes_unchanged": true,
+    "second_recovery_is_digest_fixed_point": true
+  },
+  "evidence_sha256": {
+    "end_to_end_jsonl": "ab53f374fd8d51d0c03c5689810a87c0f30f88f188bbce1c570852b833763e95",
+    "end_to_end_log": "3bd1a646b3129c7ebcf953ef98a1a50c1d141a0a129d1bb2f2ea06d1536beeee",
+    "broad_profiles_jsonl": "25cd075580d7d3d08403b3356024ab238a8d03fbe6e435b5a85bf5f8a2e53cc7",
+    "detailed_phases_json": "1702dbfa40bf91af5cdde6a0ec04065b97d98e15e8f4dc2623d3552958d139b9",
+    "ordinary_json": "13d05d76746be101bfb1e0d8910ea08f9641ae81db460f17132607c8d648709e",
+    "input_audit_bv": "d3cd9223b194181764f9c1abc3be19b7e42d04ccaad2c55dc816cb9d3820d691",
+    "input_audit_bv_fixed_point": "ff9f4d45737ec28ffeb63732184bcd30f8ac74fa3fff4a4e9d6858cbe8174a70",
+    "input_audit_uint": "d353776111fdeac7c2ea424d3291f79e47a67e80c8add3a7d0fa3cad8b453511",
+    "input_audit_uint_fixed_point": "53da6dbaf71ca080fb02fb3d88d940d2015ee7a56a9c6fc1e89ca5da61e757ea",
+    "original_a_build_log": "ae1f17be4dd61f138d07deb034de6d95d15d60c835ea9f7da2c4975260f86101",
+    "original_b_build_log": "a3cc1fc63e2cb716b7fadc47a159f93e3f1756abdb7881b7b201e75aadc78f83",
+    "fusion_build_log": "7a8f48f8bf081433dccc0c8adf31bb2e08e6e176c0595e4eb9a6204267d0020e",
+    "combined_build_log": "f3770a84968d08f980ec9c45f8c016d9f45b65600ee71f3e6413c138a78181ca",
+    "run_matched_variants": "9bfd055a19b8a01cd17b69c00b371d55a66f770658fd1ec419833b76acc05c97",
+    "run_matched_profiles": "ec0e0de8648ef324ad54b39d8ee1c07129371e75e4dc62685a3ece435c30d21b",
+    "run_matched_detailed_phases": "037a3a4726b0317872f368d424a13b65c6bc0b17e437be8e36000910b5ae813c",
+    "run_matched_ordinary": "8fe25b3097a28b08f5a9a0536c49d5114ae952e214e07343b3f5052ed571f7b0",
+    "instrument_extracted_analysis": "3df5aecfa2ad47a73bc77891a57f0fadc7f13bb031a02dd4846de145c61ba152",
+    "broad_profile_logs_manifest": "90d42204a796752533cb157a0090a54010419407d82ae75491709b66e48c8895",
+    "detailed_phase_logs_manifest": "efcf2e40aa56c3b4fddee437ed6ed992ff09b5828355c5bb068013e233621dff"
+  },
+  "instrumented_binaries": {
+    "broad_profiles": {
+      "original-a": "22c213bb172b8895726ebeae02cc26d02ab13a2c12a3a4d5292e954c2db2c0bb",
+      "original-b": "d1026541c082c80667cc2c3ca53ad99617ace27cb946583d4f820fd77cd92132",
+      "fusion": "10053dadab3099f99ea3c0e583b9817e321941ee5be2333138eb39911821f30b",
+      "combined": "09e175a3fc3f952a87921d076901562b64a2d8073cc2db6b6cc3024a38172ad0"
+    },
+    "detailed_phases": {
+      "original-a": "b01217ad07d942d8009cabd7df6e1af5520c58aabff2146d8bd8411825ee9e64",
+      "original-b": "622a7f7d5d8cac4bdaafc43229a05e3bd501cfc9f16e569a378ed1752212b6d2",
+      "fusion": "3d3a6f59d7364177c50a39d429d2cf1ebc4e28348e8c20d22876bc9646ce2b2c",
+      "combined": "f68c07d03aac7f58dacda0e33f0b090836ca9db2728c6da68ca6f8eb19335723"
+    }
+  }
+}
