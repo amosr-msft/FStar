@@ -389,6 +389,12 @@ recovered BV pair and UInt pair are byte-identical, which establishes
 structural equivalence while allowing physical sharing and the outer digest
 to differ.
 
+The combined compiler optimization was subsequently reverted from PR #4760.
+`FUSION_REUSE_ISOLATION.json` compares the original implementation, a
+fusion-only experiment, and the existing combined fusion+reuse evidence. The
+fusion-only compiler is on
+`users/amos/20261022-fstar-smt-sharing-fusion`; it is not a PR branch.
+
 ## Clean sharing branch benchmarks
 
 `CLEAN_SHARING_MEASUREMENTS.json` compares untouched upstream

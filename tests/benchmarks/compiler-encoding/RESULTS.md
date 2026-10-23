@@ -1020,3 +1020,58 @@ and a rooted BV dependent query completes in 1.261 seconds.
 Stage3 build, exact `boot-diff`, `BvBinaryOps`, and `ClassicalSugar` pass.
 `SHARING_OPTIMIZATION_MEASUREMENTS.json` records individual runs, allocation
 counters, artifact evidence, commands/hashes, and limitations.
+
+### Fusion versus unchanged-node reuse
+
+The combined change was reverted from PR #4760 by `debed4e7a9`, restoring
+the compiler source exactly to `b3f9782a6c`. Fusion-only experiment
+`206126a6dd` starts from that original and contains no physical-equality tests
+or unchanged-list/node reuse.
+
+Five shuffled no-write repetitions compare original and fusion-only:
+
+| Live-500 | Original observations | Fusion-only observations | Median change | F* heap change |
+|---|---|---|---:|---:|
+| BV | 38.32, 38.30, 38.28, 38.02, 38.55 s | 38.83, 39.02, 38.60, 38.59, 38.61 s | +0.8% | -4.4% |
+| UInt | 28.69, 28.75, 27.80, 28.24, 28.13 s | 29.42, 29.79, 29.13, 28.79, 29.29 s | +3.7% | -18.1% |
+
+The no-write path does execute interning: its separate profile commands omit
+`--cache_checked_modules` and report both sharing counters. Those five-run
+profiles show no fusion pass slowdown for BV (declarations 243 → 243 ms,
+index 36 → 30 ms) and a modest UInt reduction (82 → 78 ms, index unchanged at
+1 ms). Nevertheless, lightweight total medians rise. The total-time change is
+therefore not time spent directly in the measured sharing counters.
+
+Fusion-only barely changes whole-process allocation: -0.0097% BV and -0.0026%
+UInt. The reason is visible in the implementation. The original creates an
+intermediate list cons cell that retains each hashed-result record. Fusion
+removes that cons, but each callback now allocates a
+`(canonical_child, hash)` tuple of similar size. The hashed-result record and
+canonical output cons still exist.
+
+Existing combined profiles have only another -0.0004% BV/-0.0007% UInt
+allocation difference relative to fusion-only. Their declaration median is
+lower for BV (229 versus 243 ms) but higher for UInt (102 versus 78 ms).
+However, these values come from different compiler builds with materially
+different baselines. They cannot isolate an incremental reuse cost or benefit;
+they only show no consistent cross-build pass-time pattern.
+
+The absolute combined and fusion-only synthetic times are also similar, but
+their original baselines differ materially across compiler rebuilds. The
+earlier +7-8% combined result cannot be assigned to reuse. The controlled
+fusion-only comparison instead shows that fusion itself can coexist with a
+small total-time increase even while its measured pass time is unchanged or
+lower. Binary/GC layout, solver/runtime noise, and downstream phase
+perturbation remain possible explanations for the gap between pass counters
+and total time; this experiment does not distinguish them.
+
+Five-run ordinary controls move only 10-20 ms and retain identical heap/size
+within each original/fusion comparison. BV/UInt checked sizes remain
+2,136,307/1,862,553 bytes. After ignoring compiler-specific dependency
+digests, generic Marshal comparison finds stage 1, the complete stored
+typechecking result/index, and declarations structurally equal; the durable
+comparison log SHA-256 is `bfd850ef...`. Stage3,
+`boot-diff`, `BvBinaryOps`, and `ClassicalSugar` pass for fusion-only.
+
+`FUSION_REUSE_ISOLATION.json` records all observations, pass/GC counters,
+artifact validation, exact code distinctions, and evidence hashes.

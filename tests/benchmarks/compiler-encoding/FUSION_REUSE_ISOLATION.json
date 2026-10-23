@@ -1,0 +1,155 @@
+{
+  "date": "2026-10-22",
+  "variants": {
+    "original": {
+      "commit": "b3f9782a6c3c02f2a91705aa00ee936361b5df27",
+      "description": "Unconditional sharing before traversal optimizations"
+    },
+    "fusion_only": {
+      "commit": "206126a6dd6649765d6980e95609c5fda71888e9",
+      "branch": "users/amos/20261022-fstar-smt-sharing-fusion",
+      "description": "Fused child interning, canonical-list construction, and hash calculation; always rebuild lists and enclosing nodes"
+    },
+    "fusion_and_reuse": {
+      "commit": "befb3db82018af3dadf556fafdd95295b2751081",
+      "description": "Fusion plus unchanged-list/node reuse",
+      "pr_status": "reverted from PR branch by debed4e7a9432bed84a939ac14a6cf46008ac22f"
+    }
+  },
+  "fusion_only_diff": {
+    "file": "src/smtencoding/FStarC.SMTEncoding.Sharing.fst",
+    "insertions": 67,
+    "deletions": 32,
+    "unchanged_node_reuse": false,
+    "unchanged_list_reuse": false
+  },
+  "no_write_invokes_interning": {
+    "verified": true,
+    "evidence": "No-write profile commands omit --cache_checked_modules yet report intern_decls and intern_index counters."
+  },
+  "original_vs_fusion_lightweight": {
+    "repetitions_per_variant": 5,
+    "order_seed": 4763,
+    "BenchBvLive500": {
+      "original_seconds": [38.32, 38.30, 38.28, 38.02, 38.55],
+      "fusion_seconds": [38.83, 39.02, 38.60, 38.59, 38.61],
+      "original_median_seconds": 38.30,
+      "fusion_median_seconds": 38.61,
+      "median_time_change_percent": 0.81,
+      "original_median_fstar_heap_bytes": 759144448,
+      "fusion_median_fstar_heap_bytes": 725590016,
+      "median_heap_change_percent": -4.42
+    },
+    "BenchUIntLive500": {
+      "original_seconds": [28.69, 28.75, 27.80, 28.24, 28.13],
+      "fusion_seconds": [29.42, 29.79, 29.13, 28.79, 29.29],
+      "original_median_seconds": 28.24,
+      "fusion_median_seconds": 29.29,
+      "median_time_change_percent": 3.72,
+      "original_median_fstar_heap_bytes": 926916608,
+      "fusion_median_fstar_heap_bytes": 759144448,
+      "median_heap_change_percent": -18.10
+    }
+  },
+  "original_vs_fusion_profiles": {
+    "repetitions_per_variant": 5,
+    "note": "Intrusive profiles; allocation and GC counters are whole-process.",
+    "BenchBvLive500": {
+      "original_median_intern_decls_ms": 243,
+      "fusion_median_intern_decls_ms": 243,
+      "original_median_intern_index_ms": 36,
+      "fusion_median_intern_index_ms": 30,
+      "original_allocated_words": 16768145913,
+      "fusion_allocated_words": 16766519401,
+      "allocated_words_change_percent": -0.0097,
+      "original_major_collections": 59,
+      "fusion_major_collections": 58
+    },
+    "BenchUIntLive500": {
+      "original_median_intern_decls_ms": 82,
+      "fusion_median_intern_decls_ms": 78,
+      "original_median_intern_index_ms": 1,
+      "fusion_median_intern_index_ms": 1,
+      "original_allocated_words": 9951777933,
+      "fusion_allocated_words": 9951521556,
+      "allocated_words_change_percent": -0.0026,
+      "original_major_collections": 32,
+      "fusion_major_collections": 32
+    }
+  },
+  "cross_build_fusion_and_combined_profiles": {
+    "note": "Fusion-only and combined binaries were built in different worktrees/build rounds with materially different baselines. These counters are listed for context only and cannot isolate the incremental effect of node reuse.",
+    "BenchBvLive500": {
+      "fusion_allocated_words": 16766519401,
+      "combined_allocated_words": 16766452958,
+      "incremental_allocated_words_change_percent": -0.0004,
+      "fusion_median_intern_decls_ms": 243,
+      "combined_median_intern_decls_ms": 229,
+      "fusion_median_intern_index_ms": 30,
+      "combined_median_intern_index_ms": 31
+    },
+    "BenchUIntLive500": {
+      "fusion_allocated_words": 9951521556,
+      "combined_allocated_words": 9951455128,
+      "incremental_allocated_words_change_percent": -0.0007,
+      "fusion_median_intern_decls_ms": 78,
+      "combined_median_intern_decls_ms": 102,
+      "fusion_median_intern_index_ms": 1,
+      "combined_median_intern_index_ms": 1
+    }
+  },
+  "adapter_allocation_analysis": {
+    "original": "Each child produces a hashed-result record; List.map also creates an intermediate cons cell retaining that record, followed by a canonical-value cons cell.",
+    "fusion": "Each child still produces a hashed-result record; the callback additionally returns a (canonical value, hash) tuple, and intern_list creates the canonical-value cons cell.",
+    "interpretation": "The new tuple adapter replaces the eliminated intermediate cons allocation with another similarly sized short-lived block. This explains why fused traversal removes traversals but barely changes whole-process allocation."
+  },
+  "ordinary_controls": {
+    "repetitions_per_variant_mode": 5,
+    "Positivity": {
+      "original_write_median_seconds": 0.98,
+      "fusion_write_median_seconds": 1.00,
+      "original_no_write_median_seconds": 0.98,
+      "fusion_no_write_median_seconds": 1.00,
+      "fstar_heap_bytes_both": 121610240,
+      "checked_bytes_both": 691657
+    },
+    "TestWellFoundedRecursion": {
+      "original_write_median_seconds": 0.89,
+      "fusion_write_median_seconds": 0.90,
+      "original_no_write_median_seconds": 0.87,
+      "fusion_no_write_median_seconds": 0.88,
+      "fstar_heap_bytes_both": 88055808,
+      "checked_bytes_both": 516176
+    }
+  },
+  "artifact_validation": {
+    "fusion_bv_checked_bytes": 2136307,
+    "fusion_uint_checked_bytes": 1862553,
+    "stage1_tc_result_index_and_declarations_structurally_equal_to_original": true,
+    "comparison_note": "Generic Marshal comparison checks stage 1, stage2.tc_res (including stored index), and declarations while ignoring stage2 dependency digests, which legitimately differ because compiler-specific child checked files have different byte digests.",
+    "comparison_log_sha256": "bfd850ef3c7eb5d8c80dd28ba5cfb04875ce881124f584b940623d85cc9fb32b",
+    "fusion_artifacts_round_trip_structurally": true
+  },
+  "validation": {
+    "fusion_stage3_build": "pass",
+    "fusion_boot_diff": "pass",
+    "fusion_BvBinaryOps": "pass",
+    "fusion_ClassicalSugar": "pass",
+    "pr_revert_stage3_build": "pass",
+    "pr_revert_boot_diff": "pass",
+    "pr_revert_BvBinaryOps": "pass",
+    "pr_revert_ClassicalSugar": "pass"
+  },
+  "raw_evidence_sha256": {
+    "fusion_alternating": "8daaba7547994ca61deeec2a1ca15bb3fbafb9c20689d30c09c820eef37569f3",
+    "fusion_profiles": "00199ae3cd9877886db35c34c237c63d2a08e047c792b1892bb7e8f5f3cfa925",
+    "fusion_ordinary": "3a2e1f7cd41e183f0ed0eddaacbfd43b12d45ede91751ba67c84a97708854754"
+  },
+  "conclusion": {
+    "node_reuse_isolated_as_slowdown_cause": false,
+    "fusion_only_total_time_improved": false,
+    "fusion_only_pass_time_improved": "BV unchanged; UInt modestly lower",
+    "node_reuse_incremental_effect": "not isolated because combined and fusion-only evidence comes from different compiler builds",
+    "interpretation": "Fusion-only already shows small synthetic total-time increases despite unchanged/lower pass counters. Cross-build combined counters show no consistent pass-time pattern but cannot measure reuse incrementally. The large earlier combined total-time result cannot be assigned to reuse; binary/GC layout, solver/runtime noise, or downstream phase perturbation remain possible."
+  }
+}
