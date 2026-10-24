@@ -142,6 +142,82 @@ Ordinary controls also shrink without a timing penalty:
 `TestWellFoundedRecursion` is 681,964 → 516,176 bytes with 0.90 → 0.86 s.
 No-write changes are similarly within 0.02 s.
 
+### Lower-overhead candidate
+
+The lower-overhead experiment keeps the current PR's exact term, declaration,
+and top-level-element interning, but does not intern the derived pruning index.
+This removes a second traversal and its temporary hash tables, keys, hashed
+summary records, and rebuilt lists. It introduces no option or runtime tuning.
+The three pinned variants are:
+
+1. Master without interning: `9a10b2ccb1`.
+2. The same master plus the current main interning algorithm: `56e8ac31da`.
+3. The same master plus declarations-only sharing:
+   `973e5add74` (`users/amos/20261024-fstar-master-decls-sharing`).
+
+An earlier terms-only probe was rejected before the full campaign: it reduced
+BV sharing allocation more, but produced a 14.50 MB checked file, retaining
+only about one third of the PR's BV size improvement. It is not one of the
+three reported candidates.
+
+Fresh production-graph profiles, three shuffled no-write repetitions, give:
+
+| Live-500 | Master allocated words | Main PR overhead | Candidate overhead | Candidate vs PR overhead | Main PR pass | Candidate pass |
+|---|---:|---:|---:|---:|---:|---:|
+| BV | 16,746,448,040 | +48,391,117 | +41,789,999 | -13.6% | 272.3 + 39.0 ms | 271.2 ms |
+| UInt | 10,010,142,353 | +12,167,375 | +12,153,579 | -0.1% | 89.1 + 1.2 ms | 92.9 ms |
+
+The pass columns separate declaration and index interning. BV's removed index
+pass allocates exactly 6,793,842 words and takes 38.4-40.2 ms. UInt's allocates
+219,812 words and takes 1.1-1.2 ms. Candidate UInt declaration time is a few
+milliseconds higher even though its code is unchanged; this is consistent
+with binary-layout noise and is not evidence that removing the index pass made
+declaration interning slower. Whole-process allocation is the relevant
+no-interning comparison; peak heap is reported separately below.
+
+Five shuffled lightweight production runs per cell give:
+
+| Live-500 | Master median (range) | Main PR median (range) | Candidate median (range) | Candidate checked size |
+|---|---:|---:|---:|---:|
+| BV write | 38.69 s (38.58-38.80) | 37.47 s (37.39-37.52) | 37.96 s (37.78-38.13) | 4,873,026 B |
+| BV no-write | 37.96 s (37.68-38.02) | 37.38 s (37.32-37.51) | 37.82 s (37.60-37.84) | — |
+| UInt write | 27.67 s (27.58-27.76) | 27.77 s (27.77-27.94) | 27.91 s (27.71-28.07) | 1,926,883 B |
+| UInt no-write | 27.53 s (27.40-27.62) | 27.62 s (27.55-27.83) | 27.84 s (27.78-27.87) | — |
+
+The candidate's BV file is 77.7% smaller than master and retains 86.1% of the
+main PR's byte reduction; UInt is 58.3% smaller and retains 97.7%. Compared
+with the PR, the cost is 2.74 MB BV and 64 KB UInt. End-to-end time differences
+are small relative to the work: candidate medians are 0.5-1.3% slower than the
+PR and range from 1.9% faster to 1.1% slower than master.
+
+BV production peak heap remains 725.6 MB for all three. UInt remains an OCaml
+capacity-threshold result: candidate no-write is consistently 759.1 MB rather
+than the PR's 926.9 MB, while candidate write is bimodal and has a 926.9 MB
+median. This is not an allocation measurement and does not establish a stable
+memory fix.
+
+The larger candidate index preserves most rooted loading benefits:
+
+| Dependent load | Master | Main PR | Candidate | Candidate RSS vs master |
+|---|---:|---:|---:|---:|
+| BV metadata | 0.217 s / 130.2 MiB | 0.187 s / 102.6 MiB | 0.212 s / 120.8 MiB | -7.2% |
+| BV rooted | 1.428 s / 307.1 MiB | 1.243 s / 236.1 MiB | 1.279 s / 236.8 MiB | -22.9% |
+| UInt metadata | 0.148 s / 101.7 MiB | 0.146 s / 100.0 MiB | 0.152 s / 102.3 MiB | +0.6% |
+| UInt rooted | 1.191 s / 244.3 MiB | 1.107 s / 224.3 MiB | 1.119 s / 211.2 MiB | -13.6% |
+
+Ordinary controls show the same tradeoff without a time penalty: candidate
+`Positivity` is 719,773 bytes at 0.96 s write median (master 931,243/0.98,
+PR 691,657/0.97); `TestWellFoundedRecursion` is 540,208 bytes at 0.88 s
+(master 681,964/0.88, PR 516,176/0.86).
+
+Build, exact bootstrap diff, `BvBinaryOps`, and `ClassicalSugar` pass. Generic
+checked-file comparison verifies identical stage1, typechecking result/index
+values, and declaration contents for BV and UInt against both master and the
+main PR, ignoring only compiler-specific dependency digests.
+`LOW_OVERHEAD_SHARING.json` contains every observation, exact revisions and
+binary/artifact hashes, commands, dependent-load evidence hashes, and stated
+limitations. PR #4760 remains unchanged at `debed4e7a9`.
+
 `MASTER_INTERNING_COMPARISON.json` contains all observations, allocation/GC
 profiles, dependent-load results, exact revisions/binary/build/solver
 provenance, validation, commands, and evidence hashes. The current-master

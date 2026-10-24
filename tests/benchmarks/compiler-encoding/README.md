@@ -89,6 +89,88 @@ phase-snapshot, forced-GC liveness, and crossed-dependency runs. Forced
 collections and reachable-word scans are diagnostic only and are never
 enabled in the production compiler.
 
+`LOW_OVERHEAD_SHARING.json` compares no-interning master, the current main
+interner, and the declarations-only candidate. The candidate keeps full
+declaration interning but skips the separate pruning-index interner:
+
+```sh
+git -C /path/to/FStar worktree add \
+  /workspace/wt11/FStar-master-decls-sharing \
+  users/amos/20261024-fstar-master-decls-sharing
+
+# Build all three compilers, then generate BenchBvChildren and
+# BenchUIntChildren with each matching production compiler into:
+#   $EVIDENCE_ROOT/low-overhead-caches-v2/cache-{master,interning,candidate}
+
+# Build pass-profile binaries from clean extracted ML. For the two sharing
+# variants, restore FStarC_SMTEncoding_Sharing.ml from stage1 before applying
+# the ignored wrapper.
+mkdir -p "$EVIDENCE_ROOT/low-overhead-instrumented-v2"
+python instrument_extracted_analysis.py --sharing-only \
+  /workspace/wt11/FStar-master-no-intern
+cp /workspace/wt11/FStar-master-interning/stage1/fstarc.ml/\
+FStarC_SMTEncoding_Sharing.ml \
+  /workspace/wt11/FStar-master-interning/stage2/fstarc.ml/
+python instrument_extracted_analysis.py --sharing-only \
+  /workspace/wt11/FStar-master-interning
+cp /workspace/wt11/FStar-master-decls-sharing/stage1/fstarc.ml/\
+FStarC_SMTEncoding_Sharing.ml \
+  /workspace/wt11/FStar-master-decls-sharing/stage2/fstarc.ml/
+python instrument_extracted_analysis.py --sharing-only \
+  /workspace/wt11/FStar-master-decls-sharing
+# In each stage3/dune directory:
+#   dune build fstarc-full/fstarc3_full.exe
+# Copy the results as fstar-{master,interning,candidate}.exe.
+
+python run_low_overhead_comparison.py \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --candidate /workspace/wt11/FStar-master-decls-sharing \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/low-overhead-caches-v2" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/low-overhead-comparison-v2" \
+  --repetitions 5
+
+python run_low_overhead_comparison.py \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --candidate /workspace/wt11/FStar-master-decls-sharing \
+  --instrumented-dir "$EVIDENCE_ROOT/low-overhead-instrumented-v2" \
+  --generated "$PWD/_generated" \
+  --cache-root "$EVIDENCE_ROOT/low-overhead-caches-v2" \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/low-overhead-profiles-v2" \
+  --repetitions 3 --profile --modes no-write
+
+python run_low_overhead_ordinary.py \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --candidate /workspace/wt11/FStar-master-decls-sharing \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/low-overhead-ordinary" \
+  --repetitions 5
+
+python summarize_low_overhead.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --master /workspace/wt11/FStar-master-no-intern \
+  --interning /workspace/wt11/FStar-master-interning \
+  --candidate /workspace/wt11/FStar-master-decls-sharing \
+  --output LOW_OVERHEAD_SHARING.json
+```
+
+Generate one write artifact for each variant/workload under
+`$EVIDENCE_ROOT/low-overhead-artifacts/{master,interning,candidate}`.
+Invoke `measure_dependent.py` for each variant, BV/UInt representation, and
+metadata/rooted mode; preserve its JSONL under
+`$EVIDENCE_ROOT/low-overhead-dependent`. Run
+`compare_checked_structure.ml` for master versus both sharing variants.
+The summarizer also requires the candidate build, `boot-diff`,
+`BvBinaryOps`, `ClassicalSugar`, and structural-comparison logs named as in
+`LOW_OVERHEAD_SHARING.json`; it validates their success markers, campaign
+cell counts, commits, compiler/input/dependency/Z3 hashes, and artifact hashes
+before emitting the report.
+
 Build the detailed-phase binaries from ignored extracted ML:
 
 ```sh

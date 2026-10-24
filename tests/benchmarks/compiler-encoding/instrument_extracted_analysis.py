@@ -179,10 +179,19 @@ def instrument(root, sharing_only):
             text, "let intern_decls (declarations :",
             "let intern_decls_impl (declarations :"
         )
-        text = replace_once(
-            text, "let intern_index (index :", "let intern_index_impl (index :"
-        )
-        sharing.write_text(text + SHARING_WRAPPER)
+        has_index_interner = "let intern_index (index :" in text
+        if has_index_interner:
+            text = replace_once(
+                text, "let intern_index (index :",
+                "let intern_index_impl (index :"
+            )
+        wrapper = SHARING_WRAPPER
+        if not has_index_interner:
+            wrapper = wrapper.replace(
+                '\nlet intern_index x = sharing_analysis "index" intern_index_impl x',
+                "",
+            )
+        sharing.write_text(text + wrapper)
     if sharing_only:
         return
 
@@ -201,7 +210,7 @@ def instrument(root, sharing_only):
         "(modul).FStarC_Syntax_Syntax.declarations) in",
         "(modul).FStarC_Syntax_Syntax.declarations)) in", 1
     )
-    if sharing.exists():
+    if sharing.exists() and "let index1 =" in text:
         text = replace_once(
             text,
             "let index = (FStarC_SMTEncoding_Pruning.summarize_elts decls1) in",
@@ -217,19 +226,20 @@ def instrument(root, sharing_only):
             "(fun tmp6 -> decls1))) else ());"
         )
     else:
+        decls_name = "decls1" if sharing.exists() else "decls"
         text = replace_once(
             text,
-            "let index = (FStarC_SMTEncoding_Pruning.summarize_elts decls) in",
+            f"let index = (FStarC_SMTEncoding_Pruning.summarize_elts {decls_name}) in",
             'let index = (sharing_phase "summarize_elts" '
-            "(fun () -> FStarC_SMTEncoding_Pruning.summarize_elts decls)) in"
+            f"(fun () -> FStarC_SMTEncoding_Pruning.summarize_elts {decls_name})) in"
         )
         text = replace_once(
             text,
             "(if give_to_z3 then (give_index_to_z3_and_set_env env2 name index "
-            "(fun tmp6 -> decls)) else ());",
+            f"(fun tmp6 -> {decls_name})) else ());",
             '(if give_to_z3 then (sharing_phase "give_index_to_z3" '
             "(fun () -> give_index_to_z3_and_set_env env2 name index "
-            "(fun tmp6 -> decls))) else ());"
+            f"(fun tmp6 -> {decls_name}))) else ());"
         )
     encoding.write_text(text)
 
