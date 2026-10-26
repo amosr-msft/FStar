@@ -110,6 +110,41 @@ python tests/benchmarks/bv-context/summarize_ambient_cache.py \
 The cache branch is experimental; no runtime option is added and no PR is
 created.
 
+The broader matched campaign uses:
+
+```sh
+python tests/benchmarks/bv-context/run_ambient_cache_suite.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-bv-context \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/ambient-cache-broad-suite"
+
+python tests/benchmarks/bv-context/run_matched_fstar_workload.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-bv-context \
+  --z3 /path/to/z3-5.3.0 \
+  --source tests/bug-reports/closed/Bug3207.fst \
+  --output "$EVIDENCE_ROOT/ambient-cache-bug3207" \
+  --repetitions 3
+
+python tests/benchmarks/bv-context/run_matched_query_stream.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-bv-context \
+  --z3 /path/to/z3-5.3.0 \
+  --source "$EVIDENCE_ROOT/ambient-cache-broad-suite/generated/\
+SimpleAgreement1024.fst" \
+  --module SimpleAgreement1024 \
+  --output "$EVIDENCE_ROOT/ambient-cache-simple1024-query-stream"
+
+python tests/benchmarks/bv-context/summarize_ambient_cache_suite.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --output tests/benchmarks/bv-context/AMBIENT_CACHE_BROAD_SUITE.json
+```
+
+The broad runner intentionally exits nonzero if any row fails or times out,
+after recording all planned pairs. The current evidence includes the matched
+`FStar.List.Tot.Properties` failure described in the report.
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,

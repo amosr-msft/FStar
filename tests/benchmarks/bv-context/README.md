@@ -30,6 +30,11 @@ equality through a real SMT query.
   alternatives.
 - `summarize_ambient_cache.py` validates the prototype evidence into
   `AMBIENT_CACHE_EXPERIMENT.json`.
+- `run_ambient_cache_suite.py` runs the pinned, adjacent-pair broad suite.
+- `run_matched_fstar_workload.py` adds focused successful regression controls.
+- `run_matched_query_stream.py` verifies cross-compiler SMT stream identity.
+- `summarize_ambient_cache_suite.py` validates and reports broad-suite evidence
+  in `AMBIENT_CACHE_BROAD_SUITE.json`.
 
 Generated sources remain under evidence/output directories. The no-ambient
 mode changes context selection and is diagnostic only.

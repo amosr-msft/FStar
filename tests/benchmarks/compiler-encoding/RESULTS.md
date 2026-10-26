@@ -225,6 +225,62 @@ rows, phase traces, exact query-stream hashes, commands, validation logs, and
 limitations. This remains an experiment branch only; no PR or production fix
 is proposed.
 
+### Broader ambient-cache suite
+
+A broader matched campaign compares the genuine no-cache source
+`0e13baff38` with corrected candidate `2260651e1f`. Both were rebuilt with
+OCaml 4.14.2 and Z3 5.3.0. The runner pins exact commits, binaries, the complete
+compiler-specific checked-dependency trees, source hashes, solver and
+generator; clears F*/OCaml environment controls; forces every target from
+source; and runs adjacent baseline/candidate pairs in randomized order.
+
+The suite deliberately spans context-heavy synthetic and real workloads,
+small/medium ordinary tests, normalization controls, ordinary BV, a larger
+242-declaration/523-query regression, and an attempted library source check.
+Practical workloads have three repetitions per compiler, SimpleAgreement-2048
+has two, and the full BV/library cases have one matched pair.
+
+| Workload | Runs/side | Baseline median | Candidate median | Wall change | Baseline / candidate peak RSS | Baseline / candidate Z3 |
+|---|---:|---:|---:|---:|---:|---:|
+| SimpleAgreement-1024 | 3 | 48.64 s | 64.41 s | **+32.4%** | 137.2 / 133.3 MiB | 21.76 / 36.38 s |
+| SimpleAgreement-2048 | 2 | 221.80 s | 184.92 s | **-16.6%** | 221.8 / 221.4 MiB | 107.75 / 108.87 s |
+| Full BV width-3 | 1 | 928.97 s | 641.68 s | **-30.9%** | 633.7 / 660.7 MiB | 89.63 / 103.71 s |
+| `BvBinaryOps` | 3 | 9.02 s | 9.09 s | +0.8% | 116.7 / 118.1 MiB | 7.24 / 7.43 s |
+| `ClassicalSugar` | 3 | 2.25 s | 2.31 s | +2.7% | 122.6 / 123.8 MiB | 0.11 / 0.11 s |
+| `Positivity` | 3 | 1.16 s | 1.19 s | +2.6% | 147.8 / 150.6 MiB | <0.01 / <0.01 s |
+| `TestWellFoundedRecursion` | 3 | 1.02 s | 1.04 s | +2.0% | 118.7 / 118.3 MiB | <0.01 / <0.01 s |
+| `Normalization` | 3 | 0.55 s | 0.60 s | +9.1% | 129.3 / 133.4 MiB | <0.01 / <0.01 s |
+| `NormVsSMT` | 3 | 0.12 s | 0.13 s | +8.3% | 73.3 / 74.1 MiB | <0.01 / <0.01 s |
+| `Bug3207` | 3 | 8.95 s | 8.97 s | +0.2% | 250.0 / 247.2 MiB | 2.34 / 2.26 s |
+
+This does **not** support a universal speedup:
+
+- The two largest context-heavy cases improve materially, including a fully
+  matched full-BV comparison rather than the earlier historical-binary
+  comparison.
+- SimpleAgreement-1024 consistently regresses in all three adjacent pairs.
+  The candidate and baseline emit a byte-identical 3,549,239-byte SMT stream;
+  the 15.77-second median wall regression is accompanied by a 14.62-second
+  increase in reported Z3 time. The cause is unresolved, and is not hidden in
+  the aggregate.
+- The seven successful non-context workloads have summed medians of 23.07
+  versus 23.33 seconds (+1.1%). Every individual ordinary median regresses
+  0.2-9.1%, although every absolute median change is at most 0.07 seconds and
+  the shortest percentages are timer-granularity sensitive.
+- Full-BV candidate peak RSS is 4.3% higher. Other context-heavy peak RSS is
+  flat or lower; ordinary changes range from -1.1% to +3.2%.
+
+The forced `FStar.List.Tot.Properties` source check is retained as a matched
+failure rather than a timing result: both variants fail immediately with the
+same historical-compiler `hasEq nat` Error 19 diagnostics. `Bug3207` supplies
+a successful larger regression control.
+
+`AMBIENT_CACHE_BROAD_SUITE.json` records all 56 successful/failed rows across
+the broad and supplemental campaigns, observations and medians, exact
+provenance, byte-identical 1,024-query stream evidence, improvements,
+regressions, aggregate statistics, and failure logs. No allocation counters
+were run.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master
