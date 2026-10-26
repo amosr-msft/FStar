@@ -45,7 +45,8 @@ rlimit grows with accumulated context. Scaling is:
 
 The 5,808-declaration run hit its 1,200-second harness timeout after a verified
 contiguous prefix of 4,607 queries. The same 5,808 declarations split into 64
-balanced 90/91-declaration modules/processes take **43.62 seconds total**;
+balanced 90/91-declaration modules/processes take **43.62 seconds summed wall
+time**;
 individual modules take 0.65-0.75 seconds and their last declaration is never
 above 11 ms. The slowdown is therefore generic accumulating-declaration and
 process-context behavior; BV is not required.
