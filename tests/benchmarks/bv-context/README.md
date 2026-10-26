@@ -35,6 +35,11 @@ equality through a real SMT query.
 - `run_matched_query_stream.py` verifies cross-compiler SMT stream identity.
 - `summarize_ambient_cache_suite.py` validates and reports broad-suite evidence
   in `AMBIENT_CACHE_BROAD_SUITE.json`.
+- `run_z3_replay.py` measures the exact logged SMT stream directly.
+- `run_same_executable_pruning.py` pairs cached and forced-fresh pruning in one
+  executable.
+- `summarize_simple1024_regression.py` validates the focused regression
+  analysis in `SIMPLE1024_REGRESSION_ANALYSIS.json`.
 
 Generated sources remain under evidence/output directories. The no-ambient
 mode changes context selection and is diagnostic only.

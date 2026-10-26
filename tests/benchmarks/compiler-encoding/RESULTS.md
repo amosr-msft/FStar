@@ -281,6 +281,62 @@ provenance, byte-identical 1,024-query stream evidence, improvements,
 regressions, aggregate statistics, and failure logs. No allocation counters
 were run.
 
+#### SimpleAgreement-1024 regression follow-up
+
+The repeatable 48.64 → 64.41-second broad-suite regression does not reproduce
+as cache overhead when executable/build differences are removed.
+
+First, F*'s `z3result_time` is not a solver CPU counter. `Z3.z3_job` wraps
+`doZ3Exe` with `Timing.record_ms`; for the persistent solver this includes:
+
+- writing and flushing the SMT request;
+- waiting for and reading solver stdout through `ask_process`;
+- Z3 execution;
+- parsing the output; and
+- appending result comments when query logging is active.
+
+It excludes solver-state pruning/flush, query declaration construction,
+`mk_input` serialization/initial logging, and the rest of typechecking. It is
+whole-batch elapsed request/wait time, copied to every result in that batch.
+
+The exact byte-identical 3,549,239-byte SMT stream was then replayed directly
+through the same Z3 5.3.0 binary ten times:
+
+| Metric | Median | Range |
+|---|---:|---:|
+| Wall | 45.78 s | 17.95-47.39 s |
+| User CPU | 45.54 s | 17.84-47.16 s |
+| System CPU | 0.20 s | 0.11-0.21 s |
+| Peak RSS | 114.8 MiB | 114.5-115.1 MiB |
+
+All ten runs return 1,025 `unsat` results and end with the exact same Z3
+`rlimit-count` (77,059,486); final `num-allocs` differs by less than 2%.
+Because user CPU tracks wall time, the 17.95-47.39-second spread is solver CPU
+rather than F* compiler work or pipe waiting.
+
+A second control uses one diagnostic candidate executable and toggles only the
+extracted `FSTAR_PRUNING_REFERENCE` path. Five adjacent randomized pairs give:
+
+| Mode | Wall median (range) | Declaration median | Z3 elapsed median (range) | Peak RSS median |
+|---|---:|---:|---:|---:|
+| Cached | 34.02 s (33.78-35.55) | 32.52 s | 18.32 s (18.00-19.07) | 135.1 MiB |
+| Forced fresh | 56.56 s (54.23-57.75) | 55.01 s | 20.60 s (19.06-21.32) | 143.4 MiB |
+
+Cached query scanning is faster in every pair. Both modes still maintain the
+candidate ambient cache, so this rules out query-scan reuse—not every possible
+cache-maintenance or pacing effect—as the regression source. The broad
+candidate's 34.62-36.90-second Z3 times do not reproduce in direct replay or
+the later same-executable cached runs, despite identical query bytes.
+
+No evidence-based source mitigation was implemented. Changing facts, solver
+settings, GC, or the proof workload would hide or speculate around variability
+rather than reduce demonstrated cache overhead. The source of the broad-run
+Z3 slowdown remains unresolved. Z3's internal `num-allocs` counters were
+collected; F* allocation counters were not.
+
+`SIMPLE1024_REGRESSION_ANALYSIS.json` records timer boundaries, all replays,
+solver counters, same-executable pairs, commands, hashes, and limitations.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master

@@ -1,0 +1,1215 @@
+{
+  "date": "2026-10-26",
+  "question": "Does the ambient cache cause the repeatable SimpleAgreement1024 regression, and can it be mitigated safely?",
+  "timer_semantics": {
+    "boundary": "FStarC.SMTEncoding.Z3.z3_job calls Timing.record_ms around doZ3Exe.",
+    "included": [
+      "writing and flushing the SMT request to the persistent process",
+      "waiting for and reading solver stdout through ask_process",
+      "Z3 execution",
+      "parsing Z3 output",
+      "appending query-log result comments when logging is enabled"
+    ],
+    "excluded": [
+      "SolverState.flush and pruning",
+      "query declaration construction",
+      "mk_input SMT serialization and initial query logging",
+      "the remainder of top-level typechecking"
+    ],
+    "kind": "Elapsed request/wait wall time for the whole check-sat batch, not Z3-reported CPU time and not per-goal solver time.",
+    "source_locations": [
+      "src/smtencoding/FStarC.SMTEncoding.Z3.fst:414-479",
+      "src/smtencoding/FStarC.SMTEncoding.Z3.fst:576-603",
+      "src/smtencoding/FStarC.SMTEncoding.Z3.fst:620-632",
+      "src/basic/FStarC.Util-ocaml.fst:380-448"
+    ]
+  },
+  "broad_suite_regression": {
+    "baseline": {
+      "wall_seconds": {
+        "observations": [
+          49.2,
+          48.64,
+          47.6
+        ],
+        "median": 48.64,
+        "min": 47.6,
+        "max": 49.2
+      },
+      "user_seconds": {
+        "observations": [
+          48.91,
+          48.36,
+          47.37
+        ],
+        "median": 48.36,
+        "min": 47.37,
+        "max": 48.91
+      },
+      "profiled_declaration_ms": {
+        "observations": [
+          47890,
+          47304,
+          46284
+        ],
+        "median": 47304,
+        "min": 46284,
+        "max": 47890
+      },
+      "z3_reported_seconds": {
+        "observations": [
+          21.76,
+          21.69,
+          21.8
+        ],
+        "median": 21.76,
+        "min": 21.69,
+        "max": 21.8
+      },
+      "max_rss_kb": {
+        "observations": [
+          139692,
+          140484,
+          141424
+        ],
+        "median": 140484,
+        "min": 139692,
+        "max": 141424
+      }
+    },
+    "candidate": {
+      "wall_seconds": {
+        "observations": [
+          62.06,
+          64.84,
+          64.41
+        ],
+        "median": 64.41,
+        "min": 62.06,
+        "max": 64.84
+      },
+      "user_seconds": {
+        "observations": [
+          60.95,
+          63.75,
+          62.98
+        ],
+        "median": 62.98,
+        "min": 60.95,
+        "max": 63.75
+      },
+      "profiled_declaration_ms": {
+        "observations": [
+          60184,
+          62667,
+          62541
+        ],
+        "median": 62541,
+        "min": 60184,
+        "max": 62667
+      },
+      "z3_reported_seconds": {
+        "observations": [
+          34.62,
+          36.9,
+          36.38
+        ],
+        "median": 36.38,
+        "min": 34.62,
+        "max": 36.9
+      },
+      "max_rss_kb": {
+        "observations": [
+          136016,
+          136508,
+          137184
+        ],
+        "median": 136508,
+        "min": 136016,
+        "max": 137184
+      }
+    }
+  },
+  "query_stream": {
+    "commands": {
+      "baseline": [
+        "/workspace/wt11/FStar-bv-context-baseline/stage2/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--include",
+        "/workspace/wt11/FStar-bv-context-baseline/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-bv-context-baseline/stage2/out/lib/fstar/ulib.checked",
+        "--force",
+        "--query_stats",
+        "--log_queries",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+      ],
+      "candidate": [
+        "/workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+        "--force",
+        "--query_stats",
+        "--log_queries",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+      ]
+    },
+    "query_stream_sha256": "98a514af5525bceb7ed4b21a901e7e86f86e5b1abb292345afda4a8498be71e4",
+    "baseline_query_stream_sha256": "98a514af5525bceb7ed4b21a901e7e86f86e5b1abb292345afda4a8498be71e4",
+    "candidate_query_stream_sha256": "98a514af5525bceb7ed4b21a901e7e86f86e5b1abb292345afda4a8498be71e4",
+    "query_stream_bytes": 3549239,
+    "provenance": {
+      "source_sha256": "a7ed060cd18539f684343ea6afd677effa8fa18bdea2dc12500ff68878c67c05",
+      "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+      "runner_sha256": "5f50503902d93daec1e4a2258d911b40a4891456750974ccda7f2968895dc570",
+      "cleared_environment": [
+        "FSTAR_LIB",
+        "FSTAR_HOME",
+        "OCAMLRUNPARAM",
+        "CAMLRUNPARAM",
+        "FSTAR_PRUNING_REFERENCE",
+        "FSTAR_NO_DEDUP_VC"
+      ],
+      "variants": {
+        "baseline": {
+          "commit": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+          "binary_sha256": "92170e8deb7866a34c5ca71989cbb4e0a61b17bf49829ba5f080b02f14b7d012",
+          "checked_dependency_tree": {
+            "sha256": "6e3fb8cfb46662026444bbd4404ccfd3961c6f76384b57135f56fcedea397a0f",
+            "files": 379
+          }
+        },
+        "candidate": {
+          "commit": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
+          "binary_sha256": "83c2f0de76d2915cae3231e1c2621009f4101f25fba45b5046366de538b97208",
+          "checked_dependency_tree": {
+            "sha256": "77d114652ff5051c773738765ef31b3d4047706f46f2728a80055d15cb2436c3",
+            "files": 379
+          }
+        }
+      }
+    }
+  },
+  "direct_z3_replay": {
+    "summary": {
+      "wall_seconds": {
+        "observations": [
+          17.95,
+          45.73,
+          47.39,
+          38.25,
+          45.83,
+          45.82,
+          19.33,
+          18.29,
+          46.24,
+          47.13
+        ],
+        "median": 45.775,
+        "min": 17.95,
+        "max": 47.39
+      },
+      "user_seconds": {
+        "observations": [
+          17.84,
+          45.49,
+          47.16,
+          38.07,
+          45.6,
+          45.59,
+          19.19,
+          18.16,
+          46.03,
+          46.93
+        ],
+        "median": 45.540000000000006,
+        "min": 17.84,
+        "max": 47.16
+      },
+      "system_seconds": {
+        "observations": [
+          0.11,
+          0.2,
+          0.21,
+          0.15,
+          0.2,
+          0.2,
+          0.13,
+          0.13,
+          0.2,
+          0.19
+        ],
+        "median": 0.195,
+        "min": 0.11,
+        "max": 0.21
+      },
+      "max_rss_kb": {
+        "observations": [
+          117572,
+          117408,
+          117844,
+          117292,
+          117456,
+          117676,
+          117228,
+          117292,
+          117592,
+          117868
+        ],
+        "median": 117514.0,
+        "min": 117228,
+        "max": 117868
+      }
+    },
+    "observations": [
+      {
+        "repeat": 1,
+        "wall_seconds": 17.95,
+        "user_seconds": 17.84,
+        "system_seconds": 0.11,
+        "max_rss_kb": 117572,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-1.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 2,
+        "wall_seconds": 45.73,
+        "user_seconds": 45.49,
+        "system_seconds": 0.2,
+        "max_rss_kb": 117408,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-2.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 3,
+        "wall_seconds": 47.39,
+        "user_seconds": 47.16,
+        "system_seconds": 0.21,
+        "max_rss_kb": 117844,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-3.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 4,
+        "wall_seconds": 38.25,
+        "user_seconds": 38.07,
+        "system_seconds": 0.15,
+        "max_rss_kb": 117292,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-4.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 5,
+        "wall_seconds": 45.83,
+        "user_seconds": 45.6,
+        "system_seconds": 0.2,
+        "max_rss_kb": 117456,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-5.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 6,
+        "wall_seconds": 45.82,
+        "user_seconds": 45.59,
+        "system_seconds": 0.2,
+        "max_rss_kb": 117676,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-6.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 7,
+        "wall_seconds": 19.33,
+        "user_seconds": 19.19,
+        "system_seconds": 0.13,
+        "max_rss_kb": 117228,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-7.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 8,
+        "wall_seconds": 18.29,
+        "user_seconds": 18.16,
+        "system_seconds": 0.13,
+        "max_rss_kb": 117292,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-8.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 9,
+        "wall_seconds": 46.24,
+        "user_seconds": 46.03,
+        "system_seconds": 0.2,
+        "max_rss_kb": 117592,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-9.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      },
+      {
+        "repeat": 10,
+        "wall_seconds": 47.13,
+        "user_seconds": 46.93,
+        "system_seconds": 0.19,
+        "max_rss_kb": 117868,
+        "unsat_count": 1025,
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-10.time",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "-smt2",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/baseline/queries-SimpleAgreement1024.smt2"
+        ]
+      }
+    ],
+    "solver_counters": [
+      {
+        "repeat": 1,
+        "final_num_allocs": 1638685638,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 2,
+        "final_num_allocs": 1632118861,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 3,
+        "final_num_allocs": 1641341531,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 4,
+        "final_num_allocs": 1629749398,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 5,
+        "final_num_allocs": 1641341531,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 6,
+        "final_num_allocs": 1633639409,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 7,
+        "final_num_allocs": 1659714153,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 8,
+        "final_num_allocs": 1659714153,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 9,
+        "final_num_allocs": 1641341531,
+        "final_rlimit_count": 77059486
+      },
+      {
+        "repeat": 10,
+        "final_num_allocs": 1651970018,
+        "final_rlimit_count": 77059486
+      }
+    ],
+    "interpretation": "User CPU closely tracks wall time. Identical bytes and exact final rlimit count replay in 17.95-47.39 seconds. This is solver process CPU rather than F* compiler work or pipe waiting, and does not reproduce the broad candidate's 34.62-36.90-second request times."
+  },
+  "same_executable_cached_vs_reference": {
+    "summary": {
+      "cached": {
+        "wall_seconds": {
+          "observations": [
+            34.02,
+            33.84,
+            33.78,
+            35.55,
+            34.71
+          ],
+          "median": 34.02,
+          "min": 33.78,
+          "max": 35.55
+        },
+        "user_seconds": {
+          "observations": [
+            33.78,
+            33.62,
+            33.53,
+            35.32,
+            34.48
+          ],
+          "median": 33.78,
+          "min": 33.53,
+          "max": 35.32
+        },
+        "profiled_declaration_ms": {
+          "observations": [
+            32517,
+            32361,
+            32249,
+            34036,
+            33200
+          ],
+          "median": 32517,
+          "min": 32249,
+          "max": 34036
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            18.0,
+            18.53,
+            18.32,
+            19.07,
+            18.25
+          ],
+          "median": 18.32,
+          "min": 18.0,
+          "max": 19.07
+        },
+        "max_rss_kb": {
+          "observations": [
+            138524,
+            138420,
+            138024,
+            138308,
+            138120
+          ],
+          "median": 138308,
+          "min": 138024,
+          "max": 138524
+        }
+      },
+      "reference": {
+        "wall_seconds": {
+          "observations": [
+            54.23,
+            54.23,
+            57.75,
+            56.56,
+            57.36
+          ],
+          "median": 56.56,
+          "min": 54.23,
+          "max": 57.75
+        },
+        "user_seconds": {
+          "observations": [
+            54.02,
+            54.02,
+            57.49,
+            56.34,
+            57.13
+          ],
+          "median": 56.34,
+          "min": 54.02,
+          "max": 57.49
+        },
+        "profiled_declaration_ms": {
+          "observations": [
+            52704,
+            52734,
+            56154,
+            55007,
+            55800
+          ],
+          "median": 55007,
+          "min": 52704,
+          "max": 56154
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            19.06,
+            19.72,
+            21.32,
+            20.6,
+            20.98
+          ],
+          "median": 20.6,
+          "min": 19.06,
+          "max": 21.32
+        },
+        "max_rss_kb": {
+          "observations": [
+            146800,
+            147344,
+            145972,
+            147972,
+            146528
+          ],
+          "median": 146800,
+          "min": 145972,
+          "max": 147972
+        }
+      }
+    },
+    "pairs": {
+      "1": {
+        "reference": {
+          "mode": "reference",
+          "repeat": 1,
+          "wall_seconds": 54.23,
+          "user_seconds": 54.02,
+          "system_seconds": 0.4,
+          "max_rss_kb": 146800,
+          "profiled_declaration_ms": 52704,
+          "query_count": 1025,
+          "z3_reported_seconds": 19.06,
+          "environment": {
+            "FSTAR_PRUNING_REFERENCE": "1"
+          },
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/1-reference.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        },
+        "cached": {
+          "mode": "cached",
+          "repeat": 1,
+          "wall_seconds": 34.02,
+          "user_seconds": 33.78,
+          "system_seconds": 0.4,
+          "max_rss_kb": 138524,
+          "profiled_declaration_ms": 32517,
+          "query_count": 1025,
+          "z3_reported_seconds": 18.0,
+          "environment": {},
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/1-cached.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        }
+      },
+      "4": {
+        "cached": {
+          "mode": "cached",
+          "repeat": 4,
+          "wall_seconds": 33.84,
+          "user_seconds": 33.62,
+          "system_seconds": 0.38,
+          "max_rss_kb": 138420,
+          "profiled_declaration_ms": 32361,
+          "query_count": 1025,
+          "z3_reported_seconds": 18.53,
+          "environment": {},
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/4-cached.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        },
+        "reference": {
+          "mode": "reference",
+          "repeat": 4,
+          "wall_seconds": 54.23,
+          "user_seconds": 54.02,
+          "system_seconds": 0.41,
+          "max_rss_kb": 147344,
+          "profiled_declaration_ms": 52734,
+          "query_count": 1025,
+          "z3_reported_seconds": 19.72,
+          "environment": {
+            "FSTAR_PRUNING_REFERENCE": "1"
+          },
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/4-reference.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        }
+      },
+      "5": {
+        "cached": {
+          "mode": "cached",
+          "repeat": 5,
+          "wall_seconds": 33.78,
+          "user_seconds": 33.53,
+          "system_seconds": 0.42,
+          "max_rss_kb": 138024,
+          "profiled_declaration_ms": 32249,
+          "query_count": 1025,
+          "z3_reported_seconds": 18.32,
+          "environment": {},
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/5-cached.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        },
+        "reference": {
+          "mode": "reference",
+          "repeat": 5,
+          "wall_seconds": 57.75,
+          "user_seconds": 57.49,
+          "system_seconds": 0.43,
+          "max_rss_kb": 145972,
+          "profiled_declaration_ms": 56154,
+          "query_count": 1025,
+          "z3_reported_seconds": 21.32,
+          "environment": {
+            "FSTAR_PRUNING_REFERENCE": "1"
+          },
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/5-reference.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        }
+      },
+      "2": {
+        "cached": {
+          "mode": "cached",
+          "repeat": 2,
+          "wall_seconds": 35.55,
+          "user_seconds": 35.32,
+          "system_seconds": 0.39,
+          "max_rss_kb": 138308,
+          "profiled_declaration_ms": 34036,
+          "query_count": 1025,
+          "z3_reported_seconds": 19.07,
+          "environment": {},
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/2-cached.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        },
+        "reference": {
+          "mode": "reference",
+          "repeat": 2,
+          "wall_seconds": 56.56,
+          "user_seconds": 56.34,
+          "system_seconds": 0.39,
+          "max_rss_kb": 147972,
+          "profiled_declaration_ms": 55007,
+          "query_count": 1025,
+          "z3_reported_seconds": 20.6,
+          "environment": {
+            "FSTAR_PRUNING_REFERENCE": "1"
+          },
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/2-reference.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        }
+      },
+      "3": {
+        "reference": {
+          "mode": "reference",
+          "repeat": 3,
+          "wall_seconds": 57.36,
+          "user_seconds": 57.13,
+          "system_seconds": 0.41,
+          "max_rss_kb": 146528,
+          "profiled_declaration_ms": 55800,
+          "query_count": 1025,
+          "z3_reported_seconds": 20.98,
+          "environment": {
+            "FSTAR_PRUNING_REFERENCE": "1"
+          },
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/3-reference.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        },
+        "cached": {
+          "mode": "cached",
+          "repeat": 3,
+          "wall_seconds": 34.71,
+          "user_seconds": 34.48,
+          "system_seconds": 0.39,
+          "max_rss_kb": 138120,
+          "profiled_declaration_ms": 33200,
+          "query_count": 1025,
+          "z3_reported_seconds": 18.25,
+          "environment": {},
+          "command": [
+            "/usr/bin/time",
+            "-v",
+            "-o",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/3-cached.time",
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--force",
+            "--timing",
+            "--query_stats",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/generated/SimpleAgreement1024.fst"
+          ]
+        }
+      }
+    },
+    "interpretation": "Query-scan reuse is faster than forced-fresh query scanning in every pair in the same executable. Both modes still maintain the candidate ambient cache and show Z3 variability."
+  },
+  "conclusions": [
+    "Query-scan reuse does not explain the 1024 regression: controlling the executable, cached pruning wins every pair. This does not isolate cache-maintenance or pacing effects.",
+    "The broad candidate's elevated Z3 request times do not reproduce in direct replay or later same-executable cached runs despite byte-identical input.",
+    "No source mitigation is justified. Changing solver settings, facts, GC, or workload would hide or speculate around the observed variability rather than fix cache overhead."
+  ],
+  "limitations": [
+    "The source of the broad-run Z3 slowdown remains unresolved; rlimit work is identical and Z3 allocation counts are nearly identical.",
+    "Z3 internal num-allocs counters were recorded. F* allocation counters were not collected, and no restricted artifact access was retried."
+  ],
+  "evidence": {
+    "broad_suite": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/measurements.jsonl",
+      "sha256": "aafcac14ba512bf8a86aaea1650336d449f2646f88e30ebe3607f1c74ce688c6"
+    },
+    "broad_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/provenance.json",
+      "sha256": "c7c347dc3a3fdec6887181801ed49166245a51944c8a2c136e1a0389844a13f8"
+    },
+    "query_stream": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-query-stream/result.json",
+      "sha256": "ddc98824b12e428bedf9834c1b2ec2a1a30d90eb57bf0e3a010c6a0769cb63cf"
+    },
+    "direct_replay": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/measurements.json",
+      "sha256": "e3a1a01068d43ea2a568ee233c937d74d6a10024e483c104e3126f0f87dceef4"
+    },
+    "direct_replay_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/provenance.json",
+      "sha256": "58109b75a0d7c4104dc236db8ac7ea92d75205030f5b4cf88f822b2393b3e20a"
+    },
+    "same_executable": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/measurements.json",
+      "sha256": "82981f0b11a7f6419bbd3b8681cf5ee671c17fb1840ffa3e3555bd1b61e6eab8"
+    },
+    "same_executable_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/provenance.json",
+      "sha256": "86fe99196d8285406391c7790d27ab82deff007cf9fbd77ad687fd63d4b936da"
+    }
+  },
+  "raw_evidence": {
+    "broad_suite": [
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/3-simple-1024-candidate.time",
+        "sha256": "ab2c16a2f6784432582eaa5579007124d16f5367a79aa3d491e2b91d65dc8c26"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/3-simple-1024-candidate.log",
+        "sha256": "0be2e177fd04fa69233be9bb68601757f744de55a951915bf9b2df4ade251019"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/3-simple-1024-baseline.time",
+        "sha256": "bea009a59a3e3d5adce6fcca819e6f4617558837c74937740e206ae65755e134"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/3-simple-1024-baseline.log",
+        "sha256": "05078b1e1319297c04dda7c80027945190465b384a8d124d0d4dcd8d000a3bf3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/2-simple-1024-baseline.time",
+        "sha256": "754afeb1ba148d4ceb5836a568764630611a17e85fbf26fa68a52b0704976733"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/2-simple-1024-baseline.log",
+        "sha256": "1b4622419083646b8c4304f8caae380cace7b2015f40d8e11223c105213a601a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/2-simple-1024-candidate.time",
+        "sha256": "0aa33342cb2befba91d33ea622f958e546a74125119306e5385aad68ddf14cec"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/2-simple-1024-candidate.log",
+        "sha256": "2ad3d426b7683704104f89d97195fd35869b3fef4f213dd525020e2fb7c42dc0"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/1-simple-1024-candidate.time",
+        "sha256": "4301c2de9d62c71b3219511a7badca4202f1be1a275685d5aed3687ff1912e99"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/1-simple-1024-candidate.log",
+        "sha256": "ae8f98b9aff4274e726b23aa0e10037af40f10e92de8eb5a4699a755ec7fa6a7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/1-simple-1024-baseline.time",
+        "sha256": "fa6fd8bdcc2f16d7d9e6e98a901a249e3199ab5a055205a5a1d7250d2693169b"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-broad-suite/1-simple-1024-baseline.log",
+        "sha256": "0423e5e0ed293cee232ed3e8adfb22351554ff12846e3e80794c4df3223bf732"
+      }
+    ],
+    "direct_replay": [
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-1.out",
+        "sha256": "8c2e533f1bbd6ee3975a596bb46e264ff471cc3d08c979bbd9400a56ef4a5ce2"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-1.time",
+        "sha256": "83a2b1b8d4092e76f7bfd5ebf5514d8d3d5e7de792c0633c6272e4ecd7d774a6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-2.out",
+        "sha256": "dba87326935ec1bf36fef50880694d1b1f6c523e61321761a1e6fee14ff59436"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-2.time",
+        "sha256": "d3228618a9b9b92e0323c130e44246d309ffe510d872cb419177de33d9fe9d5e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-3.out",
+        "sha256": "357eea8dd6193c8e9d657a8811ab8cd35cf1121eb9e20e13e0a0f185bd41780d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-3.time",
+        "sha256": "2222ee6eb940df94115bdb722a3746d17a2140dd877704aae10e89942ac4668b"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-4.out",
+        "sha256": "4b3794e5ec68e3f9b517c1a7299a3a3e1d453d00be655c91b188f2067d222012"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-4.time",
+        "sha256": "eff1ac4a376cffa0909dcf1804968aac65d3efc4e4db4ef4d10dea5e8532b60a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-5.out",
+        "sha256": "541a72a33c88b9b4b1bd18bab389ae2aacafb783950381333c88e918855f21bd"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-5.time",
+        "sha256": "cbc80933371e7b33ad6cd377ea5fa9e2a3d0249b36108b9fe81a244abccd674f"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-6.out",
+        "sha256": "b1fde65908b83fa1f4cb4d3f564d71639f74fa27612dc85457bf84e3e1fff749"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-6.time",
+        "sha256": "84dc0ce2e854058112f94387a666da68e2812227133bd1861cae4ac504e3e661"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-7.out",
+        "sha256": "7bfd434642fed2689e7ae95f0ff53eb887cec9684678e6ab7bd787f676e1eab0"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-7.time",
+        "sha256": "0a1546139465a401b3ca9dcc93302894abc112be162491d6309ece7ec1a7643d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-8.out",
+        "sha256": "eb0fcb75cc91dc5991cf34af6a40c139bdd210dc476261222d42908fca7f3713"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-8.time",
+        "sha256": "bef66eaaf89c187d837bedffe40fe550f577125c9ef915397bf7bd9f44d184ee"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-9.out",
+        "sha256": "1513a4ea68cead3e2de53da434f0160d5d4a7b0e14a437f1b65b7158c8837a63"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-9.time",
+        "sha256": "ce1ddbe9ff0a9d5baf0d7e3c43ca384a76537a30007296fddc515643ebe75646"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-10.out",
+        "sha256": "f717d2866d3abd6b0bce91bcd4c6a0f08b365d85bb1bcf131badf915d78b317e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-z3-replay-10/repeat-10.time",
+        "sha256": "ec22e94fcd88c74897e50b19369b0ee8543263fe948879357a384105e45162e6"
+      }
+    ],
+    "same_executable": [
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/1-reference.time",
+        "sha256": "14fc3b24dc2d701fba2de496e7329f48a5ec89cce4015f795e42ba6520326252"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/1-reference.log",
+        "sha256": "6ead71b981620bec4bc36ba048fe0bb8c9fac8659a928004676c7b957b440b06"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/1-cached.time",
+        "sha256": "675051fc26eb2fdcd9cf2e7af7c9ad81b3f50a0b5d12f4acd0d8e61efc5fe2c9"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/1-cached.log",
+        "sha256": "70af687e2fdfa0c10243291a98d9500fb0840ef370c301bf4b0a004094d68cc6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/4-cached.time",
+        "sha256": "46f8d8e75b3c81efda8b3c6c9bb3b12af5c50527695641707c7c8878be9603a3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/4-cached.log",
+        "sha256": "e01e4efc762274bd0ad7ddf7a17c45b5c1088abbf099153417af70a66c8155cc"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/4-reference.time",
+        "sha256": "78a979e8358dfe6bbdc2ef19c657a9a61248acb63dd12df70425de2893255cc2"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/4-reference.log",
+        "sha256": "0fd3f52d61664dfb3bbda2bebee84e60c8346bccaaf4de24b66529c1d4dbcee2"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/5-cached.time",
+        "sha256": "00e0d2b780b3007cba6ff940a766255812412cd069aef3c3aef9d77c2f09dd95"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/5-cached.log",
+        "sha256": "e764929e6edecd0ce1ac354e058161326696b6a4ecbd4f0d6f3c0e7f3bf2c3f6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/5-reference.time",
+        "sha256": "04f93469618f97baaad9111d14d6ab284140bbfeae057291f00102616e3bbdb7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/5-reference.log",
+        "sha256": "344d294dcbbaefa10ed662fb513e9217dbbe95c479572fd6c47ceec418344325"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/2-cached.time",
+        "sha256": "a3ebd150f830ec037437c5e93ec91028e4de52013d61db7d272bd5ac3263d6c4"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/2-cached.log",
+        "sha256": "847422cfd25d31f2c8b5d7b0b86ab1bcc7cd796308e8ecaaf15539cf4cef9e07"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/2-reference.time",
+        "sha256": "99a8290aa89b37cdedabe08165d10a7963fe3a507fe1d4ce30c583dc999a8dda"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/2-reference.log",
+        "sha256": "68dd0c4ddb08b6cba469a4f85e8135eff2225bdf44c4b3b7e0dfde4fbcda377c"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/3-reference.time",
+        "sha256": "ccf0816fbc500665cf20de28849e347476d89bb873f2aa5e1e06c5a7aeb18803"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/3-reference.log",
+        "sha256": "31f10a6a1206c72caa3930007a1568108b1fe702816fb5dbd59955a2b0c45b3b"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/3-cached.time",
+        "sha256": "3626cb00df68c769690f124ca164fc38d22b2cb32a40ef6c8d823dc17e71710a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple1024-same-exe/3-cached.log",
+        "sha256": "93952b206a9f47770bfb2b9a46ac7987c0729683bf66e1d5f79cb4e0ab753145"
+      }
+    ]
+  }
+}

@@ -145,6 +145,32 @@ The broad runner intentionally exits nonzero if any row fails or times out,
 after recording all planned pairs. The current evidence includes the matched
 `FStar.List.Tot.Properties` failure described in the report.
 
+The SimpleAgreement-1024 follow-up replays the identical stream directly and
+compares cached/fresh pruning in one diagnostic executable:
+
+```sh
+python tests/benchmarks/bv-context/run_z3_replay.py \
+  --z3 /path/to/z3-5.3.0 \
+  --stream "$EVIDENCE_ROOT/ambient-cache-simple1024-query-stream/\
+baseline/queries-SimpleAgreement1024.smt2" \
+  --output "$EVIDENCE_ROOT/ambient-cache-simple1024-z3-replay-10" \
+  --repetitions 10
+
+# Build fstarc3_full.exe after applying instrument_pruning_reference.py.
+python tests/benchmarks/bv-context/run_same_executable_pruning.py \
+  --fstar /path/to/instrumented/fstarc3_full.exe \
+  --worktree /workspace/wt11/FStar-bv-context \
+  --z3 /path/to/z3-5.3.0 \
+  --source "$EVIDENCE_ROOT/ambient-cache-broad-suite/generated/\
+SimpleAgreement1024.fst" \
+  --output "$EVIDENCE_ROOT/ambient-cache-simple1024-same-exe" \
+  --repetitions 5
+
+python tests/benchmarks/bv-context/summarize_simple1024_regression.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --output tests/benchmarks/bv-context/SIMPLE1024_REGRESSION_ANALYSIS.json
+```
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,
