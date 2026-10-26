@@ -337,6 +337,50 @@ collected; F* allocation counters were not.
 `SIMPLE1024_REGRESSION_ANALYSIS.json` records timer boundaries, all replays,
 solver counters, same-executable pairs, commands, hashes, and limitations.
 
+##### Fixed-affinity control
+
+The original broad-suite order alternated in both directions, so the candidate
+was not systematically second. Its per-query slowdown also grew across the
+module: candidate Z3 quartile medians were 1.81/6.20/12.10/16.01 seconds
+versus baseline 1.05/3.83/6.94/10.10. A concrete scheduling difference is visible in the
+process counters: original candidate runs incurred 8,304-12,716 involuntary
+context switches, versus only 230-254 for baseline.
+
+All 32 logical CPUs are permitted. Two predeclared controls pin F* and its
+inherited Z3 child to one CPU with `taskset`, while preserving inputs, solver
+settings, compiler-specific dependencies, and sanitized F*/OCaml/loader/
+allocator environments. Each CPU runs ten direct replays and five adjacent
+randomized genuine baseline/candidate pairs:
+
+| Control | Direct replay wall | Baseline wall median | Candidate wall median | Baseline / candidate Z3 median |
+|---|---:|---:|---:|---:|
+| CPU 0 | 18.77-24.52 s | 84.44 s | **59.10 s** | 40.17 / 33.29 s |
+| CPU 16 | 18.92-27.67 s | 56.78 s | **45.94 s** | 26.14 / 25.30 s |
+
+On CPU 0, baseline spans 46.15-86.46 seconds and candidate 34.80-69.42.
+The candidate wins all five pairs on both CPUs. CPU 16 is particularly stable:
+baseline spans 55.41-57.56 seconds and candidate 45.48-47.71 seconds. CPU 0
+still shows shared-host fast/slow regimes, but the candidate remains faster in
+every pair.
+
+Therefore the original all-three candidate slowdown does **not** survive
+controls for CPU placement. Fixed affinity also narrows direct replay from the
+unpinned 17.95-47.39-second range to 18.77-24.52 and 18.92-27.67 seconds. The
+strongest supported explanation is an environmental scheduler/CPU-execution
+effect that happened to correlate with compiler variant in the original
+three-pair sample—not a repeatable cache regression.
+
+Affinity constrains placement but cannot reserve a shared CPU. Unprivileged
+cycles/instructions counters are unavailable (`perf_event_paranoid=4`), so the
+evidence does not distinguish frequency, SMT-sibling contention, or another
+hardware-level mechanism. A second attempt to preserve the failed `perf`
+control was blocked by content-exclusion policy and was not retried. No source
+mitigation was implemented, and no PR was opened.
+
+`SIMPLE1024_AFFINITY_ANALYSIS.json` records original per-query localization,
+both fixed-CPU protocols, raw timings/log hashes, scheduling counters, tool and
+affinity provenance, conclusions, and remaining uncertainty.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master

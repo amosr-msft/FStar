@@ -40,6 +40,10 @@ equality through a real SMT query.
   executable.
 - `summarize_simple1024_regression.py` validates the focused regression
   analysis in `SIMPLE1024_REGRESSION_ANALYSIS.json`.
+- `run_affinity_controls.py` pins direct replay and genuine matched compiler
+  pairs to a fixed CPU.
+- `summarize_affinity_controls.py` validates CPU 0/16 evidence in
+  `SIMPLE1024_AFFINITY_ANALYSIS.json`.
 
 Generated sources remain under evidence/output directories. The no-ambient
 mode changes context selection and is diagnostic only.

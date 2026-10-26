@@ -171,6 +171,27 @@ python tests/benchmarks/bv-context/summarize_simple1024_regression.py \
   --output tests/benchmarks/bv-context/SIMPLE1024_REGRESSION_ANALYSIS.json
 ```
 
+The fixed-affinity control pins F* and inherited Z3 to CPU 0 and CPU 16 in
+separate exact 10-replay/five-pair protocols:
+
+```sh
+python tests/benchmarks/bv-context/run_affinity_controls.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-bv-context \
+  --z3 /path/to/z3-5.3.0 \
+  --source "$EVIDENCE_ROOT/ambient-cache-broad-suite/generated/\
+SimpleAgreement1024.fst" \
+  --stream "$EVIDENCE_ROOT/ambient-cache-simple1024-query-stream/\
+baseline/queries-SimpleAgreement1024.smt2" \
+  --output "$EVIDENCE_ROOT/ambient-cache-simple1024-affinity" \
+  --cpu 0
+
+# Repeat with --cpu 16 and a distinct output directory.
+python tests/benchmarks/bv-context/summarize_affinity_controls.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --output tests/benchmarks/bv-context/SIMPLE1024_AFFINITY_ANALYSIS.json
+```
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,
