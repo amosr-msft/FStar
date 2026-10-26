@@ -137,7 +137,8 @@ locations, diagnostics, and limitations. Reproduction scripts are under
 ### Ambient-closure cache experiment
 
 The experiment branch
-`users/amos/20261026-fstar-pruning-ambient-cache` at `734a73c518` caches the
+`users/amos/20261026-fstar-pruning-ambient-cache` is at `2260651e1f`; the long
+performance campaign used its parent `734a73c518`. It caches the
 query-independent ambient closure inside the immutable `pruning_state` owned
 by each solver level. It does not drop ambient facts.
 
@@ -167,7 +168,24 @@ for:
 |---|---:|---:|
 | 64 accumulating simple lemmas | 65 | 237,121 |
 | alternating two-symbol scope test | 6 | 35,534 |
+| encoded explicit empty pattern alternative | 4 | 24,377 |
 | existing `tests/tactics/Pruning.fst` | 29 | 393,920 |
+
+An independent review found a late-registration edge in the initial
+prototype: it dropped empty trigger alternatives. The original fresh scan
+keeps them; although an empty alternative alone is not indexed and does not
+fire, processing any named trigger for the assumption observes the empty
+alternative and retains it. The correction preserves empty alternatives and
+requires that at least one indexed named trigger was already reached.
+
+A direct pruning-state regression compares cached and forced-fresh retained
+declarations for `Sum_triggers [ []; ["a"; "b"] ]` with only `a` reached,
+ordinary `["a"; "b"]` conjunctions before/after `b`, and late registration
+after both symbols. Outputs match exactly. An actual F* `SMTPatOr` containing
+an empty alternative also emits byte-identical cached/reference SMT streams.
+The long campaign was not repeated because its generated simple/BV inputs do
+not contain empty trigger alternatives; all focused correctness checks were
+rerun at `2260651e1f`.
 
 Matched same-input simple scaling shows:
 

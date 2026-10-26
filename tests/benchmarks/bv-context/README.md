@@ -23,6 +23,11 @@ equality through a real SMT query.
 - `run_ambient_cache_validation.py` records focused fallback and full-source
   checks with exact commands and hashes.
 - `PruningCacheScope.fst` checks alternating symbols for query-local leakage.
+- `PruningEmptyPattern.fst` covers an encoded explicit empty pattern
+  alternative.
+- `pruning_cache_regression.ml` and `run_pruning_state_regression.py` compare
+  retained cached/reference declarations for empty and ordinary trigger
+  alternatives.
 - `summarize_ambient_cache.py` validates the prototype evidence into
   `AMBIENT_CACHE_EXPERIMENT.json`.
 

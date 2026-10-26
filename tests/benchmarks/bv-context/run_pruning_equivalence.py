@@ -36,6 +36,11 @@ def main():
     cases = (
         ("simple", generated / "SimpleAgreement64.fst", "SimpleAgreement64"),
         ("scope", root / "PruningCacheScope.fst", "PruningCacheScope"),
+        (
+            "encoded-empty-pattern",
+            root / "PruningEmptyPattern.fst",
+            "PruningEmptyPattern",
+        ),
         ("pruning", worktree / "tests/tactics/Pruning.fst", "Pruning"),
     )
     provenance = {

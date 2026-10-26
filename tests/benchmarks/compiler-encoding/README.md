@@ -55,8 +55,9 @@ report was unavailable here under content-exclusion policy; its supplied
 headline results are labeled as such in the JSON and report.
 
 The ambient-closure cache prototype is on
-`users/amos/20261026-fstar-pruning-ambient-cache` (`734a73c518`). Reuse the
-same simple sources and baseline evidence, then run candidate scaling with:
+`users/amos/20261026-fstar-pruning-ambient-cache` (`2260651e1f`; performance
+campaign parent `734a73c518`). Reuse the same simple sources and baseline
+evidence, then run candidate scaling with:
 
 ```sh
 python tests/benchmarks/bv-context/run_simple_scaling.py \
@@ -69,7 +70,8 @@ python tests/benchmarks/bv-context/run_simple_scaling.py \
 `instrument_pruning_reference.py` builds an ignored diagnostic binary whose
 `FSTAR_PRUNING_REFERENCE=1` mode forces the original fresh scan.
 `PruningCacheScope.fst`, `SimpleAgreement64`, and the existing pruning test
-produce byte-identical cached/reference query streams:
+produce byte-identical cached/reference query streams. The suite also includes
+an encoded empty-pattern alternative and a direct retained-assumption harness:
 
 ```sh
 # Restore stage1/FStarC_SMTEncoding_Pruning.ml into stage2/fstarc.ml,
@@ -80,13 +82,17 @@ python tests/benchmarks/bv-context/run_pruning_equivalence.py \
   --fstar /path/to/instrumented/fstarc3_full.exe \
   --z3 /path/to/z3-5.3.0 \
   --worktree /workspace/wt11/FStar-bv-context \
-  --output "$EVIDENCE_ROOT/ambient-cache-correctness-v2"
+  --output "$EVIDENCE_ROOT/ambient-cache-empty-trigger-equivalence"
+
+python tests/benchmarks/bv-context/run_pruning_state_regression.py \
+  --worktree /workspace/wt11/FStar-bv-context \
+  --output "$EVIDENCE_ROOT/ambient-cache-empty-trigger-state"
 
 python tests/benchmarks/bv-context/run_ambient_cache_validation.py \
   --fstar /workspace/wt11/FStar-bv-context/stage3/out/bin/fstar.exe \
   --z3 /path/to/z3-5.3.0 \
   --worktree /workspace/wt11/FStar-bv-context \
-  --output "$EVIDENCE_ROOT/ambient-cache-validation"
+  --output "$EVIDENCE_ROOT/ambient-cache-empty-trigger-validation"
 ```
 
 Rebuild the context instrumentation from the candidate source and run

@@ -3,10 +3,12 @@
   "objective": "Prototype an incremental solver-scope-local cache of ambient pruning reachability without dropping ambient facts.",
   "revisions": {
     "baseline_source": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
-    "candidate": "734a73c5184b123bfbf2341a3570f823eaa2dc1a",
+    "candidate": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
     "candidate_branch": "users/amos/20261026-fstar-pruning-ambient-cache",
+    "benchmarked_candidate": "734a73c5184b123bfbf2341a3570f823eaa2dc1a",
     "baseline_scaling_binary_sha256": "a9de01ceb7b1e4cb043739073dfc8e1e74264d47a24ecd579730a72009dde7e1",
     "candidate_binary_sha256": "419b93f86537ebbc4b34f65ad07a52d3d3bb80ff082ad8c9abbf786d43aa3eec",
+    "corrected_candidate_binary_sha256": "83c2f0de76d2915cae3231e1c2621009f4101f25fba45b5046366de538b97208",
     "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3"
   },
   "design": {
@@ -50,7 +52,7 @@
             "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
             "--query_stats",
             "--log_queries",
-            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-correctness-v2/generated/SimpleAgreement64.fst"
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-equivalence/generated/SimpleAgreement64.fst"
           ],
           "reference": [
             "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
@@ -64,7 +66,7 @@
             "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
             "--query_stats",
             "--log_queries",
-            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-correctness-v2/generated/SimpleAgreement64.fst"
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-equivalence/generated/SimpleAgreement64.fst"
           ]
         },
         "environments": {
@@ -125,6 +127,52 @@
         "check_sat_count": 6,
         "query_stream_bytes": 35534,
         "identical_query_stream_sha256": "c8516352224bead37339db75f1869b79b427bb8e3aab4891a69f2d9b4b905a37"
+      },
+      {
+        "case": "encoded-empty-pattern",
+        "module": "PruningEmptyPattern",
+        "commands": {
+          "cached": [
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--query_stats",
+            "--log_queries",
+            "/workspace/wt11/FStar/tests/benchmarks/bv-context/PruningEmptyPattern.fst"
+          ],
+          "reference": [
+            "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+            "--z3version",
+            "5.3.0",
+            "--smt",
+            "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+            "--include",
+            "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+            "--query_stats",
+            "--log_queries",
+            "/workspace/wt11/FStar/tests/benchmarks/bv-context/PruningEmptyPattern.fst"
+          ]
+        },
+        "environments": {
+          "cached": {},
+          "reference": {
+            "FSTAR_PRUNING_REFERENCE": "1"
+          }
+        },
+        "query_files": [
+          "queries-PruningEmptyPattern.smt2"
+        ],
+        "check_sat_count": 4,
+        "query_stream_bytes": 24377,
+        "identical_query_stream_sha256": "489220b7bc8e0b56ded46399d7f3618c513644f5c668ca8fa8fffce1f7c08fa4"
       },
       {
         "case": "pruning",
@@ -250,7 +298,44 @@
         ],
         "log_sha256": "cb6065d348611334c7d370c1aefd0eb5117e1e318cb7e65a7b747d2cced2950b"
       }
-    ]
+    ],
+    "direct_trigger_state_regression": {
+      "compile_command": [
+        "ocamlfind",
+        "ocamlopt",
+        "-thread",
+        "-linkpkg",
+        "-package",
+        "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+        "-I",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+        "-I",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+        "/workspace/wt11/FStar/tests/benchmarks/bv-context/pruning_cache_regression.ml",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-state/pruning-cache-regression.exe"
+      ],
+      "run_command": [
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-state/pruning-cache-regression.exe"
+      ],
+      "environments": {
+        "cached": {},
+        "reference": {
+          "FSTAR_PRUNING_REFERENCE": "1"
+        }
+      },
+      "output": "empty=edge_empty_alternative,root_a\nconjunction-before=root_a\nconjunction-after=edge_conjunction,root_a,root_b\nlate=edge_conjunction,root_ab\n",
+      "output_sha256": "0c8bd160bac97eef7217c864ee7ed1fb1ce8eb461e9f3be08f869ae338386914",
+      "provenance": {
+        "worktree_commit": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
+        "compiler_archive_sha256": "cf8212d9a6c056036c8c287c2ccd060434d71c6f46f94cbd6f45e569757f7c74",
+        "harness_sha256": "4aa9e73870f2792598251de52ce67640ccfe8d9e5a4ac2ae5234781d812c0a24",
+        "instrumenter_sha256": "fa6e4eb06e0c6d3d8618760bad5a449715fa4a51577754aa1e21dee51fe20712",
+        "runner_sha256": "71ef63f459b1f180d1cc57afe338001f70730e24904bb393a3aeb953492ae0d3"
+      }
+    },
+    "empty_trigger_correction": "Empty trigger alternatives are preserved. A late assumption fires only after some indexed named trigger is replayed, matching the original event-driven fresh scan."
   },
   "simple_scaling": [
     {
@@ -509,7 +594,8 @@
   "limitations": [
     "Full-BV comparison uses a rebuilt candidate and a user-supplied historical baseline, not matched binary builds.",
     "The cache retains persistent maps/sets; peak RSS shows no material increase, but allocation overhead was not measured.",
-    "No production fix or PR is proposed; this is an experiment branch only."
+    "No production fix or PR is proposed; this is an experiment branch only.",
+    "The long performance campaign predates the empty-trigger correction. It was not repeated because the generated simple and BV benchmark inputs do not contain empty trigger alternatives; the correction is covered by focused cached/reference regressions."
   ],
   "evidence": {
     "baseline_scaling": {
@@ -553,28 +639,32 @@
       "sha256": "f0dcba7cb93e939e03a523184172ba350a23e05bb6e66b756efbeab7c9d45800"
     },
     "correctness": {
-      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-correctness-v2/measurements.json",
-      "sha256": "e108b9555b41c861c53ae7b1792152328fb8a8f0c2f8e3f58180d3d2e1ad9afb"
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-equivalence/measurements.json",
+      "sha256": "efea4c682291a06e079b6c1adebd24a128828d23bf0fceeeec97f9340042416a"
     },
     "correctness_provenance": {
-      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-correctness-v2/provenance.json",
-      "sha256": "47e31c39b1afa01056f652456e4ed3d73ff6f0ed9726ae121837fea054db464f"
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-equivalence/provenance.json",
+      "sha256": "c152ef5f390dcbc5d7ae130ef684fae3675ed9b8b576c1f20101884ecb838203"
     },
     "validation": {
-      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-validation/measurements.json",
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-validation/measurements.json",
       "sha256": "6686b568fd4ff9883e5eeeb0b7598fce7ce2c20ca1480623e2250e3e59021aa6"
     },
     "validation_provenance": {
-      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-validation/provenance.json",
-      "sha256": "ce09efdb70a99db3375ae2f008cc49f9cf0e7427f57d31277fccdb022fa42c29"
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-validation/provenance.json",
+      "sha256": "4f7ca17bfb59dfdda73bfc1def4714936d5c4b82479369e89d9e0229ffb5a6df"
+    },
+    "trigger_regression": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-state/result.json",
+      "sha256": "40f28f1befdf4e080d3ae3a2a032b4ba9a4168a20a7c559b97919aff91f881f2"
     },
     "candidate_build": {
-      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-build.log",
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-build.log",
       "sha256": "b21c1f90405b6aa9a5555084eccba4792ddf4daa490ee0a469b310a7b189ed64"
     },
     "candidate_boot_diff": {
-      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-boot-diff.log",
-      "sha256": "4a484a3550405be6292002a62282d1a9ffd9cc09ad906abacb3b41de4ced3825"
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-empty-trigger-boot-diff.log",
+      "sha256": "63502f0c145000511d80f4b9c1358db3fe66aa281c43406f83d5cb20b62f65e5"
     },
     "candidate_resume_validation": {
       "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-simple-scaling/resume-validation-f3be19bee5dc.json",

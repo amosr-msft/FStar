@@ -63,15 +63,23 @@ def main():
         "full_candidate_provenance":
             evidence / "ambient-cache-full-bv/provenance.json",
         "correctness":
-            evidence / "ambient-cache-correctness-v2/measurements.json",
+            evidence
+            / "ambient-cache-empty-trigger-equivalence/measurements.json",
         "correctness_provenance":
-            evidence / "ambient-cache-correctness-v2/provenance.json",
+            evidence
+            / "ambient-cache-empty-trigger-equivalence/provenance.json",
         "validation":
-            evidence / "ambient-cache-validation/measurements.json",
+            evidence
+            / "ambient-cache-empty-trigger-validation/measurements.json",
         "validation_provenance":
-            evidence / "ambient-cache-validation/provenance.json",
-        "candidate_build": evidence / "ambient-cache-build.log",
-        "candidate_boot_diff": evidence / "ambient-cache-boot-diff.log",
+            evidence
+            / "ambient-cache-empty-trigger-validation/provenance.json",
+        "trigger_regression":
+            evidence / "ambient-cache-empty-trigger-state/result.json",
+        "candidate_build":
+            evidence / "ambient-cache-empty-trigger-build.log",
+        "candidate_boot_diff":
+            evidence / "ambient-cache-empty-trigger-boot-diff.log",
     }
     provenance = {
         name: json.loads(path.read_text())
@@ -88,12 +96,15 @@ def main():
     candidate_commit = subprocess.check_output(
         ["git", "-C", str(candidate), "rev-parse", "HEAD"], text=True
     ).strip()
+    benchmarked_candidate = (
+        "734a73c5184b123bfbf2341a3570f823eaa2dc1a"
+    )
     require(
         baseline_commit == "0e13baff38309523a2074ef8fbc3745b4bc793ad",
         "baseline worktree moved",
     )
     require(
-        candidate_commit == "734a73c5184b123bfbf2341a3570f823eaa2dc1a",
+        candidate_commit == "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
         "candidate worktree moved",
     )
     require(
@@ -103,7 +114,7 @@ def main():
     )
     require(
         provenance["candidate_scaling_provenance"]["fstar_sha256"]
-        == digest(candidate / "stage2/out/bin/fstar.exe"),
+        == "419b93f86537ebbc4b34f65ad07a52d3d3bb80ff082ad8c9abbf786d43aa3eec",
         "candidate scaling compiler differs",
     )
     require(
@@ -197,7 +208,7 @@ def main():
     )
     candidate_trace_provenance = provenance["candidate_trace_provenance"]
     require(
-        candidate_trace_provenance["worktree_commit"] == candidate_commit
+        candidate_trace_provenance["worktree_commit"] == benchmarked_candidate
         and candidate_trace_provenance["z3_sha256"] == next(iter(z3_hashes))
         and candidate_trace_provenance["instrumenter_sha256"]
         == digest(Path(__file__).resolve().parent / "instrument_context.py")
@@ -241,11 +252,21 @@ def main():
         == digest(full_source),
         "full BV source differs",
     )
+    require(
+        provenance["full_candidate_provenance"]["fstar_sha256"]
+        == provenance["candidate_scaling_provenance"]["fstar_sha256"],
+        "full BV benchmark used a different candidate binary",
+    )
 
     comparisons = json.loads(files["correctness"].read_text())
     require(
         [(item["case"], item["check_sat_count"]) for item in comparisons]
-        == [("simple", 65), ("scope", 6), ("pruning", 29)],
+        == [
+            ("simple", 65),
+            ("scope", 6),
+            ("encoded-empty-pattern", 4),
+            ("pruning", 29),
+        ],
         "correctness comparisons differ",
     )
     correctness_provenance = json.loads(
@@ -261,10 +282,12 @@ def main():
         ),
         "correctness provenance differs",
     )
-    correctness_root = evidence / "ambient-cache-correctness-v2"
+    correctness_root = evidence / "ambient-cache-empty-trigger-equivalence"
     correctness_sources = {
         "simple": correctness_root / "generated/SimpleAgreement64.fst",
         "scope": Path(__file__).resolve().parent / "PruningCacheScope.fst",
+        "encoded-empty-pattern":
+            Path(__file__).resolve().parent / "PruningEmptyPattern.fst",
         "pruning": candidate / "tests/tactics/Pruning.fst",
     }
     require(
@@ -307,6 +330,11 @@ def main():
         ),
         "scope": sorted(
             (correctness_root / "scope-cached").glob("queries-*.smt2")
+        ),
+        "encoded-empty-pattern": sorted(
+            (correctness_root / "encoded-empty-pattern-cached").glob(
+                "queries-*.smt2"
+            )
         ),
         "pruning": cached_pruning,
     }
@@ -405,7 +433,11 @@ def main():
             candidate / "tests/micro-benchmarks/BvModelAgreesWithZ3.fst",
     }
     for item in validation:
-        log = evidence / "ambient-cache-validation" / f"{item['case']}.log"
+        log = (
+            evidence
+            / "ambient-cache-empty-trigger-validation"
+            / f"{item['case']}.log"
+        )
         expected_command = [
             validation_provenance["fstar_path"],
             "--z3version", "5.3.0",
@@ -419,6 +451,31 @@ def main():
             and item["command"] == expected_command,
             f"{item['case']} validation record differs",
         )
+    trigger_regression = json.loads(files["trigger_regression"].read_text())
+    require(
+        trigger_regression["provenance"]["worktree_commit"]
+        == candidate_commit
+        and trigger_regression["provenance"]["harness_sha256"]
+        == digest(
+            Path(__file__).resolve().parent
+            / "pruning_cache_regression.ml"
+        )
+        and trigger_regression["provenance"]["runner_sha256"]
+        == digest(
+            Path(__file__).resolve().parent
+            / "run_pruning_state_regression.py"
+        )
+        and trigger_regression["environments"]["reference"]
+        == {"FSTAR_PRUNING_REFERENCE": "1"}
+        and trigger_regression["output"]
+        == (
+            "empty=edge_empty_alternative,root_a\n"
+            "conjunction-before=root_a\n"
+            "conjunction-after=edge_conjunction,root_a,root_b\n"
+            "late=edge_conjunction,root_ab\n"
+        ),
+        "direct trigger regression differs",
+    )
 
     output = {
         "date": "2026-10-26",
@@ -431,10 +488,14 @@ def main():
             "candidate": candidate_commit,
             "candidate_branch":
                 "users/amos/20261026-fstar-pruning-ambient-cache",
+            "benchmarked_candidate":
+                benchmarked_candidate,
             "baseline_scaling_binary_sha256":
                 provenance["baseline_scaling_provenance"]["fstar_sha256"],
             "candidate_binary_sha256":
                 provenance["candidate_scaling_provenance"]["fstar_sha256"],
+            "corrected_candidate_binary_sha256":
+                digest(candidate / "stage2/out/bin/fstar.exe"),
             "z3_sha256": next(iter(z3_hashes)),
         },
         "design": {
@@ -470,6 +531,12 @@ def main():
         "correctness": {
             "query_stream_equivalence": comparisons,
             "tests": validation,
+            "direct_trigger_state_regression": trigger_regression,
+            "empty_trigger_correction": (
+                "Empty trigger alternatives are preserved. A late assumption "
+                "fires only after some indexed named trigger is replayed, "
+                "matching the original event-driven fresh scan."
+            ),
         },
         "simple_scaling": scaling,
         "phase_trace": {
@@ -528,6 +595,13 @@ def main():
             (
                 "No production fix or PR is proposed; this is an experiment "
                 "branch only."
+            ),
+            (
+                "The long performance campaign predates the empty-trigger "
+                "correction. It was not repeated because the generated simple "
+                "and BV benchmark inputs do not contain empty trigger "
+                "alternatives; the correction is covered by focused "
+                "cached/reference regressions."
             ),
         ],
         "evidence": {
