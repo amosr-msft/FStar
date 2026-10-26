@@ -641,13 +641,15 @@ let add_ambient_triggered_assumption
     let original_triggers = triggers_as_triggers_set trigs in
     let remaining_triggers =
       original_triggers
-      |> List.filter (fun ts -> not (is_empty ts))
       |> List.map (fun ts -> diff ts ctxt.reached_symbols)
     in
-    if BU.for_some
-         (fun ts ->
-           not (is_empty ts) && is_empty (diff ts ctxt.reached_symbols))
-         original_triggers
+    let reached_a_trigger =
+      original_triggers
+      |> BU.for_some (fun ts ->
+           elems ts |> BU.for_some (fun name ->
+             mem name ctxt.reached_symbols))
+    in
+    if reached_a_trigger && BU.for_some is_empty remaining_triggers
     then
       let ctxt = {
         ctxt with
