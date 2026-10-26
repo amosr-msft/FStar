@@ -1,0 +1,660 @@
+{
+  "date": "2026-10-26",
+  "question": "What context accumulates across generated squash/equality lemmas, and is the slowdown BV-specific?",
+  "historical_reference": {
+    "source_commit": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+    "recorded_stage2_binary_sha256": "0ed8f9746b7796d5f8e91ead8c008cf393f1d03916cba33bbaff0e6a833c792e",
+    "report_path": "/home/amosrobinson/.copilot/session-state/27a5bd47-e213-4805-84c2-84d36719df3e/files/bv-full3-profile/REPORT.md",
+    "report_access": "restricted by content-exclusion policy",
+    "user_supplied_results": {
+      "input_cases": 2904,
+      "generated_lemmas": 5808,
+      "operation_groups": 64,
+      "full_plain_seconds": 753,
+      "full_timing_seconds": 752,
+      "full_query_stats_seconds": 751,
+      "split_process_seconds": 152.7,
+      "normal_only_seconds": 304,
+      "unfolded_only_seconds": 281,
+      "lax_combined_seconds": 63,
+      "generated_declaration_seconds": 704.1,
+      "splice_seconds": 38.2,
+      "z3_reported_seconds": 74.2
+    }
+  },
+  "rebuilt_compiler": {
+    "source_commit": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+    "stage2_binary_sha256": "a9de01ceb7b1e4cb043739073dfc8e1e74264d47a24ecd579730a72009dde7e1",
+    "matches_recorded_binary": false,
+    "ocaml": "4.14.2",
+    "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+    "full_source_sha256": "41d11a00d9561327f91da30abd9a27e7175c0a68ecc987d83783344e44e6b42a"
+  },
+  "simple_non_bv_benchmark": {
+    "shape": "Distinct top-level let declarations of squash (opaque refined integer arithmetic equality), with one real SMT query per declaration and no BV or sequence operations.",
+    "monolithic": [
+      {
+        "count": 256,
+        "status": "success",
+        "declarations": 256,
+        "completed_declarations": 256,
+        "wall_seconds": 3.36,
+        "max_rss_kb": 107116,
+        "decl_ms_sum": 2964,
+        "decl_ms_first": 3,
+        "decl_ms_median": 11,
+        "decl_ms_last": 22,
+        "decl_ms_max": 27,
+        "z3_reported_seconds": 0.97,
+        "rlimit_last": 0.075
+      },
+      {
+        "count": 512,
+        "status": "success",
+        "declarations": 512,
+        "completed_declarations": 512,
+        "wall_seconds": 12.05,
+        "max_rss_kb": 118088,
+        "decl_ms_sum": 11345,
+        "decl_ms_first": 4,
+        "decl_ms_median": 18,
+        "decl_ms_last": 45,
+        "decl_ms_max": 65,
+        "z3_reported_seconds": 5.23,
+        "rlimit_last": 0.148
+      },
+      {
+        "count": 1024,
+        "status": "success",
+        "declarations": 1024,
+        "completed_declarations": 1024,
+        "wall_seconds": 48.3,
+        "max_rss_kb": 140392,
+        "decl_ms_sum": 46981,
+        "decl_ms_first": 4,
+        "decl_ms_median": 45,
+        "decl_ms_last": 100,
+        "decl_ms_max": 134,
+        "z3_reported_seconds": 21.74,
+        "rlimit_last": 0.295
+      },
+      {
+        "count": 2048,
+        "status": "success",
+        "declarations": 2048,
+        "completed_declarations": 2048,
+        "wall_seconds": 207.68,
+        "max_rss_kb": 227748,
+        "decl_ms_sum": 205034,
+        "decl_ms_first": 5,
+        "decl_ms_median": 94,
+        "decl_ms_last": 193,
+        "decl_ms_max": 403,
+        "z3_reported_seconds": 98.71000000000001,
+        "rlimit_last": 0.599
+      },
+      {
+        "count": 4096,
+        "status": "success",
+        "declarations": 4096,
+        "completed_declarations": 4096,
+        "wall_seconds": 1052.14,
+        "max_rss_kb": 510788,
+        "decl_ms_sum": 1046627,
+        "decl_ms_first": 4,
+        "decl_ms_median": 249,
+        "decl_ms_last": 476,
+        "decl_ms_max": 1938,
+        "z3_reported_seconds": 525.34,
+        "rlimit_last": 1.24
+      },
+      {
+        "count": 5808,
+        "status": "timeout",
+        "declarations": 5808,
+        "completed_declarations": 4607,
+        "wall_seconds": 1200.09,
+        "max_rss_kb": 579060,
+        "decl_ms_sum": 1194905,
+        "decl_ms_first": 4,
+        "decl_ms_median": 244,
+        "decl_ms_last": 579,
+        "decl_ms_max": 2136,
+        "z3_reported_seconds": 597.3000000000001,
+        "rlimit_last": 1.413
+      }
+    ],
+    "split_5808": {
+      "groups": 64,
+      "declarations": 5808,
+      "wall_seconds_sum": 43.62,
+      "wall_seconds_range": [
+        0.65,
+        0.75
+      ],
+      "decl_ms_sum": 30393,
+      "z3_reported_seconds_sum": 0.0,
+      "max_rss_kb": 83880,
+      "last_decl_ms_max": 11
+    },
+    "controlled_probes": {
+      "baseline": {
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/baseline.time",
+          "/workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe",
+          "--z3version",
+          "5.3.0",
+          "--smt",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "--timing",
+          "--query_stats",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/generated/SimpleAgreement2048.fst"
+        ],
+        "count": 2048,
+        "decl_ms_first": 5,
+        "decl_ms_last": 191,
+        "decl_ms_median": 93,
+        "decl_ms_sum": 200843,
+        "max_rss_kb": 227556,
+        "options": [],
+        "probe": "baseline",
+        "query_count": 2048,
+        "rlimit_last": 0.599,
+        "source_sha256": "e6ea5c68e73cb58c169d7407b5a78ffab73cf64b8419653c3795bacdcf0d2dac",
+        "wall_seconds": 203.47,
+        "z3_reported_seconds": 97.08
+      },
+      "no-ambients": {
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/no-ambients.time",
+          "/workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe",
+          "--z3version",
+          "5.3.0",
+          "--smt",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "--timing",
+          "--query_stats",
+          "--ext",
+          "context_pruning_no_ambients",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/generated/SimpleAgreement2048.fst"
+        ],
+        "count": 2048,
+        "decl_ms_first": 5,
+        "decl_ms_last": 5,
+        "decl_ms_median": 2,
+        "decl_ms_sum": 5019,
+        "max_rss_kb": 186584,
+        "options": [
+          "--ext",
+          "context_pruning_no_ambients"
+        ],
+        "probe": "no-ambients",
+        "query_count": 2048,
+        "rlimit_last": 0.002,
+        "source_sha256": "e6ea5c68e73cb58c169d7407b5a78ffab73cf64b8419653c3795bacdcf0d2dac",
+        "wall_seconds": 7.52,
+        "z3_reported_seconds": 0.0
+      },
+      "admit": {
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/admit.time",
+          "/workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe",
+          "--z3version",
+          "5.3.0",
+          "--smt",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "--timing",
+          "--query_stats",
+          "--admit_smt_queries",
+          "true",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/generated/SimpleAgreement4096.fst"
+        ],
+        "count": 4096,
+        "decl_ms_first": 0,
+        "decl_ms_last": 2,
+        "decl_ms_median": 1,
+        "decl_ms_sum": 3965,
+        "max_rss_kb": 297944,
+        "options": [
+          "--admit_smt_queries",
+          "true"
+        ],
+        "probe": "admit",
+        "query_count": 0,
+        "rlimit_last": null,
+        "source_sha256": "b048b045569463a10cc6049bfa0fe7d37bdb0f36b1514a9c4dc4afc6735c13e5",
+        "wall_seconds": 8.09,
+        "z3_reported_seconds": 0
+      },
+      "lax": {
+        "command": [
+          "/usr/bin/time",
+          "-v",
+          "-o",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/lax.time",
+          "/workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe",
+          "--z3version",
+          "5.3.0",
+          "--smt",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+          "--timing",
+          "--query_stats",
+          "--lax",
+          "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/generated/SimpleAgreement4096.fst"
+        ],
+        "count": 4096,
+        "decl_ms_first": 0,
+        "decl_ms_last": 2,
+        "decl_ms_median": 1,
+        "decl_ms_sum": 4032,
+        "max_rss_kb": 297892,
+        "options": [
+          "--lax"
+        ],
+        "probe": "lax",
+        "query_count": 0,
+        "rlimit_last": null,
+        "source_sha256": "b048b045569463a10cc6049bfa0fe7d37bdb0f36b1514a9c4dc4afc6735c13e5",
+        "wall_seconds": 8.19,
+        "z3_reported_seconds": 0
+      }
+    }
+  },
+  "context_trace": {
+    "baseline": {
+      "128": {
+        "prune_ms": 3.655,
+        "retained_declarations": 1045,
+        "defs_and_decls": 1812,
+        "trigger_keys": 1327,
+        "trigger_edges": 4511,
+        "assumption_to_triggers": 3482,
+        "assumptions": 3757,
+        "ambients": 252,
+        "extra_roots": 252,
+        "ask_ms": 10.181,
+        "z3_ms": 5,
+        "solve_ms": 10.776,
+        "encode_sig_ms": 0.409,
+        "process_decl_ms": 12.123,
+        "gamma_sig_before": 127,
+        "gamma_sig_after": 128,
+        "gamma_cache_before": 0,
+        "gamma_cache_after": 0
+      },
+      "256": {
+        "prune_ms": 6.477,
+        "retained_declarations": 2069,
+        "defs_and_decls": 2068,
+        "trigger_keys": 1583,
+        "trigger_edges": 5023,
+        "assumption_to_triggers": 3994,
+        "assumptions": 4525,
+        "ambients": 508,
+        "extra_roots": 508,
+        "ask_ms": 17.03,
+        "z3_ms": 9,
+        "solve_ms": 17.743,
+        "encode_sig_ms": 0.349,
+        "process_decl_ms": 18.987,
+        "gamma_sig_before": 255,
+        "gamma_sig_after": 256,
+        "gamma_cache_before": 0,
+        "gamma_cache_after": 0
+      },
+      "512": {
+        "prune_ms": 14.783,
+        "retained_declarations": 4117,
+        "defs_and_decls": 2580,
+        "trigger_keys": 2095,
+        "trigger_edges": 6047,
+        "assumption_to_triggers": 5018,
+        "assumptions": 6061,
+        "ambients": 1020,
+        "extra_roots": 1020,
+        "ask_ms": 37.18,
+        "z3_ms": 20,
+        "solve_ms": 38.153,
+        "encode_sig_ms": 0.613,
+        "process_decl_ms": 39.736,
+        "gamma_sig_before": 511,
+        "gamma_sig_after": 512,
+        "gamma_cache_before": 0,
+        "gamma_cache_after": 0
+      },
+      "768": {
+        "prune_ms": 25.826,
+        "retained_declarations": 6165,
+        "defs_and_decls": 3092,
+        "trigger_keys": 2607,
+        "trigger_edges": 7071,
+        "assumption_to_triggers": 6042,
+        "assumptions": 7597,
+        "ambients": 1532,
+        "extra_roots": 1532,
+        "ask_ms": 76.749,
+        "z3_ms": 48,
+        "solve_ms": 78.506,
+        "encode_sig_ms": 1.119,
+        "process_decl_ms": 80.696,
+        "gamma_sig_before": 767,
+        "gamma_sig_after": 768,
+        "gamma_cache_before": 0,
+        "gamma_cache_after": 0
+      },
+      "1024": {
+        "prune_ms": 31.959,
+        "retained_declarations": 8213,
+        "defs_and_decls": 3604,
+        "trigger_keys": 3119,
+        "trigger_edges": 8095,
+        "assumption_to_triggers": 7066,
+        "assumptions": 9133,
+        "ambients": 2044,
+        "extra_roots": 2044,
+        "ask_ms": 84.963,
+        "z3_ms": 49,
+        "solve_ms": 86.757,
+        "encode_sig_ms": 0.486,
+        "process_decl_ms": 88.38,
+        "gamma_sig_before": 1023,
+        "gamma_sig_after": 1024,
+        "gamma_cache_before": 0,
+        "gamma_cache_after": 0
+      }
+    },
+    "no_ambients": {
+      "128": {
+        "prune_ms": 0.399,
+        "retained_declarations": 31,
+        "ambients": 0,
+        "extra_roots": 252,
+        "pruned_ambients": 252,
+        "ask_ms": 1.708,
+        "z3_ms": 0,
+        "solve_ms": 2.1,
+        "process_decl_ms": 3.203
+      },
+      "256": {
+        "prune_ms": 0.379,
+        "retained_declarations": 31,
+        "ambients": 0,
+        "extra_roots": 508,
+        "pruned_ambients": 508,
+        "ask_ms": 1.596,
+        "z3_ms": 0,
+        "solve_ms": 2.083,
+        "process_decl_ms": 3.259
+      },
+      "512": {
+        "prune_ms": 0.385,
+        "retained_declarations": 31,
+        "ambients": 0,
+        "extra_roots": 1020,
+        "pruned_ambients": 1020,
+        "ask_ms": 1.765,
+        "z3_ms": 0,
+        "solve_ms": 2.344,
+        "process_decl_ms": 3.587
+      },
+      "768": {
+        "prune_ms": 0.388,
+        "retained_declarations": 31,
+        "ambients": 0,
+        "extra_roots": 1532,
+        "pruned_ambients": 1532,
+        "ask_ms": 2.006,
+        "z3_ms": 0,
+        "solve_ms": 2.757,
+        "process_decl_ms": 4.033
+      },
+      "1024": {
+        "prune_ms": 0.389,
+        "retained_declarations": 31,
+        "ambients": 0,
+        "extra_roots": 2044,
+        "pruned_ambients": 2044,
+        "ask_ms": 2.22,
+        "z3_ms": 0,
+        "solve_ms": 3.153,
+        "process_decl_ms": 4.517
+      }
+    },
+    "phase_decomposition_at_512": {
+      "baseline": {
+        "pruning_ms": 15.383,
+        "filter_sort_ms": 1.9239999999999995,
+        "new_declarations_flushed": 8,
+        "given_declaration_names": 4117,
+        "z3_ms": 23,
+        "serialization_communication_ms": 0.5229999999999997,
+        "query_encoding_ms": 1.2620000000000005,
+        "post_query_encode_sig_ms": 0.464,
+        "other_typechecking_ms": 1.1110000000000029
+      },
+      "no_ambients": {
+        "pruning_ms": 0.402,
+        "filter_sort_ms": 0.882,
+        "new_declarations_flushed": 0,
+        "given_declaration_names": 31,
+        "z3_ms": 0,
+        "serialization_communication_ms": 0.9959999999999998,
+        "query_encoding_ms": 1.0260000000000002,
+        "post_query_encode_sig_ms": 0.569,
+        "other_typechecking_ms": 0.8949999999999996
+      }
+    },
+    "commands": {
+      "baseline_1024": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-v2/trace.time",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+        "--timing",
+        "--query_stats",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-v2/generated/SimpleAgreement1024.fst"
+      ],
+      "no_ambients_1024": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-no-ambients/trace.time",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+        "--timing",
+        "--query_stats",
+        "--ext",
+        "context_pruning_no_ambients",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-no-ambients/generated/SimpleAgreement1024.fst"
+      ],
+      "baseline_flush_512": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace/trace.time",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+        "--timing",
+        "--query_stats",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace/generated/SimpleAgreement512.fst"
+      ],
+      "no_ambients_flush_512": [
+        "/usr/bin/time",
+        "-v",
+        "-o",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace-no-ambients/trace.time",
+        "/workspace/wt11/FStar-bv-context/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-bv-context/stage2/out/lib/fstar/ulib.checked",
+        "--timing",
+        "--query_stats",
+        "--ext",
+        "context_pruning_no_ambients",
+        "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace-no-ambients/generated/SimpleAgreement512.fst"
+      ]
+    }
+  },
+  "full_bv_diagnostic": {
+    "command": [
+      "/usr/bin/time",
+      "-v",
+      "-o",
+      "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-full-no-ambients/no-ambients.time",
+      "timeout",
+      "--kill-after=5s",
+      "1200s",
+      "/workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe",
+      "--z3version",
+      "5.3.0",
+      "--smt",
+      "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bin/z3-5.3.0",
+      "--timing",
+      "--query_stats",
+      "--ext",
+      "context_pruning_no_ambients",
+      "/workspace/wt11/FStar-bv-context/tests/micro-benchmarks/BvModelAgreesWithZ3.fst"
+    ],
+    "last_rlimit": 0.003,
+    "max_rss_kb": 634336,
+    "options": [
+      "--ext",
+      "context_pruning_no_ambients"
+    ],
+    "probe": "no-ambients",
+    "profiled_declaration_count": 5835,
+    "profiled_declaration_ms": 72412,
+    "query_count": 5809,
+    "wall_seconds": 119.15,
+    "z3_reported_seconds": 23.8
+  },
+  "growing_structures": {
+    "typechecker": "Env.gamma_sig retains one checked sigelt per declaration; gamma_cache stayed empty in this trace.",
+    "normalization": "TypeChecker.Core memo state is cleared before every top-level declaration and union-find is reset afterward; no growing normalization cache was observed.",
+    "pruning": "Each squash-valued let contributes two HasType(..., squash) assumptions classified as ambient extra roots. The pruning maps also grow, but their growth remains when ambients are excluded without causing the slowdown.",
+    "solver_state": "Pruning revisits every ambient/extra root for every query. SolverState then filters already-given declarations but in steady state flushes eight newly reachable declarations per lemma, so its given-name set and persistent Z3 context grow linearly."
+  },
+  "causal_conclusions": [
+    "The slowdown is generic to accumulating squash-valued declarations; the non-BV benchmark reproduces the same strong order/process-context-associated inflation.",
+    "The dominant F* growth is Pruning.prune scanning accumulated ambient extra roots and resolving their reachable context.",
+    "Z3 execution independently grows as eight new declarations per steady-state lemma remain in its persistent context.",
+    "Gamma growth is real but not causal here: with the same gamma and pruning maps, excluding ambients keeps per-lemma time nearly flat."
+  ],
+  "limitations": [
+    "The preserved prior report was inaccessible under content exclusion; its numerical results are user-supplied.",
+    "The rebuilt compiler has the exact historical source commit but not the recorded binary hash, so the full no-ambient BV run is diagnostic rather than a matched speedup ratio.",
+    "context_pruning_no_ambients is a diagnostic that changes proof context selection; it is not proposed as a fix.",
+    "The attempted no-pruning probe was invalid because this historical compiler resent duplicate declarations to Z3."
+  ],
+  "source_locations": [
+    "src/typechecker/FStarC.TypeChecker.Tc.fst:1435-1467",
+    "src/typechecker/FStarC.TypeChecker.Env.fst:1608-1618",
+    "src/smtencoding/FStarC.SMTEncoding.Encode.fst:635-766,879-1111,2195-2208",
+    "src/smtencoding/FStarC.SMTEncoding.Pruning.fst:196-359,608-687",
+    "src/smtencoding/FStarC.SMTEncoding.SolverState.fst:243-285,431-490",
+    "src/smtencoding/FStarC.SMTEncoding.Z3.fst:620-632"
+  ],
+  "evidence": {
+    "scaling": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-scaling/measurements.jsonl",
+      "sha256": "e24d84285678be04ba049b02cee0ca4a9a5629e6d50ab79188c1b5b6112a3491"
+    },
+    "scaling_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-scaling/provenance.json",
+      "sha256": "f0ac512591fa4aaa830ce5e553ac0bf2037c0e8a698b632c8b38ac50526a15ab"
+    },
+    "probes": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/measurements.jsonl",
+      "sha256": "d63d89d46e644f95582c54835b5b1fa55afe0409390b5645f678f5b7378f7ada"
+    },
+    "probes_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-simple-probes/provenance.json",
+      "sha256": "e6bb0a717cfa8abfc992fd067e4f971110e0d9f4b50ff2ae203240021f3c7278"
+    },
+    "trace_1024": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-v2/events.json",
+      "sha256": "269d6916cf57420f21aa6c4f0cd7dfa5deeb2b73b9c1c1371175160114631e7e"
+    },
+    "trace_1024_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-v2/provenance.json",
+      "sha256": "4249dec66d4f28f084ffe9d4386892b99eb4f1b989c63553db5d0d2b5d9a0b6d"
+    },
+    "trace_no_ambients_1024": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-no-ambients/events.json",
+      "sha256": "9620ff61d316f986e2dc2938094f90cc12da11e601969d91da30b56c48bfd61b"
+    },
+    "trace_no_ambients_1024_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-no-ambients/provenance.json",
+      "sha256": "2179cb8fa177590bf1e7f79cac4ab74b133adf9f179080ca5e5fd63e3270d69b"
+    },
+    "flush_trace": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace/events.json",
+      "sha256": "5f7501c23240186c628d79332a326634e020b13e55bb1ed3f16a257511f63d3f"
+    },
+    "flush_trace_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace/provenance.json",
+      "sha256": "5bdbb80e3129ee6f8a230b2ac379c32f46ca7afd55754717590bac3f1f5ea45a"
+    },
+    "flush_trace_no_ambients": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace-no-ambients/events.json",
+      "sha256": "d3d79e365a8c56065f027ae0f9c46693e3b2ad6f23be5c099f24d80e54b0bf50"
+    },
+    "flush_trace_no_ambients_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-flush-trace-no-ambients/provenance.json",
+      "sha256": "f35bfb59c9c4290bc3f4e2683f3e59a63fc865d291a3a79808bccbe0a6ce8702"
+    },
+    "debug_trace": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-debug/trace.log",
+      "sha256": "884b82ec4b4b6ec93ce6f30863974c77bff4c1a5af8029caf32b1dd9e17a846a"
+    },
+    "debug_trace_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-context-trace-debug/provenance.json",
+      "sha256": "63078cbe2a6bb40c0c2a31dfb3ec6c66853babd305fabe80fac6567fa44ce444"
+    },
+    "full_no_ambients": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-full-no-ambients/measurements.jsonl",
+      "sha256": "3d0c25bf65b5a8c69e63a0ab422f499332de7772b381c401e13cf9c295447941"
+    },
+    "full_no_ambients_provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/bv-full-no-ambients/provenance.json",
+      "sha256": "dcb147bbbf05ef2aad74f9c1b1231e446c475018dc41fde5f7d79eb8b04f389f"
+    }
+  }
+}

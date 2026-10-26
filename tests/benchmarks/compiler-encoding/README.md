@@ -1,5 +1,59 @@
 # Compiler encoding benchmarks
 
+## Generated lemma context investigation
+
+`tests/benchmarks/bv-context/` contains the focused investigation of the
+historical exhaustive `BvModelAgreesWithZ3` source at `0e13baff38`.
+`generate_simple.py` emits a direct non-BV squash/equality reproducer;
+`run_simple_scaling.py` compares monolithic scaling with 64 balanced processes;
+`run_simple_probes.py` runs admit/lax/no-ambient controls; and
+`instrument_context.py` adds opt-in counters to ignored extracted OCaml.
+
+```sh
+git -C /path/to/FStar worktree add \
+  /workspace/wt11/FStar-bv-context \
+  0e13baff38309523a2074ef8fbc3745b4bc793ad
+
+python tests/benchmarks/bv-context/run_simple_scaling.py \
+  --fstar /workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/bv-simple-scaling"
+
+python tests/benchmarks/bv-context/run_simple_probes.py \
+  --fstar /workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/bv-simple-probes"
+```
+
+To build the diagnostic binary, restore these clean stage1 extracted files to
+`stage2/fstarc.ml` before applying the instrumenter:
+
+```text
+FStarC_SMTEncoding_Pruning.ml
+FStarC_SMTEncoding_SolverState.ml
+FStarC_SMTEncoding_Z3.ml
+FStarC_SMTEncoding_Solver.ml
+FStarC_SMTEncoding_Encode.ml
+FStarC_TypeChecker_Tc.ml
+```
+
+Then run `instrument_context.py`, build
+`stage3/dune/fstarc-full/fstarc3_full.exe`, and use
+`run_context_trace.py --worktree /workspace/wt11/FStar-bv-context` with and
+without `--no-ambients`. `run_full_bv_probe.py --only no-ambients` checks the
+exact historical BV source. Finally:
+
+```sh
+python tests/benchmarks/bv-context/summarize_context.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --worktree /workspace/wt11/FStar-bv-context \
+  --output tests/benchmarks/bv-context/BV_CONTEXT_ANALYSIS.json
+```
+
+Forced context changes are diagnostics only. The preserved prior-session
+report was unavailable here under content-exclusion policy; its supplied
+headline results are labeled as such in the JSON and report.
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,

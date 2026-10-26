@@ -1,5 +1,138 @@
 # Sparse controls and representative live workload
 
+## Generated squash-lemma context growth
+
+This investigation concerns the historical exhaustive
+`BvModelAgreesWithZ3` source at
+`0e13baff38309523a2074ef8fbc3745b4bc793ad`, not SMT interning and not the UInt
+heap result. The preserved prior-session report was restricted by the
+organization's content-exclusion policy, so its user-supplied headline results
+remain the historical reference: 5,808 generated lemmas took 751-753 seconds
+in one module, versus 152.7 seconds for the same 64 operation groups in
+separate processes; generated declarations accounted for 704.1 seconds and
+Z3 reported 74.2 seconds.
+
+The historical source was rebuilt in an isolated worktree with OCaml 4.14.2
+and Z3 5.3.0. Its source commit is exact, but the rebuilt stage2 binary hash is
+`a9de01ce...`, not the report's `0ed8f974...`; rebuilt results below are
+therefore not presented as binary-identical repetitions.
+
+### Non-BV reproducer
+
+The simple reproducer has no BV operators, sequences, tactics, or model
+normalization. It emits distinct top-level declarations of this shape:
+
+```fstar
+irreducible
+let opaque_param (i:int) : Tot (r:int{r == i}) = i
+
+let agreement_0000 :
+  squash (opaque_param 0 + 1 == 1) = ()
+```
+
+Every declaration submits a real SMT query: query count equals declaration
+count, the opaque value is justified only by its refinement, and Z3's used
+rlimit grows with accumulated context. Scaling is:
+
+| Declarations | Wall | Sum declaration time | First / median / last declaration | Z3 reported | Last used rlimit |
+|---:|---:|---:|---:|---:|---:|
+| 256 | 3.36 s | 2.96 s | 3 / 11 / 22 ms | 0.97 s | 0.075 |
+| 512 | 12.05 s | 11.35 s | 4 / 18 / 45 ms | 5.23 s | 0.148 |
+| 1,024 | 48.30 s | 46.98 s | 4 / 45 / 100 ms | 21.74 s | 0.295 |
+| 2,048 | 207.68 s | 205.03 s | 5 / 94 / 193 ms | 98.71 s | 0.599 |
+| 4,096 | 1,052.14 s | 1,046.63 s | 4 / 249 / 476 ms | 525.34 s | 1.240 |
+| 5,808 | >1,200 s | 1,194.91 s through declaration 4,607 | 4 / 244 / 579 ms in completed prefix | 597.30 s | 1.413 |
+
+The 5,808-declaration run hit its 1,200-second harness timeout after a verified
+contiguous prefix of 4,607 queries. The same 5,808 declarations split into 64
+balanced 90/91-declaration modules/processes take **43.62 seconds total**;
+individual modules take 0.65-0.75 seconds and their last declaration is never
+above 11 ms. The slowdown is therefore generic accumulating-declaration and
+process-context behavior; BV is not required.
+
+### Exact context and cost
+
+Each checked declaration follows this path:
+
+1. `TypeChecker.Tc` adds the checked sigelt through
+   `TypeChecker.Env.push_sigelt`, consing it onto `env.gamma_sig`, then calls
+   `env.solver.encode_sig`.
+2. `SMTEncoding.Encode` represents the nullary squash-valued let with a symbol,
+   its equation, and two typing assumptions (`typing_*` and
+   `function_token_typing_*`).
+3. `SMTEncoding.Pruning.maybe_add_ambient` recognizes each
+   `HasType term (squash payload)` as `Sum_ambient true`.
+   `add_assumption_summary` puts both assumptions in `ambients` and
+   `extra_roots`.
+4. For every following query, `Pruning.prune` scans the current query roots
+   plus every accumulated extra root and includes all ambients. SolverState
+   filters declarations already given to Z3, but in steady state still flushes
+   eight newly reachable declarations for each new lemma. Those declarations
+   remain in the persistent Z3 context.
+
+At query/declaration 1,024, the measured state contains:
+
+| Structure | Entries |
+|---|---:|
+| `env.gamma_sig` | 1,024 |
+| `env.gamma_cache` | 0 |
+| pruning definitions/declarations | 3,604 |
+| trigger keys / edges | 3,119 / 8,095 |
+| assumptions waiting on triggers | 7,066 |
+| assumption-name map | 9,133 |
+| ambients / extra roots | 2,044 / 2,044 |
+| declarations retained by pruning | 8,213 |
+
+The typechecker core memo table is cleared before every top-level declaration
+and union-find is reset afterward. `gamma_sig` and all pruning maps do grow,
+but the controlled probe distinguishes retention from the expensive
+revisitation: with `context_pruning_no_ambients`, `gamma_sig`, the maps, and
+2,044 extra roots still exist at declaration 1,024, while ambients move to the
+diagnostic `pruned_ambients` list. Pruning then returns a constant 31
+declarations in 0.39 ms instead of 8,213 in 31.96 ms, and per-declaration time
+is 4.52 ms instead of 88.38 ms.
+
+The instrumented phase split at declaration 512 is:
+
+| Phase | Normal | No ambients |
+|---|---:|---:|
+| Query encoding before solver-state flush | 1.26 ms | 1.03 ms |
+| Pruning graph scan/resolution | 15.38 ms | 0.40 ms |
+| Already-given filtering and sorting | 1.92 ms | 0.88 ms |
+| Newly flushed / total given declaration names | 8 / 4,117 | 0 / 31 |
+| Serialization/communication outside measured Z3 | 0.52 ms | 1.00 ms |
+| Z3 execution | 23 ms | <1 ms (counter resolution) |
+| Post-query `encode_sig` | 0.46 ms | 0.57 ms |
+| Other declaration checking | 1.11 ms | 0.89 ms |
+| **Total declaration** | **43.67 ms** | **4.77 ms** |
+
+Thus both sides grow:
+
+- **F\*:** pruning repeatedly scans and resolves all prior ambient roots.
+- **Z3:** eight newly reachable declarations per lemma accumulate in the
+  persistent solver, increasing solver work even though each query root itself
+  remains 16 declarations.
+
+The simple 2,048-declaration control falls from 203.47 to 7.52 seconds under
+the no-ambients diagnostic; last-declaration time falls from 191 to 5 ms.
+Admit and lax controls check 4,096 declarations in 8.09 and 8.19 seconds,
+respectively, confirming that parsing/environment retention alone is not the
+inflation. The exact historical full BV source completes under the same
+no-ambients diagnostic in 119.15 seconds with all 5,809 queries, 72.4 seconds
+of profiled declarations, and 23.8 seconds reported by Z3. Because that run
+uses the same-source rebuilt compiler rather than the preserved binary, it is
+diagnostic evidence, not a matched speedup claim.
+
+`context_pruning_no_ambients` changes proof-context selection and is **not** a
+proposed production fix. Disabling context pruning entirely was not a valid
+control on this historical compiler: it resent duplicate primitive
+declarations to persistent Z3. No production fix is proposed here.
+
+`BV_CONTEXT_ANALYSIS.json` records the scaling rows, partial timeout, balanced
+split, phase counters, exact growing structures, commands, hashes, source
+locations, diagnostics, and limitations. Reproduction scripts are under
+`tests/benchmarks/bv-context/`.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master
