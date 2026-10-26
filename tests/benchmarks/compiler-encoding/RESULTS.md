@@ -134,6 +134,79 @@ split, phase counters, exact growing structures, commands, hashes, source
 locations, diagnostics, and limitations. Reproduction scripts are under
 `tests/benchmarks/bv-context/`.
 
+### Ambient-closure cache experiment
+
+The experiment branch
+`users/amos/20261026-fstar-pruning-ambient-cache` at `734a73c518` caches the
+query-independent ambient closure inside the immutable `pruning_state` owned
+by each solver level. It does not drop ambient facts.
+
+The cache stores residual trigger alternatives, ambient-reached assumptions
+and symbols, and direct macro inputs. As summaries arrive:
+
+- a new ambient root processes old waiting assumptions;
+- a new triggered assumption subtracts every symbol already reached by the
+  closure before testing conjunction/disjunction alternatives;
+- newly activated assumptions add free symbols transitively;
+- a late macro definition exposes its body if the macro name was previously a
+  direct input, preserving the old one-level expansion behavior.
+
+Normal queries copy that residual state, scan query roots, and discard their
+temporary reachability. `pretyping_axioms` and
+`context_pruning_no_ambients` retain the old fresh-scan path. Immutable solver
+levels provide push/pop/reset isolation; declaration resolution remains lazy,
+and fact filtering/order remain in `SolverState`.
+
+Correctness checks include the compiler build, exact bootstrap diff, the
+existing pruning test in normal/pretyping/no-ambient modes, and the full BV
+source structure. An extracted diagnostic forced either cached or original
+fresh pruning on identical inputs. Its emitted SMT streams are byte-identical
+for:
+
+| Case | Queries | Stream bytes |
+|---|---:|---:|
+| 64 accumulating simple lemmas | 65 | 237,121 |
+| alternating two-symbol scope test | 6 | 35,534 |
+| existing `tests/tactics/Pruning.fst` | 29 | 393,920 |
+
+Matched same-input simple scaling shows:
+
+| Declarations | Uncached wall | Cached wall | Change | Uncached declaration sum | Cached declaration sum |
+|---:|---:|---:|---:|---:|---:|
+| 256 | 3.36 s | 2.44 s | -27.4% | 2.96 s | 2.01 s |
+| 512 | 12.05 s | 8.66 s | -28.1% | 11.35 s | 7.87 s |
+| 1,024 | 48.30 s | 36.81 s | -23.8% | 46.98 s | 35.04 s |
+| 2,048 | 207.68 s | 162.46 s | -21.8% | 205.03 s | 157.70 s |
+| 4,096 | 1,052.14 s | 799.06 s | -24.1% | 1,046.63 s | 784.70 s |
+
+At declaration 512, pruning falls from 14.78 to 7.93 ms while returning the
+same 4,117 declarations; at 1,024 it falls from 31.96 to 14.88 ms while
+returning the same 8,213. Intrusive Z3 time is variable (20 ms baseline versus
+39 ms candidate at the 512 sample), so that paired trace is used only for F\*
+pruning and retained-count attribution. The cached pruning path remains
+linear:
+materializing/resolving the unchanged 8,213-result closure remains linear even
+though the graph closure itself is reused. The cache therefore improves the
+F\* traversal but does not solve persistent Z3-context growth.
+
+The exact full historical BV source completes in 479.77 seconds with 423.01
+seconds of profiled declarations and 74.21 seconds reported by Z3. The
+historical supplied baseline was 751-753/704.1/74.2 seconds respectively.
+The matching Z3 component is strong evidence that the improvement is F\*
+pruning work, but the total comparison is not binary-matched: the preserved
+historical binary is unavailable and the experiment uses a same-source
+rebuild.
+
+Lightweight peak RSS changes across the simple scaling points are -4.2, -1.8,
+-2.5, +2.4, and -0.6 MB; no material peak-RSS increase is visible.
+A focused OCaml allocation-counter command was blocked by content-exclusion
+policy, so allocation overhead remains unmeasured rather than inferred.
+
+`AMBIENT_CACHE_EXPERIMENT.json` contains the revisions, design, all matched
+rows, phase traces, exact query-stream hashes, commands, validation logs, and
+limitations. This remains an experiment branch only; no PR or production fix
+is proposed.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master

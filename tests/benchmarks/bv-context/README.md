@@ -16,6 +16,15 @@ equality through a real SMT query.
   source.
 - `summarize_context.py` validates and combines durable evidence into
   `BV_CONTEXT_ANALYSIS.json`.
+- `instrument_pruning_reference.py` adds an extracted-only switch between the
+  cached and original fresh pruning paths.
+- `run_pruning_equivalence.py` records byte-identical cached/reference query
+  streams with compiler, solver, cache, and source provenance.
+- `run_ambient_cache_validation.py` records focused fallback and full-source
+  checks with exact commands and hashes.
+- `PruningCacheScope.fst` checks alternating symbols for query-local leakage.
+- `summarize_ambient_cache.py` validates the prototype evidence into
+  `AMBIENT_CACHE_EXPERIMENT.json`.
 
 Generated sources remain under evidence/output directories. The no-ambient
 mode changes context selection and is diagnostic only.

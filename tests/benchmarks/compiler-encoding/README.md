@@ -54,6 +54,56 @@ Forced context changes are diagnostics only. The preserved prior-session
 report was unavailable here under content-exclusion policy; its supplied
 headline results are labeled as such in the JSON and report.
 
+The ambient-closure cache prototype is on
+`users/amos/20261026-fstar-pruning-ambient-cache` (`734a73c518`). Reuse the
+same simple sources and baseline evidence, then run candidate scaling with:
+
+```sh
+python tests/benchmarks/bv-context/run_simple_scaling.py \
+  --fstar /workspace/wt11/FStar-bv-context/stage2/out/bin/fstar.exe \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/ambient-cache-simple-scaling" \
+  --counts 256 512 1024 2048 4096 --no-split
+```
+
+`instrument_pruning_reference.py` builds an ignored diagnostic binary whose
+`FSTAR_PRUNING_REFERENCE=1` mode forces the original fresh scan.
+`PruningCacheScope.fst`, `SimpleAgreement64`, and the existing pruning test
+produce byte-identical cached/reference query streams:
+
+```sh
+# Restore stage1/FStarC_SMTEncoding_Pruning.ml into stage2/fstarc.ml,
+# instrument it, and rebuild fstarc3_full.exe.
+python tests/benchmarks/bv-context/instrument_pruning_reference.py \
+  /workspace/wt11/FStar-bv-context
+python tests/benchmarks/bv-context/run_pruning_equivalence.py \
+  --fstar /path/to/instrumented/fstarc3_full.exe \
+  --z3 /path/to/z3-5.3.0 \
+  --worktree /workspace/wt11/FStar-bv-context \
+  --output "$EVIDENCE_ROOT/ambient-cache-correctness-v2"
+
+python tests/benchmarks/bv-context/run_ambient_cache_validation.py \
+  --fstar /workspace/wt11/FStar-bv-context/stage3/out/bin/fstar.exe \
+  --z3 /path/to/z3-5.3.0 \
+  --worktree /workspace/wt11/FStar-bv-context \
+  --output "$EVIDENCE_ROOT/ambient-cache-validation"
+```
+
+Rebuild the context instrumentation from the candidate source and run
+`run_context_trace.py` at 1,024 declarations for phase comparison. Run
+`run_full_bv_probe.py --only baseline` for the full candidate, then summarize:
+
+```sh
+python tests/benchmarks/bv-context/summarize_ambient_cache.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --baseline-worktree /workspace/wt11/FStar-bv-context-baseline \
+  --candidate-worktree /workspace/wt11/FStar-bv-context \
+  --output tests/benchmarks/bv-context/AMBIENT_CACHE_EXPERIMENT.json
+```
+
+The cache branch is experimental; no runtime option is added and no PR is
+created.
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,

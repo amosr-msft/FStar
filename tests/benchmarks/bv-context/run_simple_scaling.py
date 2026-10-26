@@ -35,6 +35,8 @@ def main():
     parser.add_argument("--z3", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--timeout", type=int, default=1200)
+    parser.add_argument("--counts", type=int, nargs="+", default=COUNTS)
+    parser.add_argument("--no-split", action="store_true")
     args = parser.parse_args()
     root = Path(__file__).resolve().parent
     generated = args.output / "generated"
@@ -43,11 +45,13 @@ def main():
     lock = (args.output / "campaign.lock").open("w")
     fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     results = args.output / "measurements.jsonl"
-    plan = (
-        [(count, 1, 0) for count in COUNTS if count != 5808]
-        + [(5808, 64, group) for group in range(64)]
-        + [(5808, 1, 0)]
-    )
+    plan = [
+        (count, 1, 0) for count in args.counts if count != 5808
+    ]
+    if not args.no_split:
+        plan += [(5808, 64, group) for group in range(64)]
+    if 5808 in args.counts:
+        plan += [(5808, 1, 0)]
     provenance = {
         "fstar_sha256": sha256(args.fstar),
         "z3_sha256": sha256(args.z3),
@@ -77,8 +81,90 @@ def main():
     if provenance_file.exists():
         existing = json.loads(provenance_file.read_text())
         if existing != provenance:
+            runner_migration = (
+                existing.get("runner_sha256") != provenance["runner_sha256"]
+                and {
+                    key: value for key, value in existing.items()
+                    if key != "runner_sha256"
+                } == {
+                    key: value for key, value in provenance.items()
+                    if key != "runner_sha256"
+                }
+            )
+            if runner_migration:
+                expected_keys = set(plan)
+                if not results.exists():
+                    provenance_file.write_text(
+                        json.dumps(provenance, indent=2) + "\n"
+                    )
+                    existing = provenance
+                else:
+                    rows = [
+                        json.loads(line)
+                        for line in results.read_text().splitlines()
+                    ]
+                    keys = [
+                        (row["count"], row["groups"], row["group"])
+                        for row in rows
+                    ]
+                    if set(keys) != expected_keys or len(keys) != len(set(keys)):
+                        raise RuntimeError(
+                            "existing rows differ from the recorded plan"
+                        )
+                    for row in rows:
+                        source = (
+                            generated
+                            / (
+                                f"SimpleAgreement{row['count']}.fst"
+                                if row["groups"] == 1
+                                else (
+                                    f"SimpleAgreement{row['count']}"
+                                    f"G{row['group']:02d}.fst"
+                                )
+                            )
+                        )
+                        stem = (
+                            f"{row['count']}-g{row['groups']:02d}-"
+                            f"{row['group']:02d}"
+                        )
+                        expected_command = [
+                            "/usr/bin/time", "-v", "-o",
+                            str(args.output / f"{stem}.time"),
+                            "timeout", "--kill-after=5s", f"{args.timeout}s",
+                            str(args.fstar), "--z3version", "5.3.0",
+                            "--smt", str(args.z3), "--timing", "--query_stats",
+                            str(source),
+                        ]
+                        if (
+                            not source.exists()
+                            or sha256(source) != row["source_sha256"]
+                            or row["command"] != expected_command
+                        ):
+                            raise RuntimeError(
+                                "existing row failed runner migration"
+                            )
+                validation = {
+                    "producer_runner_sha256": existing["runner_sha256"],
+                    "resume_runner_sha256": provenance["runner_sha256"],
+                    "plan": provenance["plan"],
+                    "measurements_sha256":
+                        sha256(results) if results.exists() else None,
+                }
+                validation_path = args.output / (
+                    "resume-validation-"
+                    f"{provenance['runner_sha256'][:12]}.json"
+                )
+                if validation_path.exists():
+                    if json.loads(validation_path.read_text()) != validation:
+                        raise RuntimeError("resume validation differs")
+                else:
+                    validation_path.write_text(
+                        json.dumps(validation, indent=2) + "\n"
+                    )
+                provenance = existing
             extended_migration = (
-                provenance_v1.exists()
+                existing != provenance
+                and provenance_v1.exists()
                 and provenance_v2.exists()
                 and not provenance_v3.exists()
                 and {
