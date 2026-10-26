@@ -381,6 +381,41 @@ mitigation was implemented, and no PR was opened.
 both fixed-CPU protocols, raw timings/log hashes, scheduling counters, tool and
 affinity provenance, conclusions, and remaining uncertainty.
 
+##### CPU-16 ordinary workload repeat
+
+The seven successful ordinary workloads from the broad suite were repeated
+under the validated CPU-16 protocol: five adjacent randomized
+baseline/candidate pairs per workload, forced source checking, and the same
+pinned compilers, solver, compiler-specific dependency trees, and sanitized
+environment.
+
+| Workload | Baseline observations | Candidate observations | Median change | Peak RSS median (base/candidate) | Z3 median (base/candidate) |
+|---|---|---|---:|---:|---:|
+| `BvBinaryOps` | 5.67, 5.62, 5.55, 5.52, 5.49 s | 5.62, 5.61, 5.52, 5.52, 5.57 s | +0.02 s (+0.4%) | 117.2 / 118.4 MiB | 4.57 / 4.60 s |
+| `ClassicalSugar` | 1.25, 1.25, 1.26, 1.25, 1.25 s | 1.29, 1.25, 1.29, 1.28, 1.30 s | +0.04 s (+3.2%) | 122.9 / 124.3 MiB | 0.06 / 0.06 s |
+| `Positivity` | 1.15, 1.16, 1.11, 1.14, 1.15 s | 1.17, 1.21, 1.11, 1.14, 1.15 s | 0.00 s (0.0%) | 148.5 / 151.1 MiB | <0.01 / <0.01 s |
+| `TestWellFoundedRecursion` | 1.02, 0.98, 1.03, 0.97, 1.03 s | 1.04, 0.99, 1.02, 1.01, 1.04 s | 0.00 s (0.0%) | 119.6 / 119.5 MiB | <0.01 / <0.01 s |
+| `Normalization` | 0.56, 0.53, 0.53, 0.54, 0.55 s | 0.60, 0.58, 0.58, 0.59, 0.64 s | +0.05 s (+9.3%) | 129.5 / 133.8 MiB | <0.01 / <0.01 s |
+| `NormVsSMT` | 0.12, 0.12, 0.12, 0.12, 0.12 s | 0.13, 0.13, 0.12, 0.13, 0.13 s | +0.01 s (+8.3%) | 73.6 / 74.6 MiB | <0.01 / <0.01 s |
+| `Bug3207` | 5.46, 5.17, 5.34, 5.38, 5.29 s | 5.35, 5.39, 5.25, 5.39, 5.37 s | +0.03 s (+0.6%) | 251.2 / 248.3 MiB | 0.85 / 0.82 s |
+
+Summed medians are 14.97 versus 15.12 seconds (+0.15 s, +1.0%). No workload
+changes by more than 0.05 seconds; `Positivity` and
+`TestWellFoundedRecursion` have identical medians. The 8-9% values belong to
+0.12-0.59-second tests whose `/usr/bin/time` observations have 0.01-second
+resolution, so they are not interpreted as material regressions.
+
+Median involuntary context switches remain visible in the evidence and are
+similar by variant within each workload (for example 1,153/1,135 for
+`BvBinaryOps` and 8,408/8,526 for `Bug3207`). This controlled repeat supports
+the narrower conclusion: the ambient cache gives no ordinary-workload speedup,
+but it also produces no meaningful absolute ordinary regression here.
+
+`AMBIENT_CACHE_ORDINARY_AFFINITY.json` records all 70 rows, exact observations,
+wall/RSS/Z3/context-switch summaries, aggregate statistics, commands, hashes,
+and limitations. No allocation counters, benchmark/workload source changes, or
+tuning were used.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master

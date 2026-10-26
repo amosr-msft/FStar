@@ -1,0 +1,1993 @@
+{
+  "date": "2026-10-26",
+  "objective": "Repeat the seven successful ordinary workloads under the validated CPU-16 affinity protocol.",
+  "provenance": {
+    "runner_sha256": "8b735970e8f5b966889ddf97558fc952263e0b56aed99f414e3361ec508aec74",
+    "cpu": 16,
+    "pairs_per_workload": 5,
+    "workloads": {
+      "bv-binary-ops": {
+        "source": "tests/micro-benchmarks/BvBinaryOps.fst",
+        "declarations": 56,
+        "queries": 89
+      },
+      "classical-sugar": {
+        "source": "tests/micro-benchmarks/ClassicalSugar.fst",
+        "declarations": 50,
+        "queries": 89
+      },
+      "positivity": {
+        "source": "tests/micro-benchmarks/Positivity.fst",
+        "declarations": 243,
+        "queries": 41
+      },
+      "well-founded-recursion": {
+        "source": "tests/micro-benchmarks/TestWellFoundedRecursion.fst",
+        "declarations": 80,
+        "queries": 78
+      },
+      "normalization": {
+        "source": "tests/micro-benchmarks/Normalization.fst",
+        "declarations": 20,
+        "queries": 88
+      },
+      "norm-vs-smt": {
+        "source": "tests/micro-benchmarks/NormVsSMT.fst",
+        "declarations": 13,
+        "queries": 3
+      },
+      "bug3207": {
+        "source": "tests/bug-reports/closed/Bug3207.fst",
+        "declarations": 242,
+        "queries": 523
+      }
+    },
+    "source_sha256": {
+      "bv-binary-ops": "14797b4b4cc3c679a2ccc4efc39bb5e2f6271be5e70e4c20c91ca738996da0ba",
+      "classical-sugar": "0a18c4ff93e81d76d462debc2a92ebd410171988fc2cf19475e357ae4bd3b48b",
+      "positivity": "9af0c99a9ac2d16dd321510254bd1650c522a91256e6d3ab3ae1e6c33f7a0cdb",
+      "well-founded-recursion": "058bd48bc1d1c4e6102fc66f82aee2cd97064355a6884c0f2b0780fe5e16ebda",
+      "normalization": "4a19c19f2357c92b4fd5254af7f4ff0f20f9ce7ee513244cf54b1717c7e5f895",
+      "norm-vs-smt": "09bed22f316c76d0ec822bcfee9c9197af0d556862af4c0907b1dbf918f006d4",
+      "bug3207": "4c7ac63546fdd78ce814f4c5e7b1f6bbcd1e9a3fc332d276b5a6cb94263f5f9a"
+    },
+    "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+    "ocaml_version": "4.14.2",
+    "cleared_environment": [
+      "FSTAR_LIB",
+      "FSTAR_HOME",
+      "OCAMLRUNPARAM",
+      "CAMLRUNPARAM",
+      "FSTAR_PRUNING_REFERENCE",
+      "FSTAR_NO_DEDUP_VC",
+      "LD_PRELOAD",
+      "LD_LIBRARY_PATH",
+      "LD_AUDIT",
+      "OCAMLPATH",
+      "CAML_LD_LIBRARY_PATH",
+      "MALLOC_CONF",
+      "GLIBC_TUNABLES",
+      "MALLOC_ARENA_MAX",
+      "MALLOC_ARENA_TEST",
+      "MALLOC_CHECK_",
+      "MALLOC_PERTURB_",
+      "MALLOC_MMAP_MAX_",
+      "MALLOC_MMAP_THRESHOLD_",
+      "MALLOC_TOP_PAD_",
+      "MALLOC_TRIM_THRESHOLD_"
+    ],
+    "set_environment": {
+      "LC_ALL": "C",
+      "LANG": "C"
+    },
+    "tools": {
+      "git": {
+        "path": "/usr/bin/git",
+        "sha256": "eb54b535467e0975c1284d4c4d08eea779aeb248a5d34b02e2ee171382e22201"
+      },
+      "timeout": {
+        "path": "/usr/bin/timeout",
+        "sha256": "12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52"
+      },
+      "taskset": {
+        "path": "/usr/bin/taskset",
+        "sha256": "a431738fadddc2e2326c8ab81843e72f4011658379381aef1502a6ddb1c1115b"
+      },
+      "time": {
+        "path": "/usr/bin/time",
+        "sha256": "3b11dec50514a8473e9f6efa7a34d584d0657538c09988f61b72d38ad4991a10"
+      }
+    },
+    "variants": {
+      "baseline": {
+        "commit": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+        "binary_sha256": "92170e8deb7866a34c5ca71989cbb4e0a61b17bf49829ba5f080b02f14b7d012",
+        "checked_dependency_tree": {
+          "sha256": "6e3fb8cfb46662026444bbd4404ccfd3961c6f76384b57135f56fcedea397a0f",
+          "files": 379
+        },
+        "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-25 23:07:25 +0000\ncommit=0e13baff38309523a2074ef8fbc3745b4bc793ad"
+      },
+      "candidate": {
+        "commit": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
+        "binary_sha256": "83c2f0de76d2915cae3231e1c2621009f4101f25fba45b5046366de538b97208",
+        "checked_dependency_tree": {
+          "sha256": "77d114652ff5051c773738765ef31b3d4047706f46f2728a80055d15cb2436c3",
+          "files": 379
+        },
+        "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-25 23:07:25 +0000\ncommit=0e13baff38309523a2074ef8fbc3745b4bc793ad"
+      }
+    }
+  },
+  "per_workload": {
+    "bv-binary-ops": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            5.67,
+            5.62,
+            5.55,
+            5.52,
+            5.49
+          ],
+          "median": 5.55,
+          "min": 5.49,
+          "max": 5.67
+        },
+        "user_seconds": {
+          "observations": [
+            5.57,
+            5.53,
+            5.44,
+            5.41,
+            5.39
+          ],
+          "median": 5.44,
+          "min": 5.39,
+          "max": 5.57
+        },
+        "system_seconds": {
+          "observations": [
+            0.09,
+            0.09,
+            0.1,
+            0.09,
+            0.1
+          ],
+          "median": 0.09,
+          "min": 0.09,
+          "max": 0.1
+        },
+        "max_rss_kb": {
+          "observations": [
+            119964,
+            119896,
+            120004,
+            120060,
+            119848
+          ],
+          "median": 119964,
+          "min": 119848,
+          "max": 120060
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            4.68,
+            4.63,
+            4.57,
+            4.54,
+            4.53
+          ],
+          "median": 4.57,
+          "min": 4.53,
+          "max": 4.68
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            1097,
+            1080,
+            1068,
+            1081,
+            1071
+          ],
+          "median": 1080,
+          "min": 1068,
+          "max": 1097
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            1163,
+            1115,
+            1206,
+            1153,
+            1145
+          ],
+          "median": 1153,
+          "min": 1115,
+          "max": 1206
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            5.62,
+            5.61,
+            5.52,
+            5.52,
+            5.57
+          ],
+          "median": 5.57,
+          "min": 5.52,
+          "max": 5.62
+        },
+        "user_seconds": {
+          "observations": [
+            5.52,
+            5.5,
+            5.42,
+            5.43,
+            5.48
+          ],
+          "median": 5.48,
+          "min": 5.42,
+          "max": 5.52
+        },
+        "system_seconds": {
+          "observations": [
+            0.1,
+            0.11,
+            0.09,
+            0.08,
+            0.09
+          ],
+          "median": 0.09,
+          "min": 0.08,
+          "max": 0.11
+        },
+        "max_rss_kb": {
+          "observations": [
+            121108,
+            121256,
+            121316,
+            121456,
+            121248
+          ],
+          "median": 121256,
+          "min": 121108,
+          "max": 121456
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            4.62,
+            4.62,
+            4.55,
+            4.55,
+            4.6
+          ],
+          "median": 4.6,
+          "min": 4.55,
+          "max": 4.62
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            1034,
+            1092,
+            1053,
+            1019,
+            1095
+          ],
+          "median": 1053,
+          "min": 1019,
+          "max": 1095
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            1088,
+            1173,
+            1135,
+            1069,
+            1175
+          ],
+          "median": 1135,
+          "min": 1069,
+          "max": 1175
+        }
+      },
+      "absolute_wall_change_seconds": 0.020000000000000462,
+      "wall_change_percent": 0.3603603603603789,
+      "rss_change_percent": 1.076989763595737
+    },
+    "classical-sugar": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            1.25,
+            1.25,
+            1.26,
+            1.25,
+            1.25
+          ],
+          "median": 1.25,
+          "min": 1.25,
+          "max": 1.26
+        },
+        "user_seconds": {
+          "observations": [
+            1.14,
+            1.15,
+            1.17,
+            1.15,
+            1.16
+          ],
+          "median": 1.15,
+          "min": 1.14,
+          "max": 1.17
+        },
+        "system_seconds": {
+          "observations": [
+            0.1,
+            0.09,
+            0.09,
+            0.09,
+            0.09
+          ],
+          "median": 0.09,
+          "min": 0.09,
+          "max": 0.1
+        },
+        "max_rss_kb": {
+          "observations": [
+            125652,
+            125848,
+            126128,
+            125884,
+            125560
+          ],
+          "median": 125848,
+          "min": 125560,
+          "max": 126128
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.06,
+            0.06,
+            0.06,
+            0.06,
+            0.06
+          ],
+          "median": 0.06,
+          "min": 0.06,
+          "max": 0.06
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            834,
+            844,
+            760,
+            738,
+            837
+          ],
+          "median": 834,
+          "min": 738,
+          "max": 844
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            834,
+            838,
+            749,
+            706,
+            832
+          ],
+          "median": 832,
+          "min": 706,
+          "max": 838
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            1.29,
+            1.25,
+            1.29,
+            1.28,
+            1.3
+          ],
+          "median": 1.29,
+          "min": 1.25,
+          "max": 1.3
+        },
+        "user_seconds": {
+          "observations": [
+            1.2,
+            1.15,
+            1.2,
+            1.18,
+            1.2
+          ],
+          "median": 1.2,
+          "min": 1.15,
+          "max": 1.2
+        },
+        "system_seconds": {
+          "observations": [
+            0.09,
+            0.09,
+            0.08,
+            0.1,
+            0.09
+          ],
+          "median": 0.09,
+          "min": 0.08,
+          "max": 0.1
+        },
+        "max_rss_kb": {
+          "observations": [
+            127464,
+            127236,
+            126800,
+            127224,
+            127496
+          ],
+          "median": 127236,
+          "min": 126800,
+          "max": 127496
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.07,
+            0.06,
+            0.06,
+            0.06,
+            0.08
+          ],
+          "median": 0.06,
+          "min": 0.06,
+          "max": 0.08
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            811,
+            779,
+            876,
+            845,
+            843
+          ],
+          "median": 843,
+          "min": 779,
+          "max": 876
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            795,
+            756,
+            869,
+            835,
+            822
+          ],
+          "median": 822,
+          "min": 756,
+          "max": 869
+        }
+      },
+      "absolute_wall_change_seconds": 0.040000000000000036,
+      "wall_change_percent": 3.200000000000003,
+      "rss_change_percent": 1.1029178056067623
+    },
+    "positivity": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            1.15,
+            1.16,
+            1.11,
+            1.14,
+            1.15
+          ],
+          "median": 1.15,
+          "min": 1.11,
+          "max": 1.16
+        },
+        "user_seconds": {
+          "observations": [
+            1.02,
+            1.0,
+            0.99,
+            1.01,
+            1.02
+          ],
+          "median": 1.01,
+          "min": 0.99,
+          "max": 1.02
+        },
+        "system_seconds": {
+          "observations": [
+            0.12,
+            0.15,
+            0.12,
+            0.12,
+            0.12
+          ],
+          "median": 0.12,
+          "min": 0.12,
+          "max": 0.15
+        },
+        "max_rss_kb": {
+          "observations": [
+            152048,
+            152076,
+            152044,
+            152216,
+            152060
+          ],
+          "median": 152060,
+          "min": 152044,
+          "max": 152216
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            516,
+            504,
+            610,
+            427,
+            537
+          ],
+          "median": 516,
+          "min": 427,
+          "max": 610
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            529,
+            507,
+            620,
+            423,
+            535
+          ],
+          "median": 529,
+          "min": 423,
+          "max": 620
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            1.17,
+            1.21,
+            1.11,
+            1.14,
+            1.15
+          ],
+          "median": 1.15,
+          "min": 1.11,
+          "max": 1.21
+        },
+        "user_seconds": {
+          "observations": [
+            1.03,
+            1.08,
+            0.99,
+            1.02,
+            1.03
+          ],
+          "median": 1.03,
+          "min": 0.99,
+          "max": 1.08
+        },
+        "system_seconds": {
+          "observations": [
+            0.13,
+            0.12,
+            0.11,
+            0.12,
+            0.12
+          ],
+          "median": 0.12,
+          "min": 0.11,
+          "max": 0.13
+        },
+        "max_rss_kb": {
+          "observations": [
+            154772,
+            154420,
+            154800,
+            154872,
+            154660
+          ],
+          "median": 154772,
+          "min": 154420,
+          "max": 154872
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            503,
+            396,
+            539,
+            540,
+            463
+          ],
+          "median": 503,
+          "min": 396,
+          "max": 540
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            489,
+            385,
+            536,
+            542,
+            446
+          ],
+          "median": 489,
+          "min": 385,
+          "max": 542
+        }
+      },
+      "absolute_wall_change_seconds": 0.0,
+      "wall_change_percent": 0.0,
+      "rss_change_percent": 1.7835065105879178
+    },
+    "well-founded-recursion": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            1.02,
+            0.98,
+            1.03,
+            0.97,
+            1.03
+          ],
+          "median": 1.02,
+          "min": 0.97,
+          "max": 1.03
+        },
+        "user_seconds": {
+          "observations": [
+            0.88,
+            0.84,
+            0.88,
+            0.84,
+            0.89
+          ],
+          "median": 0.88,
+          "min": 0.84,
+          "max": 0.89
+        },
+        "system_seconds": {
+          "observations": [
+            0.14,
+            0.13,
+            0.14,
+            0.13,
+            0.13
+          ],
+          "median": 0.13,
+          "min": 0.13,
+          "max": 0.14
+        },
+        "max_rss_kb": {
+          "observations": [
+            122424,
+            122564,
+            122420,
+            122452,
+            122580
+          ],
+          "median": 122452,
+          "min": 122420,
+          "max": 122580
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            1160,
+            1083,
+            1153,
+            1064,
+            1136
+          ],
+          "median": 1136,
+          "min": 1064,
+          "max": 1160
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            1161,
+            1086,
+            1148,
+            1046,
+            1144
+          ],
+          "median": 1144,
+          "min": 1046,
+          "max": 1161
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            1.04,
+            0.99,
+            1.02,
+            1.01,
+            1.04
+          ],
+          "median": 1.02,
+          "min": 0.99,
+          "max": 1.04
+        },
+        "user_seconds": {
+          "observations": [
+            0.89,
+            0.86,
+            0.88,
+            0.87,
+            0.91
+          ],
+          "median": 0.88,
+          "min": 0.86,
+          "max": 0.91
+        },
+        "system_seconds": {
+          "observations": [
+            0.14,
+            0.13,
+            0.14,
+            0.14,
+            0.12
+          ],
+          "median": 0.14,
+          "min": 0.12,
+          "max": 0.14
+        },
+        "max_rss_kb": {
+          "observations": [
+            122092,
+            122336,
+            122268,
+            122396,
+            122344
+          ],
+          "median": 122336,
+          "min": 122092,
+          "max": 122396
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            1171,
+            1116,
+            1167,
+            1177,
+            1164
+          ],
+          "median": 1167,
+          "min": 1116,
+          "max": 1177
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            1166,
+            1108,
+            1168,
+            1176,
+            1150
+          ],
+          "median": 1166,
+          "min": 1108,
+          "max": 1176
+        }
+      },
+      "absolute_wall_change_seconds": 0.0,
+      "wall_change_percent": 0.0,
+      "rss_change_percent": -0.09473099663541706
+    },
+    "normalization": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            0.56,
+            0.53,
+            0.53,
+            0.54,
+            0.55
+          ],
+          "median": 0.54,
+          "min": 0.53,
+          "max": 0.56
+        },
+        "user_seconds": {
+          "observations": [
+            0.47,
+            0.44,
+            0.43,
+            0.46,
+            0.46
+          ],
+          "median": 0.46,
+          "min": 0.43,
+          "max": 0.47
+        },
+        "system_seconds": {
+          "observations": [
+            0.08,
+            0.09,
+            0.09,
+            0.08,
+            0.08
+          ],
+          "median": 0.08,
+          "min": 0.08,
+          "max": 0.09
+        },
+        "max_rss_kb": {
+          "observations": [
+            132364,
+            132520,
+            132660,
+            132636,
+            132636
+          ],
+          "median": 132636,
+          "min": 132364,
+          "max": 132660
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            1041,
+            1041,
+            993,
+            1082,
+            1088
+          ],
+          "median": 1041,
+          "min": 993,
+          "max": 1088
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            1042,
+            1052,
+            998,
+            1086,
+            1084
+          ],
+          "median": 1052,
+          "min": 998,
+          "max": 1086
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            0.6,
+            0.58,
+            0.58,
+            0.59,
+            0.64
+          ],
+          "median": 0.59,
+          "min": 0.58,
+          "max": 0.64
+        },
+        "user_seconds": {
+          "observations": [
+            0.51,
+            0.51,
+            0.48,
+            0.49,
+            0.52
+          ],
+          "median": 0.51,
+          "min": 0.48,
+          "max": 0.52
+        },
+        "system_seconds": {
+          "observations": [
+            0.08,
+            0.07,
+            0.09,
+            0.1,
+            0.09
+          ],
+          "median": 0.09,
+          "min": 0.07,
+          "max": 0.1
+        },
+        "max_rss_kb": {
+          "observations": [
+            136940,
+            136828,
+            137000,
+            137164,
+            137160
+          ],
+          "median": 137000,
+          "min": 136828,
+          "max": 137164
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            1080,
+            844,
+            1165,
+            1204,
+            1105
+          ],
+          "median": 1105,
+          "min": 844,
+          "max": 1204
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            1089,
+            845,
+            1162,
+            1207,
+            1116
+          ],
+          "median": 1116,
+          "min": 845,
+          "max": 1207
+        }
+      },
+      "absolute_wall_change_seconds": 0.04999999999999993,
+      "wall_change_percent": 9.259259259259256,
+      "rss_change_percent": 3.290207786724575
+    },
+    "norm-vs-smt": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            0.12,
+            0.12,
+            0.12,
+            0.12,
+            0.12
+          ],
+          "median": 0.12,
+          "min": 0.12,
+          "max": 0.12
+        },
+        "user_seconds": {
+          "observations": [
+            0.08,
+            0.08,
+            0.07,
+            0.08,
+            0.07
+          ],
+          "median": 0.08,
+          "min": 0.07,
+          "max": 0.08
+        },
+        "system_seconds": {
+          "observations": [
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.05
+          ],
+          "median": 0.04,
+          "min": 0.04,
+          "max": 0.05
+        },
+        "max_rss_kb": {
+          "observations": [
+            75160,
+            75716,
+            75188,
+            75404,
+            75324
+          ],
+          "median": 75324,
+          "min": 75160,
+          "max": 75716
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            70,
+            57,
+            40,
+            23,
+            39
+          ],
+          "median": 40,
+          "min": 23,
+          "max": 70
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            66,
+            54,
+            40,
+            17,
+            40
+          ],
+          "median": 40,
+          "min": 17,
+          "max": 66
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            0.13,
+            0.13,
+            0.12,
+            0.13,
+            0.13
+          ],
+          "median": 0.13,
+          "min": 0.12,
+          "max": 0.13
+        },
+        "user_seconds": {
+          "observations": [
+            0.08,
+            0.08,
+            0.08,
+            0.08,
+            0.08
+          ],
+          "median": 0.08,
+          "min": 0.08,
+          "max": 0.08
+        },
+        "system_seconds": {
+          "observations": [
+            0.04,
+            0.04,
+            0.04,
+            0.04,
+            0.05
+          ],
+          "median": 0.04,
+          "min": 0.04,
+          "max": 0.05
+        },
+        "max_rss_kb": {
+          "observations": [
+            76376,
+            76516,
+            76520,
+            76052,
+            76296
+          ],
+          "median": 76376,
+          "min": 76052,
+          "max": 76520
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.0,
+            0.0,
+            0.0,
+            0.0,
+            0.0
+          ],
+          "median": 0.0,
+          "min": 0.0,
+          "max": 0.0
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            24,
+            23,
+            28,
+            25,
+            71
+          ],
+          "median": 25,
+          "min": 23,
+          "max": 71
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            16,
+            17,
+            21,
+            20,
+            71
+          ],
+          "median": 20,
+          "min": 16,
+          "max": 71
+        }
+      },
+      "absolute_wall_change_seconds": 0.010000000000000009,
+      "wall_change_percent": 8.333333333333348,
+      "rss_change_percent": 1.396633211194298
+    },
+    "bug3207": {
+      "pairs": 5,
+      "baseline": {
+        "wall_seconds": {
+          "observations": [
+            5.46,
+            5.17,
+            5.34,
+            5.38,
+            5.29
+          ],
+          "median": 5.34,
+          "min": 5.17,
+          "max": 5.46
+        },
+        "user_seconds": {
+          "observations": [
+            5.2,
+            4.88,
+            5.05,
+            5.13,
+            5.02
+          ],
+          "median": 5.05,
+          "min": 4.88,
+          "max": 5.2
+        },
+        "system_seconds": {
+          "observations": [
+            0.26,
+            0.29,
+            0.28,
+            0.25,
+            0.26
+          ],
+          "median": 0.26,
+          "min": 0.25,
+          "max": 0.29
+        },
+        "max_rss_kb": {
+          "observations": [
+            257000,
+            257204,
+            257076,
+            257292,
+            257248
+          ],
+          "median": 257204,
+          "min": 257000,
+          "max": 257292
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.89,
+            0.8200000000000001,
+            0.85,
+            0.95,
+            0.8300000000000001
+          ],
+          "median": 0.85,
+          "min": 0.8200000000000001,
+          "max": 0.95
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            8355,
+            8303,
+            8347,
+            8238,
+            8356
+          ],
+          "median": 8347,
+          "min": 8238,
+          "max": 8356
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            8408,
+            8369,
+            8428,
+            8341,
+            8421
+          ],
+          "median": 8408,
+          "min": 8341,
+          "max": 8428
+        }
+      },
+      "candidate": {
+        "wall_seconds": {
+          "observations": [
+            5.35,
+            5.39,
+            5.25,
+            5.39,
+            5.37
+          ],
+          "median": 5.37,
+          "min": 5.25,
+          "max": 5.39
+        },
+        "user_seconds": {
+          "observations": [
+            5.07,
+            5.12,
+            4.94,
+            5.12,
+            5.08
+          ],
+          "median": 5.08,
+          "min": 4.94,
+          "max": 5.12
+        },
+        "system_seconds": {
+          "observations": [
+            0.27,
+            0.26,
+            0.31,
+            0.26,
+            0.28
+          ],
+          "median": 0.27,
+          "min": 0.26,
+          "max": 0.31
+        },
+        "max_rss_kb": {
+          "observations": [
+            254332,
+            254448,
+            254080,
+            254140,
+            254260
+          ],
+          "median": 254260,
+          "min": 254080,
+          "max": 254448
+        },
+        "z3_reported_seconds": {
+          "observations": [
+            0.8200000000000001,
+            0.8200000000000001,
+            0.79,
+            0.85,
+            0.83
+          ],
+          "median": 0.8200000000000001,
+          "min": 0.79,
+          "max": 0.85
+        },
+        "voluntary_context_switches": {
+          "observations": [
+            8467,
+            8385,
+            8348,
+            8455,
+            8521
+          ],
+          "median": 8455,
+          "min": 8348,
+          "max": 8521
+        },
+        "involuntary_context_switches": {
+          "observations": [
+            8526,
+            8457,
+            8415,
+            8529,
+            8596
+          ],
+          "median": 8526,
+          "min": 8415,
+          "max": 8596
+        }
+      },
+      "absolute_wall_change_seconds": 0.03000000000000025,
+      "wall_change_percent": 0.5617977528090012,
+      "rss_change_percent": -1.1446167244677397
+    }
+  },
+  "aggregate": {
+    "workloads": 7,
+    "pairs_per_workload": 5,
+    "rows": 70,
+    "summed_median_baseline_seconds": 14.969999999999999,
+    "summed_median_candidate_seconds": 15.120000000000001,
+    "summed_median_change_seconds": 0.15000000000000213,
+    "summed_median_change_percent": 1.0020040080160442,
+    "geometric_mean_change_percent": 3.0350633133022775,
+    "regressions": [
+      {
+        "workload": "normalization",
+        "absolute_wall_change_seconds": 0.04999999999999993,
+        "wall_change_percent": 9.259259259259256
+      },
+      {
+        "workload": "norm-vs-smt",
+        "absolute_wall_change_seconds": 0.010000000000000009,
+        "wall_change_percent": 8.333333333333348
+      },
+      {
+        "workload": "classical-sugar",
+        "absolute_wall_change_seconds": 0.040000000000000036,
+        "wall_change_percent": 3.200000000000003
+      },
+      {
+        "workload": "bug3207",
+        "absolute_wall_change_seconds": 0.03000000000000025,
+        "wall_change_percent": 0.5617977528090012
+      },
+      {
+        "workload": "bv-binary-ops",
+        "absolute_wall_change_seconds": 0.020000000000000462,
+        "wall_change_percent": 0.3603603603603789
+      }
+    ],
+    "unchanged_medians": [
+      "positivity",
+      "well-founded-recursion"
+    ]
+  },
+  "interpretation": [
+    "CPU-16 control removes broad host-placement regimes; context-switch observations remain visible per workload.",
+    "No ordinary workload shows a meaningful absolute regression. Subsecond percentage changes are dominated by 0.01-second reporting granularity.",
+    "The cache does not improve ordinary workloads, but the controlled repeat also does not reproduce a material ordinary regression."
+  ],
+  "limitations": [
+    "CPU affinity does not reserve CPU 16 from other host workloads.",
+    "No allocation counters were run.",
+    "No benchmark/workload source changes or tuning were made."
+  ],
+  "evidence": {
+    "provenance": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/provenance.json",
+      "sha256": "c6921260071d0c1d99157ff1eac638fe38a833e6701d1142d6ba516b91367a30"
+    },
+    "measurements": {
+      "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/measurements.jsonl",
+      "sha256": "951b8a2bb37dded328e4ff933488c438878ed08adbc6a9fe0e8b26fcb1b04c07"
+    },
+    "raw": [
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-well-founded-recursion-baseline.time",
+        "sha256": "eab46700887ef95d3188d8cf2ffb169cbf2cccfcba590821fa80713d93e5288e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-well-founded-recursion-baseline.log",
+        "sha256": "d2015a6ce99184a49ade493659a193e3fb67588310abc13bf3daff0bee3a89a9"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-well-founded-recursion-candidate.time",
+        "sha256": "0affed5978b3aa1f54e3e3b11c379666b9f845062bb0535afd2846363941b013"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-well-founded-recursion-candidate.log",
+        "sha256": "13b2739cc08b489bc581d8bb9fbb63cd1633816da344108cf5000a910b05c051"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-normalization-baseline.time",
+        "sha256": "0bb0356f7201d4da632be0b8a122fe861eabcab8fe4234182124911ff50fe8d7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-normalization-baseline.log",
+        "sha256": "553da891d263637e12e297cf0f0467d728801f998df8d6dbc56a42e58e8029b9"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-normalization-candidate.time",
+        "sha256": "90a085e0b6dfad180fb2f77424cf5ed99413403fa646704fa616f7240975d48d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-normalization-candidate.log",
+        "sha256": "35cb55e211a2c5ee7630598a697cbb00afee9bcde9aebf5ab1e500bd0ce8df22"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-positivity-candidate.time",
+        "sha256": "ea5df89af1c5c9452dd8290bcea3dd2a4160cba66af7fb62a66810da82c4134a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-positivity-candidate.log",
+        "sha256": "b9207f8800869d6c5fb3c41110370acf05ac80bf11e30947c7465b7a372b725f"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-positivity-baseline.time",
+        "sha256": "35abd8dcbfd6c095d774f0062a3b74bc78a8c720435b35e356e2a07fbc2cd393"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-positivity-baseline.log",
+        "sha256": "dfe976cf173b44f494bef21863d16b07a92aba3f41c0169199a979849ab7666f"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-classical-sugar-candidate.time",
+        "sha256": "28f4c91c7cdf0f19a42239d24a6f6b89064c73de45e2126ae1ea55ea75a3a1d1"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-classical-sugar-candidate.log",
+        "sha256": "286ee5afb3ddfb9a267e82c8cc60613d819ef3f7243ab165b454976cc96d7923"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-classical-sugar-baseline.time",
+        "sha256": "65acf053bbbb82901ef08ce7733ec25f15cf428aa83c9416b6420ff333bb012e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-classical-sugar-baseline.log",
+        "sha256": "52acedc43de4b244992910911c4fc5b7ce44ac69c61f1612fb92346958c6e558"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-norm-vs-smt-baseline.time",
+        "sha256": "be851c8cf9930306fa5dddea1b3b022e4c12e7c51afe46d3e20b54b015818a55"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-norm-vs-smt-baseline.log",
+        "sha256": "6f1cd152c0245df5ae1340b21ba7fd2272911e5eb3590e53833c9172e2811072"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-norm-vs-smt-candidate.time",
+        "sha256": "250564847f17a80debb1387175777e6b07351185c6f04fdc80e6830c31cf46b8"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-norm-vs-smt-candidate.log",
+        "sha256": "7b5436c0f38064e7147f23f2f33d28020ffc9b4d4e6b59a4ad321fb04669057a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-positivity-baseline.time",
+        "sha256": "bec92bbca841628d74f2dd82be3cee619065d0f70183a23db2d4abfc813b37d6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-positivity-baseline.log",
+        "sha256": "ea0850dbe384b06f553f207e59a382e3e83ff904fb2a9fc8f5cbdd247a6a8a63"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-positivity-candidate.time",
+        "sha256": "a814e812a8d1b94a1f2c5fb968fe169581d3955c3675499fee6f51024def3fc7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-positivity-candidate.log",
+        "sha256": "3444df69886e55aad7340966dab96fe9e7e40df9afc870dcd70120fe328efd98"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bv-binary-ops-baseline.time",
+        "sha256": "9102bbcae4098b992db3d70d5762e2fda75f61b72648d197a4e49306be671cd3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bv-binary-ops-baseline.log",
+        "sha256": "82a3893bf5e869ca74adc30a2c754d1f5c0d98ff703d5e2abe9e80a088f50a64"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bv-binary-ops-candidate.time",
+        "sha256": "76c08ee9ea3c7e4ca9bc1dccccc41d0288794c13c0f162d1a370a42186120494"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bv-binary-ops-candidate.log",
+        "sha256": "fd1345bbfb162c3a592d4c670c2af08692c8d1b0444a0415e407602439f245bb"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bv-binary-ops-baseline.time",
+        "sha256": "0caf300296819967ff34aa50db05ee829f496e0fc411ac658eba24289096c2f7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bv-binary-ops-baseline.log",
+        "sha256": "00a6813aec4aec127f26f5eb231f18f27d574b76438495d1325e266cac4ade7e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bv-binary-ops-candidate.time",
+        "sha256": "aec54dca8f42db4cf3fad64ff1bebe95466e65f15617d4ffd256deb72ae6d8cb"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bv-binary-ops-candidate.log",
+        "sha256": "bf9d080c7394f9a4a78e5f27168581410983312602876c9298b98608c5b1baa8"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bug3207-baseline.time",
+        "sha256": "4b0dab3a6b15aee84f07bb9de3fcec140354cf008cafe0ff4b248444265b22a8"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bug3207-baseline.log",
+        "sha256": "fba825d3ba60451f1af3d12cfe04bb6a47d553323c303a6de25e2d2aa23242a5"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bug3207-candidate.time",
+        "sha256": "7d4b948cf8cd0d33327e38b416a37040592b19c2ef34da94230953c0e51f0141"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bug3207-candidate.log",
+        "sha256": "3ad49b58c31b2564a86b38d2d60f9f97d2549de3d1c4656287b74d74abdb2d65"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-positivity-baseline.time",
+        "sha256": "cad67e594674360ee8f81061e566514831ba999aff69cd9ead7b0e767d7695ff"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-positivity-baseline.log",
+        "sha256": "fe5d3e0e956dcbc8191b9e6d1bffa875c21d38b42ffeecde515ca10c8eaa81ba"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-positivity-candidate.time",
+        "sha256": "7f05dff8df9417a1340f508b64dca626f2287fca98fb585f5ac6467e6cf9a374"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-positivity-candidate.log",
+        "sha256": "ea42ec01e398fe515190e4b8e799529fe2849583b679cf0b9ee9c4bd7901b72a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-normalization-candidate.time",
+        "sha256": "7fbc318b7ab09345ddaa7e366c8e5b870859c423fcd34026731f1fa589fe69bf"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-normalization-candidate.log",
+        "sha256": "b2f379198a7fc3c66ae708a84bd942a21c481125d919e7102a80d6ffb8de7f3d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-normalization-baseline.time",
+        "sha256": "92413b0504e177648a7352ef9741ec693bd5c720d615861cc8cf28577e21e4c9"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-normalization-baseline.log",
+        "sha256": "1836ffe384697ebc7e838256eabd1d7a4a61dabaa2991ea6ec2d92f2ab25002d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-well-founded-recursion-baseline.time",
+        "sha256": "aa03064a03acd16bad0c460f33daaf3b417565fd630aae9c202605403f2d1e51"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-well-founded-recursion-baseline.log",
+        "sha256": "f165a9d8054d65bd91a7bfca9685dbe7458a1251700f287ce7b2200de69837fa"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-well-founded-recursion-candidate.time",
+        "sha256": "5a227625ef0e04a576a8ecc4f95d58cb19703463ab347df5e7615c5db5a727d4"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-well-founded-recursion-candidate.log",
+        "sha256": "77224f6090b83fcb3a540cbb08de4749f04c205623995d71082f742ae9cce6d3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-normalization-candidate.time",
+        "sha256": "41dd629b5f9ec860c57ad659048bed5f1d04b53359941c0dff16a16e6f9932b9"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-normalization-candidate.log",
+        "sha256": "6c83a686b16b5666a660f36dd53bb6cf03531e20dcbd34572ff83c7325a655c4"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-normalization-baseline.time",
+        "sha256": "5994dd5771d9de0893b5e6836de9fb5e4f73962d52ac20299472c73569c887f8"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-normalization-baseline.log",
+        "sha256": "2a7e87aa03c65ca69af5dbc8d5ea209dc96917513173ac8a2fe339e5d50af80a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-well-founded-recursion-candidate.time",
+        "sha256": "17cb34cd3f6ac647b9fce7a731230c60ec7b6938820d3d17d393bebd5be80651"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-well-founded-recursion-candidate.log",
+        "sha256": "62196727bb327085a267c3ad36ab9eaa802b0814ceca824aa2bb96846a2ed445"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-well-founded-recursion-baseline.time",
+        "sha256": "5a6a325ac7489d0ae37003f8f97bdbc4907b83bbf25002bfa17bad9f3724eae9"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-well-founded-recursion-baseline.log",
+        "sha256": "f90684892c617094f2ceaec3406faccbd4cd384fb981a9c6cf17251a0dfcb266"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-norm-vs-smt-baseline.time",
+        "sha256": "534e55325dc119b94931134522b58dcbb071c7a7a647799a15f008255587ba16"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-norm-vs-smt-baseline.log",
+        "sha256": "0628096ec9478d48f9e65755f15383cd6d12bb14049634ace84e06487cd0eda0"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-norm-vs-smt-candidate.time",
+        "sha256": "8c085011cc93900ce64da9a4e303be31c891d7e0fddb90972b8feca12194f201"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-norm-vs-smt-candidate.log",
+        "sha256": "32dd4e1309c7535174d55be0e459011ef175db122873278e7b2984d451c5bf5d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bv-binary-ops-candidate.time",
+        "sha256": "cbcef7159fe139de72c27a39754ae6fb4376476f36c92b8a486461391acf3ef2"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bv-binary-ops-candidate.log",
+        "sha256": "c00950fd9387088308e2b5d8ea8f089b72551db4f07c3ac02a0034293920fc64"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bv-binary-ops-baseline.time",
+        "sha256": "f037cc53414a6a5f471c1555c234f400031a3c6645c4fdff5b10436c248ed986"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bv-binary-ops-baseline.log",
+        "sha256": "e37966274a4bb56fcb213e115ef1298027754fb44efa5f71b45b9f715dbcf686"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bug3207-candidate.time",
+        "sha256": "a62143f14e02c03496ff0adc86a0da60788d5d82f5a5d220db4041bd9e413468"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bug3207-candidate.log",
+        "sha256": "1ffa1779c121652074b22b9e84394e88a08ab336b64006282db1382f48750422"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bug3207-baseline.time",
+        "sha256": "e7f28d365cf962de4fed250375fa93defb6798969df0d7e61faf5105653b3949"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-bug3207-baseline.log",
+        "sha256": "ff9eb223759cafdb611fb28b1a4cdca821439e5dd8e21e5fe90c0860adae078a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bug3207-candidate.time",
+        "sha256": "ca00333ef42d71d6e05ce9416e6af38b4ab19a40b08641bf148ef616a5e91005"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bug3207-candidate.log",
+        "sha256": "b72eed5268366a21b4742e328e8476b96f574cb89c2f26ab884a07da66e4ffd0"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bug3207-baseline.time",
+        "sha256": "d88ac2bf62f0c1d9b6c9e3c6e9cdedf309a0298ee8ceb33a9a880051aaa9f081"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bug3207-baseline.log",
+        "sha256": "0998ae22916117a6c89e1b415515d58987fe96a7dcc5655928b35c3f5ca04856"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-positivity-baseline.time",
+        "sha256": "80421243f80f7b3a7878b3cdf112300813ff48e7390be1918514829fabc57758"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-positivity-baseline.log",
+        "sha256": "eb893ba1f736aa751982059457e76a338d6f379ff293ef7ff1c44afee1aa5a43"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-positivity-candidate.time",
+        "sha256": "c51808dc1f07c71a7e91690853470c15f8e37e70e902572aa8c2de0e9ff15384"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-positivity-candidate.log",
+        "sha256": "77e1de76b2516ec650c08661a7810805f8e2581c5dc43c5e35675a87d17220b6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bv-binary-ops-baseline.time",
+        "sha256": "c25b69591f880064afd8e4dfdcfaac8c1592df9fe0b494ff7a79afbe3f1e9817"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bv-binary-ops-baseline.log",
+        "sha256": "41c23185b54c9a788862ba20527483e004d3d5358e0421cddffcd9acfae8f74b"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bv-binary-ops-candidate.time",
+        "sha256": "2e66cb82bafd4fb687371d22d21f1fc82a4d249be9d45333b0191cded6279f55"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-bv-binary-ops-candidate.log",
+        "sha256": "04e06df7b9557911cc59acff189f233b7e2e1900211b043fa03668b1b604795b"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-norm-vs-smt-baseline.time",
+        "sha256": "195fca9c3e91ae50d02060852f4ad282ea066caf37c048f538adb24be6098478"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-norm-vs-smt-baseline.log",
+        "sha256": "2369b4d6b04472b04836f40023ae8d02a1c3880fcd3ba222d9765c139fdff746"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-norm-vs-smt-candidate.time",
+        "sha256": "71d448b9838328f3687172ab2376fc1bbe16834a27d7206e4e46eb27ae722250"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-norm-vs-smt-candidate.log",
+        "sha256": "d0ae972128f40cd74607c429bb82a1f97e9822317b021029693cc25c8c075ba4"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bv-binary-ops-baseline.time",
+        "sha256": "385db7b984d57958f225e2095a3970cc92a7733735f1016ba312277c42e51edf"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bv-binary-ops-baseline.log",
+        "sha256": "177d66c10ab8cdd9615df93269e07a9379455570bfbdd4f7b90a4271d4a06d82"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bv-binary-ops-candidate.time",
+        "sha256": "8d4adaf964112ef233b5a90fc1e3f4533cbf8dfffd9fc3da9f13521349085501"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-bv-binary-ops-candidate.log",
+        "sha256": "2bec670801a1217a4fe48ca890d17e4d7236f70c2736614d976fa77d04e12dd8"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-well-founded-recursion-baseline.time",
+        "sha256": "3116c600d7009c799a2a9d6059f6acecb4bd50c5885daef874bf859d15365a1d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-well-founded-recursion-baseline.log",
+        "sha256": "d722c1ea3b3f650d1e22ff07341a8316b2fd4bc27ea65f20830dcb7d396e931e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-well-founded-recursion-candidate.time",
+        "sha256": "a95af0218564e6c841cead41616b82138478754df0ca1b8f1c1a26efb689bfff"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-well-founded-recursion-candidate.log",
+        "sha256": "bb10bf6b1817d04cf7fc3e18fa33d9b92a200013d074f0ba9250811a1f95b3c0"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-classical-sugar-baseline.time",
+        "sha256": "6e407e643e77aa1994b66da1f40ced36abaa96768b457da37ee5e8077818f574"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-classical-sugar-baseline.log",
+        "sha256": "748d1fa3b248e5bc27de6b1218c3b1b4805d7ee60c9277ac98b7c7398d475e90"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-classical-sugar-candidate.time",
+        "sha256": "98329054c9d816458aefb1b1209c08be5a2071729fcab103bf87ebe5329d8ce8"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-classical-sugar-candidate.log",
+        "sha256": "2ef7dc46dbcb51a2db8bb6e0b20eb2a5f2104f8043abe9989db22c8ea9fdadfd"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bug3207-candidate.time",
+        "sha256": "5d0ca3a8ed074573eca38827b83a30f90e24bb7536b8e3ab75f5c130e7204917"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bug3207-candidate.log",
+        "sha256": "f3a2ee71c3ca31cfb8c1acf32ab9f77efaaf687d679de0b8ac70f46b261cf8f3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bug3207-baseline.time",
+        "sha256": "537a3713beaf9f5aabf8d9ad985d65993e3bf1c942101d3cdd6284f561a91b54"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-bug3207-baseline.log",
+        "sha256": "3d2b63b68363f17afde8ecb1774ac32d5a05c542e6678fb5a8df46f71a8d1e25"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bug3207-candidate.time",
+        "sha256": "2a94c17a870d2a88c48a34cb9c93932ea7ce557a16dd594b4154ec5f8e3a2c3b"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bug3207-candidate.log",
+        "sha256": "6ecdcc08ef4b0486b5e3a245a57eb75bc4f077b951d1280858301698785ec2a5"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bug3207-baseline.time",
+        "sha256": "30365b50b3142804bdc745e8979b9c6d6d74e5d652032a433791b65446d681a3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-bug3207-baseline.log",
+        "sha256": "e5272a1ff8e99da8b99d4218850a263b24c21024eb265589706eee299e20d2ae"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-classical-sugar-candidate.time",
+        "sha256": "b82f2688e5091130895ad5027e687c5c3eb8bb8220667b3b12ff7b4258357e58"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-classical-sugar-candidate.log",
+        "sha256": "9de43a3671f23ee7ded722baa97af506efbb58ea774eb1b62ecc6fbcbd51b5de"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-classical-sugar-baseline.time",
+        "sha256": "e72ad3b28c208ac101b85c7b0ece693fb3dd9ffc8a21609c6e1cf2c155c76b36"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/4-classical-sugar-baseline.log",
+        "sha256": "b130ff21aad9642717ee5eb9f4493d434be35b4242dda211c55ba4f5b844cf47"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-normalization-candidate.time",
+        "sha256": "e7b08bfbb25e91d5502271ea2777ffba786d0feaa2c1ac5f788388800785b8f2"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-normalization-candidate.log",
+        "sha256": "9de51ac226d687329602164d9eaf50231e71e973d945e7052a146790eb8e4d6d"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-normalization-baseline.time",
+        "sha256": "3cb18831c90007f5a623b85cf36d63abfb15c878b73e47e81827b90dd210d75f"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-normalization-baseline.log",
+        "sha256": "cd523aa6be9f65b0acb3289741b7cf347553b625db3578913b0e752dde5332f4"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-classical-sugar-candidate.time",
+        "sha256": "b1fd0e0b48d70273580528806f8c90a74d3b31fc12adf45902aa8135c705ebf7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-classical-sugar-candidate.log",
+        "sha256": "4fabadd99d154d62f410aead6b81b6ddfbde971e846776cff20758a56a78b2a7"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-classical-sugar-baseline.time",
+        "sha256": "95afaa5890b3906aedf9e880068ecf11fe31e9f4696b8791217f99f5b82c5794"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/2-classical-sugar-baseline.log",
+        "sha256": "8c074c73a69d3c0ba7adcea92683f7f4a74302a15b80ac17e8b911ac437bbc2f"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-positivity-baseline.time",
+        "sha256": "cc20854da412fdb3cca0882d29d58585e73c8e5b431461905e93f6e5e5a9a573"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-positivity-baseline.log",
+        "sha256": "8ecaaafeb6938ee40df0c64bcb5d1e751e8233dc5678eaa30ac63f58ba42029c"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-positivity-candidate.time",
+        "sha256": "979853b1eb89ad8d599a5109a2cb80752205452afae1dd33660e98bf62219fd2"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-positivity-candidate.log",
+        "sha256": "59c0dbb519389a09a0b5b648c369ed1f6755323abb3106c0ca52130740c36674"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-classical-sugar-baseline.time",
+        "sha256": "513938be31fd13cec93d115c70bfc5dcd065bdd8bcabc7f2fd2cf08d4b21be23"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-classical-sugar-baseline.log",
+        "sha256": "6db452d3f2dc2c596b8eb67608f5db2a5a3a1f84fd84e4313471ad7e7250ea4a"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-classical-sugar-candidate.time",
+        "sha256": "9482e731e97cd63493d626b44f5b3ebc93083057c1ea24d412e954d8f1887b6c"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-classical-sugar-candidate.log",
+        "sha256": "532a20c78b540b47701285841b3b08c0f87bd3e8fe2ab9151864dd1823d88e01"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-norm-vs-smt-baseline.time",
+        "sha256": "afde1a34c670b0f2380f61bd674b917cdd733f88ec1838780ffa350e8e065d46"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-norm-vs-smt-baseline.log",
+        "sha256": "eac8cfaac01f215c4a0ebbacf3c7f933d43e7ce383c37960b6bf1a8114c53ec6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-norm-vs-smt-candidate.time",
+        "sha256": "5a89a827ffcae399f5bad98092c6ac95fe5fac3dad43e2526415270a5da8bc13"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/5-norm-vs-smt-candidate.log",
+        "sha256": "cb253586876ef1143775201df1346918f28a0beeda3300a4e19f92d2fa394158"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-normalization-baseline.time",
+        "sha256": "5fa9ce89b835e5c261a3f8c7e409a0ba4d96cc00de876d263ebadc33a7646313"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-normalization-baseline.log",
+        "sha256": "1f810f7e3edb811b86ff8ff6edeaacd762d407087e7b930fefc2e7bf3655fe68"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-normalization-candidate.time",
+        "sha256": "9e5eb4234ae86af10aa01e5ea2daee1a66c17761cbea962973e8b07dfbcd1e58"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-normalization-candidate.log",
+        "sha256": "c231b95d09a629665154da119e3b00b6aff7b99320e834ab8a6c54b5ef7012c6"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-norm-vs-smt-candidate.time",
+        "sha256": "b6b29f817ea37e73412389254e63bad98e59bd12c646dffa81a5b58e48b836f3"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-norm-vs-smt-candidate.log",
+        "sha256": "03ddae4262fa91d3d97a4412cdebebf8b7d4d511d8f32e5446a431375829e007"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-norm-vs-smt-baseline.time",
+        "sha256": "81b4f9692d77a1701190d61b531ce8bfe0849ce797d8d6a8ed39b097e0707c88"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/3-norm-vs-smt-baseline.log",
+        "sha256": "f8313d47298a03f6594fce3579d2004425e80772a6acf56c328c855614a2f80e"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-well-founded-recursion-candidate.time",
+        "sha256": "02d330f51c14225ed20e4dc7909e9d4dd4a2578aa525c987babf52effeffe3c5"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-well-founded-recursion-candidate.log",
+        "sha256": "fcfb3c7c1b206799d196801f8e946f79a283d506b9c87b7c2019f8fcfd43dd20"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-well-founded-recursion-baseline.time",
+        "sha256": "a2af514afcdd4afd34ba5958bfcb2db286e7ab53307114918aed581bbec78d17"
+      },
+      {
+        "path": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/ambient-cache-ordinary-affinity-cpu16/1-well-founded-recursion-baseline.log",
+        "sha256": "d3c730d50125770f1c2f2cb72a35e41bf6315f5b2fd20bb70e25a56c33a69ea5"
+      }
+    ]
+  }
+}

@@ -192,6 +192,22 @@ python tests/benchmarks/bv-context/summarize_affinity_controls.py \
   --output tests/benchmarks/bv-context/SIMPLE1024_AFFINITY_ANALYSIS.json
 ```
 
+The focused ordinary repeat uses the same CPU-16 protocol:
+
+```sh
+python tests/benchmarks/bv-context/run_affinity_ordinary_suite.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-bv-context \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/ambient-cache-ordinary-affinity-cpu16" \
+  --cpu 16
+
+python tests/benchmarks/bv-context/summarize_affinity_ordinary_suite.py \
+  --evidence-root "$EVIDENCE_ROOT" \
+  --output tests/benchmarks/bv-context/\
+AMBIENT_CACHE_ORDINARY_AFFINITY.json
+```
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,

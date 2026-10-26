@@ -44,6 +44,10 @@ equality through a real SMT query.
   pairs to a fixed CPU.
 - `summarize_affinity_controls.py` validates CPU 0/16 evidence in
   `SIMPLE1024_AFFINITY_ANALYSIS.json`.
+- `run_affinity_ordinary_suite.py` runs five CPU-16 pairs for seven ordinary
+  workloads.
+- `summarize_affinity_ordinary_suite.py` validates that campaign in
+  `AMBIENT_CACHE_ORDINARY_AFFINITY.json`.
 
 Generated sources remain under evidence/output directories. The no-ambient
 mode changes context selection and is diagnostic only.
