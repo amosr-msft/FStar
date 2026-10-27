@@ -208,6 +208,32 @@ python tests/benchmarks/bv-context/summarize_affinity_ordinary_suite.py \
 AMBIENT_CACHE_ORDINARY_AFFINITY.json
 ```
 
+The sparse best-effort follow-up compares three exact worktrees. Pass the
+corrected full cache as `--candidate` and the sparse cache as `--best-effort`:
+
+```sh
+python tests/benchmarks/bv-context/run_affinity_ordinary_suite.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-ambient-cache-full \
+  --best-effort /workspace/wt11/FStar-ambient-cache-sparse \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/best-effort-cache-ordinary-cpu16" \
+  --cpu 16
+
+python tests/benchmarks/bv-context/run_affinity_ordinary_suite.py \
+  --baseline /workspace/wt11/FStar-bv-context-baseline \
+  --candidate /workspace/wt11/FStar-ambient-cache-full \
+  --best-effort /workspace/wt11/FStar-ambient-cache-sparse \
+  --z3 /path/to/z3-5.3.0 \
+  --output "$EVIDENCE_ROOT/best-effort-cache-simple-cpu16" \
+  --cpu 16 --simple-agreement
+
+python tests/benchmarks/bv-context/summarize_best_effort_cache.py \
+  --ordinary "$EVIDENCE_ROOT/best-effort-cache-ordinary-cpu16" \
+  --simple "$EVIDENCE_ROOT/best-effort-cache-simple-cpu16" \
+  --output tests/benchmarks/bv-context/BEST_EFFORT_AMBIENT_CACHE.json
+```
+
 This benchmark generates deterministic transition functions that compare
 concrete-width `FStar.BV` operations with corresponding `FStar.UInt`
 operations. Both representations use seed `20261021`, the same record widths,

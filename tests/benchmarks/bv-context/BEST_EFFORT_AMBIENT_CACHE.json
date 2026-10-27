@@ -1,0 +1,2694 @@
+{
+  "date": "2026-10-27",
+  "objective": "Compare no cache, corrected full cache, and sparse best-effort reuse on CPU 16.",
+  "ordinary": {
+    "provenance": {
+      "runner_sha256": "90005023b14dd863f8d74c7c6636d5a61d6f286dc3006140b03ac2174da1ce30",
+      "cpu": 16,
+      "simple_agreement": false,
+      "triples_per_workload": 5,
+      "workloads": {
+        "bv-binary-ops": {
+          "source": "tests/micro-benchmarks/BvBinaryOps.fst",
+          "declarations": 56,
+          "queries": 89
+        },
+        "classical-sugar": {
+          "source": "tests/micro-benchmarks/ClassicalSugar.fst",
+          "declarations": 50,
+          "queries": 89
+        },
+        "positivity": {
+          "source": "tests/micro-benchmarks/Positivity.fst",
+          "declarations": 243,
+          "queries": 41
+        },
+        "well-founded-recursion": {
+          "source": "tests/micro-benchmarks/TestWellFoundedRecursion.fst",
+          "declarations": 80,
+          "queries": 78
+        },
+        "normalization": {
+          "source": "tests/micro-benchmarks/Normalization.fst",
+          "declarations": 20,
+          "queries": 88
+        },
+        "norm-vs-smt": {
+          "source": "tests/micro-benchmarks/NormVsSMT.fst",
+          "declarations": 13,
+          "queries": 3
+        },
+        "bug3207": {
+          "source": "tests/bug-reports/closed/Bug3207.fst",
+          "declarations": 242,
+          "queries": 523
+        }
+      },
+      "source_sha256": {
+        "bv-binary-ops": "14797b4b4cc3c679a2ccc4efc39bb5e2f6271be5e70e4c20c91ca738996da0ba",
+        "classical-sugar": "0a18c4ff93e81d76d462debc2a92ebd410171988fc2cf19475e357ae4bd3b48b",
+        "positivity": "9af0c99a9ac2d16dd321510254bd1650c522a91256e6d3ab3ae1e6c33f7a0cdb",
+        "well-founded-recursion": "058bd48bc1d1c4e6102fc66f82aee2cd97064355a6884c0f2b0780fe5e16ebda",
+        "normalization": "4a19c19f2357c92b4fd5254af7f4ff0f20f9ce7ee513244cf54b1717c7e5f895",
+        "norm-vs-smt": "09bed22f316c76d0ec822bcfee9c9197af0d556862af4c0907b1dbf918f006d4",
+        "bug3207": "4c7ac63546fdd78ce814f4c5e7b1f6bbcd1e9a3fc332d276b5a6cb94263f5f9a"
+      },
+      "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+      "ocaml_version": "4.14.2",
+      "cleared_environment": [
+        "FSTAR_LIB",
+        "FSTAR_HOME",
+        "OCAMLRUNPARAM",
+        "CAMLRUNPARAM",
+        "FSTAR_PRUNING_REFERENCE",
+        "FSTAR_NO_DEDUP_VC",
+        "LD_PRELOAD",
+        "LD_LIBRARY_PATH",
+        "LD_AUDIT",
+        "OCAMLPATH",
+        "CAML_LD_LIBRARY_PATH",
+        "MALLOC_CONF",
+        "GLIBC_TUNABLES",
+        "MALLOC_ARENA_MAX",
+        "MALLOC_ARENA_TEST",
+        "MALLOC_CHECK_",
+        "MALLOC_PERTURB_",
+        "MALLOC_MMAP_MAX_",
+        "MALLOC_MMAP_THRESHOLD_",
+        "MALLOC_TOP_PAD_",
+        "MALLOC_TRIM_THRESHOLD_"
+      ],
+      "set_environment": {
+        "LC_ALL": "C",
+        "LANG": "C"
+      },
+      "tools": {
+        "git": {
+          "path": "/usr/bin/git",
+          "sha256": "eb54b535467e0975c1284d4c4d08eea779aeb248a5d34b02e2ee171382e22201"
+        },
+        "timeout": {
+          "path": "/usr/bin/timeout",
+          "sha256": "12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52"
+        },
+        "taskset": {
+          "path": "/usr/bin/taskset",
+          "sha256": "a431738fadddc2e2326c8ab81843e72f4011658379381aef1502a6ddb1c1115b"
+        },
+        "time": {
+          "path": "/usr/bin/time",
+          "sha256": "3b11dec50514a8473e9f6efa7a34d584d0657538c09988f61b72d38ad4991a10"
+        }
+      },
+      "variants": {
+        "baseline": {
+          "commit": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+          "binary_sha256": "92170e8deb7866a34c5ca71989cbb4e0a61b17bf49829ba5f080b02f14b7d012",
+          "checked_dependency_tree": {
+            "sha256": "6e3fb8cfb46662026444bbd4404ccfd3961c6f76384b57135f56fcedea397a0f",
+            "files": 379
+          },
+          "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-25 23:07:25 +0000\ncommit=0e13baff38309523a2074ef8fbc3745b4bc793ad"
+        },
+        "corrected": {
+          "commit": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
+          "binary_sha256": "fe21b602a45c87b479223d587dd4c477171a54a05909e679df6db7925a3bc0af",
+          "checked_dependency_tree": {
+            "sha256": "e0c04d48b64c9ce942a234bf27588732e796bd5e29a9027491bd5a34166942aa",
+            "files": 379
+          },
+          "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-26 05:32:01 +0000\ncommit=2260651e1f6db17b3d2013664d31e4fcc2c5fbae"
+        },
+        "best_effort": {
+          "commit": "2fb984f4043d481de81159637dc3f2719dca3cb2",
+          "binary_sha256": "b33a93d3cf1e49e5ed6dcf5cd5a6f5c9203ec827f8dc40d98dff1bb9a3f508fb",
+          "checked_dependency_tree": {
+            "sha256": "8fff7730ab2db581ae6e8965651655660371f641c8f6e84fa989a7167332a3a9",
+            "files": 379
+          },
+          "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-27 00:58:08 +0000\ncommit=2fb984f4043d481de81159637dc3f2719dca3cb2"
+        }
+      }
+    },
+    "per_workload": {
+      "bv-binary-ops": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              5.52,
+              5.52,
+              5.51,
+              5.51,
+              5.49
+            ],
+            "median": 5.51,
+            "min": 5.49,
+            "max": 5.52
+          },
+          "user_seconds": {
+            "observations": [
+              5.42,
+              5.42,
+              5.4,
+              5.41,
+              5.38
+            ],
+            "median": 5.41,
+            "min": 5.38,
+            "max": 5.42
+          },
+          "system_seconds": {
+            "observations": [
+              0.1,
+              0.09,
+              0.1,
+              0.1,
+              0.1
+            ],
+            "median": 0.1,
+            "min": 0.09,
+            "max": 0.1
+          },
+          "max_rss_kb": {
+            "observations": [
+              120100,
+              120096,
+              119952,
+              119876,
+              119832
+            ],
+            "median": 119952,
+            "min": 119832,
+            "max": 120100
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              4.59,
+              4.58,
+              4.57,
+              4.57,
+              4.53
+            ],
+            "median": 4.57,
+            "min": 4.53,
+            "max": 4.59
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1104,
+              1075,
+              1107,
+              1122,
+              1086
+            ],
+            "median": 1104,
+            "min": 1075,
+            "max": 1122
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1172,
+              1161,
+              1173,
+              1193,
+              1155
+            ],
+            "median": 1172,
+            "min": 1155,
+            "max": 1193
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              5.52,
+              5.53,
+              5.51,
+              5.53,
+              5.54
+            ],
+            "median": 5.53,
+            "min": 5.51,
+            "max": 5.54
+          },
+          "user_seconds": {
+            "observations": [
+              5.41,
+              5.43,
+              5.42,
+              5.43,
+              5.44
+            ],
+            "median": 5.43,
+            "min": 5.41,
+            "max": 5.44
+          },
+          "system_seconds": {
+            "observations": [
+              0.1,
+              0.09,
+              0.09,
+              0.1,
+              0.1
+            ],
+            "median": 0.1,
+            "min": 0.09,
+            "max": 0.1
+          },
+          "max_rss_kb": {
+            "observations": [
+              121384,
+              121540,
+              121340,
+              121352,
+              121356
+            ],
+            "median": 121356,
+            "min": 121340,
+            "max": 121540
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              4.54,
+              4.57,
+              4.5600000000000005,
+              4.57,
+              4.59
+            ],
+            "median": 4.57,
+            "min": 4.54,
+            "max": 4.59
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1063,
+              1048,
+              1068,
+              1045,
+              1054
+            ],
+            "median": 1054,
+            "min": 1045,
+            "max": 1068
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1134,
+              1120,
+              1141,
+              1118,
+              1143
+            ],
+            "median": 1134,
+            "min": 1118,
+            "max": 1143
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              5.54,
+              5.52,
+              5.56,
+              5.5,
+              5.52
+            ],
+            "median": 5.52,
+            "min": 5.5,
+            "max": 5.56
+          },
+          "user_seconds": {
+            "observations": [
+              5.44,
+              5.42,
+              5.46,
+              5.4,
+              5.41
+            ],
+            "median": 5.42,
+            "min": 5.4,
+            "max": 5.46
+          },
+          "system_seconds": {
+            "observations": [
+              0.09,
+              0.1,
+              0.1,
+              0.09,
+              0.1
+            ],
+            "median": 0.1,
+            "min": 0.09,
+            "max": 0.1
+          },
+          "max_rss_kb": {
+            "observations": [
+              120404,
+              120184,
+              119832,
+              120076,
+              120220
+            ],
+            "median": 120184,
+            "min": 119832,
+            "max": 120404
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              4.6,
+              4.55,
+              4.58,
+              4.53,
+              4.5600000000000005
+            ],
+            "median": 4.5600000000000005,
+            "min": 4.53,
+            "max": 4.6
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1072,
+              1144,
+              1037,
+              1024,
+              1041
+            ],
+            "median": 1041,
+            "min": 1024,
+            "max": 1144
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1135,
+              1207,
+              1103,
+              1081,
+              1100
+            ],
+            "median": 1103,
+            "min": 1081,
+            "max": 1207
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": 0.020000000000000462,
+          "corrected_vs_baseline_percent": 0.3629764065335772,
+          "best_effort_vs_baseline_seconds": 0.009999999999999787,
+          "best_effort_vs_baseline_percent": 0.1814882032667775,
+          "best_effort_vs_corrected_seconds": -0.010000000000000675,
+          "best_effort_vs_corrected_percent": -0.1808318264014619
+        }
+      },
+      "classical-sugar": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              1.24,
+              1.23,
+              1.25,
+              1.29,
+              1.25
+            ],
+            "median": 1.25,
+            "min": 1.23,
+            "max": 1.29
+          },
+          "user_seconds": {
+            "observations": [
+              1.14,
+              1.14,
+              1.14,
+              1.19,
+              1.14
+            ],
+            "median": 1.14,
+            "min": 1.14,
+            "max": 1.19
+          },
+          "system_seconds": {
+            "observations": [
+              0.09,
+              0.09,
+              0.1,
+              0.09,
+              0.1
+            ],
+            "median": 0.09,
+            "min": 0.09,
+            "max": 0.1
+          },
+          "max_rss_kb": {
+            "observations": [
+              126012,
+              126268,
+              125856,
+              125920,
+              125964
+            ],
+            "median": 125964,
+            "min": 125856,
+            "max": 126268
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.06,
+              0.06,
+              0.08,
+              0.08,
+              0.06
+            ],
+            "median": 0.06,
+            "min": 0.06,
+            "max": 0.08
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              773,
+              764,
+              792,
+              819,
+              820
+            ],
+            "median": 792,
+            "min": 764,
+            "max": 820
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              760,
+              748,
+              766,
+              807,
+              810
+            ],
+            "median": 766,
+            "min": 748,
+            "max": 810
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              1.24,
+              1.24,
+              1.28,
+              1.29,
+              1.24
+            ],
+            "median": 1.24,
+            "min": 1.24,
+            "max": 1.29
+          },
+          "user_seconds": {
+            "observations": [
+              1.13,
+              1.15,
+              1.18,
+              1.18,
+              1.15
+            ],
+            "median": 1.15,
+            "min": 1.13,
+            "max": 1.18
+          },
+          "system_seconds": {
+            "observations": [
+              0.1,
+              0.08,
+              0.09,
+              0.11,
+              0.09
+            ],
+            "median": 0.09,
+            "min": 0.08,
+            "max": 0.11
+          },
+          "max_rss_kb": {
+            "observations": [
+              127408,
+              127280,
+              127368,
+              127364,
+              127396
+            ],
+            "median": 127368,
+            "min": 127280,
+            "max": 127408
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.06,
+              0.06,
+              0.08,
+              0.06,
+              0.06
+            ],
+            "median": 0.06,
+            "min": 0.06,
+            "max": 0.08
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              841,
+              751,
+              787,
+              823,
+              755
+            ],
+            "median": 787,
+            "min": 751,
+            "max": 841
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              825,
+              744,
+              772,
+              802,
+              759
+            ],
+            "median": 772,
+            "min": 744,
+            "max": 825
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              1.25,
+              1.23,
+              1.26,
+              1.26,
+              1.24
+            ],
+            "median": 1.25,
+            "min": 1.23,
+            "max": 1.26
+          },
+          "user_seconds": {
+            "observations": [
+              1.13,
+              1.12,
+              1.16,
+              1.16,
+              1.15
+            ],
+            "median": 1.15,
+            "min": 1.12,
+            "max": 1.16
+          },
+          "system_seconds": {
+            "observations": [
+              0.11,
+              0.1,
+              0.09,
+              0.1,
+              0.09
+            ],
+            "median": 0.1,
+            "min": 0.09,
+            "max": 0.11
+          },
+          "max_rss_kb": {
+            "observations": [
+              126224,
+              126044,
+              126108,
+              125904,
+              126052
+            ],
+            "median": 126052,
+            "min": 125904,
+            "max": 126224
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.07,
+              0.06,
+              0.07,
+              0.06,
+              0.06
+            ],
+            "median": 0.06,
+            "min": 0.06,
+            "max": 0.07
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              815,
+              819,
+              884,
+              815,
+              786
+            ],
+            "median": 815,
+            "min": 786,
+            "max": 884
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              818,
+              815,
+              876,
+              818,
+              781
+            ],
+            "median": 818,
+            "min": 781,
+            "max": 876
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": -0.010000000000000009,
+          "corrected_vs_baseline_percent": -0.8000000000000007,
+          "best_effort_vs_baseline_seconds": 0.0,
+          "best_effort_vs_baseline_percent": 0.0,
+          "best_effort_vs_corrected_seconds": 0.010000000000000009,
+          "best_effort_vs_corrected_percent": 0.8064516129032251
+        }
+      },
+      "positivity": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              1.11,
+              1.12,
+              1.12,
+              1.11,
+              1.12
+            ],
+            "median": 1.12,
+            "min": 1.11,
+            "max": 1.12
+          },
+          "user_seconds": {
+            "observations": [
+              0.99,
+              0.99,
+              0.98,
+              0.97,
+              0.99
+            ],
+            "median": 0.99,
+            "min": 0.97,
+            "max": 0.99
+          },
+          "system_seconds": {
+            "observations": [
+              0.11,
+              0.13,
+              0.13,
+              0.13,
+              0.13
+            ],
+            "median": 0.13,
+            "min": 0.11,
+            "max": 0.13
+          },
+          "max_rss_kb": {
+            "observations": [
+              152232,
+              152032,
+              152044,
+              151716,
+              151868
+            ],
+            "median": 152032,
+            "min": 151716,
+            "max": 152232
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              546,
+              565,
+              514,
+              532,
+              558
+            ],
+            "median": 546,
+            "min": 514,
+            "max": 565
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              542,
+              571,
+              512,
+              532,
+              565
+            ],
+            "median": 542,
+            "min": 512,
+            "max": 571
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              1.12,
+              1.13,
+              1.13,
+              1.12,
+              1.12
+            ],
+            "median": 1.12,
+            "min": 1.12,
+            "max": 1.13
+          },
+          "user_seconds": {
+            "observations": [
+              1.01,
+              0.98,
+              0.99,
+              0.99,
+              0.99
+            ],
+            "median": 0.99,
+            "min": 0.98,
+            "max": 1.01
+          },
+          "system_seconds": {
+            "observations": [
+              0.11,
+              0.14,
+              0.13,
+              0.12,
+              0.13
+            ],
+            "median": 0.13,
+            "min": 0.11,
+            "max": 0.14
+          },
+          "max_rss_kb": {
+            "observations": [
+              154656,
+              154652,
+              154608,
+              154680,
+              154776
+            ],
+            "median": 154656,
+            "min": 154608,
+            "max": 154776
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              586,
+              539,
+              634,
+              512,
+              437
+            ],
+            "median": 539,
+            "min": 437,
+            "max": 634
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              587,
+              528,
+              653,
+              508,
+              429
+            ],
+            "median": 528,
+            "min": 429,
+            "max": 653
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              1.1,
+              1.1,
+              1.11,
+              1.1,
+              1.11
+            ],
+            "median": 1.1,
+            "min": 1.1,
+            "max": 1.11
+          },
+          "user_seconds": {
+            "observations": [
+              0.97,
+              0.97,
+              0.97,
+              0.97,
+              0.98
+            ],
+            "median": 0.97,
+            "min": 0.97,
+            "max": 0.98
+          },
+          "system_seconds": {
+            "observations": [
+              0.12,
+              0.13,
+              0.14,
+              0.13,
+              0.12
+            ],
+            "median": 0.13,
+            "min": 0.12,
+            "max": 0.14
+          },
+          "max_rss_kb": {
+            "observations": [
+              151584,
+              152192,
+              151892,
+              151948,
+              151932
+            ],
+            "median": 151932,
+            "min": 151584,
+            "max": 152192
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              556,
+              531,
+              629,
+              544,
+              474
+            ],
+            "median": 544,
+            "min": 474,
+            "max": 629
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              561,
+              541,
+              652,
+              548,
+              459
+            ],
+            "median": 548,
+            "min": 459,
+            "max": 652
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": 0.0,
+          "corrected_vs_baseline_percent": 0.0,
+          "best_effort_vs_baseline_seconds": -0.020000000000000018,
+          "best_effort_vs_baseline_percent": -1.7857142857142905,
+          "best_effort_vs_corrected_seconds": -0.020000000000000018,
+          "best_effort_vs_corrected_percent": -1.7857142857142905
+        }
+      },
+      "well-founded-recursion": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              1.0,
+              0.99,
+              0.98,
+              0.98,
+              0.99
+            ],
+            "median": 0.99,
+            "min": 0.98,
+            "max": 1.0
+          },
+          "user_seconds": {
+            "observations": [
+              0.84,
+              0.85,
+              0.84,
+              0.84,
+              0.84
+            ],
+            "median": 0.84,
+            "min": 0.84,
+            "max": 0.85
+          },
+          "system_seconds": {
+            "observations": [
+              0.14,
+              0.14,
+              0.14,
+              0.13,
+              0.14
+            ],
+            "median": 0.14,
+            "min": 0.13,
+            "max": 0.14
+          },
+          "max_rss_kb": {
+            "observations": [
+              122160,
+              122536,
+              122412,
+              122428,
+              122376
+            ],
+            "median": 122412,
+            "min": 122160,
+            "max": 122536
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1126,
+              1162,
+              1185,
+              1119,
+              1154
+            ],
+            "median": 1154,
+            "min": 1119,
+            "max": 1185
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1118,
+              1162,
+              1199,
+              1117,
+              1141
+            ],
+            "median": 1141,
+            "min": 1117,
+            "max": 1199
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              0.99,
+              1.0,
+              1.0,
+              1.0,
+              1.0
+            ],
+            "median": 1.0,
+            "min": 0.99,
+            "max": 1.0
+          },
+          "user_seconds": {
+            "observations": [
+              0.84,
+              0.87,
+              0.87,
+              0.86,
+              0.86
+            ],
+            "median": 0.86,
+            "min": 0.84,
+            "max": 0.87
+          },
+          "system_seconds": {
+            "observations": [
+              0.14,
+              0.13,
+              0.13,
+              0.14,
+              0.13
+            ],
+            "median": 0.13,
+            "min": 0.13,
+            "max": 0.14
+          },
+          "max_rss_kb": {
+            "observations": [
+              122484,
+              122284,
+              122484,
+              122188,
+              122384
+            ],
+            "median": 122384,
+            "min": 122188,
+            "max": 122484
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1094,
+              1208,
+              1123,
+              1146,
+              1167
+            ],
+            "median": 1146,
+            "min": 1094,
+            "max": 1208
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1081,
+              1212,
+              1120,
+              1156,
+              1164
+            ],
+            "median": 1156,
+            "min": 1081,
+            "max": 1212
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              0.99,
+              1.0,
+              1.0,
+              1.0,
+              1.01
+            ],
+            "median": 1.0,
+            "min": 0.99,
+            "max": 1.01
+          },
+          "user_seconds": {
+            "observations": [
+              0.84,
+              0.86,
+              0.86,
+              0.85,
+              0.86
+            ],
+            "median": 0.86,
+            "min": 0.84,
+            "max": 0.86
+          },
+          "system_seconds": {
+            "observations": [
+              0.14,
+              0.12,
+              0.13,
+              0.14,
+              0.14
+            ],
+            "median": 0.14,
+            "min": 0.12,
+            "max": 0.14
+          },
+          "max_rss_kb": {
+            "observations": [
+              123532,
+              123424,
+              123528,
+              123488,
+              123704
+            ],
+            "median": 123528,
+            "min": 123424,
+            "max": 123704
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1110,
+              1206,
+              1184,
+              1071,
+              1111
+            ],
+            "median": 1111,
+            "min": 1071,
+            "max": 1206
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1107,
+              1200,
+              1181,
+              1064,
+              1114
+            ],
+            "median": 1114,
+            "min": 1064,
+            "max": 1200
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": 0.010000000000000009,
+          "corrected_vs_baseline_percent": 1.0101010101010166,
+          "best_effort_vs_baseline_seconds": 0.010000000000000009,
+          "best_effort_vs_baseline_percent": 1.0101010101010166,
+          "best_effort_vs_corrected_seconds": 0.0,
+          "best_effort_vs_corrected_percent": 0.0
+        }
+      },
+      "normalization": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              0.53,
+              0.53,
+              0.53,
+              0.56,
+              0.53
+            ],
+            "median": 0.53,
+            "min": 0.53,
+            "max": 0.56
+          },
+          "user_seconds": {
+            "observations": [
+              0.44,
+              0.44,
+              0.45,
+              0.46,
+              0.44
+            ],
+            "median": 0.44,
+            "min": 0.44,
+            "max": 0.46
+          },
+          "system_seconds": {
+            "observations": [
+              0.09,
+              0.09,
+              0.08,
+              0.1,
+              0.08
+            ],
+            "median": 0.09,
+            "min": 0.08,
+            "max": 0.1
+          },
+          "max_rss_kb": {
+            "observations": [
+              132520,
+              132920,
+              132644,
+              132832,
+              132868
+            ],
+            "median": 132832,
+            "min": 132520,
+            "max": 132920
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1213,
+              1049,
+              1108,
+              1031,
+              951
+            ],
+            "median": 1049,
+            "min": 951,
+            "max": 1213
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1222,
+              1050,
+              1100,
+              1033,
+              958
+            ],
+            "median": 1050,
+            "min": 958,
+            "max": 1222
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              0.57,
+              0.58,
+              0.58,
+              0.61,
+              0.59
+            ],
+            "median": 0.58,
+            "min": 0.57,
+            "max": 0.61
+          },
+          "user_seconds": {
+            "observations": [
+              0.49,
+              0.49,
+              0.49,
+              0.51,
+              0.5
+            ],
+            "median": 0.49,
+            "min": 0.49,
+            "max": 0.51
+          },
+          "system_seconds": {
+            "observations": [
+              0.07,
+              0.08,
+              0.08,
+              0.09,
+              0.08
+            ],
+            "median": 0.08,
+            "min": 0.07,
+            "max": 0.09
+          },
+          "max_rss_kb": {
+            "observations": [
+              136828,
+              136832,
+              137100,
+              136868,
+              136836
+            ],
+            "median": 136836,
+            "min": 136828,
+            "max": 137100
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              990,
+              1027,
+              997,
+              1118,
+              918
+            ],
+            "median": 997,
+            "min": 918,
+            "max": 1118
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              993,
+              1033,
+              1009,
+              1135,
+              927
+            ],
+            "median": 1009,
+            "min": 927,
+            "max": 1135
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              0.56,
+              0.55,
+              0.55,
+              0.58,
+              0.55
+            ],
+            "median": 0.55,
+            "min": 0.55,
+            "max": 0.58
+          },
+          "user_seconds": {
+            "observations": [
+              0.47,
+              0.45,
+              0.48,
+              0.48,
+              0.46
+            ],
+            "median": 0.47,
+            "min": 0.45,
+            "max": 0.48
+          },
+          "system_seconds": {
+            "observations": [
+              0.09,
+              0.09,
+              0.07,
+              0.1,
+              0.09
+            ],
+            "median": 0.09,
+            "min": 0.07,
+            "max": 0.1
+          },
+          "max_rss_kb": {
+            "observations": [
+              133324,
+              132748,
+              132856,
+              133060,
+              132840
+            ],
+            "median": 132856,
+            "min": 132748,
+            "max": 133324
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              1075,
+              971,
+              1035,
+              1217,
+              949
+            ],
+            "median": 1035,
+            "min": 949,
+            "max": 1217
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              1084,
+              983,
+              1045,
+              1222,
+              956
+            ],
+            "median": 1045,
+            "min": 956,
+            "max": 1222
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": 0.04999999999999993,
+          "corrected_vs_baseline_percent": 9.433962264150942,
+          "best_effort_vs_baseline_seconds": 0.020000000000000018,
+          "best_effort_vs_baseline_percent": 3.7735849056603765,
+          "best_effort_vs_corrected_seconds": -0.029999999999999916,
+          "best_effort_vs_corrected_percent": -5.172413793103436
+        }
+      },
+      "norm-vs-smt": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              0.12,
+              0.12,
+              0.12,
+              0.12,
+              0.12
+            ],
+            "median": 0.12,
+            "min": 0.12,
+            "max": 0.12
+          },
+          "user_seconds": {
+            "observations": [
+              0.07,
+              0.07,
+              0.08,
+              0.07,
+              0.07
+            ],
+            "median": 0.07,
+            "min": 0.07,
+            "max": 0.08
+          },
+          "system_seconds": {
+            "observations": [
+              0.04,
+              0.04,
+              0.04,
+              0.05,
+              0.04
+            ],
+            "median": 0.04,
+            "min": 0.04,
+            "max": 0.05
+          },
+          "max_rss_kb": {
+            "observations": [
+              75440,
+              75448,
+              75372,
+              75372,
+              75372
+            ],
+            "median": 75372,
+            "min": 75372,
+            "max": 75448
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              22,
+              35,
+              24,
+              37,
+              22
+            ],
+            "median": 24,
+            "min": 22,
+            "max": 37
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              14,
+              36,
+              21,
+              36,
+              15
+            ],
+            "median": 21,
+            "min": 14,
+            "max": 36
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              0.13,
+              0.13,
+              0.13,
+              0.13,
+              0.13
+            ],
+            "median": 0.13,
+            "min": 0.13,
+            "max": 0.13
+          },
+          "user_seconds": {
+            "observations": [
+              0.08,
+              0.08,
+              0.08,
+              0.08,
+              0.08
+            ],
+            "median": 0.08,
+            "min": 0.08,
+            "max": 0.08
+          },
+          "system_seconds": {
+            "observations": [
+              0.04,
+              0.04,
+              0.04,
+              0.04,
+              0.04
+            ],
+            "median": 0.04,
+            "min": 0.04,
+            "max": 0.04
+          },
+          "max_rss_kb": {
+            "observations": [
+              76528,
+              76388,
+              76432,
+              76556,
+              76308
+            ],
+            "median": 76432,
+            "min": 76308,
+            "max": 76556
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              39,
+              25,
+              40,
+              28,
+              25
+            ],
+            "median": 28,
+            "min": 25,
+            "max": 40
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              36,
+              19,
+              36,
+              23,
+              19
+            ],
+            "median": 23,
+            "min": 19,
+            "max": 36
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              0.12,
+              0.12,
+              0.12,
+              0.12,
+              0.12
+            ],
+            "median": 0.12,
+            "min": 0.12,
+            "max": 0.12
+          },
+          "user_seconds": {
+            "observations": [
+              0.08,
+              0.07,
+              0.07,
+              0.08,
+              0.07
+            ],
+            "median": 0.07,
+            "min": 0.07,
+            "max": 0.08
+          },
+          "system_seconds": {
+            "observations": [
+              0.04,
+              0.05,
+              0.05,
+              0.04,
+              0.04
+            ],
+            "median": 0.04,
+            "min": 0.04,
+            "max": 0.05
+          },
+          "max_rss_kb": {
+            "observations": [
+              75908,
+              75288,
+              75452,
+              75616,
+              75624
+            ],
+            "median": 75616,
+            "min": 75288,
+            "max": 75908
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.0,
+              0.0,
+              0.0,
+              0.0,
+              0.0
+            ],
+            "median": 0.0,
+            "min": 0.0,
+            "max": 0.0
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              37,
+              65,
+              36,
+              37,
+              24
+            ],
+            "median": 37,
+            "min": 24,
+            "max": 65
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              35,
+              62,
+              34,
+              34,
+              18
+            ],
+            "median": 34,
+            "min": 18,
+            "max": 62
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": 0.010000000000000009,
+          "corrected_vs_baseline_percent": 8.333333333333348,
+          "best_effort_vs_baseline_seconds": 0.0,
+          "best_effort_vs_baseline_percent": 0.0,
+          "best_effort_vs_corrected_seconds": -0.010000000000000009,
+          "best_effort_vs_corrected_percent": -7.692307692307699
+        }
+      },
+      "bug3207": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              5.21,
+              5.16,
+              5.17,
+              5.18,
+              5.34
+            ],
+            "median": 5.18,
+            "min": 5.16,
+            "max": 5.34
+          },
+          "user_seconds": {
+            "observations": [
+              4.93,
+              4.85,
+              4.88,
+              4.88,
+              5.05
+            ],
+            "median": 4.88,
+            "min": 4.85,
+            "max": 5.05
+          },
+          "system_seconds": {
+            "observations": [
+              0.28,
+              0.3,
+              0.29,
+              0.29,
+              0.28
+            ],
+            "median": 0.29,
+            "min": 0.28,
+            "max": 0.3
+          },
+          "max_rss_kb": {
+            "observations": [
+              257192,
+              257120,
+              257044,
+              257128,
+              256984
+            ],
+            "median": 257120,
+            "min": 256984,
+            "max": 257192
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.83,
+              0.8,
+              0.83,
+              0.81,
+              0.86
+            ],
+            "median": 0.83,
+            "min": 0.8,
+            "max": 0.86
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              8305,
+              8355,
+              8387,
+              8263,
+              8497
+            ],
+            "median": 8355,
+            "min": 8263,
+            "max": 8497
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              8372,
+              8417,
+              8452,
+              8317,
+              8557
+            ],
+            "median": 8417,
+            "min": 8317,
+            "max": 8557
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              5.26,
+              5.3,
+              5.24,
+              5.28,
+              5.28
+            ],
+            "median": 5.28,
+            "min": 5.24,
+            "max": 5.3
+          },
+          "user_seconds": {
+            "observations": [
+              5.01,
+              5.01,
+              4.95,
+              4.99,
+              5.01
+            ],
+            "median": 5.01,
+            "min": 4.95,
+            "max": 5.01
+          },
+          "system_seconds": {
+            "observations": [
+              0.25,
+              0.28,
+              0.29,
+              0.28,
+              0.26
+            ],
+            "median": 0.28,
+            "min": 0.25,
+            "max": 0.29
+          },
+          "max_rss_kb": {
+            "observations": [
+              253832,
+              254340,
+              254360,
+              254352,
+              253828
+            ],
+            "median": 254340,
+            "min": 253828,
+            "max": 254360
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.8,
+              0.8,
+              0.81,
+              0.81,
+              0.83
+            ],
+            "median": 0.81,
+            "min": 0.8,
+            "max": 0.83
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              8365,
+              8304,
+              8363,
+              8174,
+              8162
+            ],
+            "median": 8304,
+            "min": 8162,
+            "max": 8365
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              8435,
+              8366,
+              8430,
+              8248,
+              8216
+            ],
+            "median": 8366,
+            "min": 8216,
+            "max": 8435
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              5.19,
+              5.24,
+              5.22,
+              5.24,
+              5.38
+            ],
+            "median": 5.24,
+            "min": 5.19,
+            "max": 5.38
+          },
+          "user_seconds": {
+            "observations": [
+              4.91,
+              4.94,
+              4.9,
+              4.94,
+              5.1
+            ],
+            "median": 4.94,
+            "min": 4.9,
+            "max": 5.1
+          },
+          "system_seconds": {
+            "observations": [
+              0.28,
+              0.29,
+              0.32,
+              0.29,
+              0.27
+            ],
+            "median": 0.29,
+            "min": 0.27,
+            "max": 0.32
+          },
+          "max_rss_kb": {
+            "observations": [
+              257268,
+              257152,
+              257448,
+              257372,
+              257432
+            ],
+            "median": 257372,
+            "min": 257152,
+            "max": 257448
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              0.79,
+              0.8200000000000001,
+              0.79,
+              0.79,
+              0.8300000000000001
+            ],
+            "median": 0.79,
+            "min": 0.79,
+            "max": 0.8300000000000001
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              8457,
+              8367,
+              8504,
+              8472,
+              8508
+            ],
+            "median": 8472,
+            "min": 8367,
+            "max": 8508
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              8543,
+              8429,
+              8571,
+              8543,
+              8570
+            ],
+            "median": 8543,
+            "min": 8429,
+            "max": 8571
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": 0.10000000000000053,
+          "corrected_vs_baseline_percent": 1.9305019305019488,
+          "best_effort_vs_baseline_seconds": 0.0600000000000005,
+          "best_effort_vs_baseline_percent": 1.1583011583011782,
+          "best_effort_vs_corrected_seconds": -0.040000000000000036,
+          "best_effort_vs_corrected_percent": -0.7575757575757569
+        }
+      }
+    },
+    "aggregate": {
+      "summed_median_baseline_seconds": 14.7,
+      "summed_median_corrected_seconds": 14.88,
+      "summed_median_best_effort_seconds": 14.78,
+      "summed_median_corrected_vs_baseline_seconds": 0.1800000000000015,
+      "summed_median_corrected_vs_baseline_percent": 1.224489795918382,
+      "geomean_corrected_vs_baseline_percent": 2.8242347754001695,
+      "summed_median_best_effort_vs_baseline_seconds": 0.08000000000000007,
+      "summed_median_best_effort_vs_baseline_percent": 0.5442176870748217,
+      "geomean_best_effort_vs_baseline_percent": 0.6075924172180391
+    },
+    "evidence": {
+      "provenance_sha256": "2e87d8cbbbdc291757f8a6aee39e63ac7f665ee826f7e98aaa9e7d6e7b460c3d",
+      "measurements_sha256": "0b9e5ffbf612c2589cc7bffd4b1aaa229752b62d0b3f122a135d26c9b300b99a"
+    }
+  },
+  "simple_agreement": {
+    "provenance": {
+      "runner_sha256": "90005023b14dd863f8d74c7c6636d5a61d6f286dc3006140b03ac2174da1ce30",
+      "cpu": 16,
+      "simple_agreement": true,
+      "triples_per_workload": 5,
+      "workloads": {
+        "simple-agreement-1024": {
+          "source": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/best-effort-cache-simple-cpu16-final/generated/SimpleAgreement1024.fst",
+          "declarations": 1025,
+          "queries": 1025
+        },
+        "simple-agreement-2048": {
+          "source": "/home/amosrobinson/.copilot/session-state/7081de44-8211-4e82-806b-f466934ac8a6/files/best-effort-cache-simple-cpu16-final/generated/SimpleAgreement2048.fst",
+          "declarations": 2049,
+          "queries": 2049
+        }
+      },
+      "source_sha256": {
+        "simple-agreement-1024": "a7ed060cd18539f684343ea6afd677effa8fa18bdea2dc12500ff68878c67c05",
+        "simple-agreement-2048": "e6ea5c68e73cb58c169d7407b5a78ffab73cf64b8419653c3795bacdcf0d2dac"
+      },
+      "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+      "ocaml_version": "4.14.2",
+      "cleared_environment": [
+        "FSTAR_LIB",
+        "FSTAR_HOME",
+        "OCAMLRUNPARAM",
+        "CAMLRUNPARAM",
+        "FSTAR_PRUNING_REFERENCE",
+        "FSTAR_NO_DEDUP_VC",
+        "LD_PRELOAD",
+        "LD_LIBRARY_PATH",
+        "LD_AUDIT",
+        "OCAMLPATH",
+        "CAML_LD_LIBRARY_PATH",
+        "MALLOC_CONF",
+        "GLIBC_TUNABLES",
+        "MALLOC_ARENA_MAX",
+        "MALLOC_ARENA_TEST",
+        "MALLOC_CHECK_",
+        "MALLOC_PERTURB_",
+        "MALLOC_MMAP_MAX_",
+        "MALLOC_MMAP_THRESHOLD_",
+        "MALLOC_TOP_PAD_",
+        "MALLOC_TRIM_THRESHOLD_"
+      ],
+      "set_environment": {
+        "LC_ALL": "C",
+        "LANG": "C"
+      },
+      "tools": {
+        "git": {
+          "path": "/usr/bin/git",
+          "sha256": "eb54b535467e0975c1284d4c4d08eea779aeb248a5d34b02e2ee171382e22201"
+        },
+        "timeout": {
+          "path": "/usr/bin/timeout",
+          "sha256": "12690a043dfd555a6c14ccc1564f5649c18f1762c0d6ff66729948130898ec52"
+        },
+        "taskset": {
+          "path": "/usr/bin/taskset",
+          "sha256": "a431738fadddc2e2326c8ab81843e72f4011658379381aef1502a6ddb1c1115b"
+        },
+        "time": {
+          "path": "/usr/bin/time",
+          "sha256": "3b11dec50514a8473e9f6efa7a34d584d0657538c09988f61b72d38ad4991a10"
+        }
+      },
+      "variants": {
+        "baseline": {
+          "commit": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+          "binary_sha256": "92170e8deb7866a34c5ca71989cbb4e0a61b17bf49829ba5f080b02f14b7d012",
+          "checked_dependency_tree": {
+            "sha256": "6e3fb8cfb46662026444bbd4404ccfd3961c6f76384b57135f56fcedea397a0f",
+            "files": 379
+          },
+          "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-25 23:07:25 +0000\ncommit=0e13baff38309523a2074ef8fbc3745b4bc793ad"
+        },
+        "corrected": {
+          "commit": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
+          "binary_sha256": "fe21b602a45c87b479223d587dd4c477171a54a05909e679df6db7925a3bc0af",
+          "checked_dependency_tree": {
+            "sha256": "e0c04d48b64c9ce942a234bf27588732e796bd5e29a9027491bd5a34166942aa",
+            "files": 379
+          },
+          "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-26 05:32:01 +0000\ncommit=2260651e1f6db17b3d2013664d31e4fcc2c5fbae"
+        },
+        "best_effort": {
+          "commit": "2fb984f4043d481de81159637dc3f2719dca3cb2",
+          "binary_sha256": "b33a93d3cf1e49e5ed6dcf5cd5a6f5c9203ec827f8dc40d98dff1bb9a3f508fb",
+          "checked_dependency_tree": {
+            "sha256": "8fff7730ab2db581ae6e8965651655660371f641c8f6e84fa989a7167332a3a9",
+            "files": 379
+          },
+          "version": "F* 2026.10.18~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-27 00:58:08 +0000\ncommit=2fb984f4043d481de81159637dc3f2719dca3cb2"
+        }
+      }
+    },
+    "per_workload": {
+      "simple-agreement-1024": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              42.65,
+              44.63,
+              43.44,
+              43.22,
+              43.08
+            ],
+            "median": 43.22,
+            "min": 42.65,
+            "max": 44.63
+          },
+          "user_seconds": {
+            "observations": [
+              42.21,
+              44.19,
+              42.98,
+              42.74,
+              42.63
+            ],
+            "median": 42.74,
+            "min": 42.21,
+            "max": 44.19
+          },
+          "system_seconds": {
+            "observations": [
+              0.4,
+              0.41,
+              0.43,
+              0.45,
+              0.42
+            ],
+            "median": 0.42,
+            "min": 0.4,
+            "max": 0.45
+          },
+          "max_rss_kb": {
+            "observations": [
+              141844,
+              141756,
+              141096,
+              141744,
+              141420
+            ],
+            "median": 141744,
+            "min": 141096,
+            "max": 141844
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              18.82,
+              20.14,
+              19.44,
+              18.99,
+              18.86
+            ],
+            "median": 18.99,
+            "min": 18.82,
+            "max": 20.14
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              12880,
+              13064,
+              12973,
+              13042,
+              12959
+            ],
+            "median": 12973,
+            "min": 12880,
+            "max": 13064
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              14052,
+              14278,
+              14198,
+              14279,
+              14182
+            ],
+            "median": 14198,
+            "min": 14052,
+            "max": 14279
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              32.56,
+              33.45,
+              34.32,
+              34.49,
+              32.64
+            ],
+            "median": 33.45,
+            "min": 32.56,
+            "max": 34.49
+          },
+          "user_seconds": {
+            "observations": [
+              32.11,
+              33.04,
+              33.88,
+              34.03,
+              32.19
+            ],
+            "median": 33.04,
+            "min": 32.11,
+            "max": 34.03
+          },
+          "system_seconds": {
+            "observations": [
+              0.43,
+              0.39,
+              0.41,
+              0.44,
+              0.42
+            ],
+            "median": 0.42,
+            "min": 0.39,
+            "max": 0.44
+          },
+          "max_rss_kb": {
+            "observations": [
+              137832,
+              137940,
+              137472,
+              138024,
+              137992
+            ],
+            "median": 137940,
+            "min": 137472,
+            "max": 138024
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              17.23,
+              17.8,
+              18.57,
+              18.18,
+              17.15
+            ],
+            "median": 17.8,
+            "min": 17.15,
+            "max": 18.57
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              12946,
+              12992,
+              12929,
+              13050,
+              13000
+            ],
+            "median": 12992,
+            "min": 12929,
+            "max": 13050
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              13982,
+              14003,
+              14007,
+              14124,
+              14046
+            ],
+            "median": 14007,
+            "min": 13982,
+            "max": 14124
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              33.08,
+              33.71,
+              34.62,
+              35.91,
+              33.09
+            ],
+            "median": 33.71,
+            "min": 33.08,
+            "max": 35.91
+          },
+          "user_seconds": {
+            "observations": [
+              32.62,
+              33.27,
+              34.19,
+              35.45,
+              32.66
+            ],
+            "median": 33.27,
+            "min": 32.62,
+            "max": 35.45
+          },
+          "system_seconds": {
+            "observations": [
+              0.43,
+              0.41,
+              0.4,
+              0.43,
+              0.41
+            ],
+            "median": 0.41,
+            "min": 0.4,
+            "max": 0.43
+          },
+          "max_rss_kb": {
+            "observations": [
+              135948,
+              136104,
+              135732,
+              135928,
+              136084
+            ],
+            "median": 135948,
+            "min": 135732,
+            "max": 136104
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              17.57,
+              18.1,
+              18.77,
+              19.12,
+              17.7
+            ],
+            "median": 18.1,
+            "min": 17.57,
+            "max": 19.12
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              13093,
+              13065,
+              13044,
+              13084,
+              12913
+            ],
+            "median": 13065,
+            "min": 12913,
+            "max": 13093
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              14132,
+              14109,
+              14069,
+              14169,
+              13946
+            ],
+            "median": 14109,
+            "min": 13946,
+            "max": 14169
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": -9.769999999999996,
+          "corrected_vs_baseline_percent": -22.605275335492813,
+          "best_effort_vs_baseline_seconds": -9.509999999999998,
+          "best_effort_vs_baseline_percent": -22.003701989819525,
+          "best_effort_vs_corrected_seconds": 0.259999999999998,
+          "best_effort_vs_corrected_percent": 0.7772795216741235
+        }
+      },
+      "simple-agreement-2048": {
+        "triples": 5,
+        "baseline": {
+          "wall_seconds": {
+            "observations": [
+              198.32,
+              191.21,
+              191.18,
+              193.61,
+              191.17
+            ],
+            "median": 191.21,
+            "min": 191.17,
+            "max": 198.32
+          },
+          "user_seconds": {
+            "observations": [
+              197.25,
+              190.16,
+              190.2,
+              192.6,
+              190.07
+            ],
+            "median": 190.2,
+            "min": 190.07,
+            "max": 197.25
+          },
+          "system_seconds": {
+            "observations": [
+              0.98,
+              0.96,
+              0.9,
+              0.93,
+              1.02
+            ],
+            "median": 0.96,
+            "min": 0.9,
+            "max": 1.02
+          },
+          "max_rss_kb": {
+            "observations": [
+              230760,
+              230300,
+              230676,
+              230552,
+              230676
+            ],
+            "median": 230676,
+            "min": 230300,
+            "max": 230760
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              93.28,
+              89.59,
+              90.39,
+              91.54,
+              91.06
+            ],
+            "median": 91.06,
+            "min": 89.59,
+            "max": 93.28
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              33282,
+              33011,
+              33067,
+              33223,
+              33122
+            ],
+            "median": 33122,
+            "min": 33011,
+            "max": 33282
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              37005,
+              36616,
+              36811,
+              36898,
+              36797
+            ],
+            "median": 36811,
+            "min": 36616,
+            "max": 37005
+          }
+        },
+        "corrected": {
+          "wall_seconds": {
+            "observations": [
+              159.1,
+              154.98,
+              155.22,
+              155.85,
+              153.07999999999998
+            ],
+            "median": 155.22,
+            "min": 153.07999999999998,
+            "max": 159.1
+          },
+          "user_seconds": {
+            "observations": [
+              158.15,
+              153.97,
+              154.25,
+              154.91,
+              152.13
+            ],
+            "median": 154.25,
+            "min": 152.13,
+            "max": 158.15
+          },
+          "system_seconds": {
+            "observations": [
+              0.87,
+              0.93,
+              0.89,
+              0.87,
+              0.88
+            ],
+            "median": 0.88,
+            "min": 0.87,
+            "max": 0.93
+          },
+          "max_rss_kb": {
+            "observations": [
+              230552,
+              230724,
+              230788,
+              230672,
+              230552
+            ],
+            "median": 230672,
+            "min": 230552,
+            "max": 230788
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              91.58,
+              89.43,
+              90.37,
+              89.61,
+              88.08
+            ],
+            "median": 89.61,
+            "min": 88.08,
+            "max": 91.58
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              31777,
+              31291,
+              31246,
+              31231,
+              31733
+            ],
+            "median": 31291,
+            "min": 31231,
+            "max": 31777
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              35068,
+              34496,
+              34465,
+              34574,
+              34938
+            ],
+            "median": 34574,
+            "min": 34465,
+            "max": 35068
+          }
+        },
+        "best_effort": {
+          "wall_seconds": {
+            "observations": [
+              159.72,
+              155.84,
+              155.62,
+              153.45,
+              156.47
+            ],
+            "median": 155.84,
+            "min": 153.45,
+            "max": 159.72
+          },
+          "user_seconds": {
+            "observations": [
+              158.72,
+              154.9,
+              154.68,
+              152.48,
+              155.5
+            ],
+            "median": 154.9,
+            "min": 152.48,
+            "max": 158.72
+          },
+          "system_seconds": {
+            "observations": [
+              0.93,
+              0.88,
+              0.87,
+              0.9,
+              0.9
+            ],
+            "median": 0.9,
+            "min": 0.87,
+            "max": 0.93
+          },
+          "max_rss_kb": {
+            "observations": [
+              230804,
+              230340,
+              230508,
+              230716,
+              230752
+            ],
+            "median": 230716,
+            "min": 230340,
+            "max": 230804
+          },
+          "z3_reported_seconds": {
+            "observations": [
+              88.85000000000001,
+              90.12,
+              90.01,
+              88.47,
+              90.0
+            ],
+            "median": 90.0,
+            "min": 88.47,
+            "max": 90.12
+          },
+          "voluntary_context_switches": {
+            "observations": [
+              31498,
+              31352,
+              31797,
+              31222,
+              31293
+            ],
+            "median": 31352,
+            "min": 31222,
+            "max": 31797
+          },
+          "involuntary_context_switches": {
+            "observations": [
+              34784,
+              34532,
+              35048,
+              34484,
+              34541
+            ],
+            "median": 34541,
+            "min": 34484,
+            "max": 35048
+          }
+        },
+        "wall_changes": {
+          "corrected_vs_baseline_seconds": -35.99000000000001,
+          "corrected_vs_baseline_percent": -18.822237330683546,
+          "best_effort_vs_baseline_seconds": -35.370000000000005,
+          "best_effort_vs_baseline_percent": -18.497986506981857,
+          "best_effort_vs_corrected_seconds": 0.6200000000000045,
+          "best_effort_vs_corrected_percent": 0.3994330627496545
+        }
+      }
+    },
+    "aggregate": {
+      "summed_median_baseline_seconds": 234.43,
+      "summed_median_corrected_seconds": 188.67000000000002,
+      "summed_median_best_effort_seconds": 189.55,
+      "summed_median_corrected_vs_baseline_seconds": -45.75999999999999,
+      "summed_median_corrected_vs_baseline_percent": -19.519686047007635,
+      "geomean_corrected_vs_baseline_percent": -20.736322374794792,
+      "summed_median_best_effort_vs_baseline_seconds": -44.879999999999995,
+      "summed_median_best_effort_vs_baseline_percent": -19.144307469180568,
+      "geomean_best_effort_vs_baseline_percent": -20.270110166693488
+    },
+    "evidence": {
+      "provenance_sha256": "d287b4b62e660d7d03f18287a73827b8270acc5540765ba7aa3afd267953e62c",
+      "measurements_sha256": "3bd92fdb6fc59e4befc3d742ba9c8576a8b66a34bebba3ae2929d34d0f4b75d0"
+    }
+  },
+  "limitations": [
+    "CPU affinity does not reserve CPU 16 from other host workloads.",
+    "The first two ordinary triples experienced visible host slowdown.",
+    "No allocation counters, solver tuning, or workload changes were used."
+  ]
+}

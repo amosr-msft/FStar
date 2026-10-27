@@ -48,11 +48,26 @@ EXPECTED_COMMITS = {
     "candidate": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
 }
 
+BEST_EFFORT_COMMITS = {
+    "baseline": "0e13baff38309523a2074ef8fbc3745b4bc793ad",
+    "corrected": "2260651e1f6db17b3d2013664d31e4fcc2c5fbae",
+    "best_effort": "2fb984f4043d481de81159637dc3f2719dca3cb2",
+}
+
 EXPECTED_BINARIES = {
     "baseline":
         "92170e8deb7866a34c5ca71989cbb4e0a61b17bf49829ba5f080b02f14b7d012",
     "candidate":
         "83c2f0de76d2915cae3231e1c2621009f4101f25fba45b5046366de538b97208",
+}
+
+BEST_EFFORT_BINARIES = {
+    "baseline":
+        "92170e8deb7866a34c5ca71989cbb4e0a61b17bf49829ba5f080b02f14b7d012",
+    "corrected":
+        "fe21b602a45c87b479223d587dd4c477171a54a05909e679df6db7925a3bc0af",
+    "best_effort":
+        "b33a93d3cf1e49e5ed6dcf5cd5a6f5c9203ec827f8dc40d98dff1bb9a3f508fb",
 }
 
 EXPECTED_DEPENDENCIES = {
@@ -64,6 +79,24 @@ EXPECTED_DEPENDENCIES = {
     "candidate": {
         "sha256":
             "77d114652ff5051c773738765ef31b3d4047706f46f2728a80055d15cb2436c3",
+        "files": 379,
+    },
+}
+
+BEST_EFFORT_DEPENDENCIES = {
+    "baseline": {
+        "sha256":
+            "6e3fb8cfb46662026444bbd4404ccfd3961c6f76384b57135f56fcedea397a0f",
+        "files": 379,
+    },
+    "corrected": {
+        "sha256":
+            "e0c04d48b64c9ce942a234bf27588732e796bd5e29a9027491bd5a34166942aa",
+        "files": 379,
+    },
+    "best_effort": {
+        "sha256":
+            "8fff7730ab2db581ae6e8965651655660371f641c8f6e84fa989a7167332a3a9",
         "files": 379,
     },
 }
@@ -126,21 +159,69 @@ def parse_time(path):
 
 
 def main():
+    global WORKLOADS
     parser = argparse.ArgumentParser()
     parser.add_argument("--baseline", type=Path, required=True)
     parser.add_argument("--candidate", type=Path, required=True)
+    parser.add_argument("--best-effort", type=Path)
     parser.add_argument("--z3", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--cpu", type=int, default=16)
+    parser.add_argument("--simple-agreement", action="store_true")
     args = parser.parse_args()
     if args.cpu != 16:
         parser.error("this protocol is pinned to CPU 16")
-    roots = {
-        "baseline": args.baseline.resolve(),
-        "candidate": args.candidate.resolve(),
-    }
-    if roots["baseline"] == roots["candidate"]:
-        raise RuntimeError("baseline and candidate roots must differ")
+    if args.best_effort is None:
+        roots = {
+            "baseline": args.baseline.resolve(),
+            "candidate": args.candidate.resolve(),
+        }
+        expected_commits = EXPECTED_COMMITS
+        expected_binaries = EXPECTED_BINARIES
+        expected_dependencies = EXPECTED_DEPENDENCIES
+    else:
+        roots = {
+            "baseline": args.baseline.resolve(),
+            "corrected": args.candidate.resolve(),
+            "best_effort": args.best_effort.resolve(),
+        }
+        expected_commits = BEST_EFFORT_COMMITS
+        expected_binaries = BEST_EFFORT_BINARIES
+        expected_dependencies = BEST_EFFORT_DEPENDENCIES
+    if len(set(roots.values())) != len(roots):
+        raise RuntimeError("benchmark roots must differ")
+    if args.output.is_symlink():
+        raise RuntimeError("output must not be a symlink")
+    args.output.mkdir(parents=True, exist_ok=True)
+    lock_path = args.output / "campaign.lock"
+    lock_fd = os.open(
+        lock_path,
+        os.O_WRONLY | os.O_CREAT | os.O_NOFOLLOW,
+        0o600,
+    )
+    if not stat.S_ISREG(os.fstat(lock_fd).st_mode):
+        os.close(lock_fd)
+        raise RuntimeError("campaign lock must be a regular file")
+    lock = os.fdopen(lock_fd, "w")
+    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    if args.simple_agreement:
+        generated = args.output / "generated"
+        generator = Path(__file__).resolve().parent / "generate_simple.py"
+        for count in (1024, 2048):
+            subprocess.run([
+                "python", str(generator), "--output", str(generated),
+                "--count", str(count),
+            ], check=True)
+        WORKLOADS = {
+            f"simple-agreement-{count}": {
+                "source": str(
+                    (generated / f"SimpleAgreement{count}.fst").resolve()
+                ),
+                "declarations": count + 1,
+                "queries": count + 1,
+            }
+            for count in (1024, 2048)
+        }
     binaries = {
         variant: root / "stage2/out/bin/fstar.exe"
         for variant, root in roots.items()
@@ -169,9 +250,9 @@ def main():
         for variant, root in roots.items()
     }
     if (
-        commits != EXPECTED_COMMITS
-        or binary_hashes != EXPECTED_BINARIES
-        or dependencies != EXPECTED_DEPENDENCIES
+        commits != expected_commits
+        or binary_hashes != expected_binaries
+        or dependencies != expected_dependencies
     ):
         raise RuntimeError("unexpected matched compiler inputs")
     z3_hash = sha256(args.z3.resolve())
@@ -207,24 +288,15 @@ def main():
         if len(set(hashes.values())) != 1:
             raise RuntimeError(f"{workload}: source differs")
         source_hashes[workload] = hashes["baseline"]
-    args.output.mkdir(parents=True, exist_ok=True)
-    if args.output.is_symlink():
-        raise RuntimeError("output must not be a symlink")
-    lock_path = args.output / "campaign.lock"
-    lock_fd = os.open(
-        lock_path,
-        os.O_WRONLY | os.O_CREAT | os.O_NOFOLLOW,
-        0o600,
-    )
-    if not stat.S_ISREG(os.fstat(lock_fd).st_mode):
-        os.close(lock_fd)
-        raise RuntimeError("campaign lock must be a regular file")
-    lock = os.fdopen(lock_fd, "w")
-    fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
     provenance = {
         "runner_sha256": sha256(Path(__file__)),
         "cpu": args.cpu,
-        "pairs_per_workload": 5,
+        "simple_agreement": args.simple_agreement,
+        (
+            "pairs_per_workload"
+            if len(roots) == 2
+            else "triples_per_workload"
+        ): 5,
         "workloads": WORKLOADS,
         "source_sha256": source_hashes,
         "z3_sha256": z3_hash,
@@ -391,22 +463,22 @@ def main():
         raise RuntimeError("ordinary affinity cells differ")
     for workload in WORKLOADS:
         for repeat in range(1, 6):
-            pair = [
+            group = [
                 row for row in all_rows
                 if row["workload"] == workload and row["repeat"] == repeat
             ]
             if (
-                len(pair) != 2
+                len(group) != len(roots)
                 or len({
                     (
                         row["profiled_declaration_count"],
                         row["query_count"],
                     )
-                    for row in pair
+                    for row in group
                 }) != 1
-                or pair[0]["profiled_declaration_count"]
+                or group[0]["profiled_declaration_count"]
                 != WORKLOADS[workload]["declarations"]
-                or pair[0]["query_count"] != WORKLOADS[workload]["queries"]
+                or group[0]["query_count"] != WORKLOADS[workload]["queries"]
             ):
                 raise RuntimeError(f"{workload}#{repeat}: work differs")
 

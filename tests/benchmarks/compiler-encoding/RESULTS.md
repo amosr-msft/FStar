@@ -416,6 +416,66 @@ wall/RSS/Z3/context-switch summaries, aggregate statistics, commands, hashes,
 and limitations. No allocation counters, benchmark/workload source changes, or
 tuning were used.
 
+##### Sparse best-effort reuse
+
+The follow-up implementation at `2fb984f404` removes the persistent duplicate
+trigger-to-assumption map and full residual assumption map. It reuses the
+canonical complete indexes, records reached assumptions/symbols and direct
+macro inputs, and stores an override only for a conjunction whose trigger state
+has actually advanced. Already-reached symbols and assumptions are skipped.
+This keeps the hard incremental cases while avoiding most cache bookkeeping on
+ordinary declarations.
+
+The build, bootstrap diff, cached-versus-fresh byte comparison, direct
+empty/disjunctive/conjunctive/late-trigger state regression, scope test,
+pretyping/no-ambient fallbacks, and admitted historical full-source check all
+pass. The failed sets-only precursor is not used: it lost partial conjunction
+progress between late `a` and `b` events.
+
+The genuine no-cache baseline `0e13baff38`, corrected full cache `2260651e1f`,
+and sparse cache `2fb984f404` were run in five adjacent randomized triples on
+CPU 16. Both cache variants were clean-built with their own checked dependency
+trees; all variants used the same OCaml 4.14.2, Z3 5.3.0, sources, flags, and
+sanitized environment.
+
+| Workload | No cache median | Full cache median | Sparse cache median | Sparse vs no cache | Sparse vs full cache |
+|---|---:|---:|---:|---:|---:|
+| `BvBinaryOps` | 5.51 s | 5.53 s | 5.52 s | +0.01 s (+0.2%) | -0.01 s (-0.2%) |
+| `ClassicalSugar` | 1.25 s | 1.24 s | 1.25 s | 0.00 s | +0.01 s (+0.8%) |
+| `Positivity` | 1.12 s | 1.12 s | 1.10 s | -0.02 s (-1.8%) | -0.02 s (-1.8%) |
+| `TestWellFoundedRecursion` | 0.99 s | 1.00 s | 1.00 s | +0.01 s (+1.0%) | 0.00 s |
+| `Normalization` | 0.53 s | 0.58 s | 0.55 s | +0.02 s (+3.8%) | -0.03 s (-5.2%) |
+| `NormVsSMT` | 0.12 s | 0.13 s | 0.12 s | 0.00 s | -0.01 s (-7.7%) |
+| `Bug3207` | 5.18 s | 5.28 s | 5.24 s | +0.06 s (+1.2%) | -0.04 s (-0.8%) |
+
+Summed ordinary medians are 14.70, 14.88, and 14.78 seconds respectively.
+Sparse reuse recovers 0.10 of the full cache's 0.18-second aggregate overhead;
+its remaining +0.08 seconds (+0.5%) is small relative to observed run-to-run
+variability. `Normalization` improves from the repeatable 0.58-second
+full-cache median to 0.55 seconds, leaving a 0.02-second difference from no
+cache. Ordinary median RSS also returns close to baseline: for `Normalization`,
+129.7/133.6/129.7 MiB.
+
+The context-heavy controls retain the benefit:
+
+| Workload | No cache observations | Full cache observations | Sparse cache observations | Median change, sparse vs no cache |
+|---|---|---|---|---:|
+| SimpleAgreement-1024 | 42.65, 44.63, 43.44, 43.22, 43.08 s | 32.56, 33.45, 34.32, 34.49, 32.64 s | 33.08, 33.71, 34.62, 35.91, 33.09 s | -9.51 s (-22.0%) |
+| SimpleAgreement-2048 | 198.32, 191.21, 191.18, 193.61, 191.17 s | 159.10, 154.98, 155.22, 155.85, 153.08 s | 159.72, 155.84, 155.62, 153.45, 156.47 s | -35.37 s (-18.5%) |
+
+Solver medians are 18.99/17.80/18.10 seconds at 1024 and
+91.06/89.61/90.00 seconds at 2048; sparse versus full wall medians differ by
+only 0.26 and 0.62 seconds. The supported conclusion is that the simpler
+representation reduces the repeatable ordinary overhead without erasing the
+approximately 19% large-context gain; it is not evidence that the sparse cache
+improves Z3.
+
+`BEST_EFFORT_AMBIENT_CACHE.json` records every wall/RSS/Z3/CPU/context-switch
+observation, exact compiler and dependency identities, and aggregate results.
+No full BV rerun was warranted because the representative 2048 control retained
+the corrected cache's benefit and the implementation does not change selected
+facts.
+
 ## Primary result: current master versus main interning
 
 The primary comparison pins upstream master
