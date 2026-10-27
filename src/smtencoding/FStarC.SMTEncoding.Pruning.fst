@@ -70,8 +70,7 @@ type pdef = {
 }
 
 type ambient_cache = {
-  ac_trigger_to_assumption: PSMap.t (list passumption);
-  ac_assumption_to_triggers: PSMap.t assumption_remaining_triggers;
+  ac_trigger_overrides: PSMap.t assumption_remaining_triggers;
   ac_reached_assumptions: RBSet.t string;
   ac_reached_symbols: RBSet.t string;
   ac_direct_macro_inputs: RBSet.t string;
@@ -163,8 +162,7 @@ let init
     extra_roots=[];
     pruned_ambients=[];
     ambient_cache = {
-      ac_trigger_to_assumption = PSMap.empty ();
-      ac_assumption_to_triggers = PSMap.empty ();
+      ac_trigger_overrides = PSMap.empty ();
       ac_reached_assumptions = empty ();
       ac_reached_symbols = empty ();
       ac_direct_macro_inputs = empty ();
@@ -422,27 +420,6 @@ let trigger_reached (p:pruning_state) (trig:string)
 : pruning_state
 = { p with trigger_to_assumption = PSMap.remove p.trigger_to_assumption trig }
 
-// remove one trigger from waiting triggers of aname
-// if aname now has an empty set of triggers, return true, marking it as reachable/eligible
-let remove_trigger_for_assumption (p:pruning_state) (trig:sym) (aname:string)
-: ML (pruning_state & bool & list sym)
-= match PSMap.try_find p.assumption_to_triggers aname with
-  | None ->
-    // debug (fun _ -> Format.print2 "Removing trigger %s for assumption %s---no assumption found\n" trig aname);
-    p, false, []
-  | Some l -> 
-    let l =
-      { remaining_triggers = l.remaining_triggers |> List.map (fun ts -> remove trig.sym_name ts);
-        already_triggered = trig :: l.already_triggered }
-    in
-    let eligible = BU.for_some is_empty l.remaining_triggers in
-    // debug (fun _ ->
-    //   Format.print5 "Removing trigger %s for assumption %s---eligible? %s, original triggers %s, remaining triggers %s\n"
-    //     trig aname (show eligible) (show l) (show remaining_triggers));
-    { p with assumption_to_triggers = PSMap.add p.assumption_to_triggers aname l },
-    eligible,
-    l.already_triggered
-
 let rec assumptions_of_decl (d:decl)
 : ML (list assumption)
 = match d with
@@ -473,6 +450,7 @@ type ctxt = {
   reached: reached_assumption_names;
   reached_symbols: RBSet.t string;
   direct_macro_inputs: RBSet.t string;
+  trigger_overrides: PSMap.t assumption_remaining_triggers;
 }
 let st a = ctxt -> ML (a & ctxt)
 let get : st ctxt = fun s -> (s, s)
@@ -499,20 +477,37 @@ let find_assumptions_waiting_on_trigger (x:sym)
   | Some l -> return l
 
 // Mark an assumption as reached, to include in the resulting pruned set
-// Remove it from the assumption map, so that we don't scan it again
+// Remove any partial trigger state; reached prevents rescanning.
 let reached_assumption (aname:string)
 : ML (st unit)
 = let! ctxt = get in
-  let p = { ctxt.p with assumption_to_triggers = PSMap.remove ctxt.p.assumption_to_triggers aname } in
-  put {ctxt with reached=add aname ctxt.reached }
+  put {ctxt with
+        reached=add aname ctxt.reached;
+        trigger_overrides=PSMap.remove ctxt.trigger_overrides aname }
 
 // Remove trigger x from assumption a, and return true if a is now eligible
 let remove_trigger_for (trig:sym) (a:passumption)
 : ML (st (bool & list sym))
 = let! ctxt = get in
-  let p, eligible, already_triggered = remove_trigger_for_assumption ctxt.p trig a.pa_name in
-  put {ctxt with p} ;!
-  return (eligible, already_triggered)
+  let current =
+    match PSMap.try_find ctxt.trigger_overrides a.pa_name with
+    | Some current -> Some current
+    | None -> PSMap.try_find ctxt.p.assumption_to_triggers a.pa_name
+  in
+  match current with
+  | None -> return (false, [])
+  | Some current ->
+    let updated = {
+      remaining_triggers =
+        current.remaining_triggers
+        |> List.map (fun ts -> remove trig.sym_name ts);
+      already_triggered = trig :: current.already_triggered
+    } in
+    let eligible = BU.for_some is_empty updated.remaining_triggers in
+    put {ctxt with
+          trigger_overrides =
+            PSMap.add ctxt.trigger_overrides a.pa_name updated} ;!
+    return (eligible, updated.already_triggered)
 
 // Check if an assumption has already been reached 
 let already_reached (aname:string)
@@ -532,10 +527,15 @@ let trigger_pending_assumptions (lids:list sym)
         mark_trigger_reached lid ;!
         foldM_left
           (fun acc assumption ->
-            let! eligible, triggered_by = remove_trigger_for lid assumption in
-            if eligible
-            then return ({assumption; triggered_by}::acc)
-            else return acc)
+            if! already_reached assumption.pa_name
+            then return acc
+            else if not (should_retain_assumption assumption)
+            then return acc
+            else
+              let! eligible, triggered_by = remove_trigger_for lid assumption in
+              if eligible
+              then return ({assumption; triggered_by}::acc)
+              else return acc)
           acc
           assumptions)
   []
@@ -570,9 +570,16 @@ let rec scan (ds:list passumption)
   // Collect the free names of all assumptions and macro expand them
   let direct_syms = List.collect (fun a -> List.map (mk_sym a.pa_name) <| elems a.pa_free_names) ds in
   let new_syms = List.collect macro_expand direct_syms in
-  let reached_symbols =
-    List.fold_left (fun reached s -> add s.sym_name reached) ctxt.reached_symbols new_syms
+  let reached_symbols, new_syms =
+    List.fold_left
+      (fun (reached, new_syms) s ->
+        if mem s.sym_name reached
+        then reached, new_syms
+        else add s.sym_name reached, s::new_syms)
+      (ctxt.reached_symbols, [])
+      new_syms
   in
+  let new_syms = List.rev new_syms in
   let direct_macro_inputs =
     List.fold_left (fun reached s -> add s.sym_name reached) ctxt.direct_macro_inputs direct_syms
   in
@@ -593,10 +600,18 @@ let rec scan (ds:list passumption)
 let scan_macro_body (provenance:string) (names:list string)
 : ML (st unit)
 = let! ctxt = get in
-  let new_syms = List.map (fun sym_name -> { sym_name; sym_provenance = provenance }) names in
-  let reached_symbols =
-    List.fold_left (fun reached s -> add s.sym_name reached) ctxt.reached_symbols new_syms
+  let reached_symbols, new_syms =
+    List.fold_left
+      (fun (reached, new_syms) sym_name ->
+        if mem sym_name reached
+        then reached, new_syms
+        else
+          add sym_name reached,
+          { sym_name; sym_provenance = provenance }::new_syms)
+      (ctxt.reached_symbols, [])
+      names
   in
+  let new_syms = List.rev new_syms in
   put {ctxt with reached_symbols} ;!
   match! trigger_pending_assumptions new_syms with
   | [] -> return ()
@@ -606,17 +621,15 @@ let scan_macro_body (provenance:string) (names:list string)
 
 let ambient_ctxt (p:pruning_state) : ML ctxt =
   let cache = p.ambient_cache in
-  { p = { p with
-          trigger_to_assumption = cache.ac_trigger_to_assumption;
-          assumption_to_triggers = cache.ac_assumption_to_triggers };
+  { p;
     reached = cache.ac_reached_assumptions;
     reached_symbols = cache.ac_reached_symbols;
-    direct_macro_inputs = cache.ac_direct_macro_inputs }
+    direct_macro_inputs = cache.ac_direct_macro_inputs;
+    trigger_overrides = cache.ac_trigger_overrides }
 
 let store_ambient_ctxt (p:pruning_state) (ctxt:ctxt) : ML pruning_state =
   { p with ambient_cache = {
-      ac_trigger_to_assumption = ctxt.p.trigger_to_assumption;
-      ac_assumption_to_triggers = ctxt.p.assumption_to_triggers;
+      ac_trigger_overrides = ctxt.trigger_overrides;
       ac_reached_assumptions = ctxt.reached;
       ac_reached_symbols = ctxt.reached_symbols;
       ac_direct_macro_inputs = ctxt.direct_macro_inputs;
@@ -654,26 +667,19 @@ let add_ambient_triggered_assumption
       let ctxt = {
         ctxt with
         reached = add a.pa_name ctxt.reached;
-        p = { ctxt.p with
-              assumption_to_triggers =
-                PSMap.remove ctxt.p.assumption_to_triggers a.pa_name }
+        trigger_overrides =
+          PSMap.remove ctxt.trigger_overrides a.pa_name;
       } in
       let _, ctxt = scan [a] ctxt in
       store_ambient_ctxt p ctxt
-    else
-      let waiting = { remaining_triggers; already_triggered = [] } in
-      let trigger_to_assumption =
-        List.fold_left
-          (fun m ts ->
-            List.fold_left (add_to_trigger_map a) m (elems ts))
-          ctxt.p.trigger_to_assumption
-          remaining_triggers
-      in
-      let assumption_to_triggers =
-        PSMap.add ctxt.p.assumption_to_triggers a.pa_name waiting
-      in
+    else if reached_a_trigger
+    then
       store_ambient_ctxt p
-        { ctxt with p = { ctxt.p with trigger_to_assumption; assumption_to_triggers } }
+        { ctxt with
+          trigger_overrides =
+            PSMap.add ctxt.trigger_overrides a.pa_name
+              { remaining_triggers; already_triggered = [] } }
+    else p
 
 let update_ambient_cache_for_assumption
   (asum:assumption_summary)
@@ -769,7 +775,8 @@ let prune (p:pruning_state) (roots0:list decl)
       { p;
         reached = empty ();
         reached_symbols = empty ();
-        direct_macro_inputs = empty () }
+        direct_macro_inputs = empty ();
+        trigger_overrides = PSMap.empty () }
     else ambient_ctxt p
   in
   let roots =
