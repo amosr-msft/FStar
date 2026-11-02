@@ -1,0 +1,122 @@
+{
+  "cpu": 16,
+  "worktree": "/workspace/wt11/FStar-pr4797-perf",
+  "worktree_head": "482acd306163f58090c5612cb1260d7d2bd4b02b",
+  "compiler_commit": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+  "compiler_path": "/workspace/wt11/FStar-pr4797-perf/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+  "compiler_sha256": "ee391eec1e3a83ade4ea74411dd556b81bd1d825ebe8ec07096db766312ba460",
+  "compiler_version": "F* 2026.10.25~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-30 12:38:39 +1100\ncommit=e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+  "checked_tree": {
+    "sha256": "59bf4cada8ec7bd5e9a06576354483ad86c23932d4386ab5311e57a778f549b7",
+    "files": 379
+  },
+  "z3_path": "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+  "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+  "results": {
+    "dependency_bug3207": {
+      "source_file_name_calls": 159,
+      "source_file_name_seconds": 0.004493,
+      "mk_rng_calls": 8814,
+      "counter_lines": [
+        "PR4797_COUNTER source_file_name=159 seconds=0.004493000",
+        "PR4797_COUNTER mk_rng=8814"
+      ],
+      "stderr_sha256": "b80304bfd800560016b4628a1e17bbfc2a909a8f5ffea301dd210dfbfcf1d72a",
+      "command": [
+        "/workspace/wt11/FStar-pr4797-perf/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-perf/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-perf/stage2/out/lib/fstar/ulib.checked",
+        "--dep",
+        "full",
+        "/workspace/wt11/FStar-pr4797-perf/tests/bug-reports/closed/Bug3207.fst"
+      ],
+      "cwd": "/workspace/wt11/FStar-pr4797-perf/tests/bug-reports/closed",
+      "source_sha256": "4c7ac63546fdd78ce814f4c5e7b1f6bbcd1e9a3fc332d276b5a6cb94263f5f9a",
+      "stdout_sha256": "79af700a9a2660f49991d60fa01164ba959d70a6a167f94400542bb65d86ec15"
+    },
+    "normalization": {
+      "source_file_name_calls": 101,
+      "source_file_name_seconds": 0.002632,
+      "mk_rng_calls": 3514,
+      "counter_lines": [
+        "PR4797_COUNTER source_file_name=101 seconds=0.002632000",
+        "PR4797_COUNTER mk_rng=3514"
+      ],
+      "stderr_sha256": "38941ff66d77748803ea13610d47ce1100dc739c86799a27dcd970ae2f758495",
+      "command": [
+        "/workspace/wt11/FStar-pr4797-perf/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-perf/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-perf/stage2/out/lib/fstar/ulib.checked",
+        "--silent",
+        "--odir",
+        "/workspace/wt11/pr4797-counters-n__51nyy/normalization/output",
+        "--cache_dir",
+        "/workspace/wt11/pr4797-counters-n__51nyy/normalization/cache",
+        "--already_cached",
+        "Prims,FStar",
+        "--warn_error",
+        "-321",
+        "--force",
+        "-c",
+        "/workspace/wt11/FStar-pr4797-perf/tests/micro-benchmarks/Normalization.fst",
+        "-o",
+        "/workspace/wt11/pr4797-counters-n__51nyy/normalization/cache/Normalization.fst.checked"
+      ],
+      "cwd": "/workspace/wt11/FStar-pr4797-perf/tests/micro-benchmarks",
+      "source_sha256": "4a19c19f2357c92b4fd5254af7f4ff0f20f9ce7ee513244cf54b1717c7e5f895",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "bv_binary_ops": {
+      "source_file_name_calls": 90,
+      "source_file_name_seconds": 0.002109,
+      "mk_rng_calls": 14115,
+      "counter_lines": [
+        "PR4797_COUNTER source_file_name=90 seconds=0.002109000",
+        "PR4797_COUNTER mk_rng=14115"
+      ],
+      "stderr_sha256": "388623e05c5d87f631c03df9bcfc9e9bdc2e0794f70c3170a739ef1862f45983",
+      "command": [
+        "/workspace/wt11/FStar-pr4797-perf/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-perf/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-perf/stage2/out/lib/fstar/ulib.checked",
+        "--silent",
+        "--odir",
+        "/workspace/wt11/pr4797-counters-n__51nyy/bv_binary_ops/output",
+        "--cache_dir",
+        "/workspace/wt11/pr4797-counters-n__51nyy/bv_binary_ops/cache",
+        "--already_cached",
+        "Prims,FStar",
+        "--warn_error",
+        "-321",
+        "--force",
+        "-c",
+        "/workspace/wt11/FStar-pr4797-perf/tests/micro-benchmarks/BvBinaryOps.fst",
+        "-o",
+        "/workspace/wt11/pr4797-counters-n__51nyy/bv_binary_ops/cache/BvBinaryOps.fst.checked"
+      ],
+      "cwd": "/workspace/wt11/FStar-pr4797-perf/tests/micro-benchmarks",
+      "source_sha256": "14797b4b4cc3c679a2ccc4efc39bb5e2f6271be5e70e4c20c91ca738996da0ba",
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "instrumenter_sha256": "cdc30299cb726e953503e688abbc041a54977176a364cf32b547da0b84e3f29c",
+  "script_sha256": "ffe4696709ee4b93d8b82839c8564124ed95ebc245ee111165e1398cda6404e8"
+}

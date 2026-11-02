@@ -1,0 +1,103 @@
+{
+  "cpu": 16,
+  "batches": 5,
+  "iterations_per_batch": 1000,
+  "rows": [
+    {
+      "variant": "rebuild",
+      "repeat": 1,
+      "iterations": 1000,
+      "user_seconds": 17.13633,
+      "system_seconds": 18.439017,
+      "wall_seconds": 35.84644057229161
+    },
+    {
+      "variant": "original",
+      "repeat": 1,
+      "iterations": 1000,
+      "user_seconds": 17.599354,
+      "system_seconds": 18.487500999999998,
+      "wall_seconds": 36.358252450823784
+    },
+    {
+      "variant": "rebuild",
+      "repeat": 2,
+      "iterations": 1000,
+      "user_seconds": 17.223405999999997,
+      "system_seconds": 18.639948000000004,
+      "wall_seconds": 36.14405930694193
+    },
+    {
+      "variant": "original",
+      "repeat": 2,
+      "iterations": 1000,
+      "user_seconds": 17.697352000000002,
+      "system_seconds": 18.901256999999994,
+      "wall_seconds": 36.88925381889567
+    },
+    {
+      "variant": "original",
+      "repeat": 3,
+      "iterations": 1000,
+      "user_seconds": 17.856137000000004,
+      "system_seconds": 18.62396000000001,
+      "wall_seconds": 36.759711113292724
+    },
+    {
+      "variant": "rebuild",
+      "repeat": 3,
+      "iterations": 1000,
+      "user_seconds": 17.072065999999992,
+      "system_seconds": 18.536130999999997,
+      "wall_seconds": 35.87696426315233
+    },
+    {
+      "variant": "rebuild",
+      "repeat": 4,
+      "iterations": 1000,
+      "user_seconds": 16.986756999999997,
+      "system_seconds": 18.62634899999999,
+      "wall_seconds": 35.88139515835792
+    },
+    {
+      "variant": "original",
+      "repeat": 4,
+      "iterations": 1000,
+      "user_seconds": 17.965930000000014,
+      "system_seconds": 18.743458000000004,
+      "wall_seconds": 37.00006578490138
+    },
+    {
+      "variant": "rebuild",
+      "repeat": 5,
+      "iterations": 1000,
+      "user_seconds": 17.130616000000003,
+      "system_seconds": 18.853320999999994,
+      "wall_seconds": 36.27041020616889
+    },
+    {
+      "variant": "original",
+      "repeat": 5,
+      "iterations": 1000,
+      "user_seconds": 17.716951999999992,
+      "system_seconds": 18.891075,
+      "wall_seconds": 36.89563050866127
+    }
+  ],
+  "compiler_commit": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+  "variants": {
+    "original": {
+      "root": "/workspace/wt11/FStar-pr4797-perf",
+      "binary_sha256": "025429ead58f2b302c5854eca5f4475421f9a0aab1003e8242eb2cab5dbc686a",
+      "version": "F* 2026.10.25~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-30 12:38:39 +1100\ncommit=e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+      "worktree_head": "482acd306163f58090c5612cb1260d7d2bd4b02b"
+    },
+    "rebuild": {
+      "root": "/workspace/wt11/FStar-pr4797-head-rebuild",
+      "binary_sha256": "7448b6320e820d027303bfd94d4460e4c55b88425fdb659f4eda15ed5fa40c5b",
+      "version": "F* 2026.10.25~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-30 12:38:39 +1100\ncommit=e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+      "worktree_head": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb"
+    }
+  },
+  "script_sha256": "8b752474132cd75c8a0ae49148eb001635462681bba7d908dcbf19459b8e8b44"
+}

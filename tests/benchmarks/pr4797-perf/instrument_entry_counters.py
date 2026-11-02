@@ -35,13 +35,26 @@ def main():
         extracted / "FStarC_Find.ml",
         "let source_file_name (filename : string) : string =\n"
         "  (let tmp = (find_file filename) in\n",
-        "let source_file_name_calls = ref 0\n\n"
+        "let source_file_name_calls = ref 0\n"
+        "let source_file_name_seconds = ref 0.0\n\n"
         "let () = at_exit (fun () -> Printf.eprintf "
-        "\"PR4797_COUNTER source_file_name=%d\\n%!\" "
-        "!source_file_name_calls)\n\n"
+        "\"PR4797_COUNTER source_file_name=%d seconds=%.9f\\n%!\" "
+        "!source_file_name_calls !source_file_name_seconds)\n\n"
+        "let source_file_name_original (filename : string) : string =\n"
+        "  let tmp = (find_file filename) in\n",
+    )
+    replace_once(
+        extracted / "FStarC_Find.ml",
+        "filename1 92 47)))\n\nlet locate_ocaml",
+        "filename1 92 47)))\n\n"
         "let source_file_name (filename : string) : string =\n"
         "  (incr source_file_name_calls;\n"
-        "  let tmp = (find_file filename) in\n",
+        "  let started = Sys.time () in\n"
+        "  let result = source_file_name_original filename in\n"
+        "  source_file_name_seconds :=\n"
+        "    !source_file_name_seconds +. (Sys.time () -. started);\n"
+        "  result)\n\n"
+        "let locate_ocaml",
     )
 
 
