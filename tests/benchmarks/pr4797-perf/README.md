@@ -1,5 +1,9 @@
 # PR #4797 performance controls
 
+`ASYMPTOTIC_ANALYSIS.md` reviews the exact base/head source diff and traces the
+changed path helpers through parser, dependency, diagnostic, checked-file, and
+IDE call sites. It uses no timing probe.
+
 Download artifact `bench-pr-4797` from Actions run `40991738766`, then:
 
 ```sh

@@ -182,6 +182,13 @@ CI outliers remain unattributed. No production change is justified in this
 round: preserving hierarchical filenames is required, and dependency
 generation's few milliseconds do not explain the broad or long-test headline.
 
+The separate `ASYMPTOTIC_ANALYSIS.md` finds one avoidable scaling risk:
+`source_file_name` scans all expanded include roots even after its internal
+`find_file` lookup is cached, and ordinary parsing invokes it twice per file
+(three times per incremental IDE chunk). A final-result cache cleared by
+`Find.clear` would preserve semantics and remove repeated scans. This finding
+does not establish that the CI headline came from the path change.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
