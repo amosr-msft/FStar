@@ -1,0 +1,138 @@
+{
+  "cpu": 16,
+  "batches": 5,
+  "iterations_per_batch": 1000,
+  "order": [
+    "base",
+    "head",
+    "base",
+    "head",
+    "base",
+    "head",
+    "head",
+    "base",
+    "head",
+    "base"
+  ],
+  "rows": [
+    {
+      "variant": "base",
+      "repeat": 1,
+      "iterations": 1000,
+      "wall_seconds": 36.162425144109875,
+      "user_seconds": 17.30159,
+      "system_seconds": 18.582179,
+      "voluntary_context_switches": 990,
+      "involuntary_context_switches": 1385
+    },
+    {
+      "variant": "head",
+      "repeat": 1,
+      "iterations": 1000,
+      "wall_seconds": 36.780270834919065,
+      "user_seconds": 17.90794,
+      "system_seconds": 18.591696,
+      "voluntary_context_switches": 994,
+      "involuntary_context_switches": 1375
+    },
+    {
+      "variant": "base",
+      "repeat": 2,
+      "iterations": 1000,
+      "wall_seconds": 36.769813935272396,
+      "user_seconds": 17.604868000000003,
+      "system_seconds": 18.875308000000004,
+      "voluntary_context_switches": 993,
+      "involuntary_context_switches": 1366
+    },
+    {
+      "variant": "head",
+      "repeat": 2,
+      "iterations": 1000,
+      "wall_seconds": 36.64761035190895,
+      "user_seconds": 17.786721,
+      "system_seconds": 18.588252999999995,
+      "voluntary_context_switches": 996,
+      "involuntary_context_switches": 1375
+    },
+    {
+      "variant": "base",
+      "repeat": 3,
+      "iterations": 1000,
+      "wall_seconds": 36.36252619791776,
+      "user_seconds": 17.422304999999994,
+      "system_seconds": 18.664894000000004,
+      "voluntary_context_switches": 993,
+      "involuntary_context_switches": 1370
+    },
+    {
+      "variant": "head",
+      "repeat": 3,
+      "iterations": 1000,
+      "wall_seconds": 36.75552849890664,
+      "user_seconds": 17.853892000000002,
+      "system_seconds": 18.621461999999994,
+      "voluntary_context_switches": 996,
+      "involuntary_context_switches": 1359
+    },
+    {
+      "variant": "head",
+      "repeat": 4,
+      "iterations": 1000,
+      "wall_seconds": 37.137901150621474,
+      "user_seconds": 17.904409,
+      "system_seconds": 18.943594000000004,
+      "voluntary_context_switches": 992,
+      "involuntary_context_switches": 1381
+    },
+    {
+      "variant": "base",
+      "repeat": 4,
+      "iterations": 1000,
+      "wall_seconds": 36.56721970299259,
+      "user_seconds": 17.420883000000003,
+      "system_seconds": 18.866229000000004,
+      "voluntary_context_switches": 993,
+      "involuntary_context_switches": 1371
+    },
+    {
+      "variant": "head",
+      "repeat": 5,
+      "iterations": 1000,
+      "wall_seconds": 37.420472108758986,
+      "user_seconds": 17.989040999999986,
+      "system_seconds": 19.133797999999985,
+      "voluntary_context_switches": 990,
+      "involuntary_context_switches": 1385
+    },
+    {
+      "variant": "base",
+      "repeat": 5,
+      "iterations": 1000,
+      "wall_seconds": 36.97264590021223,
+      "user_seconds": 17.615332000000024,
+      "system_seconds": 19.05896100000001,
+      "voluntary_context_switches": 992,
+      "involuntary_context_switches": 1380
+    }
+  ],
+  "variants": {
+    "base": {
+      "root": "/workspace/wt11/FStar-pr4797-base",
+      "commit": "c68959fe1f070cd66a5ed2e92965185505f109ce",
+      "binary_sha256": "8bd6f882f363ef45734caa875596182229436f1b53b6ea5d8a1584d2d1cedc3f",
+      "version": "F* 2026.10.25~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-29 03:22:56 +0000\ncommit=c68959fe1f070cd66a5ed2e92965185505f109ce"
+    },
+    "head": {
+      "root": "/workspace/wt11/FStar-pr4797-perf",
+      "commit": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+      "binary_sha256": "025429ead58f2b302c5854eca5f4475421f9a0aab1003e8242eb2cab5dbc686a",
+      "version": "F* 2026.10.25~dev\nplatform=Linux_x86_64\nsystem=Unix\ncompiler=OCaml 4.14.2\ndate=2026-10-30 12:38:39 +1100\ncommit=e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb"
+    }
+  },
+  "environment": {
+    "LC_ALL": "C",
+    "LANG": "C"
+  },
+  "script_sha256": "c2d765a5f122e1c1520261787562824d435d412f31268eb8b9b9ee8d74cba703"
+}

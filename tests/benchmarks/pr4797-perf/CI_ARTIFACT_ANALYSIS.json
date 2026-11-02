@@ -1,0 +1,175 @@
+{
+  "baseline": "c68959fe1f070cd66a5ed2e92965185505f109ce",
+  "head": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb",
+  "report_matched_rows": 3477,
+  "report_included_rows": 3424,
+  "raw_paired_report_rows": 3411,
+  "raw_analyzable_included_rows": 3367,
+  "missing_raw_rows": [
+    "bare-tests/.depend.ramon",
+    "doc/book/code/.depend.ramon",
+    "examples/algorithms/.depend.ramon",
+    "examples/data_structures/.depend.ramon",
+    "examples/dsls/bool_refinement/.depend.ramon",
+    "examples/dsls/dependent_bool_refinement/.depend.ramon",
+    "examples/dsls/stlc/.depend.ramon",
+    "examples/layeredeffects/.depend.ramon",
+    "examples/metatheory/.depend.ramon",
+    "examples/misc/.depend.ramon",
+    "examples/oplss2021/.depend.ramon",
+    "examples/paradoxes/.depend.ramon",
+    "examples/param/.depend.ramon",
+    "examples/printf/.depend.ramon",
+    "examples/software_foundations/.depend.ramon",
+    "examples/tactics/.depend.ramon",
+    "examples/tactics/eci19/.depend.ramon",
+    "examples/termination/.depend.ramon",
+    "examples/typeclasses/.depend.ramon",
+    "examples/verifythis/2015/.depend.ramon",
+    "fsharp/tests/Hello/.depend.ramon",
+    "fsharp/tests/Test00/.depend.ramon",
+    "pulse/share/pulse/examples/.depend.ramon",
+    "pulse/share/pulse/examples/by-example/.depend.ramon",
+    "pulse/share/pulse/examples/c/.depend.ramon",
+    "pulse/share/pulse/examples/dice/.depend.ramon",
+    "pulse/share/pulse/examples/parallel/.depend.ramon",
+    "pulse/share/pulse/examples/protocol/calc/.depend.ramon",
+    "pulse/share/pulse/examples/protocol/echo/.depend.ramon",
+    "pulse/share/pulse/examples/protocol/tftp/.depend.ramon",
+    "pulse/test/.depend.ramon",
+    "pulse/test/bug-reports/.depend.ramon",
+    "pulse/test/error_messages/.depend.ramon",
+    "pulse/test/nolib/.depend.ramon",
+    "pulse/test/nolib/missing/.depend.ramon",
+    "tests/bug-reports/closed/.depend.ramon",
+    "tests/calc/.depend.ramon",
+    "tests/coercions/.depend.ramon",
+    "tests/custard/.depend.ramon",
+    "tests/custard/plugin/.depend.ramon",
+    "tests/custard/pulse/.depend.ramon",
+    "tests/error-messages/.depend.ramon",
+    "tests/extraction/.depend.ramon",
+    "tests/extraction/backends/.depend.ramon",
+    "tests/extraction/krml-private/.depend.ramon",
+    "tests/floats/.depend.ramon",
+    "tests/friends/1/.depend.ramon",
+    "tests/friends/2/.depend.ramon",
+    "tests/friends/3/.depend.ramon",
+    "tests/friends/4/.depend.ramon",
+    "tests/hacl/.depend.ramon",
+    "tests/ide/emacs/.depend.ramon",
+    "tests/incl/hierarchical.pos/.depend.ramon",
+    "tests/interfaces/.depend.ramon",
+    "tests/machine_integers/.depend.ramon",
+    "tests/micro-benchmarks/.depend.ramon",
+    "tests/overloading/.depend.ramon",
+    "tests/overloading/off/.depend.ramon",
+    "tests/overloading/strict/.depend.ramon",
+    "tests/projectors/.depend.ramon",
+    "tests/restricted_includes/.depend.ramon",
+    "tests/semiring/.depend.ramon",
+    "tests/tactics/.depend.ramon",
+    "tests/targets/.depend.ramon",
+    "tests/typeclasses/.depend.ramon",
+    "tests/vale/.depend.ramon"
+  ],
+  "report_group_cpu": {
+    "geometric_mean_ratio": 1.0224560671937826,
+    "median_change_percent": 2.1871722691394813,
+    "total_change_seconds": 71.54299999999999
+  },
+  "raw_metrics": {
+    "group_cpu": {
+      "rows": 3367,
+      "geometric_mean_ratio": 1.0216587024327297,
+      "median_change_percent": 2.1582733812949506,
+      "total_change_seconds": 69.088
+    },
+    "group_user": {
+      "rows": 3367,
+      "geometric_mean_ratio": 1.0238565493459262,
+      "median_change_percent": 2.263779527559051,
+      "total_change_seconds": 64.91700000000002
+    },
+    "group_system": {
+      "rows": 3367,
+      "geometric_mean_ratio": 1.0132987232687396,
+      "median_change_percent": 1.2820512820512775,
+      "total_change_seconds": 4.188
+    },
+    "root_user": {
+      "rows": 3367,
+      "geometric_mean_ratio": 1.026018207475457,
+      "median_change_percent": 1.980198019801982,
+      "total_change_seconds": 56.54999999999998
+    },
+    "root_system": {
+      "rows": 3367,
+      "geometric_mean_ratio": 1.015228188769552,
+      "median_change_percent": 0.0,
+      "total_change_seconds": 3.89
+    },
+    "wall": {
+      "rows": 3367,
+      "geometric_mean_ratio": 1.0189915585389289,
+      "median_change_percent": 1.7964071856287456,
+      "total_change_seconds": 60.97699999999997
+    }
+  },
+  "inferred_child_cpu": {
+    "rows": 711,
+    "geometric_mean_ratio": 0.996501038356478,
+    "median_change_percent": 0.0,
+    "total_change_seconds": 8.273999999999955
+  },
+  "duration_bands": {
+    "0.1-0.2": {
+      "rows": 861,
+      "median_change_seconds": 0.0040000000000000036,
+      "median_change_percent": 2.5316455696202445,
+      "total_change_seconds": 3.407
+    },
+    "0.2-0.5": {
+      "rows": 967,
+      "median_change_seconds": 0.0069999999999999785,
+      "median_change_percent": 2.2284122562674202,
+      "total_change_seconds": 7.457
+    },
+    "0.5-1": {
+      "rows": 1151,
+      "median_change_seconds": 0.013000000000000012,
+      "median_change_percent": 2.0599250936329527,
+      "total_change_seconds": 15.131999999999994
+    },
+    "1-2": {
+      "rows": 294,
+      "median_change_seconds": 0.03200000000000003,
+      "median_change_percent": 2.2483525591689646,
+      "total_change_seconds": 10.785
+    },
+    "2-5": {
+      "rows": 79,
+      "median_change_seconds": 0.020999999999999908,
+      "median_change_percent": 0.7002188183807379,
+      "total_change_seconds": 2.3190000000000013
+    },
+    "5-20": {
+      "rows": 49,
+      "median_change_seconds": 0.05799999999999983,
+      "median_change_percent": 0.641181722262818,
+      "total_change_seconds": 2.2650000000000023
+    },
+    "20-inf": {
+      "rows": 23,
+      "median_change_seconds": 0.695999999999998,
+      "median_change_percent": 0.6121571371957124,
+      "total_change_seconds": 30.178
+    }
+  },
+  "provenance": {
+    "report_sha256": "32e2a35c58f268d61488e2c1e36b9b23d96faea901399822c319f74e96dbaf4d",
+    "raw_file_count": 6822,
+    "raw_file_sha256": "8e4cdd1166bfc552fc30e6e81fefcd2bb41aa3cc0fb9153eedc27e6f68bb9797",
+    "script_sha256": "ccb426e54e35acfee393a035ab04c2eee042a755dbc71072740b8eac2b90f143"
+  }
+}

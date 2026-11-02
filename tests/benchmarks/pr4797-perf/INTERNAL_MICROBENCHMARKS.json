@@ -1,0 +1,60 @@
+{
+  "cpu": 16,
+  "source_file_name": {
+    "iterations_per_form": 1000000,
+    "absolute_seconds": [
+      17.555428,
+      17.389032,
+      17.253743
+    ],
+    "relative_seconds": [
+      17.415267,
+      17.379095,
+      17.490429
+    ],
+    "absolute_median_microseconds_per_call": 17.389032,
+    "relative_median_microseconds_per_call": 17.415267,
+    "compiler_commit": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb"
+  },
+  "mk_rng": {
+    "iterations": 10000000,
+    "base_seconds": [
+      0.052572,
+      0.052492,
+      0.052287,
+      0.052027,
+      0.052118
+    ],
+    "head_seconds": [
+      0.026571,
+      0.026725,
+      0.026658,
+      0.026543,
+      0.026499
+    ],
+    "base_median_seconds": 0.052287,
+    "head_median_seconds": 0.026571,
+    "base_commit": "c68959fe1f070cd66a5ed2e92965185505f109ce",
+    "head_commit": "e2c45ed0c4099f8d27ef0d78641ca8b626f4cdcb"
+  },
+  "compiler_archives": {
+    "base": {
+      "path": "/workspace/wt11/FStar-pr4797-base/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+      "sha256": "8db7eacdf3a091d321f3f64a90dbf1f511cfa6728a55d7e61bad7e3082b8790e"
+    },
+    "head": {
+      "path": "/workspace/wt11/FStar-pr4797-perf/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+      "sha256": "209a3d5d66528ab5e6bdf3b43db4ae98fc31b10bc4ed26ce8c9e8a13907a1fc1"
+    }
+  },
+  "harness_sha256": {
+    "source_file_name": "da5d8c5e909bce72529b95744de993ff74ccb13c682e6d99c668880dc540e94a",
+    "mk_rng": "a298adbb6cdddab7f898fec431a48e8fae6c1f84bc4f6918dfa8ac9c2de91c39"
+  },
+  "script_sha256": "0ea7e5ceb181b57052e7d06fe0584bd202cb5e8b343f8eda27b3b297645928e8",
+  "limitations": [
+    "These isolate helper cost and do not replace end-to-end workloads.",
+    "The range constructor harness discards each result.",
+    "The source filename harness measures a hot find-file cache."
+  ]
+}
