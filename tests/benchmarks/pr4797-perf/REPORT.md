@@ -258,6 +258,76 @@ The cache is therefore useful as a bounded asymptotic improvement for repeated
 parser/IDE inputs, but it does not fix the previously measured dependency gap
 and provides no evidence that it explains the original 1.022x CI result.
 
+## Cache-miss path follow-up
+
+The follow-up implementation at `c939875498` keeps the final-result cache and
+reduces first/distinct-input work without changing public path contracts:
+
+- resolved paths are normalized once before the normalized-path helper;
+- the filename dirname is computed at most once when any flat root exists;
+- normalized root boundary prefixes are prepared in the existing include-root
+  cache instead of allocated for every distinct filename.
+
+The focused regression now also covers overlapping roots, longest-root
+selection, flat roots, and path boundaries. Build, bootstrap diff, and the
+wired regression pass.
+
+A structural control converts 5,000 distinct nonexistent absolute filenames,
+so every call is a final-result cache miss:
+
+| Expanded roots | Existing cache | Miss-optimized | Change |
+|---:|---:|---:|---:|
+| 1 | 0.0820 s | 0.0806 s | -1.6% |
+| 16 | 0.0872 s | 0.0854 s | -2.0% |
+| 64 | 0.1157 s | 0.1092 s | -5.7% |
+| 256 | 0.2302 s | 0.2057 s | -10.7% |
+
+This demonstrates the intended miss-path reduction as include-root count
+grows. The lookup remains linear in root count, as required by the unchanged
+longest-root scan.
+
+The focused 20-pair dependency campaign, where the previous counter found
+155 misses among 159 calls, changes by:
+
+| Metric, optimized - existing cache | Median | Mean |
+|---|---:|---:|
+| F* root CPU | 0.00 s | -0.004 s |
+| child CPU | 0.00 s | 0.00 s |
+| wall | -1.7 ms | -2.6 ms |
+| peak RSS | +0.24 MiB | +0.20 MiB |
+
+The miss-path changes slightly reduce dependency wall time, but the result is
+small relative to run-to-run variation and 10 ms CPU accounting granularity.
+They do not eliminate the earlier base-to-PR dependency difference.
+
+Five-pair source controls against the original cached build show Normalization
+neutral, BV -0.03 seconds wall, Arrow -0.85 seconds, and Long apparently
++0.65 seconds F* CPU/+1.08 seconds wall. A clean rebuild of the exact optimized
+source is 0.27 seconds F* CPU faster than the original optimized binary on
+Long. Pairing that rebuilt binary against the existing cache removes the Long
+signal: -0.20 seconds F* CPU and -0.11 seconds wall median. Normalization is
+-0.01/-0.008 seconds. BV shifts from -0.03 to +0.02 seconds wall across builds.
+No Long, Normalization, or BV regression is attributable to the miss
+optimization.
+
+Bug3207 remains a small adverse signal: optimized-minus-cached wall medians are
++0.027 seconds for the original optimized build and +0.056 seconds for the
+rebuild. F* CPU is 0.00/+0.02 seconds, while child CPU is +0.01/0.00 seconds.
+This is retained as a small repeatable wall signal, but is too close to
+build/run variation to assign to one miss-path operation.
+
+Arrow is faster with both optimized builds (-0.85 and -0.32 seconds wall), but
+the magnitude remains build-dependent; no source speedup is claimed.
+
+Peak RSS is likewise build-sensitive. The rebuilt optimized comparison changes
+median RSS by -1.80 MiB on Long, +0.28 MiB on Normalization, +0.58 MiB on BV,
++0.20 MiB on Bug3207, and -31.75 MiB on Arrow. There is no consistent
+miss-cache retention increase.
+
+The miss optimization improves the targeted structural cost and provides a
+small dependency-wall improvement. It still does not explain the original
+1.022x CI result.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

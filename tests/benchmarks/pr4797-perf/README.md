@@ -125,6 +125,52 @@ python summarize_source_name_cache.py \
   --output SOURCE_NAME_CACHE_RESULTS.json
 ```
 
+The cache-miss follow-up compares `f4886d2dec` with `c939875498`:
+
+```sh
+python run_source_name_cache_three_way.py \
+  --cached /workspace/wt11/FStar-pr4797-cache-rebuild \
+  --optimized /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-miss-source-pairs-final \
+  --cpu 16 --repetitions 5
+
+python run_source_name_cache_three_way.py \
+  --cached /workspace/wt11/FStar-pr4797-cache-rebuild \
+  --optimized /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-miss-dependency-pairs-final \
+  --cpu 16 --repetitions 20 --dependency-only
+
+python run_source_name_miss_scaling.py \
+  --cached /workspace/wt11/FStar-pr4797-cache-rebuild \
+  --optimized /workspace/wt11/FStar-pr4797-source-name-cache \
+  --output /workspace/wt11/pr4797-miss-scaling \
+  --cpu 16
+
+python run_cache_rebuild_control.py \
+  --original /workspace/wt11/FStar-pr4797-source-name-cache \
+  --rebuild /workspace/wt11/FStar-pr4797-miss-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-miss-rebuild-control \
+  --cpu 16 --repetitions 5 --optimized
+
+python run_source_name_cache_three_way.py \
+  --cached /workspace/wt11/FStar-pr4797-cache-rebuild \
+  --optimized /workspace/wt11/FStar-pr4797-miss-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-miss-source-rebuild-pairs-final \
+  --cpu 16 --repetitions 5
+
+python summarize_source_name_miss.py \
+  --source /workspace/wt11/pr4797-miss-source-pairs-final \
+  --dependency /workspace/wt11/pr4797-miss-dependency-pairs-final \
+  --rebuild /workspace/wt11/pr4797-miss-rebuild-control \
+  --rebuilt-source /workspace/wt11/pr4797-miss-source-rebuild-pairs-final \
+  --scaling /workspace/wt11/pr4797-miss-scaling/result.json \
+  --output SOURCE_NAME_MISS_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:

@@ -26,9 +26,25 @@ VARIANTS = {
     },
     "cached": {
         "commit": "f4886d2decd874cd0008e31d6ba07c7da43c5ba4",
-        "binary": "e45671b08968de1ac22b3081f8b074c6966713ec577f147e4f686796b99fa17e",
-        "checked":
+        "binary": [
+            "e45671b08968de1ac22b3081f8b074c6966713ec577f147e4f686796b99fa17e",
+            "8578fcb8034b2330dc2b8f74c352ed702fe93905da582b3a7076a781e9ea963d",
+        ],
+        "checked": [
             "3431ef516df8f95749d4ad90bffee7b7d3072ce213bf6ca0c82ad48491ebe8f5",
+            "639c909d38045bff7f8751040bf4bda7d832cc77f7da072e91f6f0c85dacbb0a",
+        ],
+    },
+    "optimized": {
+        "commit": "c939875498355d0684b41138b5dbc208e34ef2b4",
+        "binary": [
+            "35e1c8f97bd7557e37723d2d0f8dec9b05dd29664037ab5312ca6ce4a5e469e3",
+            "bb9a39e97ca2ed702551d466fac52cefcfb1855d49375a2b5f0cad789d3c432d",
+        ],
+        "checked": [
+            "3431ef516df8f95749d4ad90bffee7b7d3072ce213bf6ca0c82ad48491ebe8f5",
+            "75b9926e13e4dac9552050e5099ecda300e11e333122b3b65a380691a5dfb680",
+        ],
     },
 }
 WORKLOADS = {
@@ -65,20 +81,29 @@ def load_monitor():
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--base", type=Path, required=True)
-    parser.add_argument("--pr", type=Path, required=True)
+    parser.add_argument("--base", type=Path)
+    parser.add_argument("--pr", type=Path)
     parser.add_argument("--cached", type=Path, required=True)
+    parser.add_argument("--optimized", type=Path)
     parser.add_argument("--z3", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--cpu", type=int, default=16)
     parser.add_argument("--repetitions", type=int, default=5)
     parser.add_argument("--dependency-only", action="store_true")
     args = parser.parse_args()
-    roots = {
-        "base": args.base.resolve(),
-        "pr": args.pr.resolve(),
-        "cached": args.cached.resolve(),
-    }
+    if args.optimized is None:
+        if args.base is None or args.pr is None:
+            parser.error("--base and --pr are required without --optimized")
+        roots = {
+            "base": args.base.resolve(),
+            "pr": args.pr.resolve(),
+            "cached": args.cached.resolve(),
+        }
+    else:
+        roots = {
+            "cached": args.cached.resolve(),
+            "optimized": args.optimized.resolve(),
+        }
     binaries = {
         variant: root / "stage2/out/bin/fstar.exe"
         for variant, root in roots.items()
@@ -89,19 +114,33 @@ def main():
         ).strip()
         for variant, root in roots.items()
     }
-    for variant, spec in VARIANTS.items():
+    for variant, root in roots.items():
+        spec = VARIANTS[variant]
         if subprocess.run([
-            "git", "-C", str(roots[variant]), "merge-base", "--is-ancestor",
+            "git", "-C", str(root), "merge-base", "--is-ancestor",
             spec["commit"], worktree_heads[variant],
         ]).returncode != 0:
             raise RuntimeError(f"{variant}: unexpected ancestry")
-        if sha256(binaries[variant]) != spec["binary"]:
-            raise RuntimeError(f"{variant}: binary differs")
+        if subprocess.run([
+            "git", "-C", str(root), "diff", "--quiet", spec["commit"],
+            "--", "src", "ulib", "pulse",
+        ]).returncode != 0:
+            raise RuntimeError(f"{variant}: production sources differ")
+        expected_binaries = (
+            spec["binary"] if isinstance(spec["binary"], list)
+            else [spec["binary"]]
+        )
         checked = tree_sha256(
             roots[variant] / "stage2/out/lib/fstar/ulib.checked"
         )
-        if checked != {"sha256": spec["checked"], "files": 379}:
-            raise RuntimeError(f"{variant}: checked tree differs")
+        expected_checked = (
+            spec["checked"] if isinstance(spec["checked"], list)
+            else [spec["checked"]]
+        )
+        actual = sha256(binaries[variant]), checked["sha256"]
+        allowed = set(zip(expected_binaries, expected_checked))
+        if checked["files"] != 379 or actual not in allowed:
+            raise RuntimeError(f"{variant}: compiler/dependency build differs")
     if sha256(args.z3.resolve()) != (
         "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3"
     ):
@@ -119,7 +158,7 @@ def main():
         }
         if len(set(hashes.values())) != 1:
             raise RuntimeError(f"{workload}: source differs")
-        source_hashes[workload] = hashes["base"]
+        source_hashes[workload] = next(iter(hashes.values()))
     args.output.mkdir(parents=True, exist_ok=True)
     if any(args.output.iterdir()):
         raise RuntimeError("output must be empty")

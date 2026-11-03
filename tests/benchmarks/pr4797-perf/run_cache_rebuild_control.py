@@ -20,6 +20,15 @@ CHECKED = {
     "original": "3431ef516df8f95749d4ad90bffee7b7d3072ce213bf6ca0c82ad48491ebe8f5",
     "rebuild": "639c909d38045bff7f8751040bf4bda7d832cc77f7da072e91f6f0c85dacbb0a",
 }
+OPTIMIZED_COMMIT = "c939875498355d0684b41138b5dbc208e34ef2b4"
+OPTIMIZED_BINARIES = {
+    "original": "35e1c8f97bd7557e37723d2d0f8dec9b05dd29664037ab5312ca6ce4a5e469e3",
+    "rebuild": "bb9a39e97ca2ed702551d466fac52cefcfb1855d49375a2b5f0cad789d3c432d",
+}
+OPTIMIZED_CHECKED = {
+    "original": "3431ef516df8f95749d4ad90bffee7b7d3072ce213bf6ca0c82ad48491ebe8f5",
+    "rebuild": "75b9926e13e4dac9552050e5099ecda300e11e333122b3b65a380691a5dfb680",
+}
 WORKLOADS = {
     "normalization": "tests/micro-benchmarks/Normalization.fst",
     "long": "tests/calc/Long.fst",
@@ -58,6 +67,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--cpu", type=int, default=16)
     parser.add_argument("--repetitions", type=int, default=5)
+    parser.add_argument("--optimized", action="store_true")
     args = parser.parse_args()
     roots = {
         "original": args.original.resolve(),
@@ -67,28 +77,31 @@ def main():
         variant: root / "stage2/out/bin/fstar.exe"
         for variant, root in roots.items()
     }
+    commit = OPTIMIZED_COMMIT if args.optimized else COMMIT
+    expected_binaries = OPTIMIZED_BINARIES if args.optimized else BINARIES
+    expected_checked = OPTIMIZED_CHECKED if args.optimized else CHECKED
     for variant, root in roots.items():
         head = subprocess.check_output(
             ["git", "-C", str(root), "rev-parse", "HEAD"], text=True
         ).strip()
         if (
-            variant == "rebuild" and head != COMMIT
+            variant == "rebuild" and head != commit
             or variant == "original" and subprocess.run([
                 "git", "-C", str(root), "merge-base", "--is-ancestor",
-                COMMIT, head,
+                commit, head,
             ]).returncode != 0
         ):
             raise RuntimeError(f"{variant}: revision differs")
         if subprocess.run([
-            "git", "-C", str(root), "diff", "--quiet", COMMIT,
+            "git", "-C", str(root), "diff", "--quiet", commit,
             "--", "src", "ulib", "pulse",
         ]).returncode != 0:
             raise RuntimeError(f"{variant}: production sources differ")
-        if sha256(binaries[variant]) != BINARIES[variant]:
+        if sha256(binaries[variant]) != expected_binaries[variant]:
             raise RuntimeError(f"{variant}: binary differs")
         if tree_sha256(
             root / "stage2/out/lib/fstar/ulib.checked"
-        ) != {"sha256": CHECKED[variant], "files": 379}:
+        ) != {"sha256": expected_checked[variant], "files": 379}:
             raise RuntimeError(f"{variant}: checked tree differs")
     if sha256(args.z3.resolve()) != (
         "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3"
@@ -114,7 +127,7 @@ def main():
     provenance = {
         "cpu": args.cpu,
         "repetitions": args.repetitions,
-        "commit": COMMIT,
+        "commit": commit,
         "variants": {
             variant: {
                 "root": str(root),
