@@ -189,6 +189,75 @@ The separate `ASYMPTOTIC_ANALYSIS.md` finds one avoidable scaling risk:
 `Find.clear` would preserve semantics and remove repeated scans. This finding
 does not establish that the CI headline came from the path change.
 
+## Final source-name cache experiment
+
+The production experiment at `f4886d2dec` adds only a final
+`source_file_name` hash cache beside `find_file_cache` and clears it from
+`Find.clear`. A focused internal regression checks repeated hierarchical
+lookups and invalidation through both include-path and file-list changes.
+Follow-up commits wire that regression into `tests/ide all` and isolate its
+build artifacts; the branch head is `25e2ae0571`. The compiler build, bootstrap
+diff, and regression pass.
+
+A structural CPU-16 probe performs 20,000 hot identical lookups after warming
+the caches:
+
+| Expanded roots | Unchanged PR | Cached PR |
+|---:|---:|---:|
+| 1 | 0.365 s | 0.00111 s |
+| 16 | 0.371 s | 0.00111 s |
+| 64 | 0.399 s | 0.00113 s |
+| 256 | 0.495 s | 0.00098 s |
+
+This establishes the intended scaling change for repeated identical inputs. It
+is not an end-to-end speedup claim.
+
+The source suite was repeated as five randomized CPU-16 triples: exact base,
+unchanged PR, and cached PR. Paired cached-minus-PR medians are:
+
+| Workload | F* root CPU | Child CPU | Wall | Peak RSS |
+|---|---:|---:|---:|---:|
+| `Normalization` | 0.00 s | 0.00 s | +0.001 s | +0.62 MiB |
+| `BvBinaryOps` | 0.00 s | -0.03 s | -0.035 s | +0.23 MiB |
+| `Bug3207` | +0.01 s | +0.02 s | +0.070 s | -0.16 MiB |
+| `tests/calc/Long` | +0.40 s | 0.00 s | +0.645 s | +5.34 MiB |
+| `ArrowUnfoldLimit` | +0.13 s | 0.00 s | +0.256 s | -1.31 MiB |
+
+The Long/Arrow direction is not attributable to the cache. A second clean
+build of the exact `f4886d2dec` source is 1.24 seconds median wall and
+0.81 seconds F* CPU faster than the original candidate on Long. On Arrow its
+paired wall differences span -1.53 to +3.05 seconds, with a +0.46-second
+median; that same-source spread exceeds the +0.26-second cached-versus-PR
+median. Normalization is neutral; BV is slightly faster; the Bug3207 difference
+is small relative to observed variability. No ordinary or long workload has a
+demonstrated cache regression.
+
+The focused dependency campaign used 20 randomized triples. Paired wall
+medians are:
+
+| Comparison | Wall |
+|---|---:|
+| unchanged PR - base | +6.9 ms |
+| cached PR - base | +14.5 ms |
+| cached PR - unchanged PR | +3.5 ms |
+
+The cache does **not** reduce the narrow dependency cost. An extracted
+diagnostic explains why: `Bug3207 --dep full` makes 159
+`source_file_name` calls but only four cache hits. `Normalization` makes 101
+calls with 26 hits. Dependency generation mostly converts distinct filenames,
+so final-result memoization cannot remove its first ownership scan. The
+cached-versus-PR dependency difference is only a few milliseconds, below
+precise attribution with the current CPU sampling and comparable to
+same-source build variation.
+
+Peak-memory differences are small and inconsistent. Cached-minus-PR median RSS
+ranges from -1.31 to +5.34 MiB in source workloads and is -0.10 MiB in the
+dependency campaign. There is no measured systematic retention increase.
+
+The cache is therefore useful as a bounded asymptotic improvement for repeated
+parser/IDE inputs, but it does not fix the previously measured dependency gap
+and provides no evidence that it explains the original 1.022x CI result.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

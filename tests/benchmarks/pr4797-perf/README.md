@@ -71,6 +71,60 @@ python summarize_source_workloads.py \
   --output SOURCE_WORKLOADS.json
 ```
 
+The final source-name cache comparison uses:
+
+```sh
+# The candidate worktree may include later test-only commits; runners verify
+# that production sources still match f4886d2dec and pin the benchmark binary.
+
+python run_source_name_cache_three_way.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --pr /workspace/wt11/FStar-pr4797-perf \
+  --cached /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-cache-source-three-way \
+  --cpu 16 --repetitions 5
+
+python run_source_name_cache_three_way.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --pr /workspace/wt11/FStar-pr4797-perf \
+  --cached /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-cache-dependency-three-way \
+  --cpu 16 --repetitions 20 --dependency-only
+
+python run_source_name_root_scaling.py \
+  --pr /workspace/wt11/FStar-pr4797-perf \
+  --cached /workspace/wt11/FStar-pr4797-source-name-cache \
+  --output /workspace/wt11/pr4797-cache-root-scaling \
+  --cpu 16
+
+python run_cache_rebuild_control.py \
+  --original /workspace/wt11/FStar-pr4797-source-name-cache \
+  --rebuild /workspace/wt11/FStar-pr4797-cache-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-cache-rebuild-control \
+  --cpu 16 --repetitions 5
+
+python instrument_source_name_cache.py \
+  /workspace/wt11/FStar-pr4797-source-name-cache
+# Rebuild stage3/fstarc-full as above, then:
+python run_source_name_cache_counters.py \
+  --worktree /workspace/wt11/FStar-pr4797-source-name-cache \
+  --fstar /path/to/instrumented/fstarc3_full.exe \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output SOURCE_NAME_CACHE_COUNTERS.json \
+  --cpu 16
+
+python summarize_source_name_cache.py \
+  --source /workspace/wt11/pr4797-cache-source-three-way \
+  --dependency /workspace/wt11/pr4797-cache-dependency-three-way \
+  --rebuild /workspace/wt11/pr4797-cache-rebuild-control \
+  --scaling /workspace/wt11/pr4797-cache-root-scaling/result.json \
+  --counters SOURCE_NAME_CACHE_COUNTERS.json \
+  --output SOURCE_NAME_CACHE_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:

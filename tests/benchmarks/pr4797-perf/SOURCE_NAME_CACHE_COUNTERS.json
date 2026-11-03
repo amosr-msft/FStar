@@ -1,0 +1,69 @@
+{
+  "cpu": 16,
+  "worktree": "/workspace/wt11/FStar-pr4797-source-name-cache",
+  "worktree_head": "25e2ae05714306d726fcfb124b549c3528533a2a",
+  "commit": "f4886d2decd874cd0008e31d6ba07c7da43c5ba4",
+  "compiler_path": "/workspace/wt11/FStar-pr4797-source-name-cache/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+  "compiler_sha256": "4b568862ebb2a7f2b4b424dc21d3ae953b15171ba19c1cee83291fdc745d6d98",
+  "z3_path": "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+  "z3_sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3",
+  "results": {
+    "dependency_bug3207": {
+      "calls": 159,
+      "misses": 155,
+      "hits": 4,
+      "command": [
+        "/workspace/wt11/FStar-pr4797-source-name-cache/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-source-name-cache/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-source-name-cache/stage2/out/lib/fstar/ulib.checked",
+        "--dep",
+        "full",
+        "/workspace/wt11/FStar-pr4797-source-name-cache/tests/bug-reports/closed/Bug3207.fst"
+      ],
+      "cwd": "/workspace/wt11/FStar-pr4797-source-name-cache/tests/bug-reports/closed",
+      "source_sha256": "4c7ac63546fdd78ce814f4c5e7b1f6bbcd1e9a3fc332d276b5a6cb94263f5f9a",
+      "stderr_sha256": "4d2696ea22199e5e72754e3dea66d3a9c57643b94347afee522cd94fd28d0124"
+    },
+    "normalization": {
+      "calls": 101,
+      "misses": 75,
+      "hits": 26,
+      "command": [
+        "/workspace/wt11/FStar-pr4797-source-name-cache/stage3/dune/_build/default/fstarc-full/fstarc3_full.exe",
+        "--z3version",
+        "5.3.0",
+        "--smt",
+        "/workspace/wt11/benchmark-tools/z3-5.3.0-wheel/z3_solver-5.3.0.0.data/data/bin/z3",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-source-name-cache/stage2/out/lib/fstar/ulib",
+        "--include",
+        "/workspace/wt11/FStar-pr4797-source-name-cache/stage2/out/lib/fstar/ulib.checked",
+        "--silent",
+        "--odir",
+        "/workspace/wt11/source-name-cache-counters-wxzpxs5b/output",
+        "--cache_dir",
+        "/workspace/wt11/source-name-cache-counters-wxzpxs5b/cache",
+        "--already_cached",
+        "Prims,FStar",
+        "--warn_error",
+        "-321",
+        "--force",
+        "-c",
+        "/workspace/wt11/FStar-pr4797-source-name-cache/tests/micro-benchmarks/Normalization.fst",
+        "-o",
+        "/workspace/wt11/source-name-cache-counters-wxzpxs5b/cache/Normalization.fst.checked"
+      ],
+      "cwd": "/workspace/wt11/FStar-pr4797-source-name-cache/tests/micro-benchmarks",
+      "source_sha256": "4a19c19f2357c92b4fd5254af7f4ff0f20f9ce7ee513244cf54b1717c7e5f895",
+      "stderr_sha256": "e5159fdaf8430e3d7ebafe1a625d506a4b63825c053f1633d360e81efab6fea2"
+    }
+  },
+  "instrumenter_sha256": "96c82a523539e3d86ecb98415e1a146a7994021bb27116f990965f23c1475dcb",
+  "script_sha256": "5232d2423bf9c14b6df7f768cb15b16d26436da8b501d15d491551566f86c047"
+}
