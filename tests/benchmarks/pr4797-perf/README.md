@@ -171,6 +171,30 @@ python summarize_source_name_miss.py \
   --output SOURCE_NAME_MISS_RESULTS.json
 ```
 
+`source_name_fallback_probe.ml` is the focused cross-revision fixture for the
+unresolved absolute `.`/`..` fallback corrected after benchmarking in
+`adbf7292f2`.
+
+Compile the probe against each revision's
+`stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`, then run:
+
+```sh
+/path/to/source_name_fallback_probe.exe \
+  /workspace/wt11/pr4797-fallback-fixture/include \
+  /workspace/wt11/pr4797-fallback-fixture/outside/absent
+```
+
+The existing cache (`f4886d2dec`) and corrected head (`adbf7292f2`) print:
+
+```text
+.=.
+..=..
+missing.fst=missing.fst
+```
+
+The benchmarked pre-correction `c939875498` printed `.=absent` and
+`..=outside`.
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:

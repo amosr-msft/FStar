@@ -328,6 +328,21 @@ The miss optimization improves the targeted structural cost and provides a
 small dependency-wall improvement. It still does not explain the original
 1.022x CI result.
 
+An independent review identified an off-benchmark fallback edge in
+`c939875498`: for an unresolved absolute input ending in `.` or `..` outside
+all include roots, ownership matching correctly used the normalized path, but
+fallback basename also used that normalized path. The earlier cached
+implementation returned basename of the original input. A direct fixture
+confirmed `.`/`..` became `absent`/`outside`.
+
+Correction `adbf7292f2` keeps the normalized ownership operand but supplies a
+lazy basename fallback over the original unresolved input. The direct
+cross-revision probe now matches the previous `.`/`..` output; build, bootstrap
+diff, and the focused regression pass. The `.`/`..` edge inputs were not used
+by the benchmark sources or structural probe, so the long benchmark campaign
+was not repeated. The performance results above are labeled as `c939875498`;
+the corrected branch head is `adbf7292f2`.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
