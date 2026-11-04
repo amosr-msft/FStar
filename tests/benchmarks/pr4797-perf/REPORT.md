@@ -343,6 +343,74 @@ by the benchmark sources or structural probe, so the long benchmark campaign
 was not repeated. The performance results above are labeled as `c939875498`;
 the corrected branch head is `adbf7292f2`.
 
+## Latest CI outlier loops
+
+Actions run `41602245606` compares exact base `c68959fe1f` with corrected head
+`adbf7292f2`. Its 3,477 matched tests have a 1.008x time geometric mean. The
+full artifact identifies six meaningful loop candidates:
+
+- the three largest absolute regressions: `ExtUIntMask`,
+  `BvModelAgreesWithZ3`, and `ExtUIntUnsigned`;
+- the two requested Pulse cases with complete recovered paths:
+  `pulse/share/pulse/examples/protocol/calc/spec/Calc.Protocol.fst` and
+  `pulse/share/pulse/examples/protocol/tftp/impl/TFTP.Impl.Client.Log.fst`;
+- `Calc.Log`, the next-largest absolute Pulse increase (+1.30 seconds).
+
+Raw `.ramon` data shows the CI mechanisms differ. ExtUIntMask and
+ExtUIntUnsigned are almost entirely child CPU; BvModel is F* CPU;
+Calc.Protocol is mainly F* CPU; TFTP Client Log and Calc.Log are mainly child
+CPU.
+
+The exact stage3 compilers and compiler-specific F*/Pulse dependency trees were
+rebuilt locally. Each target used the raw CI flags and source, explicit
+absolute paths, CPU 16 inherited by children, and adjacent randomized pairs.
+Pulse dependencies were preseeded through their Makefile graph, then only the
+current target checked file was removed before each raw invocation. Five pairs
+were run for substantial workloads and ten for Calc.Protocol.
+
+| Workload | CI group CPU Δ | Local F* CPU Δ | Local child CPU Δ | Local wall Δ | Head slower |
+|---|---:|---:|---:|---:|---:|
+| `ExtUIntMask` | +10.85 s | +0.01 s | +1.20 s | +2.21 s | 3/5 |
+| `BvModelAgreesWithZ3` | +3.20 s | -3.58 s | -0.02 s | -5.30 s | 0/5 |
+| `ExtUIntUnsigned` | +2.72 s | 0.00 s | +0.59 s | +0.89 s | 3/5 |
+| `Calc.Protocol` | +0.44 s | +0.005 s | 0.00 s | +0.009 s | 5/10 |
+| `TFTP.Impl.Client.Log` | +1.19 s | -0.02 s | -0.03 s | -0.097 s | 1/5 |
+| `Calc.Log` | +1.30 s | -0.01 s | -0.12 s | -0.21 s | 2/5 |
+
+Values are paired medians; “head slower” counts positive wall deltas. None of
+the clear regressions repeats at its CI magnitude. BvModel and Pulse directions
+do not repeat their CI mechanisms; the extraction cases remain child-dominated
+but are sign-variable.
+
+The two extraction cases retain weak same-direction medians, but not stable
+regressions. ExtUIntMask child-CPU deltas range from -3.76 to +7.94 seconds and
+wall deltas from -6.05 to +13.03 seconds; its +2.21-second wall median is much
+smaller than CI's +11.94 seconds. ExtUIntUnsigned child CPU ranges from -2.98
+to +3.00 seconds and wall from -5.07 to +4.86 seconds; its +0.89-second median
+is smaller than CI's +2.21 seconds. Both have only three positive wall pairs.
+Their child-dominated direction is compatible with the CI mechanism, but the
+sign-changing observations do not establish a repeatable regression.
+
+The CI BvModel F* heap rises by 34.28 MiB. Locally, every base and head run
+reports the same 412.82 MiB F* heap; paired group RSS instead has a
+-2.25 MiB median. The absolute local heap regime is lower than CI
+(CI baseline 674.74 MiB), so only the local relative non-reproduction is
+claimed. Other local F* heap comparisons are also byte-identical by workload.
+
+TFTP Client Log has a +1.29 MiB paired median sampled group RSS, but deltas
+range from -4.14 to +7.42 MiB and F* heap is byte-identical. No stable memory
+regression is established.
+
+The first local campaign stopped on a setup failure: all selected Pulse targets
+had been removed before provenance, inadvertently removing Calc.Log, a
+Calc.Protocol dependency. That directory is retained and none of its rows are
+used. The corrected campaign restored full compiler-specific dependency caches
+and completed all 70 rows with no failures or timeouts.
+
+These loops do not reproduce the latest report's worst outliers. They do not
+prove the 1.008x aggregate is noise; they show that its largest individual
+contributors are not stable under matched repeated CPU-affinity controls.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

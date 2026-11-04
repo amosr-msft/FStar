@@ -195,6 +195,52 @@ missing.fst=missing.fst
 The benchmarked pre-correction `c939875498` printed `.=absent` and
 `..=outside`.
 
+Latest CI outliers from Actions run `41602245606` are reproduced with:
+
+```sh
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-base -j8 3
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-source-name-cache -j8 3
+
+# Preseed the complete Pulse dependency caches in each worktree. Repeat these
+# two commands with the matching head paths/compiler.
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-base/pulse/share/pulse/examples/protocol/calc \
+  STAGE3=1 \
+  FSTAR_EXE=/workspace/wt11/FStar-pr4797-base/stage3/out/bin/fstar.exe \
+  _cache/Calc.Protocol.fst.checked _cache/Calc.Log.fst.checked
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-base/pulse/share/pulse/examples/protocol/tftp \
+  STAGE3=1 \
+  FSTAR_EXE=/workspace/wt11/FStar-pr4797-base/stage3/out/bin/fstar.exe \
+  _cache/TFTP.Impl.Client.Log.fst.checked
+
+python run_latest_outliers.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --head /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-latest-nonpulse-loops-final \
+  --cpu 16 \
+  --workloads ext-uint-mask bv-model ext-uint-unsigned
+
+# The final committed Pulse rows were rerun from the exact suite cwd after
+# hardening that detail; they replace Pulse rows from the broad local campaign.
+python run_latest_outliers.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --head /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-latest-pulse-loops-final \
+  --cpu 16 \
+  --workloads calc-protocol tftp-client-log calc-log
+
+python summarize_latest_outliers.py \
+  --campaign /workspace/wt11/pr4797-latest-nonpulse-loops-final \
+  --pulse-campaign /workspace/wt11/pr4797-latest-pulse-loops-final \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output LATEST_OUTLIER_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:
