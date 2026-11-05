@@ -281,6 +281,46 @@ python summarize_broad_reproduction.py \
   --output BROAD_REPRODUCTION_RESULTS.json
 ```
 
+The exact relative-source dependency follow-up uses:
+
+```sh
+python run_relative_dependency.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --head /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-relative-dependency \
+  --cpu 16 --repetitions 20
+
+# Instrument the pre-existing module-name path in both trees.
+python instrument_module_name_path.py /workspace/wt11/FStar-pr4797-base
+python instrument_module_name_path.py \
+  /workspace/wt11/FStar-pr4797-source-name-cache
+
+# Instrument the head's Find helpers.
+python instrument_dependency_source_names.py \
+  /workspace/wt11/FStar-pr4797-source-name-cache
+
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-base/stage3 \
+  -j8 fstarc-full FSTAR_DUNE_RELEASE=1
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-source-name-cache/stage3 \
+  -j8 fstarc-full FSTAR_DUNE_RELEASE=1
+
+python run_relative_dependency_diagnostics.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --head /workspace/wt11/FStar-pr4797-source-name-cache \
+  --campaign /workspace/wt11/pr4797-relative-dependency \
+  --output /workspace/wt11/pr4797-relative-dependency-diagnostics \
+  --cpu 16 --repetitions 3
+
+python summarize_relative_dependency.py \
+  --relative /workspace/wt11/pr4797-relative-dependency \
+  --absolute /workspace/wt11/pr4797-broad-reproduction-final2 \
+  --diagnostics /workspace/wt11/pr4797-relative-dependency-diagnostics \
+  --output RELATIVE_DEPENDENCY_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:

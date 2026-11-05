@@ -488,6 +488,56 @@ compatible with but smaller than the CI headline, and its block spread prevents
 a precise estimate. This campaign neither cleanly reproduces nor rules out the
 full 1.008x aggregate.
 
+## Relative dependency-path control
+
+The remote permission diagnosis had only established that relative executable
+tokens were rejected. A direct execution-tool invocation confirmed that the
+raw CI source manifest (`Bug016.fst ... RemoveUnusedTyparsIFace.A.fsti`) is
+allowed from `tests/bug-reports/closed` when executable, solver, include, and
+output paths remain absolute.
+
+Twenty randomized CPU-16 pairs using that exact relative source list reproduce
+the dependency gap unchanged:
+
+| Metric, head - base | Median | Mean | Positive |
+|---|---:|---:|---:|
+| F* root CPU | +0.440 s | +0.443 s | 20/20 |
+| child CPU | 0.000 s | 0.000 s | 0/20 |
+| wall | +0.667 s | +0.675 s | 20/20 |
+| sampled group RSS | -0.94 MiB | -0.93 MiB | 0/20 |
+
+The prior absolute-input control was +0.43 seconds F* CPU/+0.67 seconds wall.
+Absolute arguments did **not** create or materially amplify the regression.
+
+Both baseline and head were instrumented on the exact relative command:
+
+| Path | Base | Head |
+|---|---:|---:|
+| `module_name_from_include_path` | 562 calls, 0.131 s | 562 calls, 0.138 s |
+| `source_file_name` | absent | 1,716 calls, 0.139 s |
+| normalized ownership matcher | inlined in module-name timing | 1,124 calls, 0.260 s |
+| instrumented F* root CPU | 1.85 s | 2.16 s |
+
+The head ownership count is exactly two scans per dependency source: 562 from
+the pre-existing module-name path and 562 from the new diagnostic-range
+`source_file_name` conversion. `source_file_name` has 1,716 total calls, but
+only the absolute/resolved subset enters ownership matching. The normalized
+ownership timing is nested in both top-level timings and must not be added.
+
+The pre-existing module-name work changes by only about 0.008 seconds. The
+new diagnostic filename path contributes about 0.139 seconds total, including
+roughly 0.122 seconds of the additional ownership scans. Instrumented root CPU
+still differs by about 0.31 seconds, so the counters localize a substantial but
+not complete part of the uninstrumented +0.44-second gap.
+
+The smallest semantics-preserving next optimization is to memoize normalized
+ownership results in `Find` and share that cache between
+`relative_source_path` and `source_file_name`. Both APIs currently receive the
+same normalized filename in this loop but scan roots independently. The cache
+can use the existing `Find.clear` invalidation lifecycle. Removing the
+diagnostic conversion or weakening hierarchical filenames is not justified.
+No production change is made in this round.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
