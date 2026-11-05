@@ -669,6 +669,63 @@ ordinary verification overhead or OCaml peak heap. The measured tradeoff is a
 small retained live cache (about 241 KiB for 562 paths) plus roughly 2 MiB of
 process RSS/page commitment in the dependency-shaped process.
 
+## Final source-name cache ablation
+
+The compiler currently has three related caches: file resolution, normalized
+ownership, and final source-name formatting. Experimental branch
+`users/amos/20261105-fstar-pr4797-two-cache` removes only the outer final
+source-name cache while retaining the other two and all structural filename
+behavior. Physical string identity is intentionally not treated as an API
+contract; no caller relies on it. Build, bootstrap diff, and the focused
+structural regression pass.
+
+Twenty dependency pairs show that the third cache earns its cost. Two
+independent two-cache builds both regress versus the preserved three-cache
+build:
+
+| Two-cache build | F* CPU | Wall | Slower |
+|---|---:|---:|---:|
+| original | +0.155 s | +0.226 s | 20/20 |
+| rebuild | +0.155 s | +0.218 s | 20/20 |
+
+F* heap peaks are byte-identical. Sampled group RSS is +0.98 MiB for the
+original two-cache build and -0.07 MiB for its rebuild, demonstrating native
+layout/RSS variability rather than a reliable memory saving.
+
+Representative source controls are mostly neutral and build-sensitive:
+
+- Normalization is effectively neutral: original-build F* CPU/wall is
+  +0.01/+0.010 seconds; rebuild is 0.00/-0.001 seconds.
+- BvBinaryOps changes by about +0.01 seconds F* CPU; wall is +0.045/+0.089
+  seconds across the two builds.
+- Long changes from +0.67/+1.02 seconds to -0.25/-0.31 seconds across two-cache
+  builds, so no source-level direction is assigned.
+
+Hot repeated lookups show the main benefit. For 20,000 warmed identical calls:
+
+| Expanded roots | Three caches | Two caches |
+|---:|---:|---:|
+| 1 | 0.00167 s | 0.11654 s |
+| 16 | 0.00166 s | 0.11526 s |
+| 64 | 0.00167 s | 0.11502 s |
+| 256 | 0.00150 s | 0.11539 s |
+
+The final cache is roughly 70 times faster on this repeated-input path.
+
+Its incremental live storage is small. After the ownership stage is already
+populated, the source-name stage adds 13,699 live words with three caches and
+11,067 with two caches. The difference is 2,632 words, about 20.6 KiB at
+8 bytes/word. The final table has 562 entries; key/value character payloads
+are shared with existing strings where possible. Source-stage RSS increments
+are 56 KiB versus 28 KiB in the two separate native builds, below meaningful
+attribution.
+
+Removing the final cache therefore saves only tens of KiB of live OCaml data,
+does not reliably reduce RSS or F* heap, and costs about 0.16 seconds F* CPU on
+the full dependency workload while severely degrading hot repeated lookups.
+The third cache earns its cost and should be retained. The ablation remains on
+its separate experimental branch.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

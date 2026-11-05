@@ -396,6 +396,43 @@ python summarize_pre_ci_confidence.py \
   --output PRE_CI_CONFIDENCE_RESULTS.json
 ```
 
+The final source-name cache ablation uses:
+
+```sh
+python run_two_cache_ablation.py \
+  --three /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --two /workspace/wt11/FStar-pr4797-two-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-two-cache-ablation-final \
+  --cpu 16 --dependency-repetitions 20 --source-repetitions 5
+
+python run_two_cache_ablation.py \
+  --three /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --two /workspace/wt11/FStar-pr4797-two-cache-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-two-cache-ablation-rebuilt \
+  --cpu 16 --dependency-repetitions 20 --source-repetitions 5
+
+python run_two_cache_hot.py \
+  --three /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --two /workspace/wt11/FStar-pr4797-two-cache-rebuild \
+  --output /workspace/wt11/pr4797-two-cache-hot \
+  --cpu 16
+
+python run_two_cache_memory.py \
+  --three /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --two /workspace/wt11/FStar-pr4797-two-cache-rebuild \
+  --output /workspace/wt11/pr4797-two-cache-memory \
+  --cpu 16
+
+python summarize_two_cache_ablation.py \
+  --original /workspace/wt11/pr4797-two-cache-ablation-final \
+  --rebuilt /workspace/wt11/pr4797-two-cache-ablation-rebuilt \
+  --hot /workspace/wt11/pr4797-two-cache-hot \
+  --memory /workspace/wt11/pr4797-two-cache-memory \
+  --output TWO_CACHE_ABLATION_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:
