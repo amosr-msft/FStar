@@ -373,6 +373,29 @@ python summarize_ownership_cache.py \
   --output OWNERSHIP_CACHE_RESULTS.json
 ```
 
+Pre-CI memory and broad controls use:
+
+```sh
+python run_ownership_cache_memory.py \
+  --worktree /workspace/wt11/FStar-pr4797-source-name-cache \
+  --output /workspace/wt11/pr4797-owner-memory-final2 \
+  --cpu 16
+
+python run_pr_fixed_broad.py \
+  --pr /workspace/wt11/FStar-pr4797-adbf-rebuild \
+  --fixed /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-owner-broad-confidence \
+  --cpu 16 --repetitions 10
+
+python summarize_pre_ci_confidence.py \
+  --broad /workspace/wt11/pr4797-owner-broad-confidence \
+  --memory OWNERSHIP_CACHE_MEMORY.json \
+  --ownership OWNERSHIP_CACHE_RESULTS.json \
+  --output PRE_CI_CONFIDENCE_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:

@@ -612,6 +612,63 @@ The ownership cache fixes a real, reproduced dependency inefficiency and
 substantially reduces the gap. It does not by itself establish or fix the
 full-suite 1.008x aggregate.
 
+## Pre-CI memory and broader confidence
+
+The consistent +2-3 MiB sampled RSS in dependency triples prompted a same-binary
+retention diagnostic. The harness first allocates and retains the exact 562
+filename inputs, forces major GC, populates only the ownership cache, forces
+major GC, clears through `Find.clear`, and forces GC again.
+
+The populated cache contains:
+
+- 562 entries;
+- 47,103 key characters;
+- 6,639 relative-value characters;
+- no negative entries for this manifest.
+
+After forced major GC, cache population adds 30,882 live OCaml words
+(approximately 241 KiB at 8 bytes/word). After `Find.clear` and another major
+GC, live heap returns to within 389 words of the same-process input baseline.
+The OCaml heap capacity remains exactly 126,976 words throughout.
+
+RSS rises from 13,544 to 15,640 KiB (+2,096 KiB) on population and remains at
+15,640 KiB after clear, despite
+the live-word recovery and unchanged heap capacity. The obvious cache objects
+therefore explain only a few hundred KiB of live data. The measured 2 MiB RSS
+shape is consistent with page commitment or allocator/runtime behavior, not
+2-3 MiB of persistently live ownership entries. Forced-GC snapshots are
+diagnostic and are not normal-run timings.
+
+For broader pre-CI confidence, the same 15 checked-file workloads were repeated
+as ten randomized CPU-16 PR/fixed pairs (300 rows), with F* heap reports and
+root/child CPU, wall, root RSS, and group RSS:
+
+| Aggregate | Result |
+|---|---:|
+| process-group CPU geometric ratio | **0.9930x** |
+| median cell change | **-0.18%** |
+| blocks with fixed slower | 2/10 |
+
+Block ratios range from 0.9756x to 1.0045x. No meaningful F* CPU regression is
+visible in any selected workload. Representative paired medians:
+
+| Workload | F* CPU | Child CPU | Wall | Group RSS | F* heap |
+|---|---:|---:|---:|---:|---:|
+| `BvBinaryOps` | -0.01 s | +0.03 s | +0.073 s | -0.22 MiB | 0 |
+| `CanonCommSemiring` | -0.04 s | -0.01 s | -0.073 s | -0.33 MiB | 0 |
+| `Long` | -0.185 s | 0.00 s | -0.280 s | +2.68 MiB | 0 |
+
+Every paired F* heap delta across all 15 workloads is zero. Sampled RSS moves
+in both directions by workload; Long's +2.68 MiB median is consistent with the
+same page-commit signal seen in the retention diagnostic, not increased live
+F* heap.
+
+The broad selected set is not equivalent to the full CI suite, but these
+additional 300 rows provide no evidence that the ownership cache shifts
+ordinary verification overhead or OCaml peak heap. The measured tradeoff is a
+small retained live cache (about 241 KiB for 562 paths) plus roughly 2 MiB of
+process RSS/page commitment in the dependency-shaped process.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
