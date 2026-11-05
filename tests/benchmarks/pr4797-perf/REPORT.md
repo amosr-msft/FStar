@@ -538,6 +538,80 @@ can use the existing `Find.clear` invalidation lifecycle. Removing the
 diagnostic conversion or weakening hierarchical filenames is not justified.
 No production change is made in this round.
 
+## Shared ownership cache experiment
+
+The follow-up implementation at `7da01c0b4a` adds one canonical
+normalized-path-to-relative-ownership cache in `Find`. Both
+`relative_source_path` and `source_file_name` use it, and `Find.clear`
+invalidates it with the existing resolution caches. The final source-name cache
+remains separate because it additionally memoizes file resolution and fallback
+formatting. Positive and negative ownership results are cached.
+
+The focused regression now exercises an ownership lookup followed by a source
+name lookup, positive/negative results, include/file-list invalidation,
+overlapping roots, flat roots, boundaries, and unresolved fallback names.
+Build, bootstrap diff, and the wired test pass.
+
+Twenty relative-manifest triples compare exact base, unchanged PR, and the
+fixed compiler:
+
+| Comparison | F* CPU median | Wall median | Positive |
+|---|---:|---:|---:|
+| unchanged PR - base | +0.405 s | +0.612 s | 19/20, 19/20 |
+| original fixed build - base | +0.315 s | +0.488 s | 19/20, 19/20 |
+| fixed - unchanged PR | -0.085 s | -0.126 s | 1/20, 1/20 |
+
+The cache consistently recovers about 0.09 seconds F* CPU and 0.13 seconds
+wall from the unchanged PR.
+
+Native build identity remains material. A second build of the exact fixed
+source is 0.24 seconds F* CPU and 0.39 seconds wall faster than the original
+fixed binary in all 20 pairs. Substituting that rebuild into the same
+base/PR/fixed triples yields:
+
+| Comparison | F* CPU median | Wall median | Positive |
+|---|---:|---:|---:|
+| unchanged PR - base | +0.400 s | +0.618 s | 20/20, 20/20 |
+| rebuilt fixed - base | +0.080 s | +0.116 s | 20/20, 20/20 |
+| rebuilt fixed - unchanged PR | -0.320 s | -0.500 s | 0/20, 0/20 |
+
+Thus the source-level residual is not measured precisely by one binary. Across
+the two fixed builds, the base gap ranges from +0.08 to +0.315 seconds F* CPU.
+The optimization clearly removes the duplicated ownership work, but build
+variation dominates the remaining estimate.
+
+The ownership cache retains one result per distinct normalized path until
+`Find.clear`. Sampled group RSS increases consistently: fixed-minus-PR medians
+are +2.75 MiB for the original fixed build and +2.02 MiB for the rebuild,
+positive in all 20 pairs. This is the measured space cost of sharing ownership
+results; no claim is made about OCaml heap capacity from sampled RSS.
+
+Fixed-path diagnostics show:
+
+- 1,124 ownership requests, 562 misses and 562 hits;
+- 1,716 source-name requests, 562 misses;
+- total `source_file_name` time about 0.008 seconds;
+- 562 module-name conversions taking about 0.122-0.125 seconds.
+
+This confirms the second ownership scan is gone. The measured path helpers no
+longer expose another concrete hotspot, so no additional production
+optimization is justified.
+
+Representative source controls (rebuilt fixed versus unchanged PR) are neutral:
+
+| Workload | F* CPU median | Child CPU median | Wall median |
+|---|---:|---:|---:|
+| `Normalization` | -0.01 s | 0.00 s | -0.020 s |
+| `BvBinaryOps` | -0.01 s | +0.03 s | +0.026 s |
+| `Long` | 0.00 s | +0.01 s | +0.047 s |
+
+All are within observed pair variation; no shifted verification overhead is
+established.
+
+The ownership cache fixes a real, reproduced dependency inefficiency and
+substantially reduces the gap. It does not by itself establish or fix the
+full-suite 1.008x aggregate.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

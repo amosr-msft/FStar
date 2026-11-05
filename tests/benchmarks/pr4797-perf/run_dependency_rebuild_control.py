@@ -24,6 +24,19 @@ BUILDS = {
             "5e40a2f86a2324f1ad48bcde59e3e73fb8aff974f81c0b7feb3a6cf86d8b0b95",
     },
 }
+OWNERSHIP_COMMIT = "7da01c0b4ae5cf447f6951ddb38714b7f1969a35"
+OWNERSHIP_BUILDS = {
+    "original": {
+        "binary": "85d8872e8791d7113a09c40646327a6a9a6e19645b8730b6478f910465932208",
+        "checked":
+            "3431ef516df8f95749d4ad90bffee7b7d3072ce213bf6ca0c82ad48491ebe8f5",
+    },
+    "rebuild": {
+        "binary": "495750cf4228d820cec087320b06779aaaa0cd7185a66c654311399f0f9f93ba",
+        "checked":
+            "ad27f44a3caa142bcfaa3a7d1132bbecfbacc7564169442a8762d78a20408223",
+    },
+}
 
 
 def sha256(path):
@@ -57,6 +70,7 @@ def main():
     parser.add_argument("--output", type=Path, required=True)
     parser.add_argument("--cpu", type=int, default=16)
     parser.add_argument("--repetitions", type=int, default=5)
+    parser.add_argument("--ownership", action="store_true")
     args = parser.parse_args()
     roots = {
         "original": args.original.resolve(),
@@ -66,18 +80,20 @@ def main():
         variant: root / "stage3/out/bin/fstar.exe"
         for variant, root in roots.items()
     }
+    commit = OWNERSHIP_COMMIT if args.ownership else COMMIT
+    builds = OWNERSHIP_BUILDS if args.ownership else BUILDS
     for variant, root in roots.items():
         if subprocess.check_output(
             ["git", "-C", str(root), "rev-parse", "HEAD"], text=True
-        ).strip() != COMMIT:
+        ).strip() != commit:
             raise RuntimeError(f"{variant}: source revision differs")
-        if sha256(binaries[variant]) != BUILDS[variant]["binary"]:
+        if sha256(binaries[variant]) != builds[variant]["binary"]:
             raise RuntimeError(f"{variant}: binary differs")
         checked = tree_sha256(
             root / "stage3/out/lib/fstar/ulib.checked"
         )
         if checked != {
-            "sha256": BUILDS[variant]["checked"], "files": 379
+            "sha256": builds[variant]["checked"], "files": 379
         }:
             raise RuntimeError(f"{variant}: checked tree differs")
     if sha256(args.z3.resolve()) != (
@@ -108,7 +124,7 @@ def main():
     environment = os.environ.copy()
     environment.update({"LC_ALL": "C", "LANG": "C"})
     provenance = {
-        "commit": COMMIT,
+        "commit": commit,
         "cpu": args.cpu,
         "repetitions": args.repetitions,
         "sources": sources,

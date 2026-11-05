@@ -321,6 +321,58 @@ python summarize_relative_dependency.py \
   --output RELATIVE_DEPENDENCY_RESULTS.json
 ```
 
+The shared ownership-cache experiment uses:
+
+```sh
+python run_ownership_cache_dependency.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --pr /workspace/wt11/FStar-pr4797-adbf-rebuild \
+  --fixed /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-ownership-dependency-final \
+  --cpu 16 --repetitions 20
+
+python run_ownership_cache_dependency.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --pr /workspace/wt11/FStar-pr4797-adbf-rebuild \
+  --fixed /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-ownership-dependency-rebuilt \
+  --cpu 16 --repetitions 20
+
+python run_dependency_rebuild_control.py \
+  --original /workspace/wt11/FStar-pr4797-source-name-cache \
+  --rebuild /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-owner-rebuild-control \
+  --cpu 16 --repetitions 20 --ownership
+
+python run_ownership_source_controls.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --pr /workspace/wt11/FStar-pr4797-adbf-rebuild \
+  --fixed /workspace/wt11/FStar-pr4797-owner-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-owner-source-controls \
+  --cpu 16 --repetitions 5
+
+# Apply instrument_ownership_cache.py and instrument_module_name_path.py to
+# the fixed stage3 extraction, rebuild fstarc-full, then:
+python run_ownership_diagnostic.py \
+  --worktree /workspace/wt11/FStar-pr4797-source-name-cache \
+  --fstar /path/to/instrumented/fstarc3_full.exe \
+  --campaign /workspace/wt11/pr4797-relative-dependency \
+  --output /workspace/wt11/pr4797-owner-diagnostic-final2 \
+  --cpu 16 --repetitions 3
+
+python summarize_ownership_cache.py \
+  --original /workspace/wt11/pr4797-ownership-dependency-final \
+  --rebuilt /workspace/wt11/pr4797-ownership-dependency-rebuilt \
+  --rebuild-control /workspace/wt11/pr4797-owner-rebuild-control \
+  --source-controls /workspace/wt11/pr4797-owner-source-controls \
+  --diagnostic /workspace/wt11/pr4797-owner-diagnostic-final2 \
+  --output OWNERSHIP_CACHE_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:
