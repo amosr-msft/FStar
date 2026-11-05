@@ -411,6 +411,83 @@ These loops do not reproduce the latest report's worst outliers. They do not
 prove the 1.008x aggregate is noise; they show that its largest individual
 contributors are not stable under matched repeated CPU-affinity controls.
 
+## Broad representative reproduction
+
+Repeating only worst outliers cannot test the report's +0.7% median/1.008x
+geometric shift. A broader direction-balanced block therefore selected 15
+checked-file targets across five duration bands (0.1 seconds through 40
+seconds), with improved, neutral, and regressed CI rows in each band where
+available. It covers ordinary verification and child-heavy extraction. The
+full `tests/bug-reports/closed` dependency target is a sixteenth workload.
+
+A repeated full suite was not practical: the hosted workflow takes about two
+hours for one sequential base/head pair, so five interleaved pairs would take
+roughly ten hours before controls. The representative selection and its limits
+are recorded in `BROAD_REPRODUCTION_RESULTS.json`.
+
+All 160 rows complete under CPU 16 using exact stage3 revisions, raw checked
+target flags, source hashes, and compiler-specific dependency trees. The
+selected checked targets themselves have a 1.0011x geometric ratio in the
+single CI run; they are deliberately balanced rather than sampled to reproduce
+the full report's 1.008x.
+
+Local process-group CPU aggregates are:
+
+| Set | Cell geometric ratio | Median change |
+|---|---:|---:|
+| 15 checked-file workloads | **1.0029x** | 0.0% |
+| checked files plus dependency generation | **1.0108x** | 0.0% |
+
+Across the five blocks, checked-file geometric ratios are 0.9909x, 0.9832x,
+1.0066x, 1.0301x, and 1.0044x. A positive shift appears in three blocks and
+reverses in two. The aggregate is positive but smaller than the full report's
+1.008x and highly block-sensitive; this is evidence for a possible small broad
+effect, not a stable 0.8% estimate.
+
+Most individual CI directions also fail to persist. Examples:
+
+| Workload | CI change | Local paired group CPU |
+|---|---:|---:|
+| `MergeSort2` | -5.9% | -0.5% |
+| `TestMBQI` | +0.0% | +0.8% |
+| `ExtUIntDivRem` | +5.9% | -0.4% |
+| `BvBinaryOps` | +1.7% | +0.2% |
+| `CanonCommSemiring` | +2.4% | -1.4% |
+| `Long` | -0.2% | -2.0% |
+| `ExtUIntRotate` | +2.3% | +0.4% |
+| `RBTreeIntrinsic` | -1.6% | +0.4% |
+
+Dependency generation amplifies the combined result from 1.0029x to 1.0108x.
+The dependency target is slower in all five pairs: +0.43 seconds F* CPU and
++0.67 seconds wall median. An
+independent build of the exact same `adbf7292f2` source is 0.08 seconds F* CPU
+and 0.11 seconds wall faster than the original head binary, much smaller than
+the base/head gap.
+
+Path instrumentation on the exact absolute-input dependency command records:
+
+- 1,716 `source_file_name` calls taking 0.128 seconds in total;
+- 1,320 normalized ownership scans taking 0.280 seconds in total.
+
+The latter includes calls made through `source_file_name` and direct dependency
+module-name resolution, so these times must not be added. It accounts for most,
+but not all, of the source-sensitive +0.43-second F* CPU gap. This localization
+is consistent with the path-handling change.
+
+There is an important invocation limitation. The hosted Makefile dependency
+command uses relative source arguments, while this remote CLI requires explicit
+authorized-root absolute paths. Absolute inputs exercise the same ownership
+logic more directly and may amplify its cost. Accordingly, the dependency
+result is evidence of a real absolute-path scaling cost, not a precise
+reproduction of CI's +0.078-second `.depend` result.
+
+The strongest supported result is a variable small checked-file shift
+(1.0029x across all cells), plus a repeatable absolute-path dependency cost
+that raises the combined representative block to 1.0108x. The checked result is
+compatible with but smaller than the CI headline, and its block spread prevents
+a precise estimate. This campaign neither cleanly reproduces nor rules out the
+full 1.008x aggregate.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

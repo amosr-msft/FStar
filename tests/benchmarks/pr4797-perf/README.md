@@ -241,6 +241,46 @@ python summarize_latest_outliers.py \
   --output LATEST_OUTLIER_RESULTS.json
 ```
 
+The broad representative campaign uses:
+
+```sh
+python run_broad_reproduction.py \
+  --base /workspace/wt11/FStar-pr4797-base \
+  --head /workspace/wt11/FStar-pr4797-source-name-cache \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-broad-reproduction-final2 \
+  --cpu 16 --repetitions 5
+
+python run_dependency_rebuild_control.py \
+  --original /workspace/wt11/FStar-pr4797-source-name-cache \
+  --rebuild /workspace/wt11/FStar-pr4797-adbf-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-broad-dependency-rebuild-final2 \
+  --cpu 16 --repetitions 5
+
+# instrument_dependency_source_names.py modifies ignored stage3 extracted
+# OCaml; rebuild fstarc-full and run the dependency command captured in the
+# campaign JSON:
+python instrument_dependency_source_names.py \
+  /workspace/wt11/FStar-pr4797-source-name-cache
+PATH=/workspace/wt11/benchmark-tools/bin:$PATH \
+make -C /workspace/wt11/FStar-pr4797-source-name-cache/stage3 \
+  -j8 fstarc-full FSTAR_DUNE_RELEASE=1
+python run_dependency_diagnostic.py \
+  --worktree /workspace/wt11/FStar-pr4797-source-name-cache \
+  --fstar /path/to/instrumented/fstarc3_full.exe \
+  --campaign /workspace/wt11/pr4797-broad-reproduction-final2 \
+  --output /workspace/wt11/pr4797-broad-dependency-diagnostic-final3 \
+  --cpu 16
+
+python summarize_broad_reproduction.py \
+  --campaign /workspace/wt11/pr4797-broad-reproduction-final2 \
+  --dependency-rebuild /workspace/wt11/pr4797-broad-dependency-rebuild-final2 \
+  --diagnostic /workspace/wt11/pr4797-broad-dependency-diagnostic-final3/result.json \
+  --output BROAD_REPRODUCTION_RESULTS.json
+```
+
 `instrument_entry_counters.py` modifies ignored extracted OCaml in
 `stage2/fstarc.ml`. Build the Pulse prerequisite and diagnostic compiler before
 running the counter campaign:
