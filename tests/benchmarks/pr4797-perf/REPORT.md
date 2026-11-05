@@ -726,6 +726,92 @@ the full dependency workload while severely degrading hot repeated lookups.
 The third cache earns its cost and should be retained. The ablation remains on
 its separate experimental branch.
 
+## Root-trie experiment on current upstream
+
+This round starts from the current PR head `17a249095c`, after its merge of
+upstream `9ccacf4a8a`; it does not reuse the older `7da` compiler as a source
+baseline. All four native compilers and their compiler-specific checked trees
+were rebuilt from this source family. The experiment is isolated on
+`users/amos/20261105-fstar-pr4797-root-trie`:
+
+- `e03d632de7` removes `has_flat_root` and computes the dirname once on every
+  ownership miss;
+- `8729bcace5` replaces normalized-filename ownership memoization with a
+  path-component root trie;
+- `0a1c87e8bb` uses hash-table edges in that trie.
+
+The removed flag was invariantly true because `module_include_paths` always
+adds the flat `"."` root. Ten dependency pairs against the otherwise identical
+current PR show no regression: the no-flag build is faster by 0.130 seconds
+process-group CPU and 0.170 seconds wall median, 0/10 slower. Five-pair source
+controls are neutral except Long, where this particular no-flag native build is
+0.260 seconds slower median in 4/5 pairs. A separate ten-pair Long block remains
+0.270 seconds F* CPU/0.406 seconds wall slower median, but with a wide
+-0.14-to-+0.66 second CPU range. The source change removes work from an
+invariantly taken path, and earlier exact-source rebuilds changed Long's
+direction, so this binary-specific Long result is retained but not assigned to
+the removed flag.
+
+The trie keeps filesystem resolution and final source-name caches, but removes
+the per-normalized-filename ownership table. Twenty dependency triples give:
+
+| Comparison | Group CPU | Wall | Group RSS | Slower |
+|---|---:|---:|---:|---:|
+| trie - no-flag cached | **-0.020 s** | **-0.003 s** | -1.99 MiB | 3/20 |
+| trie - master | **-0.260 s** | **-0.407 s** | +2.84 MiB | 0/20 |
+| no-flag cached - master | -0.245 s | -0.385 s | +4.92 MiB | 0/20 |
+
+Child CPU is unchanged; the differences are in F* root CPU. Thus the trie does
+not merely recover the ownership-table overhead: on this reproduced workload
+it remains faster than exact current master while supporting hierarchical
+range filenames.
+
+Six source controls (`Test03`, `TcSyntax`, `MergeSort2`, `ExtUIntDivRem`,
+`BvBinaryOps`, and `Long`) were each run as five randomized triples. Trie versus
+master has a 1.0022x process-group CPU geometric ratio across the 30 paired
+cells and a 0.9998x ratio of total selected CPU. Trie versus the no-flag cached
+build is 1.0017x geometric and 0.9845x by total CPU. Long favors the trie by
+0.13 seconds versus master and 0.46 seconds versus the no-flag build; other
+workload medians are between -0.02 and +0.10 seconds. This mixed set does not
+show a reproducible source-workload direction. Every F* peak-heap delta is
+zero. RSS is workload- and build-sensitive, as in prior controls.
+
+The structural harness uses the public module-name path common to master and
+the PR. Each root-count observation runs in a fresh process. For 5,000 distinct
+filenames, trie/no-flag median ratios are 1.077x, 0.948x, 0.678x, and 0.333x at
+1, 16, 64, and 256 roots respectively (ten pairs each). Repeated names are
+handled by the shared module-name cache and remain neutral. Cold observations
+include invalidation, root expansion, index construction, and one lookup; the
+trie is 1.18x-1.22x slower than the no-flag list matcher there. This is the
+bounded tradeoff: a small one-root miss and cold-build cost buys much better
+many-root distinct lookup without a reproduced end-to-end regression.
+
+The fallback condition is therefore not met: the trie is not reproducibly
+slower than `9ccacf4a8a`. The proposed retained implementation is `0a1c87e8bb`,
+subject to independent diff review before any PR update. Full build,
+`boot-diff`, the existing hierarchical IDE golden, and the complete existing
+`tests/ide` suite pass. No removed ad hoc regression test was restored.
+
+### Cache representation
+
+The chosen implementation has two per-input result tables plus the root index:
+
+1. `find_file_cache` preserves lookup spelling and failure:
+   `A/B.fst -> Some /work/lib/A/B.fst`.
+2. The normalized root trie maps the resolved path to ownership:
+   `/work/lib/A/B.fst -> A/B.fst`; module lookup and range filenames share it.
+3. `source_file_name_cache` retains final formatting, including unresolved
+   relative and absolute fallback behavior.
+
+All three derived states clear together through `Find.clear`. A resolution
+entry could preserve both its raw `option string` and a lazily computed
+normalized successful path, but it cannot replace ownership for aliases or
+direct absolute callers, nor final fallback handling. It would also require a
+custom mutable entry while `find_file` continues returning the original
+spelling. With the final cache handling repeated names and no measured
+normalization hotspot in this round, that rewrite is not justified and was not
+mixed into the trie comparison.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
@@ -735,4 +821,7 @@ its separate experimental branch.
 - Local extraction-child coverage comes from the preserved CI artifact; the
   local suite focuses on F* verification and dependency generation.
 - No `perf` instruction/cycle counters are available on this host.
+- The selected six-workload source set is not the complete CI suite.
+- Structural cold timings include invalidation and filesystem root expansion,
+  not just trie construction.
 - No production source change or upstream comment/PR was made.

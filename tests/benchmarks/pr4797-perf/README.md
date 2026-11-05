@@ -453,6 +453,49 @@ fstarc-full/fstarc3_full.exe --version
 
 The final command confirms that startup does not execute the changed helpers.
 
+## Current-master root-trie comparison
+
+`run_root_trie_comparison.py` verifies exact source and native artifact hashes
+before running. Phase-one comparisons require `current-pr` and `no-flat`;
+final comparisons require `master`, `no-flat`, and `trie`. For example:
+
+```sh
+python run_root_trie_comparison.py \
+  --kind dependency --comparison trie \
+  --variant master=/workspace/wt11/FStar-pr4797-master-current \
+  --variant no-flat=/workspace/wt11/FStar-pr4797-no-flat \
+  --variant trie=/workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-root-trie-results/trie-dependency \
+  --repetitions 20 --cpu 16 --timeout 180
+
+python run_root_trie_comparison.py \
+  --kind checked --comparison trie \
+  --variant master=/workspace/wt11/FStar-pr4797-master-current \
+  --variant no-flat=/workspace/wt11/FStar-pr4797-no-flat \
+  --variant trie=/workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-root-trie-results/trie-checked \
+  --repetitions 5 --cpu 16
+
+python run_root_trie_comparison.py \
+  --kind structural --comparison trie \
+  --variant master=/workspace/wt11/FStar-pr4797-master-current \
+  --variant no-flat=/workspace/wt11/FStar-pr4797-no-flat \
+  --variant trie=/workspace/wt11/FStar-pr4797-root-trie \
+  --output /workspace/wt11/pr4797-root-trie-results/trie-structural \
+  --repetitions 10 --cpu 16
+
+python summarize_root_trie.py \
+  --input /workspace/wt11/pr4797-root-trie-results \
+  --output ROOT_TRIE_RESULTS.json
+```
+
+The structural process uses the public module-name API common to exact master
+and the PR. Its cold metric includes `set_include_path`, root expansion, root
+index construction, and one distinct ownership lookup.
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end
