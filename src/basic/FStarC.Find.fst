@@ -31,15 +31,11 @@ let cached_fun #a (cache : HashTable.t string a) (f : string -> ML a) : string -
       HashTable.add cache s v;
       v
 
-type source_root_trie = {
-  flat_root: option string;
-  recursive_root: option string;
-  children: HashTable.t string source_root_trie;
-}
+type source_root_index = HashTable.t string module_include_path_kind
 
 type normalized_include_path_cache = {
   paths: list module_include_path;
-  source_roots: source_root_trie;
+  source_roots: source_root_index;
 }
 
 type cache_state_t = {
@@ -239,49 +235,30 @@ let full_include_path =
       cached := Some res;
       res
 
-let empty_source_root_trie () : ML source_root_trie = {
-  flat_root = None;
-  recursive_root = None;
-  children = HashTable.create 8;
-}
-
-let rec insert_source_root
-  (components:list string)
+let add_source_root
+  (roots:source_root_index)
   (root:module_include_path)
-  (trie:source_root_trie)
-: ML source_root_trie =
-  match components with
-  | [] ->
-    (match root.kind with
-     | Flat -> { trie with flat_root = Some root.dir }
-     | Recursive -> { trie with recursive_root = Some root.dir })
-  | component :: rest ->
-    let child =
-      match HashTable.try_find trie.children component with
-      | Some child -> child
-      | None -> empty_source_root_trie ()
-    in
-    HashTable.add trie.children component (insert_source_root rest root child);
-    trie
+: ML unit =
+  let kind =
+    match HashTable.try_find roots root.dir, root.kind with
+    | Some Recursive, _ | _, Recursive -> Recursive
+    | _ -> Flat
+  in
+  HashTable.add roots root.dir kind
 
 let rec find_source_root
-  (components:list string)
-  (trie:source_root_trie)
-  (best:option string)
+  (roots:source_root_index)
+  (directory:string)
+  (immediate:bool)
 : ML (option string) =
-  let best =
-    match components, trie.flat_root, trie.recursive_root with
-    | [], _, _ -> best
-    | [_], Some root, _ -> Some root
-    | _, _, Some root -> Some root
-    | _ -> best
-  in
-  match components with
-  | [] -> best
-  | component :: rest ->
-    (match HashTable.try_find trie.children component with
-     | None -> best
-     | Some child -> find_source_root rest child best)
+  match HashTable.try_find roots directory with
+  | Some Recursive -> Some directory
+  | Some Flat when immediate -> Some directory
+  | _ ->
+    let parent = Filepath.dirname directory in
+    if parent = directory
+    then None
+    else find_source_root roots parent false
 
 let normalized_module_include_paths =
   let cached = cache_state.normalized_include_paths in
@@ -293,12 +270,11 @@ let normalized_module_include_paths =
         |> List.map (fun path ->
           { path with dir = Filepath.normalize_file_path path.dir })
       in
+      let roots = HashTable.create 16 in
+      List.iter (add_source_root roots) paths;
       let normalized = {
         paths;
-        source_roots =
-          List.fold_left (fun trie path ->
-            insert_source_root (String.split ['/'] path.dir) path trie)
-            (empty_source_root_trie ()) paths;
+        source_roots = roots;
       } in
       cached := Some normalized;
       normalized
@@ -308,9 +284,12 @@ let module_include_paths_normalized () : ML (list module_include_path) =
 
 let relative_source_path_normalized (filename:string) : ML (option string) =
   let roots = (normalized_module_include_paths ()).source_roots in
-  find_source_root (String.split ['/'] filename) roots None
+  find_source_root roots (Filepath.dirname filename) true
   |> Option.map (fun dir ->
-    BU.substring_from filename (String.length dir + 1))
+    let prefix_length =
+      String.length dir + (if BU.ends_with dir "/" then 0 else 1)
+    in
+    BU.substring_from filename prefix_length)
 
 let relative_source_path (filename:string) : ML (option string) =
   relative_source_path_normalized (Filepath.normalize_file_path filename)
