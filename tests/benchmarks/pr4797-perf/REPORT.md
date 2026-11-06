@@ -933,6 +933,118 @@ is consistently faster, and the only persistent adverse candidate (BV) is
 small, direction-unstable, and comparable to run/build variability. This does
 not establish equivalence or predict the full CI aggregate.
 
+## Alternative root-index representations
+
+Two representations were implemented from final grouped trie `2ef0fe554e` on
+separate experiment branches:
+
+- flat map `e7403a6164`:
+  `HashTable.t normalized-root module_include_path_kind`. Lookup starts at the
+  filename's immediate parent and probes successively higher ancestors. Flat
+  is applicable only at the immediate parent; Recursive is applicable at any
+  ancestor. The first applicable root is therefore the longest. Duplicate
+  roots merge with Recursive dominance.
+- root-only forest `3e7d0a0eb1`: top-level and child hash tables contain only
+  configured roots. Construction sorts roots by path length, finds each root's
+  nearest configured ancestor, and inserts it as a direct child; this makes
+  nesting independent of source order. Lookup probes filesystem ancestors to
+  find a top-level root, then repeats ancestor probing at each configured-root
+  level while retaining the last applicable Recursive or immediate Flat root.
+
+The forest is not a renamed component trie: it has no nodes for unconfigured
+filesystem components. Exact-key hash lookup cannot discover a prefix, which
+is why both alternatives explicitly probe ancestors. The flat map needs one
+ancestor walk, O(path depth), and O(root count) construction. The forest adds
+an O(R log R) sort, ancestor probing during construction, a mutable kind ref
+per node, and potentially repeated ancestor walks across configured nesting.
+The incumbent component trie builds one node per path component and follows
+components once at lookup.
+
+Relative to incumbent `FStarC.Find.fst`, the flat map changes +30/-51 lines
+(-21 net), while the forest changes +79/-49 (+30 net). The relevant
+root-index-through-normalization region is 230 lines for flat, 253 for
+incumbent, and 278 for forest. The flat representation is clearly the smallest
+of the three; the forest is the most complex.
+
+An evidence-only public-API differential checked duplicates, nested roots in
+both source orders, siblings, Flat and Recursive ownership, nested Flat
+nonownership with outer Recursive fallback, and path boundaries. All ordinary
+cases are identical across the three builds. For a recursive filesystem-root
+include, incumbent returns no owner because its component trie retains a
+trailing empty root component; both alternatives correctly return `A/B.fst`
+and terminate ancestor traversal at the root. This is the only intentional
+difference. Full builds, `boot-diff`, hierarchical IDE goldens, and complete
+`tests/ide` pass for both alternatives.
+
+### End-to-end results
+
+The primary campaign uses exact compiler-specific dependencies, CPU16, raw
+source flags, and balanced forward/reverse order for every pair. Dependency
+generation has 20 triples:
+
+| Variant - incumbent | Group CPU | Wall | Sampled RSS | Slower |
+|---|---:|---:|---:|---:|
+| forest | **+0.110 s** | +0.152 s | +1.59 MiB | 20/20 |
+| flat | **+0.285 s** | +0.417 s | +0.89 MiB | 20/20 |
+
+Independent native rebuilds preserve the adverse direction but change its
+magnitude:
+
+| Rebuild - incumbent rebuild | Group CPU | Wall | Sampled RSS | Slower |
+|---|---:|---:|---:|---:|
+| forest | **+0.200 s** | +0.297 s | -0.16 MiB | 19/20 |
+| flat | **+0.170 s** | +0.260 s | -0.55 MiB | 19/20 |
+
+Thus native build layout affects ranking and magnitude, but not the repeated
+finding that both alternatives lose on the dependency workload. RSS changes
+direction across builds and is not assigned to representation.
+
+Six checked workloads were run for ten triples each. Aggregate ratios:
+
+| Variant / incumbent | CPU geometric | CPU total | Root CPU total | Child CPU total | Wall total |
+|---|---:|---:|---:|---:|---:|
+| forest | 1.0009x | 1.0021x | 1.0016x | 1.0030x | 1.0025x |
+| flat | 1.0022x | 1.0161x | 1.0249x | 0.9993x | 1.0148x |
+
+The flat total is dominated by Long: +0.545 seconds and 10/10 slower in the
+primary build. Forest is +0.085 seconds and 5/10. Independent rebuilds make
+the signal larger, not smaller: forest +0.500 seconds and flat +0.855 seconds,
+both 10/10 slower than the rebuilt incumbent. BvBinaryOps is neutral/slightly
+faster for both alternatives, and other primary medians are within 15 ms.
+Reported OCaml peak heap is byte-identical in every checked pair. These Long
+magnitudes remain build-sensitive, but the adverse direction repeats for both
+alternative source representations.
+
+The structural harness shows that the alternatives do speed up the helper they
+were designed to simplify:
+
+| Roots | Forest/incumbent distinct | Flat/incumbent distinct | Forest/incumbent cold | Flat/incumbent cold |
+|---:|---:|---:|---:|---:|
+| 1 | 0.909x | 0.761x | 0.877x | 0.769x |
+| 16 | 0.912x | 0.766x | 0.919x | 0.735x |
+| 64 | 0.913x | 0.767x | 0.952x | 0.731x |
+| 256 | 0.911x | 0.763x | 0.978x | 0.739x |
+
+Repeated module-name calls are neutral because the existing module cache
+dominates. The structural gains do not translate to the dependency or Long
+end-to-end paths in either independently built set.
+
+### Choice
+
+Retain incumbent component trie `2ef0fe554e`. The flat map is materially
+clearer and faster in isolation, but repeated dependency and Long regressions
+make it the wrong tradeoff for this change. The forest is both more complex
+than flat and slower than flat structurally; it provides no clarity or
+end-to-end reason to retain it. The direct incumbent/master campaign remains
+relevant context: incumbent was 0.9955x geometric on the selected checked set
+and improved dependency generation by 0.480 seconds median versus
+`9ccacf4a8a`.
+
+These local results neither explain nor dismiss CI run `42207826113` (1.006x
+time, 1.005x heavy time, 0.999x memory), including its Long and UInt extraction
+differences. The selected local cases and repeated controls establish only
+that changing the index representation does not provide a justified remedy.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

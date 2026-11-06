@@ -591,6 +591,44 @@ run-variation control but is not primary because only its aggregate direction
 count, not every workload's count, is exactly balanced. Its exact historical
 driver is preserved as `run_final_master_broad_aggregate_control.py`.
 
+## Alternative root-index representations
+
+The primary incumbent/forest/flat campaigns use:
+
+```sh
+python run_root_index_differential.py \
+  --variant incumbent=/workspace/wt11/FStar-pr4797-root-trie \
+  --variant forest=/workspace/wt11/FStar-pr4797-root-forest \
+  --variant flat=/workspace/wt11/FStar-pr4797-flat-root-map \
+  --output ROOT_INDEX_DIFFERENTIAL.json --cpu 16
+
+python run_root_index_variants.py \
+  --kind dependency --comparison trie \
+  --variant incumbent=/workspace/wt11/FStar-pr4797-root-trie \
+  --variant forest=/workspace/wt11/FStar-pr4797-root-forest \
+  --variant flat=/workspace/wt11/FStar-pr4797-flat-root-map \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-root-index-variants/dependency \
+  --repetitions 20 --cpu 16 --timeout 180
+```
+
+Run the same driver with `--kind checked`, the preserved raw artifact, and ten
+repetitions; run `--kind structural` with ten repetitions. The driver balances
+forward/reverse order for every variant pair within each workload or root
+count. Independent dependency and BV/Long rebuild controls use
+`run_root_index_rebuild_control.py`.
+
+```sh
+python summarize_root_index_variants.py \
+  --input /workspace/wt11/pr4797-root-index-variants \
+  --rebuild /workspace/wt11/pr4797-root-index-rebuild \
+  --differential ROOT_INDEX_DIFFERENTIAL.json \
+  --output ROOT_INDEX_VARIANT_RESULTS.json
+```
+
+The differential harness is evidence-only. No bespoke test was added back to
+the production branches.
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end

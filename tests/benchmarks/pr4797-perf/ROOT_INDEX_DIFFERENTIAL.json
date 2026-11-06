@@ -1,0 +1,149 @@
+{
+  "provenance": {
+    "cpu": 16,
+    "harness_sha256": "1faf63a36fa80f614fa29b577ed2e4b5f85ab439e968c57bf9e168bd5f8dab4e",
+    "runner_sha256": "6cb8964d71e7efc3c58dfb48c9fad20eafbee7d4ecb0be56a6d98e24997f0d26",
+    "scenarios": {
+      "boundary": "NONE",
+      "duplicate-flat-recursive": "A/B.fst",
+      "duplicate-recursive": "A/B.fst",
+      "filesystem-root": {
+        "flat": "A/B.fst",
+        "forest": "A/B.fst",
+        "incumbent": "NONE"
+      },
+      "flat-immediate": "A.fst",
+      "flat-outer-fallback": "flat/deeper/A.fst",
+      "nested-flat-outer-fallback": "flat/nested/deeper/A.fst",
+      "nested-inner-first": "A.fst",
+      "nested-outer-first": "A.fst",
+      "recursive-outer": "A/B.fst",
+      "sibling": "A/B.fst"
+    },
+    "variants": {
+      "flat": {
+        "archive_sha256": "8007f1de15be55de8c81537f55c354820122bf2e72a5f6183ba710a750c6fbb0",
+        "compile_command": [
+          "ocamlfind",
+          "ocamlopt",
+          "-thread",
+          "-linkpkg",
+          "-package",
+          "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-flat-root-map/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-flat-root-map/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+          "/workspace/wt11/FStar-pr4797-flat-root-map/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/root_index_differential.ml",
+          "-o",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/root-index-differential-t47kulxm/flat.exe"
+        ],
+        "executable_sha256": "11e53d6e7130d144a343956f9cb455bae246067b6e2191f1a6e905250daf7cb6",
+        "head": "e7403a6164c68ae38474237a909ea996ce8aa16b",
+        "root": "/workspace/wt11/FStar-pr4797-flat-root-map"
+      },
+      "forest": {
+        "archive_sha256": "8af7e15b4db082d70f9c8c77101ddde11936c75dfc1459316891d9d8484ec895",
+        "compile_command": [
+          "ocamlfind",
+          "ocamlopt",
+          "-thread",
+          "-linkpkg",
+          "-package",
+          "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-root-forest/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-root-forest/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+          "/workspace/wt11/FStar-pr4797-root-forest/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/root_index_differential.ml",
+          "-o",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/root-index-differential-t47kulxm/forest.exe"
+        ],
+        "executable_sha256": "a2fe4ab227b34cbd7f9b05bd8648117a29673df5317409746dbe8842aa77cb0f",
+        "head": "3e7d0a0eb1b8dd1e9130fab0acbc6867be3fef33",
+        "root": "/workspace/wt11/FStar-pr4797-root-forest"
+      },
+      "incumbent": {
+        "archive_sha256": "600fba3706e58db30b5dfde880c7e396200e5902082d7d64e819bd26a46be17d",
+        "compile_command": [
+          "ocamlfind",
+          "ocamlopt",
+          "-thread",
+          "-linkpkg",
+          "-package",
+          "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-root-trie/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-root-trie/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+          "/workspace/wt11/FStar-pr4797-root-trie/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/root_index_differential.ml",
+          "-o",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/root-index-differential-t47kulxm/incumbent.exe"
+        ],
+        "executable_sha256": "57c71cf56c55850e2e22fef6b639918cc8141e69cc6fb08911217c45e0098468",
+        "head": "2ef0fe554eeca5907db4deb5d9daf4f9e276b97d",
+        "root": "/workspace/wt11/FStar-pr4797-root-trie"
+      }
+    }
+  },
+  "results": {
+    "boundary": {
+      "flat": "NONE",
+      "forest": "NONE",
+      "incumbent": "NONE"
+    },
+    "duplicate-flat-recursive": {
+      "flat": "A/B.fst",
+      "forest": "A/B.fst",
+      "incumbent": "A/B.fst"
+    },
+    "duplicate-recursive": {
+      "flat": "A/B.fst",
+      "forest": "A/B.fst",
+      "incumbent": "A/B.fst"
+    },
+    "filesystem-root": {
+      "flat": "A/B.fst",
+      "forest": "A/B.fst",
+      "incumbent": "NONE"
+    },
+    "flat-immediate": {
+      "flat": "A.fst",
+      "forest": "A.fst",
+      "incumbent": "A.fst"
+    },
+    "flat-outer-fallback": {
+      "flat": "flat/deeper/A.fst",
+      "forest": "flat/deeper/A.fst",
+      "incumbent": "flat/deeper/A.fst"
+    },
+    "nested-flat-outer-fallback": {
+      "flat": "flat/nested/deeper/A.fst",
+      "forest": "flat/nested/deeper/A.fst",
+      "incumbent": "flat/nested/deeper/A.fst"
+    },
+    "nested-inner-first": {
+      "flat": "A.fst",
+      "forest": "A.fst",
+      "incumbent": "A.fst"
+    },
+    "nested-outer-first": {
+      "flat": "A.fst",
+      "forest": "A.fst",
+      "incumbent": "A.fst"
+    },
+    "recursive-outer": {
+      "flat": "A/B.fst",
+      "forest": "A/B.fst",
+      "incumbent": "A/B.fst"
+    },
+    "sibling": {
+      "flat": "A/B.fst",
+      "forest": "A/B.fst",
+      "incumbent": "A/B.fst"
+    }
+  }
+}
