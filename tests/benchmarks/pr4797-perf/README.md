@@ -496,6 +496,47 @@ The structural process uses the public module-name API common to exact master
 and the PR. Its cold metric includes `set_include_path`, root expansion, root
 index construction, and one distinct ownership lookup.
 
+## Cache-state grouping control
+
+The cache-state driver extends the exact-artifact checks without changing the
+root-trie campaign runner (whose hash is retained by the earlier evidence):
+
+```sh
+python run_cache_state_comparison.py \
+  --kind dependency --comparison cache-state \
+  --variant reviewed-trie=/workspace/wt11/FStar-pr4797-trie-reviewed \
+  --variant cache-state=/workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-cache-state-final/dependency \
+  --repetitions 10 --cpu 16 --timeout 180
+
+python run_cache_state_comparison.py \
+  --kind checked --comparison cache-state \
+  --variant reviewed-trie=/workspace/wt11/FStar-pr4797-trie-reviewed \
+  --variant cache-state=/workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-cache-state-final/checked \
+  --repetitions 5 --workload test03 --workload bv-binary-ops \
+  --workload long --cpu 16
+
+python run_cache_state_rebuild_control.py \
+  --kind checked --comparison cache-state-rebuild \
+  --variant reviewed-trie=/workspace/wt11/FStar-pr4797-trie-reviewed \
+  --variant cache-state=/workspace/wt11/FStar-pr4797-root-trie \
+  --variant cache-state-rebuild=\
+/workspace/wt11/FStar-pr4797-cache-state-final-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-cache-state-final/rebuild-control \
+  --repetitions 5 --workload test03 --workload bv-binary-ops \
+  --workload long --cpu 16
+
+python summarize_cache_state.py \
+  --input /workspace/wt11/pr4797-cache-state-final \
+  --output CACHE_STATE_RESULTS.json
+```
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end

@@ -812,6 +812,49 @@ spelling. With the final cache handling repeated names and no measured
 normalization hotspot in this round, that rewrite is not justified and was not
 mixed into the trie comparison.
 
+## Cache-state encapsulation
+
+The chosen trie was followed by the requested state-clarity cleanup on the
+same experiment branch:
+
+- `7e5db1aeda` groups the full include path, normalized root index, resolution
+  table, and final-name table in one private `cache_state_t`;
+- `2ef0fe554e` captures each grouped field once in the hot closures, while
+  `Find.clear` continues to clear the same refs and tables and increment the
+  epoch.
+
+This is representation-only. It retains the two result tables and root trie,
+does not restore the ownership-result table or `has_flat_root`, and adds no
+lazy normalization or resolution-entry redesign. Full build, `boot-diff`, the
+hierarchical IDE golden, and the complete existing `tests/ide` suite pass.
+
+Ten randomized CPU-16 dependency pairs compare final `2ef0fe554e` with the
+reviewed trie `0a1c87e8bb`:
+
+| Grouped state - reviewed trie | Median | Slower |
+|---|---:|---:|
+| process-group CPU | -0.165 s | 0/10 |
+| wall | -0.264 s | 0/10 |
+| group RSS | +0.13 MiB | -- |
+
+This establishes no dependency regression; the apparent improvement is not
+assigned to source-level work because this change should be operationally
+neutral and native-build layout has moved results in prior controls.
+
+Five-pair Test03, BvBinaryOps, and Long controls are small and
+run/build-sensitive. In the first final block, medians are 0.00, +0.09, and
++0.10 seconds process-group CPU respectively, with byte-identical F* peak heap.
+A separately linked same-source `2ef0fe554e` compiler gives -0.02 seconds for
+BvBinaryOps and +0.05 seconds for Long against the same reviewed-trie binary;
+the original final binary in that interleaved triple gives -0.02 and +0.26
+seconds. Long therefore moves from +0.05 to +0.26 seconds solely with the
+native build/run block, and BvBinaryOps changes sign. These bounded controls do
+not support attributing a source regression to the grouping cleanup.
+
+The retained implementation is `2ef0fe554e`. The state record is the single
+owner of all include-derived caches; hot functions capture its fields once,
+and shared invalidation remains centralized in `Find.clear`.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
