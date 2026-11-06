@@ -855,6 +855,84 @@ The retained implementation is `2ef0fe554e`. The state record is the single
 owner of all include-derived caches; hot functions capture its fields once,
 and shared invalidation remains centralized in `Find.clear`.
 
+## Direct final trie versus current master
+
+The final grouped trie `2ef0fe554e` was compared directly with exact upstream
+master `9ccacf4a8a`, closing the gap left by the earlier `0a1c87e8bb`
+comparison. Both compilers use their own matched checked dependency trees,
+exact Z3 5.3.0, raw artifact source flags, and CPU16 affinity. The primary
+checked campaign contains 15 workloads x 20 adjacent pairs (600 process rows),
+with exactly ten runs in each direction for every workload. It includes
+ordinary verification, three extraction cases, short/medium/long cases, and
+the prior neutral/improved selections. It remains a selected set, not the
+full CI suite.
+
+Primary checked aggregate:
+
+| Metric (final / master) | Ratio |
+|---|---:|
+| process-group CPU geometric mean | **0.9955x** |
+| process-group CPU total | **0.9933x** |
+| F* root CPU total | **0.9801x** |
+| child CPU total | **0.9985x** |
+| wall total | **0.9927x** |
+
+A workload-stratified paired bootstrap gives 0.9921x-0.9989x for the selected
+group-CPU geometric mean. This interval describes local paired run variation;
+it is not a full-CI confidence interval. Consecutive 15-pair execution chunks
+preserve actual run order and range from 0.9801x to 1.0145x, with 7/20 above
+1.0 and median 0.9938x. A second preserved 600-row campaign, balanced 150/150
+in aggregate but not per workload, gives 0.9960x geometric and 0.9916x total
+group CPU. The two independent campaigns therefore agree that there is no
+clear selected-set regression, while also showing approximately percent-scale
+run variation.
+
+No selected checked workload has a large repeatable regression:
+
+- BvBinaryOps is +0.020 seconds group CPU median, 13/20 slower, with a paired
+  median bootstrap range of -0.010 to +0.050 seconds. Its independently rebuilt
+  master/final controls are +0.025 seconds median, 6/10 slower, +0.008 seconds
+  mean, and -0.000 seconds wall median. The small CPU signal does not follow a
+  stable wall or pair direction.
+- RBTree is +0.130 seconds in the primary block, but reverses to -0.135 seconds
+  in the second 20-pair block. MergeSort2 similarly changes from +0.010 seconds
+  to neutral. These are run/block-sensitive rather than repeatable adverse
+  cases.
+- Long is -0.595 seconds in 20/20 primary pairs, -0.570 seconds in 20/20 second
+  block pairs, and -0.345 seconds in 10/10 independently rebuilt pairs.
+  This robustly rules out the earlier local Long adverse direction for these
+  binaries, but is not attributed solely to source-path code.
+- Other positive medians are 5-15 ms or have uncertainty spanning zero, at the
+  monitor's approximately 10 ms CPU resolution.
+
+Reported F* peak heap is byte-identical in every one of the 300 primary checked
+pairs and in the rebuilt BV/Long controls. Sampled group RSS moves in both
+directions; primary per-workload median deltas range from -0.47 MiB to
++3.39 MiB and do not track live-heap changes.
+
+The exact full dependency workload was repeated for 20 direction-balanced
+pairs:
+
+| Final - master | Median | Slower |
+|---|---:|---:|
+| F* root / group CPU | **-0.480 s** | 0/20 |
+| child CPU | 0.000 s | 0/20 |
+| wall | **-0.731 s** | 0/20 |
+| sampled group RSS | **+1.70 MiB** | 20/20 |
+
+The paired median ranges are -0.500 to -0.475 seconds CPU and -0.749 to -0.710
+seconds wall. The memory tradeoff remains visible in sampled RSS, but there is
+no reported dependency heap metric and prior forced-GC diagnostics measured
+far less live cache data than RSS page commitment.
+
+Across 1,280 preserved process observations (primary, second broad block,
+dependency, and rebuilt controls), the strongest evidence is that final
+`2ef0fe554e` is not a clear performance regression from current master on this
+host. The checked subset is modestly faster in aggregate, dependency generation
+is consistently faster, and the only persistent adverse candidate (BV) is
+small, direction-unstable, and comparable to run/build variability. This does
+not establish equivalence or predict the full CI aggregate.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
@@ -865,6 +943,11 @@ and shared invalidation remains centralized in `Find.clear`.
   local suite focuses on F* verification and dependency generation.
 - No `perf` instruction/cycle counters are available on this host.
 - The selected six-workload source set is not the complete CI suite.
+- The direct final/master campaign covers 15 selected workloads, still not the
+  complete CI suite.
+- Aggregate bootstrap intervals resample paired observations independently
+  within each workload; they do not include source-selection, host, or
+  CI-order uncertainty.
 - Structural cold timings include invalidation and filesystem root expansion,
   not just trie construction.
 - No production source change or upstream comment/PR was made.

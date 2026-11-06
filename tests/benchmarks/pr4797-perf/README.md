@@ -537,6 +537,60 @@ python summarize_cache_state.py \
   --output CACHE_STATE_RESULTS.json
 ```
 
+## Direct final trie versus current master
+
+The direct comparison reuses the 15-workload raw-artifact harness. The broad
+driver randomizes workload/repetition cells while assigning exactly ten
+master-first and ten final-first pairs per workload:
+
+```sh
+python run_final_master_broad.py \
+  --pr /workspace/wt11/FStar-pr4797-master-current \
+  --fixed /workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-final-master/broad \
+  --repetitions 20 --cpu 16
+
+python run_final_master_dependency.py \
+  --kind dependency --comparison final-master \
+  --variant master=/workspace/wt11/FStar-pr4797-master-current \
+  --variant final=/workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-final-master/dependency \
+  --repetitions 20 --cpu 16 --timeout 180
+```
+
+The independently rebuilt BV/Long control uses exact rebuild hashes:
+
+```sh
+python run_final_master_rebuild.py \
+  --kind checked --comparison final-master-rebuild \
+  --variant master-rebuild=/workspace/wt11/FStar-pr4797-master-rebuild \
+  --variant final-rebuild=\
+/workspace/wt11/FStar-pr4797-cache-state-final-rebuild \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --output /workspace/wt11/pr4797-final-master/rebuild-control \
+  --repetitions 10 --workload bv-binary-ops --workload long \
+  --cpu 16 --timeout 600
+
+python summarize_final_master.py \
+  --broad /workspace/wt11/pr4797-final-master/broad \
+  --dependency /workspace/wt11/pr4797-final-master/dependency \
+  --order-control \
+    /workspace/wt11/pr4797-final-master/broad-aggregate-balanced \
+  --rebuild-control \
+    /workspace/wt11/pr4797-final-master/rebuild-control \
+  --output FINAL_MASTER_RESULTS.json
+```
+
+`pr` and `fixed` in the inherited broad rows are explicitly aliased to master
+and final grouped trie in provenance. The second broad block is retained as a
+run-variation control but is not primary because only its aggregate direction
+count, not every workload's count, is exactly balanced. Its exact historical
+driver is preserved as `run_final_master_broad_aggregate_control.py`.
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end
