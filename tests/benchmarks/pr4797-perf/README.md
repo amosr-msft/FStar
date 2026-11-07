@@ -629,6 +629,38 @@ python summarize_root_index_variants.py \
 The differential harness is evidence-only. No bespoke test was added back to
 the production branches.
 
+## Canonical component trie
+
+The canonical-node/root-fix campaign compares `7df960b9fb` with the preserved
+independent `2ef0fe554e` build:
+
+```sh
+python run_canonical_trie_differential.py \
+  --variant incumbent=/workspace/wt11/FStar-pr4797-cache-state-final-rebuild \
+  --variant canonical=/workspace/wt11/FStar-pr4797-root-trie \
+  --output CANONICAL_TRIE_DIFFERENTIAL.json --cpu 16
+
+python run_canonical_trie_comparison.py \
+  --kind dependency --comparison canonical \
+  --variant incumbent=/workspace/wt11/FStar-pr4797-cache-state-final-rebuild \
+  --variant canonical=/workspace/wt11/FStar-pr4797-root-trie \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-canonical-trie/dependency \
+  --repetitions 20 --cpu 16 --timeout 180
+```
+
+The checked campaign uses ten BvBinaryOps and Long pairs. The focused Long
+same-source control adds `canonical-rebuild` with
+`run_canonical_trie_rebuild.py`.
+
+```sh
+python summarize_canonical_trie.py \
+  --input /workspace/wt11/pr4797-canonical-trie \
+  --rebuild /workspace/wt11/pr4797-canonical-trie/rebuild-control \
+  --differential CANONICAL_TRIE_DIFFERENTIAL.json \
+  --output CANONICAL_TRIE_RESULTS.json
+```
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end

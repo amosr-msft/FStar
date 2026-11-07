@@ -1045,6 +1045,51 @@ time, 1.005x heavy time, 0.999x memory), including its Long and UInt extraction
 differences. The selected local cases and repeated controls establish only
 that changing the index representation does not provide a justified remedy.
 
+## Canonical component-trie nodes and filesystem root
+
+The retained component trie was corrected and simplified in `7df960b9fb`.
+Each node now has one `option module_include_path`, rather than independent
+optional Flat and Recursive paths. Routing nodes have `None`; configured nodes
+have exactly one descriptor. Duplicate normalized roots canonicalize in either
+input order, with Recursive subsuming Flat.
+
+Insertion and lookup now split normalized paths only on the current platform's
+separator and discard empty components. This gives a filesystem root zero
+components on POSIX and keeps a Windows drive component such as `C:`. Relative
+path stripping similarly checks only the normalized platform separator and
+does not remove the first filename character after `/`, `C:\`, or another
+root-form path. It also avoids treating a valid Unix backslash as a separator.
+The trie remains uncompressed: routing components still have ordinary nodes.
+
+An evidence-only public-API differential covers twelve cases: recursive roots,
+nested roots in both orders, siblings, boundaries, immediate Flat ownership,
+nested Flat nonownership with outer Recursive fallback, duplicate
+Flat/Recursive roots in both orders, duplicate Recursive roots, and the
+filesystem root. Eleven cases are identical to incumbent `2ef0fe554e`; the
+filesystem-root case changes from no owner to the correct `A/B.fst`.
+
+Full build, `boot-diff`, the hierarchical IDE golden, and complete
+`tests/ide` pass. The focused performance comparison uses the preserved
+independently built incumbent:
+
+| Canonical - incumbent | Group CPU | Wall | Sampled RSS | Slower |
+|---|---:|---:|---:|---:|
+| dependency (20 pairs) | -0.060 s | -0.085 s | -0.41 MiB | 0/20 |
+| BvBinaryOps (10 pairs) | -0.035 s | -0.044 s | -0.14 MiB | 2/10 |
+| Long (first build, 10 pairs) | +0.435 s | +0.637 s | +10.47 MiB | 10/10 |
+
+Long required the planned same-source control. A separately built
+`7df960b9fb` binary is +0.010 seconds CPU median versus incumbent, 5/10 slower,
+with -0.035 seconds mean and -0.084 seconds wall median. The two canonical
+binaries differ by -0.450 seconds median despite identical source. The first
+Long signal therefore follows native build layout rather than the canonical
+node/root fix. Reported F* peak heap is byte-identical in all BV and Long
+pairs. No broader campaign was repeated.
+
+The canonical representation and root fix are therefore retained at
+`7df960b9fb`, with no measurable targeted regression after the same-source
+control.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
