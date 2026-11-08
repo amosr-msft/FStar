@@ -40,6 +40,7 @@ type source_root_trie = {
 type normalized_include_path_cache = {
   paths: list module_include_path;
   source_roots: source_root_trie;
+  flat_source_roots: HashTable.t string module_include_path_kind;
 }
 
 type cache_state_t = {
@@ -283,6 +284,31 @@ let rec find_source_root
      | None -> best
      | Some child -> find_source_root rest child best)
 
+let add_flat_source_root
+  (roots:HashTable.t string module_include_path_kind)
+  (root:module_include_path)
+: ML unit =
+  let kind =
+    match HashTable.try_find roots root.dir, root.kind with
+    | Some Recursive, _ | _, Recursive -> Recursive
+    | _ -> Flat
+  in
+  HashTable.add roots root.dir kind
+
+let rec find_flat_source_root
+  (roots:HashTable.t string module_include_path_kind)
+  (directory:string)
+  (immediate:bool)
+: ML (option string) =
+  match HashTable.try_find roots directory with
+  | Some Recursive -> Some directory
+  | Some Flat when immediate -> Some directory
+  | _ ->
+    let parent = Filepath.dirname directory in
+    if parent = directory
+    then None
+    else find_flat_source_root roots parent false
+
 let normalized_module_include_paths =
   let cached = cache_state.normalized_include_paths in
   fun () ->
@@ -293,12 +319,15 @@ let normalized_module_include_paths =
         |> List.map (fun path ->
           { path with dir = Filepath.normalize_file_path path.dir })
       in
+      let flat_source_roots = HashTable.create 16 in
+      List.iter (add_flat_source_root flat_source_roots) paths;
       let normalized = {
         paths;
         source_roots =
           List.fold_left (fun trie path ->
             insert_source_root (String.split ['/'] path.dir) path trie)
             (empty_source_root_trie ()) paths;
+        flat_source_roots;
       } in
       cached := Some normalized;
       normalized
@@ -306,9 +335,20 @@ let normalized_module_include_paths =
 let module_include_paths_normalized () : ML (list module_include_path) =
   (normalized_module_include_paths ()).paths
 
+let diagnostic_flat_root_mode =
+  BU.expand_environment_variable "FSTAR_FLAT_ROOT_DIAGNOSTIC" = Some "1"
+
 let relative_source_path_normalized (filename:string) : ML (option string) =
-  let roots = (normalized_module_include_paths ()).source_roots in
-  find_source_root (String.split ['/'] filename) roots None
+  let roots = normalized_module_include_paths () in
+  let owner =
+    if diagnostic_flat_root_mode
+    then
+      find_flat_source_root
+        roots.flat_source_roots (Filepath.dirname filename) true
+    else
+      find_source_root (String.split ['/'] filename) roots.source_roots None
+    in
+  owner
   |> Option.map (fun dir ->
     BU.substring_from filename (String.length dir + 1))
 
