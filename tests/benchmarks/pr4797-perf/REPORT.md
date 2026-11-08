@@ -1097,10 +1097,10 @@ The flat-map discrepancy was investigated on diagnostic branch
 `2ef0fe554e`. This baseline is the earlier component trie with separate
 optional Flat and Recursive descriptors and the earlier prefix stripping, not
 the canonical trie/root fix in `7df960b9fb`. Diagnostic commit `896a237eae`
-constructs both indexes in one compiler and selects only the ownership lookup with
-`FSTAR_FLAT_ROOT_DIAGNOSTIC`. Each mode runs in a fresh process, so cache state
-and output remain isolated while executable layout, all unrelated compiler
-code, roots, inputs, flags, and checked dependencies are identical.
+constructs both indexes in one compiler and selects only the ownership lookup
+with `FSTAR_FLAT_ROOT_DIAGNOSTIC`. Each mode runs in a fresh process, so cache
+state and output remain isolated while executable layout, all unrelated
+compiler code, roots, inputs, flags, and checked dependencies are identical.
 
 Linux `perf` is installed but unavailable: `perf_event_paranoid=4` rejects all
 supported events without privileges. Permissions were not changed. The
