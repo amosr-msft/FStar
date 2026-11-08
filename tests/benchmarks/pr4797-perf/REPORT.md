@@ -1212,6 +1212,103 @@ though measured ownership lookup does not explain the slowdown. No production
 correction or padding experiment was made. The forest, compressed tries,
 ownership caching, and normalization strategy remain out of scope.
 
+## Corrected single-index control
+
+The dual-index control above does not model construction and retention: it
+always builds both indexes and switches only lookup. The corrected diagnostic
+starts from canonical trie `7df960b9fb`, not the earlier dual-option `2ef`
+baseline. Diagnostic commit `850c09bed1` stores one tagged index:
+
+- `ComponentTrie source_root_trie`, or
+- `FlatRootMap (HashTable.t string module_include_path_kind)`.
+
+`FSTAR_FLAT_ROOT_DIAGNOSTIC` is read once during module initialization. The
+lazy normalized-root cache then enters one branch and allocates, populates,
+and retains only that representation. The common ordered normalized include
+list, resolution cache, final-name cache, `Find.clear`, and epoch lifecycle
+remain shared. No unused empty alternate table or ownership-result cache is
+created.
+
+Source and extracted OCaml were inspected. The extracted branch contains the
+flat table allocation only under the flat constructor and
+`empty_source_root_trie` only under the trie constructor. A separate
+instrumented archive confirms lifecycle behavior:
+
+| Three build/clear cycles | Index builds | Trie builds | Flat builds | Allocated |
+|---|---:|---:|---:|---:|
+| trie mode | 3 | 3 | 0 | 66,528 bytes |
+| flat mode | 3 | 0 | 3 | 52,800 bytes |
+
+Both produce `A/B.fst|C/D.fst|E/F.fst` while changing include paths between
+lookups. Twelve additional evidence-only differential scenarios cover
+duplicate roots in both orders, nested/sibling roots, Flat fallback,
+boundaries, platform-root ownership, and repeated invalidation. All results
+are identical by mode. Full build, `boot-diff`, and complete `tests/ide` pass.
+
+### Uninstrumented end-to-end control
+
+The uninstrumented binary hash is
+`b97d936a16560c1a5a549cf5b72332a84ee0da7c8e8b409c90fa7fb90270b4be`.
+Each mode runs in a fresh process with balanced adjacent pairs on CPU16,
+identical inputs/flags/Z3/compiler-specific dependencies, and a dependency
+heap report.
+
+| Flat - trie | Absolute trie | Absolute flat | Paired median | Mean | Flat higher |
+|---|---:|---:|---:|---:|---:|
+| dependency root/group CPU, 20 pairs | 3.455 s | 3.445 s | **-0.015 s** | -0.008 s | 8/20 |
+| dependency wall | 5.249 s | 5.221 s | **-0.032 s** | -0.016 s | 8/20 |
+| dependency sampled RSS | 91.90 MiB | 91.37 MiB | -0.53 MiB | -0.42 MiB | 4/20 |
+| Long root CPU, 10 pairs | 17.585 s | 17.440 s | **-0.095 s** | -0.150 s | 3/10 |
+| Long group CPU | 17.635 s | 17.480 s | -- | -- | -- |
+| Long wall | 26.607 s | 26.341 s | **-0.164 s** | -0.336 s | 3/10 |
+| Long sampled RSS | 1018.02 MiB | 1029.39 MiB | +5.61 MiB | +4.60 MiB | 6/10 |
+
+Child CPU is zero in dependency and changes by -0.010 seconds median in Long.
+Reported F* peak heap is byte-identical by mode: 51.98 MiB for dependency and
+883.98 MiB for Long. Pair spreads remain visible: dependency CPU ranges from
+-0.070 to +0.060 seconds; Long CPU ranges from -0.720 to +0.240 seconds.
+
+These are 60 uninstrumented measured processes. Allocation/GC observations
+come from six separate instrumented dependency processes and are not mixed
+into the timing result. For 588 expanded root entries, each dependency process
+constructs exactly one selected index:
+
+| Diagnostic median | Trie | Flat |
+|---|---:|---:|
+| index builds | 1 | 1 |
+| selected builds | trie 1, flat 0 | trie 0, flat 1 |
+| allocated bytes | 1,176,778,648 | 1,174,761,984 |
+| minor collections | 675 | 675 |
+| major collections | 8 | 8 |
+| final/top heap words | 6,812,672 | 6,812,672 |
+| reported F* peak heap | 51.98 MiB | 51.98 MiB |
+
+Flat saves 1.92 MiB of allocation in the full dependency process, without
+changing GC counts, heap capacity, or reported peak heap.
+
+### Comparison with prior evidence
+
+The prior dual-index control was neutral in dependency and had a noisy +0.100
+second Long CPU median. The corrected single-index control is -0.015 seconds
+for dependency and -0.095 seconds for Long. Thus constructing and retaining
+only the selected flat map does not reveal the standalone slowdown; if
+anything, it modestly reduces allocation.
+
+The separate standalone flat builds still show +0.17-0.29 seconds dependency
+and +0.55-0.86 seconds Long versus separately built tries. The corrected
+control now holds native executable layout fixed while allowing index
+construction, retained objects, allocation history, GC, and lookup to differ.
+Under this fixed executable layout, those measured representation effects are
+insufficient to reproduce the standalone regression in these workloads. The
+control does not reproduce standalone linker layout, so the standalone
+difference itself remains unexplained. Native layout remains a plausible
+category, not an identified hotspot; `perf` is still blocked by host policy.
+
+No flat-map production replacement follows from this control. It establishes
+that the simpler backend has no adverse end-to-end signal when evaluated
+properly inside one executable, but ordinary separately linked flat binaries
+remain slower on this host.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

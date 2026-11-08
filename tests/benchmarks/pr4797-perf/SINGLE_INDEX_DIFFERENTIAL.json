@@ -1,0 +1,76 @@
+{
+  "provenance": {
+    "archive_sha256": "f95f3a38cb038d8c34339c144dce787707a0c5ebf7fcf9564e95ccadcb6f777d",
+    "compile_command": [
+      "ocamlfind",
+      "ocamlopt",
+      "-thread",
+      "-linkpkg",
+      "-package",
+      "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+      "-I",
+      "/workspace/wt11/FStar-pr4797-flat-single-index/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+      "-I",
+      "/workspace/wt11/FStar-pr4797-flat-single-index/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+      "/workspace/wt11/FStar-pr4797-flat-single-index/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+      "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/single_index_differential.ml",
+      "-o",
+      "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/single-index-differential-adocu_rj/differential.exe"
+    ],
+    "cpu": 16,
+    "executable_sha256": "cb84d0315c76271b2e324fec797183d02b01bab29b326e1a022b440a4ec6a2e8",
+    "harness_sha256": "fb2aecdc305f9b35d4fa80bcbe323d8151a3a52f804c124aed986346cba49191",
+    "head": "850c09bed1b8167e4e91a396d563e20e485ec446",
+    "runner_sha256": "5656a596050ada6d5b9453341b014d7e5d3c20c4a132ce6caea8aff9b3d585c6"
+  },
+  "results": {
+    "boundary": {
+      "flat": "NONE",
+      "trie": "NONE"
+    },
+    "duplicate-flat-recursive": {
+      "flat": "A/B.fst",
+      "trie": "A/B.fst"
+    },
+    "duplicate-recursive-flat": {
+      "flat": "A/B.fst",
+      "trie": "A/B.fst"
+    },
+    "filesystem-root": {
+      "flat": "A/B.fst",
+      "trie": "A/B.fst"
+    },
+    "flat-immediate": {
+      "flat": "A.fst",
+      "trie": "A.fst"
+    },
+    "flat-outer-fallback": {
+      "flat": "flat/deeper/A.fst",
+      "trie": "flat/deeper/A.fst"
+    },
+    "nested-flat-outer-fallback": {
+      "flat": "flat/nested/deeper/A.fst",
+      "trie": "flat/nested/deeper/A.fst"
+    },
+    "nested-inner-first": {
+      "flat": "A.fst",
+      "trie": "A.fst"
+    },
+    "nested-outer-first": {
+      "flat": "A.fst",
+      "trie": "A.fst"
+    },
+    "rebuild": {
+      "flat": "A/B.fst|C/D.fst|E/F.fst",
+      "trie": "A/B.fst|C/D.fst|E/F.fst"
+    },
+    "recursive-outer": {
+      "flat": "A/B.fst",
+      "trie": "A/B.fst"
+    },
+    "sibling": {
+      "flat": "A/B.fst",
+      "trie": "A/B.fst"
+    }
+  }
+}

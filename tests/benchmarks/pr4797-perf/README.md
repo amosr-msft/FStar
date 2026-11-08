@@ -698,6 +698,46 @@ python summarize_flat_diagnosis.py \
 `perf` is blocked by host policy (`perf_event_paranoid=4`); the report records
 the same-binary, counter, GC, timing, and native-symbol alternatives used.
 
+## Corrected single-index control
+
+Diagnostic branch `users/amos/20261109-fstar-flat-root-single-index` starts
+from canonical trie `7df960b9fb`. It selects one tagged backend before lazy
+index initialization.
+
+```sh
+python run_single_index_differential.py \
+  --worktree /workspace/wt11/FStar-pr4797-flat-single-index \
+  --output SINGLE_INDEX_DIFFERENTIAL.json --cpu 16
+
+python run_single_index_modes.py \
+  --worktree /workspace/wt11/FStar-pr4797-flat-single-index \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --binary-sha256 \
+    b97d936a16560c1a5a549cf5b72332a84ee0da7c8e8b409c90fa7fb90270b4be \
+  --kind dependency \
+  --output /workspace/wt11/pr4797-flat-single-index/dependency \
+  --repetitions 20 --cpu 16
+```
+
+Run ten Long pairs with `--kind long`. For construction/GC evidence, patch the
+extracted compiler using `instrument_single_index.py`, build `stage3/fstarc-full`,
+and run `run_single_index_diagnostics.py`. The latter also links the lifecycle
+harness against the instrumented archive and requires exactly three selected
+builds and zero alternate builds after three invalidations.
+
+```sh
+python summarize_single_index_control.py \
+  --timings /workspace/wt11/pr4797-flat-single-index \
+  --diagnostics /workspace/wt11/pr4797-flat-single-index/diagnostics \
+  --differential SINGLE_INDEX_DIFFERENTIAL.json \
+  --prior-dual FLAT_ROOT_DIAGNOSIS.json \
+  --output SINGLE_INDEX_CONTROL_RESULTS.json
+```
+
+Uninstrumented performance and instrumented allocation/GC observations are
+kept in separate campaigns.
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end
