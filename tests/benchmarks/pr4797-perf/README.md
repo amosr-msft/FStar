@@ -661,6 +661,43 @@ python summarize_canonical_trie.py \
   --output CANONICAL_TRIE_RESULTS.json
 ```
 
+## Flat-map causal diagnosis
+
+The diagnostic branch constructs incumbent and flat indexes in the same binary
+and switches lookup mode at process startup. This is diagnostic-only code.
+
+```sh
+python run_flat_same_binary.py \
+  --worktree /workspace/wt11/FStar-pr4797-flat-diagnosis \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --artifact /workspace/wt11/pr4797-latest-artifact \
+  --binary-sha256 \
+    5448a981dddbb52592cc31618492a5fd3da3ec8e411b3de4a649e3a131a85d69 \
+  --kind dependency \
+  --output /workspace/wt11/pr4797-flat-diagnosis/same-binary/dependency \
+  --repetitions 20 --cpu 16
+```
+
+Run ten Long pairs with `--kind long`. For counters, patch extracted stage3
+Find code with `instrument_flat_same_binary.py`, build `stage3/fstarc-full`,
+and run the same driver with `--instrumented`; the exact instrumented binary
+and script hashes are recorded in provenance.
+
+```sh
+python summarize_flat_diagnosis.py \
+  --plain /workspace/wt11/pr4797-flat-diagnosis/same-binary \
+  --timed /workspace/wt11/pr4797-flat-diagnosis/timed \
+  --variant-evidence ROOT_INDEX_VARIANT_RESULTS.json \
+  --incumbent-binary \
+    /workspace/wt11/FStar-pr4797-cache-state-final-rebuild/stage3/out/bin/fstar.exe \
+  --flat-binary \
+    /workspace/wt11/FStar-pr4797-flat-root-map-rebuild/stage3/out/bin/fstar.exe \
+  --output FLAT_ROOT_DIAGNOSIS.json
+```
+
+`perf` is blocked by host policy (`perf_event_paranoid=4`); the report records
+the same-binary, counter, GC, timing, and native-symbol alternatives used.
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end

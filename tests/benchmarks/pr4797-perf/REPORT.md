@@ -1090,6 +1090,122 @@ The canonical representation and root fix are therefore retained at
 `7df960b9fb`, with no measurable targeted regression after the same-source
 control.
 
+## Flat root-map causal diagnosis
+
+The flat-map discrepancy was investigated on diagnostic branch
+`users/amos/20261109-fstar-flat-root-diagnosis`, starting from incumbent
+`2ef0fe554e`. Diagnostic commit `896a237eae` constructs both indexes in one
+compiler and selects only the ownership lookup with
+`FSTAR_FLAT_ROOT_DIAGNOSTIC`. Each mode runs in a fresh process, so cache state
+and output remain isolated while executable layout, all unrelated compiler
+code, roots, inputs, flags, and checked dependencies are identical.
+
+Linux `perf` is installed but unavailable: `perf_event_paranoid=4` rejects all
+supported events without privileges. Permissions were not changed. The
+fallback uses this same-binary control plus narrowly instrumented extracted
+OCaml. Instrumented measurements are reported separately from uninstrumented
+timings.
+
+### Harness and workload differences
+
+The structural benchmark does use the public module-name API, but it is not a
+miniature end-to-end compiler run. It performs 5,000 synthetic distinct names
+per root count and 20,000 warmed repetitions, with 1/16/64/256 synthetic roots,
+no solver, and no parsing/typechecking. It also times cold invalidation/index
+construction directly.
+
+The real dependency workload has 562 source arguments and 1,964 normalized
+ownership calls. Its expanded path list has 602 entries because command-line
+file roots and other include paths are retained before index deduplication.
+Long has only 27 ownership calls and 18 expanded path entries. In both real
+workloads, every flat lookup finds the immediate filename parent: there are no
+ancestor `dirname` steps. Thus the suspected ancestor-walk penalty is absent
+from the cases that appeared slower. The structural workload actually asks
+more of that mechanism than these end-to-end cases.
+
+### Measured Find work
+
+Allocation-free counters and coarse whole-call timers give:
+
+| Workload/mode | Ownership calls | Hash probes | `dirname` | Find time | Root CPU |
+|---|---:|---:|---:|---:|---:|
+| dependency trie | 1,964 | 17,028 | 0 | 9.668 ms | 3.25 s |
+| dependency flat | 1,964 | 1,964 | 0 | 4.546 ms | 3.28 s |
+| Long trie | 27 | 243 | 0 | 0.518 ms | 16.58 s |
+| Long flat | 27 | 27 | 0 | 0.455 ms | 16.57 s |
+
+Flat ownership is about 5.1 ms faster in dependency generation. Find accounts
+for approximately 0.30% of trie root CPU versus 0.13% for flat. In Long, either
+mode is about 0.003% of root CPU, so the 0.5-0.9 second separate-binary deltas
+cannot be time spent in ownership lookup.
+
+The allocation/GC diagnostics agree. Dependency flat allocates about 1.9 MiB
+less out of roughly 1.95 GiB total; Long saves about 27 KiB out of 45.9 GiB.
+Minor/major collection counts and final heap capacity are identical by mode.
+These are process-level allocation counters, not allocation-site profiles, but
+they rule out an ownership-driven GC expansion of the observed magnitude.
+
+### Same-binary outcome
+
+Uninstrumented identical-executable pairs give:
+
+| Flat mode - trie mode | Root CPU | Wall | Slower |
+|---|---:|---:|---:|
+| dependency, 20 pairs | -0.005 s | +0.028 s | 7/20 CPU |
+| Long, 10 pairs | +0.100 s | +0.148 s | 6/10 CPU |
+
+Dependency wall mean is effectively zero (-0.0001 seconds), despite the
+positive median. The Long CPU range is -0.250 to +0.320 seconds and its
+direction is not stable. Reported Long F* heap is byte-identical; dependency
+heap was not collected. Per-call timing
+perturbs whole-process results, so instrumented process deltas are not used as
+performance evidence; only counters, coarse Find totals, allocation, and GC
+snapshots are interpreted. The uninstrumented flat mechanism is neutral in
+dependency generation and within ordinary run variation in Long when native
+layout is held constant.
+
+This directly contradicts a runtime dirname/hash explanation for the
+standalone binaries. The separate flat source builds remain slower, but the
+cost lies outside Find.
+
+### Native layout evidence
+
+The independently rebuilt standalone flat binary is 800 bytes smaller. Its
+Find module begins at the same address as incumbent, but every inspected later
+module moves 208 bytes earlier:
+
+| Symbol | Flat - incumbent address |
+|---|---:|
+| `FStarC.Parser.Dep` code begin | -208 bytes |
+| `FStarC.TypeChecker.TcTerm` code begin | -208 bytes |
+| `FStarC.Main` code begin | -208 bytes |
+
+The flat Find entry is also smaller (1,213 versus 1,227 bytes), and the module
+as a whole changes enough to move all subsequently linked native code. Combined
+with the same-binary result, this supports a native-code placement/build-layout
+effect rather than an ownership-algorithm regression. It does not identify the
+specific downstream alignment-sensitive hotspot: `perf` access is unavailable,
+and inventing padding/alignment changes would be speculative compiler tuning.
+
+### Conclusion
+
+The simpler flat map can match the trie end-to-end when unrelated code layout
+is held constant. Its actual lookup does less hashing, no extra dirname work
+in the discrepant workloads, less allocation, and less measured Find CPU.
+The previously observed +0.17-0.29 second dependency and +0.55-0.86 second
+Long deltas are not explained by measured flat lookup work. The evidence
+favors a source-change-induced native layout effect, with the exact downstream
+hot function unresolved under current profiling permissions. The same-binary
+control constructs both indexes, so it does not isolate single-index
+construction/allocation history; those measured costs point in flat's favor
+but remain a limitation of the causal claim.
+
+This diagnosis does not by itself justify replacing the retained trie: the
+ordinary flat source builds still produce slower binaries on this host, even
+though the algorithm is not the cause. No production correction or padding
+experiment was made. The forest, compressed tries, ownership caching, and
+normalization strategy remain out of scope.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
