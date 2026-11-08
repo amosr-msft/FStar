@@ -1094,8 +1094,10 @@ control.
 
 The flat-map discrepancy was investigated on diagnostic branch
 `users/amos/20261109-fstar-flat-root-diagnosis`, starting from incumbent
-`2ef0fe554e`. Diagnostic commit `896a237eae` constructs both indexes in one
-compiler and selects only the ownership lookup with
+`2ef0fe554e`. This baseline is the earlier component trie with separate
+optional Flat and Recursive descriptors and the earlier prefix stripping, not
+the canonical trie/root fix in `7df960b9fb`. Diagnostic commit `896a237eae`
+constructs both indexes in one compiler and selects only the ownership lookup with
 `FSTAR_FLAT_ROOT_DIAGNOSTIC`. Each mode runs in a fresh process, so cache state
 and output remain isolated while executable layout, all unrelated compiler
 code, roots, inputs, flags, and checked dependencies are identical.
@@ -1123,21 +1125,22 @@ ancestor `dirname` steps. Thus the suspected ancestor-walk penalty is absent
 from the cases that appeared slower. The structural workload actually asks
 more of that mechanism than these end-to-end cases.
 
-### Measured Find work
+### Measured ownership lookup
 
 Allocation-free counters and coarse whole-call timers give:
 
-| Workload/mode | Ownership calls | Hash probes | `dirname` | Find time | Root CPU |
+| Workload/mode | Ownership calls | Hash probes | `dirname` | Ownership time | Root CPU |
 |---|---:|---:|---:|---:|---:|
 | dependency trie | 1,964 | 17,028 | 0 | 9.668 ms | 3.25 s |
 | dependency flat | 1,964 | 1,964 | 0 | 4.546 ms | 3.28 s |
 | Long trie | 27 | 243 | 0 | 0.518 ms | 16.58 s |
 | Long flat | 27 | 27 | 0 | 0.455 ms | 16.57 s |
 
-Flat ownership is about 5.1 ms faster in dependency generation. Find accounts
-for approximately 0.30% of trie root CPU versus 0.13% for flat. In Long, either
-mode is about 0.003% of root CPU, so the 0.5-0.9 second separate-binary deltas
-cannot be time spent in ownership lookup.
+Flat ownership is about 5.1 ms faster in dependency generation. Timed
+`relative_source_path_normalized` accounts for approximately 0.30% of trie root
+CPU versus 0.13% for flat. In Long, either mode is about 0.003% of root CPU, so
+the 0.5-0.9 second separate-binary deltas cannot be time spent in the measured
+ownership lookup.
 
 The allocation/GC diagnostics agree. Dependency flat allocates about 1.9 MiB
 less out of roughly 1.95 GiB total; Long saves about 27 KiB out of 45.9 GiB.
@@ -1159,14 +1162,17 @@ positive median. The Long CPU range is -0.250 to +0.320 seconds and its
 direction is not stable. Reported Long F* heap is byte-identical; dependency
 heap was not collected. Per-call timing
 perturbs whole-process results, so instrumented process deltas are not used as
-performance evidence; only counters, coarse Find totals, allocation, and GC
-snapshots are interpreted. The uninstrumented flat mechanism is neutral in
-dependency generation and within ordinary run variation in Long when native
-layout is held constant.
+performance evidence; only counters, coarse ownership-call totals, allocation,
+and GC snapshots are interpreted. The uninstrumented flat mechanism is neutral
+in dependency generation and within ordinary run variation in Long when
+native layout is held constant.
 
 This directly contradicts a runtime dirname/hash explanation for the
 standalone binaries. The separate flat source builds remain slower, but the
-cost lies outside Find.
+slowdown is not in the measured `relative_source_path_normalized` ownership
+lookup. The same-binary control constructs both indexes and the timer does not
+cover all Find work, so it does not exclude single-index construction or
+allocation-history effects elsewhere in Find.
 
 ### Native layout evidence
 
@@ -1191,7 +1197,7 @@ and inventing padding/alignment changes would be speculative compiler tuning.
 
 The simpler flat map can match the trie end-to-end when unrelated code layout
 is held constant. Its actual lookup does less hashing, no extra dirname work
-in the discrepant workloads, less allocation, and less measured Find CPU.
+in the discrepant workloads, less allocation, and less measured ownership CPU.
 The previously observed +0.17-0.29 second dependency and +0.55-0.86 second
 Long deltas are not explained by measured flat lookup work. The evidence
 favors a source-change-induced native layout effect, with the exact downstream
@@ -1202,9 +1208,9 @@ but remain a limitation of the causal claim.
 
 This diagnosis does not by itself justify replacing the retained trie: the
 ordinary flat source builds still produce slower binaries on this host, even
-though the algorithm is not the cause. No production correction or padding
-experiment was made. The forest, compressed tries, ownership caching, and
-normalization strategy remain out of scope.
+though measured ownership lookup does not explain the slowdown. No production
+correction or padding experiment was made. The forest, compressed tries,
+ownership caching, and normalization strategy remain out of scope.
 
 ## Limitations
 
