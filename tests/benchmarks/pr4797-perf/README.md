@@ -740,8 +740,9 @@ kept in separate campaigns.
 
 ## Flat-map production candidate
 
-The final flat-only branch is `users/amos/20261109-fstar-flat-root-map` at
-`1b61ce6d3b`.
+The flat-only branch is `users/amos/20261109-fstar-flat-root-map`; the initial
+map commit is `1b61ce6d3b` and the deduplicated-root candidate is
+`31a521edd9`.
 
 ```sh
 python run_flat_production_differential.py \
@@ -808,6 +809,31 @@ python summarize_flat_regression.py \
 
 All timed output/cache directories use the same fixed pathname. Checked trees
 and executable bytes are swapped before launch, outside timed regions.
+
+The identified duplicate-root fix is reproduced with:
+
+```sh
+python run_directory_fix_staged.py \
+  --variant trie=/workspace/wt11/FStar-pr4797-flat-production \
+  --variant flat=/workspace/wt11/FStar-pr4797-flat-production31a-preserved \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --stage /workspace/wt11/pr4797-staged-directory-fix-stage \
+  --output /workspace/wt11/pr4797-staged-directory-fix \
+  --repetitions 20 --cpu 16
+
+python run_directory_fix_diagnostic.py \
+  --variant flat=/workspace/wt11/FStar-pr4797-flat-production \
+  --variant dedup=/workspace/wt11/FStar-pr4797-directory-cost-diagnosis \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --stage /workspace/wt11/pr4797-directory-fix-stage \
+  --output /workspace/wt11/pr4797-directory-fix-diagnostic \
+  --cpu 16
+```
+
+The first command requires the named paths to contain the exact commits/hashes
+recorded by the runner. The second runs both binaries through a common staged
+installation, records root manifests and syscall summaries, and verifies
+normalized dependency output.
 
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot

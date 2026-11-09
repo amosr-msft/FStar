@@ -1311,7 +1311,7 @@ remain slower on this host.
 
 ## Flat-map production candidate
 
-The selected production candidate is `1b61ce6d3b` on
+The initial flat-only production commit was `1b61ce6d3b` on
 `users/amos/20261109-fstar-flat-root-map`, based directly on canonical/root-fixed
 `7df960b9fb`. It removes the trie and component-splitting code. The candidate
 contains no tagged backend, environment selector, or diagnostic code. The
@@ -1381,7 +1381,7 @@ it was not executed on this Linux host.
 
 ### Final standalone sanity check
 
-The final standalone binary hash is
+The pre-dedup standalone binary hash is
 `667968b8748df177213e2ae45faa5156e507469c9b4cf9771cabc7c9e19d0641`.
 It was compared with the preserved canonical binary using exact workload
 inputs, flags, Z3, compiler-specific dependencies, CPU16, and balanced adjacent
@@ -1514,25 +1514,78 @@ times, so only counts are interpreted.
 
 The compiler's built-in `--profile_component FStarC.Parser.Dep` emitted no
 component records for this dependency-only command, and privileged native
-sampling remains unavailable (`perf_event_paranoid=4`). Further phase
-instrumentation is unnecessary for the implementation comparison: swapping
-only cwd reproduces the full regression for both binaries, while swapping only
-binary at one cwd does not.
+sampling remains unavailable (`perf_event_paranoid=4`). At this stage the cwd
+crossover localized the comparison defect; the subsequent full syscall trace
+below identified the repeated filesystem operation and motivated the source
+fix.
+
+### Costly operation and source fix
+
+Full `newfstatat` traces identify the operation behind the cwd sensitivity.
+Of 520,143 failing calls, 506,610 target the source cwd. This is exactly:
+
+```
+585 duplicate roots * 866 failed probes per root = 506,610
+```
+
+`command_line_include_roots` added the same normalized source parent once per
+non-directory command-line file. Consequently `full_include_path` contained
+585 duplicate Flat entries for the cwd. There are 865 unique missing paths:
+864 are probed once per duplicate root, while `fstar.include` is probed twice
+per root, for 866 failed probes per root. Typical paths such as
+`Bug016.fst.checked`, `FStar.Prelude.fsti.checked`, and
+`Prims.fst.checked` occur 585 times each; `fstar.include` occurs 1,170 times.
+
+This explains both CPU components: repeated pathname construction/hashing and
+comparison consume user CPU, while 506,610 redundant failed `newfstatat`
+operations consume system CPU. Cwd spelling/location changed the per-operation
+cost, which is why the old variant comparison followed the source worktree
+rather than executable contents. It was a benchmark confound layered over a
+real general dependency-generation hotspot.
+
+The smallest fix is to apply existing last-preserving `List.unique` after
+filtering command-line roots. Distinct root order and reverse-search precedence
+remain unchanged; all duplicate command-line roots are Flat and semantically
+identical. The fix is commit `31a521edd9` on the selected flat-map branch.
+Its stage3 binary SHA-256 is
+`4fe1e790fc77782c38c3afdbf1f2f003143db58f539f65a78c07f8b9fb86a508`.
+
+Direct diagnostics show:
+
+| Metric | Before | Deduplicated |
+|---|---:|---:|
+| expanded roots | 601 | 17 |
+| `newfstatat` calls | 525,157 | 19,413 |
+| failing `newfstatat` | 520,143 | 14,399 |
+| command-line files | 585 | 585 |
+
+Dependency bodies are identical after normalizing compiler/install/output
+paths and header provenance. Full build, `boot-diff`, complete `tests/ide`,
+and the 14 flat-map ownership/invalidation differential scenarios pass.
+
+Twenty balanced pre-fix/fixed pairs on the original dependency workload give:
+
+| Fixed - pre-fix | Pre-fix absolute | Fixed absolute | Paired median | Mean | Fixed slower |
+|---|---:|---:|---:|---:|---:|
+| root/group CPU | 3.440 s | 0.625 s | **-2.810 s** | -2.810 s | 0/20 |
+| wall | 5.422 s | 1.010 s | **-4.402 s** | -4.374 s | 0/20 |
+| sampled RSS | 91.87 MiB | 89.77 MiB | -2.11 MiB | -2.10 MiB | 0/20 |
+
+Child CPU is zero. This magnitude and the exact syscall-count collapse provide
+the reproducing/correcting control; no privileged profiler is needed.
 
 ### Corrected conclusion
 
-The persistent standalone dependency regression was a benchmark-comparison
-defect: the previous harness paired different source worktrees and path
-distributions. It was not a regression of the selected flat map. The corrected
-common-path harness measures flat at +0.005 seconds CPU median with 10/20 pairs
-higher and preserves semantically identical dependency output.
+The original +0.18-second flat/trie comparison was not a flat-map regression.
+It paired different source worktrees, exposing different per-operation costs
+for a pre-existing duplicate-root search bug. At matched paths, binary choice
+is neutral. Deduplicating command-line roots removes the actual hot operation
+and improves dependency generation by 2.82 seconds CPU.
 
-This finding supersedes the earlier native-layout hypothesis for dependency
-generation. Native layout remains relevant to unrelated same-source build
-variation, but it is not needed to explain the reproduced dependency result.
-Long was not causally localized in this round and remains separate. No
-production source correction is required; the evidence-backed fix is to
-benchmark both binaries through matched runtime and input paths.
+This supersedes both the earlier native-layout hypothesis and the conclusion
+that only benchmark tooling needed correction. The evidence-backed compiler
+fix is now part of flat production candidate `31a521edd9`. Long was not
+causally localized in this round and remains separate.
 
 ## Limitations
 
