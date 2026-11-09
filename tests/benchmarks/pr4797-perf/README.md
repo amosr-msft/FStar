@@ -769,6 +769,46 @@ python summarize_flat_production.py \
   --output FLAT_PRODUCTION_RESULTS.json
 ```
 
+## Standalone dependency path diagnosis
+
+The corrected comparison copies both preserved binaries through one staged
+runtime path and uses one source cwd/install/cache layout:
+
+```sh
+python run_flat_staged_pair.py \
+  --variant trie=/workspace/wt11/FStar-pr4797-root-trie \
+  --variant flat=/workspace/wt11/FStar-pr4797-flat-production \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --stage /workspace/wt11/pr4797-flat-common-stage \
+  --output /workspace/wt11/pr4797-flat-staged-pair \
+  --repetitions 20 --cpu 16
+```
+
+`run_flat_staged_matrix.py` crosses binary and checked-tree provenance.
+`run_flat_cwd_matrix.py` holds the staged runtime fixed and crosses binary with
+the two original source cwd paths. `run_dependency_rusage.py` compares
+identical inputs at controlled paths of each original length and records
+user/system CPU, faults, context switches, and I/O.
+`run_dependency_strace.py` compares syscall counts and filesystem behavior.
+`run_dependency_phase_diagnostic.py` records normalized file/root manifests.
+
+```sh
+python summarize_flat_regression.py \
+  --standalone FLAT_PRODUCTION_RESULTS.json \
+  --staged-matrix /workspace/wt11/pr4797-flat-staged-results \
+  --staged-pair /workspace/wt11/pr4797-flat-staged-pair \
+  --cwd-matrix /workspace/wt11/pr4797-flat-cwd-matrix \
+  --rusage /workspace/wt11/pr4797-rusage-results \
+  --flatcopy-rusage /workspace/wt11/pr4797-flatcopy-rusage \
+  --strace /workspace/wt11/pr4797-flat-strace \
+  --phase /workspace/wt11/pr4797-flat-phase-diagnostic \
+  --staged-smoke /workspace/wt11/pr4797-flat-staged-smoke \
+  --output FLAT_REGRESSION_DIAGNOSIS.json
+```
+
+All timed output/cache directories use the same fixed pathname. Checked trees
+and executable bytes are swapped before launch, outside timed regions.
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end

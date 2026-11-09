@@ -1411,6 +1411,126 @@ operations are slower; it is an unresolved build/layout-sensitive outcome that
 the user accepted when selecting the simpler implementation. No padding,
 tuning, or broader campaign was added.
 
+## Standalone dependency regression diagnosis
+
+The final +0.180 second dependency result above compared binaries from
+different worktrees while also running each binary in its own source cwd,
+installation, cache/output paths, and compiler-specific checked tree. A bounded
+factorial campaign isolates those factors. All controls use the exact 585-file
+relative source manifest, flags, Z3, CPU16 affinity, and semantically identical
+source contents.
+
+### Common staged runtime
+
+Both preserved binaries were copied in turn to the same executable pathname:
+
+```
+/workspace/wt11/pr4797-flat-common-stage/bin/fstar.exe
+```
+
+They used the same `FSTAR_LIB`, canonical source cwd, checked tree, cache/output
+paths, and environment. Twenty balanced pairs give:
+
+| Flat binary - trie binary | Trie absolute | Flat absolute | Paired median | Mean | Flat higher |
+|---|---:|---:|---:|---:|---:|
+| root/group CPU | 3.250 s | 3.265 s | **+0.005 s** | +0.105 s | 10/20 |
+| wall | 5.117 s | 5.147 s | **+0.012 s** | +0.181 s | 12/20 |
+| sampled RSS | 90.08 MiB | 89.89 MiB | -0.23 MiB | -0.29 MiB | 5/20 |
+
+Child CPU is zero. One disturbed pair contributes +1.970 seconds CPU/+3.446
+seconds wall and dominates the means; medians and pair directions are neutral.
+This removes the consistent +0.180 second signal without changing either
+executable.
+
+A separate 2x2 binary/checked-tree matrix crosses both binaries with both
+compiler-specific `ulib.checked` trees at the common paths. Median root CPU is
+3.26-3.28 seconds in all four cells:
+
+| Binary | Trie checked tree | Flat checked tree |
+|---|---:|---:|
+| trie | 3.275 s | 3.280 s |
+| flat | 3.260 s | 3.265 s |
+
+Both crossed combinations run successfully. Their `.depend` bodies are
+byte-identical after removing the expected compiler-hash header; checked-tree
+choice does not reproduce the regression.
+
+### Input cwd is the causal comparison defect
+
+Holding the staged executable, installation, checked tree, cache/output paths,
+and environment fixed while crossing only binary and source cwd gives:
+
+| Runtime cell | Median root CPU |
+|---|---:|
+| trie binary, trie cwd | 3.270 s |
+| flat binary, trie cwd | 3.250 s |
+| trie binary, flat cwd | 3.470 s |
+| flat binary, flat cwd | 3.465 s |
+
+At the trie cwd, flat-trie is -0.020 seconds median. At the flat cwd it is
+-0.005 seconds. Changing from the trie cwd to the flat cwd costs +0.200 seconds
+for trie and +0.215 seconds for flat. The apparent implementation regression
+therefore follows the input worktree, not the implementation.
+
+The normalized manifests have the same shape: 585 file paths and 601 expanded
+root entries. The flat worktree path is six characters longer, adding 7,026
+characters across those file/root strings. Identical copied trees at controlled
+paths separate pathname length from physical directory state:
+
+| Cwd fixture | Path length | Median user + system CPU |
+|---|---:|---:|
+| controlled short | 63 | 3.218 s |
+| controlled long | 69 | 3.334 s |
+| original trie | 63 | 3.283 s |
+| original flat | 69 | 3.478 s |
+
+Six additional pathname characters cost about 0.11-0.12 seconds in userspace
+for either copied tree. The original worktree directories add a second
+filesystem-state cost beyond equal-length copies.
+
+User/system CPU and `getrusage` confirm the split:
+
+| Cwd | User CPU | System CPU |
+|---|---:|---:|
+| controlled short | 2.590 s | 0.628 s |
+| controlled long | 2.716 s | 0.619 s |
+| original trie | 2.674 s | 0.610 s |
+| original flat | 2.772 s | 0.706 s |
+
+Copying the original flat directory contents to a fresh equal-length path
+reduces it to 2.722 seconds user / 0.606 seconds system CPU. Thus the remaining
+original-flat penalty follows the original directory/inode/dentry state, not
+its file bytes; a fresh copy eliminates it.
+
+`strace -c` observes exactly 531,425 syscalls with the same per-syscall counts
+and 520,154 failures for all original/controlled directories. There are zero
+block-input operations and zero major faults in `getrusage`; context-switch
+counts are comparable. The system-time difference is therefore per-operation
+filesystem/path cost, not extra compiler I/O calls. Tracing perturbs syscall
+times, so only counts are interpreted.
+
+The compiler's built-in `--profile_component FStarC.Parser.Dep` emitted no
+component records for this dependency-only command, and privileged native
+sampling remains unavailable (`perf_event_paranoid=4`). Further phase
+instrumentation is unnecessary for the implementation comparison: swapping
+only cwd reproduces the full regression for both binaries, while swapping only
+binary at one cwd does not.
+
+### Corrected conclusion
+
+The persistent standalone dependency regression was a benchmark-comparison
+defect: the previous harness paired different source worktrees and path
+distributions. It was not a regression of the selected flat map. The corrected
+common-path harness measures flat at +0.005 seconds CPU median with 10/20 pairs
+higher and preserves semantically identical dependency output.
+
+This finding supersedes the earlier native-layout hypothesis for dependency
+generation. Native layout remains relevant to unrelated same-source build
+variation and noisy Long runs, but it is not needed to explain the reproduced
+dependency result. No production source correction is required; the
+evidence-backed fix is to benchmark both binaries through matched runtime and
+input paths.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.
