@@ -1484,9 +1484,12 @@ paths separate pathname length from physical directory state:
 | original trie | 63 | 3.283 s |
 | original flat | 69 | 3.478 s |
 
-Six additional pathname characters cost about 0.11-0.12 seconds in userspace
-for either copied tree. The original worktree directories add a second
-filesystem-state cost beyond equal-length copies.
+The tested long-path copies are six characters longer and take about
+0.11-0.12 seconds more userspace CPU than the tested short-path copies. Their
+pathname spelling and physical directories also differ, so this control does
+not isolate character count as the sole cause. The original worktree
+directories add a second location/filesystem-state difference beyond the
+equal-length copies.
 
 User/system CPU and `getrusage` confirm the split:
 
@@ -1499,8 +1502,8 @@ User/system CPU and `getrusage` confirm the split:
 
 Copying the original flat directory contents to a fresh equal-length path
 reduces it to 2.722 seconds user / 0.606 seconds system CPU. Thus the remaining
-original-flat penalty follows the original directory/inode/dentry state, not
-its file bytes; a fresh copy eliminates it.
+original-flat penalty is sensitive to the original directory location or
+filesystem state, rather than file contents alone; a fresh copy eliminates it.
 
 `strace -c` observes exactly 531,425 syscalls with the same per-syscall counts
 and 520,154 failures for all original/controlled directories. There are zero
@@ -1526,10 +1529,10 @@ higher and preserves semantically identical dependency output.
 
 This finding supersedes the earlier native-layout hypothesis for dependency
 generation. Native layout remains relevant to unrelated same-source build
-variation and noisy Long runs, but it is not needed to explain the reproduced
-dependency result. No production source correction is required; the
-evidence-backed fix is to benchmark both binaries through matched runtime and
-input paths.
+variation, but it is not needed to explain the reproduced dependency result.
+Long was not causally localized in this round and remains separate. No
+production source correction is required; the evidence-backed fix is to
+benchmark both binaries through matched runtime and input paths.
 
 ## Limitations
 
