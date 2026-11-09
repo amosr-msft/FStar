@@ -1547,8 +1547,14 @@ The smallest fix is to apply existing last-preserving `List.unique` after
 filtering command-line roots. Distinct root order and reverse-search precedence
 remain unchanged; all duplicate command-line roots are Flat and semantically
 identical. The fix is commit `31a521edd9` on the selected flat-map branch.
-Its stage3 binary SHA-256 is
-`4fe1e790fc77782c38c3afdbf1f2f003143db58f539f65a78c07f8b9fb86a508`.
+The originally preserved executable
+`4fe1e790fc77782c38c3afdbf1f2f003143db58f539f65a78c07f8b9fb86a508`
+had been incrementally rebuilt in that worktree: its direct root counters
+verify the deduplicated behavior, but its embedded version stamp remained
+`7df960b9fb-dirty`, so it is not used as exact-revision evidence below. A clean
+build whose source HEAD and embedded commit both equal `31a521edd9` has
+SHA-256
+`633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1`.
 
 Direct diagnostics show:
 
@@ -1586,6 +1592,76 @@ This supersedes both the earlier native-layout hypothesis and the conclusion
 that only benchmark tooling needed correction. The evidence-backed compiler
 fix is now part of flat production candidate `31a521edd9`. Long was not
 causally localized in this round and remains separate.
+
+## Latest CI outlier reproduction
+
+The latest report is comment `6733916004` from successful Actions run
+`42562713596`. Its downloaded artifact `bench-pr-4797` (ID `13653963197`) has
+SHA-256
+`5a19184db5e79fc559e34034144f8562d15c8c224225b8d5df1a02c3e8787ffa`;
+`report.html` has SHA-256
+`2a4368a5f47900a8ffb1041da2de0f77f3d764f808b90222a4761ffcbb7aef73`.
+The complete report has 3,544 matched tests. Its overall time geometric ratio
+is 0.9994x; the 1,283 heavy tests have a 1.0011x time ratio. Those neutral
+aggregates do not settle individual outliers.
+
+The selection covers the four largest requested absolute time increases,
+BoolRefinement's expensive low-relative increase, FloatExtract's largest
+memory ratio, and ExtUIntDivRem as a child-dominated ratio control. No other
+test with at least one second of baseline CPU exceeded Lib.Vec's +11.2%;
+subsecond percentage outliers were excluded. Exact full paths and raw Ramon
+commands are retained in `LATEST_CI_ARTIFACT.json`.
+
+The local campaign compares baseline `9ccacf4a8a` with PR head `31a521edd9`.
+Both source HEAD and the compiler's embedded commit are required to match.
+The clean head compiler hash is `633eb53e40a...`; the baseline compiler hash
+is `9c24fe8a04f8...`. Each compiler has its own Make-prepared dependency
+snapshot, but both are atomically installed at one executable pathname and
+run from the same source cwd with the same cache/output paths. Runs use CPU16,
+balanced adjacent order, fresh target outputs, exact artifact arguments, Z3
+5.3.0, `FSTAR_MEM_REPORT`, sampled per-process CPU accounting, and sampled
+group RSS.
+
+An initial preparation had copied an incrementally built executable whose
+worktree HEAD was `31a521edd9` but whose embedded commit was
+`7df960b9fb-dirty`. Its measurements were discarded, its caches were rebuilt,
+and the runner was repeated from scratch. This is why source revision,
+embedded revision, binary hash, and install-tree hash are all recorded.
+
+| Target | CI group CPU head-base | Local paired group CPU | Root / child median | Local F* heap | Assessment |
+|---|---:|---:|---:|---:|---|
+| `tests/calc/_cache/Long.fst.checked` | +1.940 s | +0.030 s, 4/5 | +0.030 / 0.000 s | 883.98 / 883.98 MiB | neutral |
+| `tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked` | +1.719 s | +0.040 s, 5/5 | +0.010 / +0.060 s | 179.98 / 179.98 MiB | neutral at 10 ms resolution |
+| `tests/custard/pulse/_cache/CborBoundarySlice.fst.checked` | +1.990 s | -0.055 s, 4/10 | +0.070 / -0.110 s | 307.98 / 307.98 MiB | neutral |
+| `pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked` | +0.782 s | -0.100 s, 0/5 | -0.090 / -0.010 s | 403.98 / 403.98 MiB | reversed |
+| `examples/dsls/bool_refinement/_cache/BoolRefinement.fst.checked` | +1.521 s | +0.180 s, 2/3 | +0.040 / +0.190 s | 339.98 / 339.98 MiB | inconclusive screening |
+| `tests/floats/_output/FloatExtract.krml` | -0.062 s | 0.000 s, 4/10 | 0.000 / 0.000 s | 115.98 / 115.98 MiB | memory jump absent |
+| `tests/extraction/backends/_cache/ExtUIntDivRem.fst.checked` | +0.459 s | +0.030 s, 3/5 | 0.000 / +0.030 s | 83.98 / 83.98 MiB | neutral at 10 ms resolution |
+
+Cbor was retained as the planned extended control because its CI increase was
+the largest. The first block was -0.070 seconds median (1/5); the independent
+second block was +0.030 seconds (3/5). Combined, the median is -0.055 seconds,
+mean -0.044 seconds, range -0.460 to +0.720 seconds, and the bootstrap 95%
+median interval is -0.400 to +0.175 seconds. This does not reproduce the CI's
++1.990-second observation or localize a stable source effect.
+
+FloatExtract's CI F* heap rose from 78.21 to 105.43 MiB while CPU improved.
+Locally every base and head run reports exactly 115.98 MiB, and paired sampled
+RSS differs by only +0.06 MiB median. The allocation/heap jump is not
+deterministic in this controlled environment, and local absolute heap regime
+differs from CI. Reported F* heap is likewise identical within every pair for
+all six checked targets; sampled RSS moves independently and is not interpreted
+as OCaml live heap.
+
+The 76-process primary measurements have SHA-256
+`b3fa3b461073657a1a05fdc63d743ee334fbc9ef0f838dfef5ef2c4e2767e321`;
+the ten-process Cbor extension has
+`ea09a55e8d21e9e0eac9ec70bf01fae43ffe40583eb39ed0a2208a6a8cb77700`.
+`LATEST_CI_REPRO_RESULTS.json` preserves every row, exact preparation and run
+provenance, paired distributions, and uncertainty. None of the selected
+outliers provides evidence for another production correction. This bounded
+selection does not establish or exclude a small aggregate effect across all
+1,283 heavy tests.
 
 ## Limitations
 

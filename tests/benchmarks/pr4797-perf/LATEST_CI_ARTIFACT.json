@@ -1,0 +1,1446 @@
+{
+  "baseline": "9ccacf4a8a392137d5384f8b39500377ebf53f79",
+  "head": "31a521edd9ca47c547204cb0609a852206e4342a",
+  "matched": 3544,
+  "heavy_count": 1283,
+  "time_geometric_ratio": 0.9993748409899658,
+  "heavy_time_geometric_ratio": 1.0011373992501176,
+  "selected": {
+    "tests/calc/_cache/Long.fst.checked": {
+      "ci_time": {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 27.844,
+        "patch": 29.784
+      },
+      "ci_memory_mib": {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 855.2626495361328,
+        "patch": 864.7948989868164
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/tests/calc",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Long.fst",
+          "-o",
+          "_cache/Long.fst.checked"
+        ],
+        "root_cpu_seconds": 27.75,
+        "child_cpu_seconds": 0.0940000000000012,
+        "group_cpu_seconds": 27.844,
+        "wall_seconds": 28.644,
+        "group_mempeak_mib": 1005.0,
+        "fstar_heap_peak_bytes": 896807888,
+        "ramon_sha256": "55aff1508023458fe622018cb3e923157fe66cc492327ed256cf2f71ef277d30",
+        "fstarmem_sha256": "b2eec76a0587329212c5ac5fb8c442145d15f1791c92fe6af0121c6169b63814"
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/tests/calc",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Long.fst",
+          "-o",
+          "_cache/Long.fst.checked"
+        ],
+        "root_cpu_seconds": 29.67,
+        "child_cpu_seconds": 0.11399999999999721,
+        "group_cpu_seconds": 29.784,
+        "wall_seconds": 30.332,
+        "group_mempeak_mib": 1015.0,
+        "fstar_heap_peak_bytes": 906803176,
+        "ramon_sha256": "4760e5086eb7efafa61e8d24c46a173a66ae6f324fa09089d2d9f2060517d381",
+        "fstarmem_sha256": "10b341fc82021820144bd3dd349dd422524aa45c082f28c631ff5267bbeeb558"
+      }
+    },
+    "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked": {
+      "ci_time": {
+        "name": "Lib.Vec.Lemmas.fst.checked",
+        "full": "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked",
+        "base": 15.412,
+        "patch": 17.131
+      },
+      "ci_memory_mib": {
+        "name": "Lib.Vec.Lemmas.fst.checked",
+        "full": "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked",
+        "base": 250.915771484375,
+        "patch": 250.44901275634766
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/tests/hacl",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "root_cpu_seconds": 6.739999999999999,
+        "child_cpu_seconds": 8.672,
+        "group_cpu_seconds": 15.412,
+        "wall_seconds": 15.863,
+        "group_mempeak_mib": 323.0,
+        "fstar_heap_peak_bytes": 263104256,
+        "ramon_sha256": "1f1d0855ba3ecf349e47434c460390dab58c834b0737430b0a73ff39b23ed5e0",
+        "fstarmem_sha256": "ba2d683e3c5a56515a2bb65b9d42443eaacf6e6b6db3953b494f39daa8103293"
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/tests/hacl",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "root_cpu_seconds": 7.51,
+        "child_cpu_seconds": 9.621,
+        "group_cpu_seconds": 17.131,
+        "wall_seconds": 18.143,
+        "group_mempeak_mib": 322.0,
+        "fstar_heap_peak_bytes": 262614824,
+        "ramon_sha256": "5f1dec41202be7a43fd8bb2d008afaeb7d918cb649654ed8833ffcd2a030e48c",
+        "fstarmem_sha256": "dd75db74acbae36c84e0cd4563ebf9b241a52d4df6c004fbc2f175545fd25f5e"
+      }
+    },
+    "tests/custard/pulse/_cache/CborBoundarySlice.fst.checked": {
+      "ci_time": {
+        "name": "CborBoundarySlice.fst.checked",
+        "full": "tests/custard/pulse/_cache/CborBoundarySlice.fst.checked",
+        "base": 48.304,
+        "patch": 50.294
+      },
+      "ci_memory_mib": {
+        "name": "CborBoundarySlice.fst.checked",
+        "full": "tests/custard/pulse/_cache/CborBoundarySlice.fst.checked",
+        "base": 533.0,
+        "patch": 531.0
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/tests/custard/pulse",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--cache_checked_modules",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar,Pulse.Nolib,Pulse.Lib,Pulse.Class,PulseCore",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "@247",
+          "--ext",
+          "optimize_let_vc",
+          "--ext",
+          "fly_deps",
+          "CborBoundarySlice.fst"
+        ],
+        "root_cpu_seconds": 14.0,
+        "child_cpu_seconds": 34.304,
+        "group_cpu_seconds": 48.304,
+        "wall_seconds": 48.941,
+        "group_mempeak_mib": 533.0,
+        "fstar_heap_peak_bytes": null,
+        "ramon_sha256": "4ea1798f78310275e97b51ba217bfd2035217da4d98738a16aa7843b752d78dd",
+        "fstarmem_sha256": null
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/tests/custard/pulse",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--cache_checked_modules",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar,Pulse.Nolib,Pulse.Lib,Pulse.Class,PulseCore",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "@247",
+          "--ext",
+          "optimize_let_vc",
+          "--ext",
+          "fly_deps",
+          "CborBoundarySlice.fst"
+        ],
+        "root_cpu_seconds": 14.530000000000001,
+        "child_cpu_seconds": 35.763999999999996,
+        "group_cpu_seconds": 50.294,
+        "wall_seconds": 52.362,
+        "group_mempeak_mib": 531.0,
+        "fstar_heap_peak_bytes": null,
+        "ramon_sha256": "ca23a19413b600b42092cc6594052d660491f8511716d2126797eb7a41b52e27",
+        "fstarmem_sha256": null
+      }
+    },
+    "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked": {
+      "ci_time": {
+        "name": "Calc.Server.Endpoint.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked",
+        "base": 13.862,
+        "patch": 14.644
+      },
+      "ci_memory_mib": {
+        "name": "Calc.Server.Endpoint.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked",
+        "base": 505.0,
+        "patch": 510.0
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/pulse/share/pulse/examples/protocol/calc",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--cache_checked_modules",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar,Pulse.Nolib,Pulse.Lib,Pulse.Class,PulseCore",
+          "--include",
+          "spec",
+          "--include",
+          "impl",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "@247",
+          "--ext",
+          "optimize_let_vc",
+          "--ext",
+          "fly_deps",
+          "impl/Calc.Server.Endpoint.fst"
+        ],
+        "root_cpu_seconds": 12.17,
+        "child_cpu_seconds": 1.6920000000000002,
+        "group_cpu_seconds": 13.862,
+        "wall_seconds": 14.668,
+        "group_mempeak_mib": 505.0,
+        "fstar_heap_peak_bytes": null,
+        "ramon_sha256": "2b6d73a89cfbca432c1bb117431376ad8f6db402aa00da09d26be02f97f971fa",
+        "fstarmem_sha256": null
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/pulse/share/pulse/examples/protocol/calc",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--cache_checked_modules",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar,Pulse.Nolib,Pulse.Lib,Pulse.Class,PulseCore",
+          "--include",
+          "spec",
+          "--include",
+          "impl",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "@247",
+          "--ext",
+          "optimize_let_vc",
+          "--ext",
+          "fly_deps",
+          "impl/Calc.Server.Endpoint.fst"
+        ],
+        "root_cpu_seconds": 12.879999999999999,
+        "child_cpu_seconds": 1.7640000000000011,
+        "group_cpu_seconds": 14.644,
+        "wall_seconds": 14.933,
+        "group_mempeak_mib": 510.0,
+        "fstar_heap_peak_bytes": null,
+        "ramon_sha256": "912bef4b6e1ce35e7f3d0a3282299535871276213f905a98979b77070f8d5ee1",
+        "fstarmem_sha256": null
+      }
+    },
+    "examples/dsls/bool_refinement/_cache/BoolRefinement.fst.checked": {
+      "ci_time": {
+        "name": "BoolRefinement.fst.checked",
+        "full": "examples/dsls/bool_refinement/_cache/BoolRefinement.fst.checked",
+        "base": 99.647,
+        "patch": 101.168
+      },
+      "ci_memory_mib": {
+        "name": "BoolRefinement.fst.checked",
+        "full": "examples/dsls/bool_refinement/_cache/BoolRefinement.fst.checked",
+        "base": 403.21958923339844,
+        "patch": 403.10347747802734
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/examples/dsls/bool_refinement",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "BoolRefinement.fst",
+          "-o",
+          "_cache/BoolRefinement.fst.checked"
+        ],
+        "root_cpu_seconds": 12.030000000000001,
+        "child_cpu_seconds": 87.617,
+        "group_cpu_seconds": 99.647,
+        "wall_seconds": 104.484,
+        "group_mempeak_mib": 498.0,
+        "fstar_heap_peak_bytes": 422806384,
+        "ramon_sha256": "378e874351b94c1fcbf099b68539755b8836cfa968bc8d56b9b0de86d67bc7fb",
+        "fstarmem_sha256": "b3d17d149d9fba67682d2f2642268614a1bbb6da5c8c6e89b963608f8579cf84"
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/examples/dsls/bool_refinement",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "BoolRefinement.fst",
+          "-o",
+          "_cache/BoolRefinement.fst.checked"
+        ],
+        "root_cpu_seconds": 12.13,
+        "child_cpu_seconds": 89.03800000000001,
+        "group_cpu_seconds": 101.168,
+        "wall_seconds": 105.814,
+        "group_mempeak_mib": 497.0,
+        "fstar_heap_peak_bytes": 422684632,
+        "ramon_sha256": "cda5fdb1448e98495aec29c63ac9135c9cbf7a87fb6f4a5356a97f6b813be1a3",
+        "fstarmem_sha256": "7f3f2a1251871ab2b386661caaf8a44b29d872676c9dcf5e0fe692058ee24fdf"
+      }
+    },
+    "tests/floats/_output/FloatExtract.krml": {
+      "ci_time": {
+        "name": "FloatExtract.krml",
+        "full": "tests/floats/_output/FloatExtract.krml",
+        "base": 0.582,
+        "patch": 0.52
+      },
+      "ci_memory_mib": {
+        "name": "FloatExtract.krml",
+        "full": "tests/floats/_output/FloatExtract.krml",
+        "base": 78.21297454833984,
+        "patch": 105.43074798583984
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/tests/floats",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "-272",
+          "--codegen",
+          "KrmlC",
+          "--custard_split",
+          "--custard_entry_module",
+          "FloatExtract",
+          "_cache/FloatExtract.fst.checked",
+          "-o",
+          "_output/FloatExtract.krml"
+        ],
+        "root_cpu_seconds": 0.5700000000000001,
+        "child_cpu_seconds": 0.0119999999999999,
+        "group_cpu_seconds": 0.582,
+        "wall_seconds": 0.64,
+        "group_mempeak_mib": 131.0,
+        "fstar_heap_peak_bytes": 82012248,
+        "ramon_sha256": "ef2e63d09e7bc28938066a76081b018dfbd309e5db8eff2e49e7dffe0520b8be",
+        "fstarmem_sha256": "9021b1fc06b5aad636d672003e274aab3a15a7b575ee1355590751d014ced85e"
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/tests/floats",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "-272",
+          "--codegen",
+          "KrmlC",
+          "--custard_split",
+          "--custard_entry_module",
+          "FloatExtract",
+          "_cache/FloatExtract.fst.checked",
+          "-o",
+          "_output/FloatExtract.krml"
+        ],
+        "root_cpu_seconds": 0.51,
+        "child_cpu_seconds": 0.010000000000000009,
+        "group_cpu_seconds": 0.52,
+        "wall_seconds": 0.571,
+        "group_mempeak_mib": 131.0,
+        "fstar_heap_peak_bytes": 110552152,
+        "ramon_sha256": "2aa083f10900a89565fcda05e55c1365b26b86876922b271624931415c010840",
+        "fstarmem_sha256": "b48f2a75c8b753408ef632302f2961baef70e7949282290eded4b05fe906f3a3"
+      }
+    },
+    "tests/extraction/backends/_cache/ExtUIntDivRem.fst.checked": {
+      "ci_time": {
+        "name": "ExtUIntDivRem.fst.checked",
+        "full": "tests/extraction/backends/_cache/ExtUIntDivRem.fst.checked",
+        "base": 7.077,
+        "patch": 7.536
+      },
+      "ci_memory_mib": {
+        "name": "ExtUIntDivRem.fst.checked",
+        "full": "tests/extraction/backends/_cache/ExtUIntDivRem.fst.checked",
+        "base": 66.66606140136719,
+        "patch": 66.60456085205078
+      },
+      "base": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-base/tests/extraction/backends",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "-349",
+          "-c",
+          "ExtUIntDivRem.fst",
+          "-o",
+          "_cache/ExtUIntDivRem.fst.checked"
+        ],
+        "root_cpu_seconds": 0.47000000000000003,
+        "child_cpu_seconds": 6.607,
+        "group_cpu_seconds": 7.077,
+        "wall_seconds": 7.815,
+        "group_mempeak_mib": 119.0,
+        "fstar_heap_peak_bytes": 69904432,
+        "ramon_sha256": "0b0f37e78099a2d1db1f9c4a80abfc6e8b8188ecd91f6802f5cacca940397390",
+        "fstarmem_sha256": "1c454cebaf95dd6512e127a9c528a367b8a76584576fb072f77be15e9b751fd9"
+      },
+      "head": {
+        "cwd": "/home/runner/work/FStar/FStar/fstar-head/tests/extraction/backends",
+        "argv": [
+          "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "--warn_error",
+          "-349",
+          "-c",
+          "ExtUIntDivRem.fst",
+          "-o",
+          "_cache/ExtUIntDivRem.fst.checked"
+        ],
+        "root_cpu_seconds": 0.52,
+        "child_cpu_seconds": 7.016,
+        "group_cpu_seconds": 7.536,
+        "wall_seconds": 8.143,
+        "group_mempeak_mib": 119.0,
+        "fstar_heap_peak_bytes": 69839944,
+        "ramon_sha256": "fb2dea886d892ce63a18f22fdcceadfd163a244f1326654a031e3e555716479a",
+        "fstarmem_sha256": "e402644287f54f50b8ffcebe7f737279acd05c33f12ad7d405142bf1bb64fd84"
+      }
+    }
+  },
+  "rankings": {
+    "time_ratio_baseline_ge_1s": [
+      {
+        "name": "Lib.Vec.Lemmas.fst.checked",
+        "full": "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked",
+        "base": 15.412,
+        "patch": 17.131
+      },
+      {
+        "name": "TupAlias.chc",
+        "full": "tests/custard/pulse/_output/cherry/TupAlias.chc",
+        "base": 1.527,
+        "patch": 1.683
+      },
+      {
+        "name": "TestPrintable.fst.checked",
+        "full": "tests/micro-benchmarks/_cache/TestPrintable.fst.checked",
+        "base": 1.353,
+        "patch": 1.477
+      },
+      {
+        "name": "RecordOfArrays.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/RecordOfArrays.fst.checked",
+        "base": 1.144,
+        "patch": 1.248
+      },
+      {
+        "name": "JoinExists.fst.checked",
+        "full": "pulse/test/_cache/JoinExists.fst.checked",
+        "base": 1.035,
+        "patch": 1.127
+      },
+      {
+        "name": "Bug347.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug347.fst.checked",
+        "base": 1.13,
+        "patch": 1.223
+      },
+      {
+        "name": "Example.StructPCM.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/Example.StructPCM.fst.checked",
+        "base": 1.677,
+        "patch": 1.815
+      },
+      {
+        "name": "Bug4791.fst.checked",
+        "full": "pulse/test/_cache/Bug4791.fst.checked",
+        "base": 1.078,
+        "patch": 1.155
+      },
+      {
+        "name": "Example.TestOnAutomation.fst.checked",
+        "full": "pulse/test/_cache/Example.TestOnAutomation.fst.checked",
+        "base": 1.053,
+        "patch": 1.128
+      },
+      {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 27.844,
+        "patch": 29.784
+      },
+      {
+        "name": "Pruning.fst.checked",
+        "full": "tests/tactics/_cache/Pruning.fst.checked",
+        "base": 1.352,
+        "patch": 1.443
+      },
+      {
+        "name": "UnificationVariableEscapes.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/UnificationVariableEscapes.fst.checked",
+        "base": 1.332,
+        "patch": 1.421
+      },
+      {
+        "name": "ExtUIntDivRem.fst.checked",
+        "full": "tests/extraction/backends/_cache/ExtUIntDivRem.fst.checked",
+        "base": 7.077,
+        "patch": 7.536
+      },
+      {
+        "name": "PulseClosure.chc",
+        "full": "tests/custard/pulse/_output/cherry/PulseClosure.chc",
+        "base": 1.657,
+        "patch": 1.763
+      },
+      {
+        "name": "LoopInvariants.fst.output",
+        "full": "pulse/test/_output/LoopInvariants.fst.output",
+        "base": 1.226,
+        "patch": 1.301
+      },
+      {
+        "name": "Lib.Sequence.Lemmas.fsti.checked",
+        "full": "tests/hacl/_cache/Lib.Sequence.Lemmas.fsti.checked",
+        "base": 4.003,
+        "patch": 4.246
+      },
+      {
+        "name": "IfRequires.fst.checked",
+        "full": "pulse/test/_cache/IfRequires.fst.checked",
+        "base": 1.808,
+        "patch": 1.915
+      },
+      {
+        "name": "Echo.Spec.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/echo/_cache/Echo.Spec.fst.checked",
+        "base": 1.724,
+        "patch": 1.826
+      },
+      {
+        "name": "ExtFlag.chc",
+        "full": "tests/custard/pulse/_output/cherry/ExtFlag.chc",
+        "base": 1.577,
+        "patch": 1.668
+      },
+      {
+        "name": "Calc.Server.Endpoint.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked",
+        "base": 13.862,
+        "patch": 14.644
+      },
+      {
+        "name": "SfLists.fst.checked",
+        "full": "examples/software_foundations/_cache/SfLists.fst.checked",
+        "base": 1.095,
+        "patch": 1.156
+      },
+      {
+        "name": "Example_Slice.c",
+        "full": "pulse/test/_output/Example_Slice.c",
+        "base": 1.662,
+        "patch": 1.752
+      },
+      {
+        "name": "Bug267.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug267.fst.checked",
+        "base": 1.034,
+        "patch": 1.087
+      },
+      {
+        "name": "DPE_CBOR.fst.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/DPE_CBOR.fst.checked",
+        "base": 5.578,
+        "patch": 5.859
+      },
+      {
+        "name": "PulseComment.chc",
+        "full": "tests/custard/pulse/_output/cherry/PulseComment.chc",
+        "base": 1.63,
+        "patch": 1.712
+      },
+      {
+        "name": "Part1.Lemmas.fst.checked",
+        "full": "doc/book/code/_cache/Part1.Lemmas.fst.checked",
+        "base": 1.218,
+        "patch": 1.278
+      },
+      {
+        "name": "MonoAttrI.fst.checked",
+        "full": "tests/custard/pulse/_cache/MonoAttrI.fst.checked",
+        "base": 1.202,
+        "patch": 1.261
+      },
+      {
+        "name": "WhileDecreases.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/WhileDecreases.fst.checked",
+        "base": 1.576,
+        "patch": 1.653
+      },
+      {
+        "name": "Records.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Records.fst.checked",
+        "base": 1.15,
+        "patch": 1.205
+      },
+      {
+        "name": "JoinPostSuite.fst.checked",
+        "full": "pulse/test/_cache/JoinPostSuite.fst.checked",
+        "base": 2.941,
+        "patch": 3.081
+      }
+    ],
+    "time_absolute_baseline_ge_1s": [
+      {
+        "name": "CborBoundarySlice.fst.checked",
+        "full": "tests/custard/pulse/_cache/CborBoundarySlice.fst.checked",
+        "base": 48.304,
+        "patch": 50.294
+      },
+      {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 27.844,
+        "patch": 29.784
+      },
+      {
+        "name": "Lib.Vec.Lemmas.fst.checked",
+        "full": "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked",
+        "base": 15.412,
+        "patch": 17.131
+      },
+      {
+        "name": "BoolRefinement.fst.checked",
+        "full": "examples/dsls/bool_refinement/_cache/BoolRefinement.fst.checked",
+        "base": 99.647,
+        "patch": 101.168
+      },
+      {
+        "name": "Calc.Server.Endpoint.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked",
+        "base": 13.862,
+        "patch": 14.644
+      },
+      {
+        "name": "RBTreeIntrinsic.fst.checked",
+        "full": "examples/data_structures/_cache/RBTreeIntrinsic.fst.checked",
+        "base": 36.843,
+        "patch": 37.389
+      },
+      {
+        "name": "DependentBoolRefinement.fst.checked",
+        "full": "examples/dsls/dependent_bool_refinement/_cache/DependentBoolRefinement.fst.checked",
+        "base": 18.648,
+        "patch": 19.126
+      },
+      {
+        "name": "ExtUIntDivRem.fst.checked",
+        "full": "tests/extraction/backends/_cache/ExtUIntDivRem.fst.checked",
+        "base": 7.077,
+        "patch": 7.536
+      },
+      {
+        "name": "PulseSpecArgNorm.fst.checked",
+        "full": "tests/custard/pulse/_cache/PulseSpecArgNorm.fst.checked",
+        "base": 10.382,
+        "patch": 10.798
+      },
+      {
+        "name": "DPE.fst.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/DPE.fst.checked",
+        "base": 24.14,
+        "patch": 24.487
+      },
+      {
+        "name": "NormBudget.rejected",
+        "full": "tests/custard/_output/NormBudget.rejected",
+        "base": 288.686,
+        "patch": 289.018
+      },
+      {
+        "name": "ExtInt128.fst.checked",
+        "full": "tests/extraction/backends/_cache/ExtInt128.fst.checked",
+        "base": 10.176,
+        "patch": 10.485
+      },
+      {
+        "name": "ParallelIncrement.fst.checked",
+        "full": "pulse/share/pulse/examples/by-example/_cache/ParallelIncrement.fst.checked",
+        "base": 18.754,
+        "patch": 19.041
+      },
+      {
+        "name": "DPE_CBOR.fst.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/DPE_CBOR.fst.checked",
+        "base": 5.578,
+        "patch": 5.859
+      },
+      {
+        "name": "DPE.Messages.Parse.fst.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/DPE.Messages.Parse.fst.checked",
+        "base": 61.178,
+        "patch": 61.443
+      },
+      {
+        "name": "Lib.Sequence.Lemmas.fsti.checked",
+        "full": "tests/hacl/_cache/Lib.Sequence.Lemmas.fsti.checked",
+        "base": 4.003,
+        "patch": 4.246
+      },
+      {
+        "name": "TFTP.Impl.Client.CanonicalProtocol.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/tftp/_cache/TFTP.Impl.Client.CanonicalProtocol.fst.checked",
+        "base": 20.022,
+        "patch": 20.242
+      },
+      {
+        "name": "ArrowUnfoldLimit.fst.checked",
+        "full": "tests/custard/_cache/ArrowUnfoldLimit.fst.checked",
+        "base": 56.486,
+        "patch": 56.704
+      },
+      {
+        "name": "ChrisCheck.fst.checked",
+        "full": "tests/micro-benchmarks/_cache/ChrisCheck.fst.checked",
+        "base": 6.735,
+        "patch": 6.95
+      },
+      {
+        "name": "TestMBQI.fst.checked",
+        "full": "tests/bug-reports/closed/_cache/TestMBQI.fst.checked",
+        "base": 6.058,
+        "patch": 6.255
+      },
+      {
+        "name": "LambdaOmega.fst.checked",
+        "full": "examples/metatheory/_cache/LambdaOmega.fst.checked",
+        "base": 9.197,
+        "patch": 9.39
+      },
+      {
+        "name": "Prettify.fst.checked",
+        "full": "tests/tactics/_cache/Prettify.fst.checked",
+        "base": 13.494,
+        "patch": 13.676
+      },
+      {
+        "name": "TupAlias.chc",
+        "full": "tests/custard/pulse/_output/cherry/TupAlias.chc",
+        "base": 1.527,
+        "patch": 1.683
+      },
+      {
+        "name": "Example.BreakReturnContinue.fst.checked",
+        "full": "pulse/test/_cache/Example.BreakReturnContinue.fst.checked",
+        "base": 6.615,
+        "patch": 6.768
+      },
+      {
+        "name": "BranchGuardHoist.fst.checked",
+        "full": "pulse/test/_cache/BranchGuardHoist.fst.checked",
+        "base": 3.474,
+        "patch": 3.621
+      },
+      {
+        "name": "ExtractionTest.fst.checked",
+        "full": "pulse/test/_cache/ExtractionTest.fst.checked",
+        "base": 3.114,
+        "patch": 3.254
+      },
+      {
+        "name": "JoinPostSuite.fst.checked",
+        "full": "pulse/test/_cache/JoinPostSuite.fst.checked",
+        "base": 2.941,
+        "patch": 3.081
+      },
+      {
+        "name": "Example.StructPCM.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/Example.StructPCM.fst.checked",
+        "base": 1.677,
+        "patch": 1.815
+      },
+      {
+        "name": "TestPrintable.fst.checked",
+        "full": "tests/micro-benchmarks/_cache/TestPrintable.fst.checked",
+        "base": 1.353,
+        "patch": 1.477
+      },
+      {
+        "name": "X64.Poly1305.Math_i.fst.checked",
+        "full": "tests/vale/_cache/X64.Poly1305.Math_i.fst.checked",
+        "base": 2.878,
+        "patch": 2.995
+      }
+    ],
+    "heavy_time_ratio": [
+      {
+        "name": "Main.ml",
+        "full": "tests/targets/_output/Main.ml",
+        "base": 0.588,
+        "patch": 0.66
+      },
+      {
+        "name": "Lib.Vec.Lemmas.fst.checked",
+        "full": "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked",
+        "base": 15.412,
+        "patch": 17.131
+      },
+      {
+        "name": "Bug141.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug141.fst.checked",
+        "base": 0.585,
+        "patch": 0.65
+      },
+      {
+        "name": "TupAlias.chc",
+        "full": "tests/custard/pulse/_output/cherry/TupAlias.chc",
+        "base": 1.527,
+        "patch": 1.683
+      },
+      {
+        "name": "Bug234.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug234.fst.checked",
+        "base": 0.664,
+        "patch": 0.728
+      },
+      {
+        "name": "TestPrintable.fst.checked",
+        "full": "tests/micro-benchmarks/_cache/TestPrintable.fst.checked",
+        "base": 1.353,
+        "patch": 1.477
+      },
+      {
+        "name": "RecordOfArrays.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/RecordOfArrays.fst.checked",
+        "base": 1.144,
+        "patch": 1.248
+      },
+      {
+        "name": "JoinExists.fst.checked",
+        "full": "pulse/test/_cache/JoinExists.fst.checked",
+        "base": 1.035,
+        "patch": 1.127
+      },
+      {
+        "name": "Bug347.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug347.fst.checked",
+        "base": 1.13,
+        "patch": 1.223
+      },
+      {
+        "name": "Example.StructPCM.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/Example.StructPCM.fst.checked",
+        "base": 1.677,
+        "patch": 1.815
+      },
+      {
+        "name": "EverParseIssue.fst.checked",
+        "full": "pulse/test/_cache/EverParseIssue.fst.checked",
+        "base": 0.647,
+        "patch": 0.7
+      },
+      {
+        "name": "Bug4274.fst.output",
+        "full": "tests/bug-reports/closed/_output/Bug4274.fst.output",
+        "base": 0.995,
+        "patch": 1.076
+      },
+      {
+        "name": "Bug4280.fst.checked",
+        "full": "tests/bug-reports/closed/_cache/Bug4280.fst.checked",
+        "base": 0.594,
+        "patch": 0.64
+      },
+      {
+        "name": "Bug.DesugaringError.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug.DesugaringError.fst.checked",
+        "base": 0.605,
+        "patch": 0.651
+      },
+      {
+        "name": "RewriteFail.fst.checked",
+        "full": "pulse/test/error_messages/_cache/RewriteFail.fst.checked",
+        "base": 0.695,
+        "patch": 0.747
+      },
+      {
+        "name": "FnAnnot.fst.checked",
+        "full": "pulse/test/_cache/FnAnnot.fst.checked",
+        "base": 0.523,
+        "patch": 0.562
+      },
+      {
+        "name": "RevealHide.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/RevealHide.fst.checked",
+        "base": 0.581,
+        "patch": 0.624
+      },
+      {
+        "name": "DeltaDepth.fst.checked",
+        "full": "tests/tactics/_cache/DeltaDepth.fst.checked",
+        "base": 0.711,
+        "patch": 0.763
+      },
+      {
+        "name": "Bug4791.fst.checked",
+        "full": "pulse/test/_cache/Bug4791.fst.checked",
+        "base": 1.078,
+        "patch": 1.155
+      },
+      {
+        "name": "Example.TestOnAutomation.fst.checked",
+        "full": "pulse/test/_cache/Example.TestOnAutomation.fst.checked",
+        "base": 1.053,
+        "patch": 1.128
+      },
+      {
+        "name": "RewriteEachMatchReturns.fst.checked",
+        "full": "pulse/test/_cache/RewriteEachMatchReturns.fst.checked",
+        "base": 0.66,
+        "patch": 0.707
+      },
+      {
+        "name": "RewriteEachUnfold.fst.checked",
+        "full": "pulse/test/_cache/RewriteEachUnfold.fst.checked",
+        "base": 0.811,
+        "patch": 0.868
+      },
+      {
+        "name": "Bug278.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug278.fst.checked",
+        "base": 0.612,
+        "patch": 0.655
+      },
+      {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 27.844,
+        "patch": 29.784
+      },
+      {
+        "name": "Pruning.fst.checked",
+        "full": "tests/tactics/_cache/Pruning.fst.checked",
+        "base": 1.352,
+        "patch": 1.443
+      },
+      {
+        "name": "Example.Unreachable.fst.checked",
+        "full": "pulse/test/_cache/Example.Unreachable.fst.checked",
+        "base": 0.731,
+        "patch": 0.78
+      },
+      {
+        "name": "UnificationVariableEscapes.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/UnificationVariableEscapes.fst.checked",
+        "base": 1.332,
+        "patch": 1.421
+      },
+      {
+        "name": "Bug583.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug583.fst.checked",
+        "base": 0.917,
+        "patch": 0.977
+      },
+      {
+        "name": "PulseClosure.chc",
+        "full": "tests/custard/pulse/_output/cherry/PulseClosure.chc",
+        "base": 1.657,
+        "patch": 1.763
+      },
+      {
+        "name": "CustardRulePlugin.fst.checked",
+        "full": "tests/custard/plugin/_cache/CustardRulePlugin.fst.checked",
+        "base": 0.942,
+        "patch": 1.001
+      }
+    ],
+    "memory_ratio_baseline_ge_50mib": [
+      {
+        "name": "FloatExtract.krml",
+        "full": "tests/floats/_output/FloatExtract.krml",
+        "base": 78.21297454833984,
+        "patch": 105.43074798583984
+      },
+      {
+        "name": "ExtDatatypesVariant.ml",
+        "full": "tests/extraction/backends/_output/custard/ExtDatatypesVariant.ml",
+        "base": 92.00878143310547,
+        "patch": 97.82228088378906
+      },
+      {
+        "name": "ExtDatatypesEnum.cherry.c",
+        "full": "tests/extraction/backends/_output/custard/ExtDatatypesEnum.cherry.c",
+        "base": 90.10253143310547,
+        "patch": 91.69728088378906
+      },
+      {
+        "name": "Test.GenOrder2.B.fst.checked",
+        "full": "pulse/test/nolib/_cache/Test.GenOrder2.B.fst.checked",
+        "base": 116.0,
+        "patch": 118.0
+      },
+      {
+        "name": "Ambig.Attr.fst.checked",
+        "full": "pulse/test/nolib/_cache/Ambig.Attr.fst.checked",
+        "base": 117.0,
+        "patch": 119.0
+      },
+      {
+        "name": "Val.fst.checked",
+        "full": "pulse/test/nolib/_cache/Val.fst.checked",
+        "base": 120.0,
+        "patch": 122.0
+      },
+      {
+        "name": "TFTP.Impl.Client.Loop.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/tftp/_cache/TFTP.Impl.Client.Loop.fst.checked",
+        "base": 436.0,
+        "patch": 443.0
+      },
+      {
+        "name": "Join.fst.checked",
+        "full": "tests/tactics/_cache/Join.fst.checked",
+        "base": 186.21720123291016,
+        "patch": 189.18685913085938
+      },
+      {
+        "name": "Anf.ml",
+        "full": "tests/custard/_output/Anf.ml",
+        "base": 102.92217254638672,
+        "patch": 104.45442199707031
+      },
+      {
+        "name": "Prettify.fst.checked",
+        "full": "tests/tactics/_cache/Prettify.fst.checked",
+        "base": 439.1191940307617,
+        "patch": 444.5244903564453
+      },
+      {
+        "name": "Test.Basic1.fst.checked",
+        "full": "pulse/test/_cache/Test.Basic1.fst.checked",
+        "base": 165.0,
+        "patch": 167.0
+      },
+      {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 855.2626495361328,
+        "patch": 864.7948989868164
+      },
+      {
+        "name": "TyFun.chc",
+        "full": "tests/custard/_output/cherry/TyFun.chc",
+        "base": 105.48451232910156,
+        "patch": 106.54801177978516
+      },
+      {
+        "name": "Calc.Server.Endpoint.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked",
+        "base": 505.0,
+        "patch": 510.0
+      },
+      {
+        "name": "CLetField.chc",
+        "full": "tests/custard/_output/cherry/CLetField.chc",
+        "base": 105.35951232910156,
+        "patch": 106.39176177978516
+      },
+      {
+        "name": "DropEmp.fst.checked",
+        "full": "pulse/test/nolib/_cache/DropEmp.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "FnRecAnnot.fst.checked",
+        "full": "pulse/test/nolib/_cache/FnRecAnnot.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "NormCtx.fst.checked",
+        "full": "pulse/test/nolib/_cache/NormCtx.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "Preserves.fst.checked",
+        "full": "pulse/test/nolib/_cache/Preserves.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "QuantifierOps.fst.checked",
+        "full": "pulse/test/nolib/_cache/QuantifierOps.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "Test.RewriteBy.fst.checked",
+        "full": "pulse/test/nolib/_cache/Test.RewriteBy.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "Unfold.fst.checked",
+        "full": "pulse/test/nolib/_cache/Unfold.fst.checked",
+        "base": 117.0,
+        "patch": 118.0
+      },
+      {
+        "name": "Bug511.fst.checked",
+        "full": "pulse/test/nolib/_cache/Bug511.fst.checked",
+        "base": 118.0,
+        "patch": 119.0
+      },
+      {
+        "name": "Bug177.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug177.fst.checked",
+        "base": 129.0,
+        "patch": 130.0
+      },
+      {
+        "name": "Bug29.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug29.fst.checked",
+        "base": 130.0,
+        "patch": 131.0
+      },
+      {
+        "name": ".depend",
+        "full": "pulse/test/nolib/.depend",
+        "base": 52.62109375,
+        "patch": 53.0078125
+      },
+      {
+        "name": "RewriteNopWarning.fst.checked",
+        "full": "pulse/test/nolib/_cache/RewriteNopWarning.fst.checked",
+        "base": 142.0,
+        "patch": 143.0
+      },
+      {
+        "name": "MatchRange.fst.output",
+        "full": "pulse/test/nolib/_output/MatchRange.fst.output",
+        "base": 144.0,
+        "patch": 145.0
+      },
+      {
+        "name": "CoreCheckMatch.fst.checked",
+        "full": "tests/tactics/_cache/CoreCheckMatch.fst.checked",
+        "base": 135.01395416259766,
+        "patch": 135.88999938964844
+      },
+      {
+        "name": "Bug110.fst.checked",
+        "full": "pulse/test/bug-reports/_cache/Bug110.fst.checked",
+        "base": 155.0,
+        "patch": 156.0
+      }
+    ],
+    "memory_absolute_baseline_ge_50mib": [
+      {
+        "name": "FloatExtract.krml",
+        "full": "tests/floats/_output/FloatExtract.krml",
+        "base": 78.21297454833984,
+        "patch": 105.43074798583984
+      },
+      {
+        "name": "Long.fst.checked",
+        "full": "tests/calc/_cache/Long.fst.checked",
+        "base": 855.2626495361328,
+        "patch": 864.7948989868164
+      },
+      {
+        "name": "TFTP.Impl.Client.Loop.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/tftp/_cache/TFTP.Impl.Client.Loop.fst.checked",
+        "base": 436.0,
+        "patch": 443.0
+      },
+      {
+        "name": "ExtDatatypesVariant.ml",
+        "full": "tests/extraction/backends/_output/custard/ExtDatatypesVariant.ml",
+        "base": 92.00878143310547,
+        "patch": 97.82228088378906
+      },
+      {
+        "name": "Prettify.fst.checked",
+        "full": "tests/tactics/_cache/Prettify.fst.checked",
+        "base": 439.1191940307617,
+        "patch": 444.5244903564453
+      },
+      {
+        "name": "Calc.Server.Endpoint.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked",
+        "base": 505.0,
+        "patch": 510.0
+      },
+      {
+        "name": "Join.fst.checked",
+        "full": "tests/tactics/_cache/Join.fst.checked",
+        "base": 186.21720123291016,
+        "patch": 189.18685913085938
+      },
+      {
+        "name": "DPE_CBOR.fst.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/DPE_CBOR.fst.checked",
+        "base": 319.0,
+        "patch": 321.0
+      },
+      {
+        "name": "Test.Basic1.fst.checked",
+        "full": "pulse/test/_cache/Test.Basic1.fst.checked",
+        "base": 165.0,
+        "patch": 167.0
+      },
+      {
+        "name": "Ambig.Attr.fst.checked",
+        "full": "pulse/test/nolib/_cache/Ambig.Attr.fst.checked",
+        "base": 117.0,
+        "patch": 119.0
+      },
+      {
+        "name": "Test.GenOrder2.B.fst.checked",
+        "full": "pulse/test/nolib/_cache/Test.GenOrder2.B.fst.checked",
+        "base": 116.0,
+        "patch": 118.0
+      },
+      {
+        "name": "Val.fst.checked",
+        "full": "pulse/test/nolib/_cache/Val.fst.checked",
+        "base": 120.0,
+        "patch": 122.0
+      },
+      {
+        "name": "CanonCommSemiring.fst.checked",
+        "full": "tests/semiring/_cache/CanonCommSemiring.fst.checked",
+        "base": 305.8768081665039,
+        "patch": 307.52640533447266
+      },
+      {
+        "name": "ExtDatatypesEnum.cherry.c",
+        "full": "tests/extraction/backends/_output/custard/ExtDatatypesEnum.cherry.c",
+        "base": 90.10253143310547,
+        "patch": 91.69728088378906
+      },
+      {
+        "name": "Anf.ml",
+        "full": "tests/custard/_output/Anf.ml",
+        "base": 102.92217254638672,
+        "patch": 104.45442199707031
+      },
+      {
+        "name": "TyFun.chc",
+        "full": "tests/custard/_output/cherry/TyFun.chc",
+        "base": 105.48451232910156,
+        "patch": 106.54801177978516
+      },
+      {
+        "name": "CLetField.chc",
+        "full": "tests/custard/_output/cherry/CLetField.chc",
+        "base": 105.35951232910156,
+        "patch": 106.39176177978516
+      },
+      {
+        "name": "Dekker.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/Dekker.fst.checked",
+        "base": 189.0,
+        "patch": 190.0
+      },
+      {
+        "name": "MSort.Base.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/MSort.Base.fst.checked",
+        "base": 353.0,
+        "patch": 354.0
+      },
+      {
+        "name": "PledgeArith.fst.checked",
+        "full": "pulse/share/pulse/examples/_cache/PledgeArith.fst.checked",
+        "base": 156.0,
+        "patch": 157.0
+      },
+      {
+        "name": "PulseTutorial.Box.fst.checked",
+        "full": "pulse/share/pulse/examples/by-example/_cache/PulseTutorial.Box.fst.checked",
+        "base": 157.0,
+        "patch": 158.0
+      },
+      {
+        "name": "PulseTutorial.MonotonicRef.fst.checked",
+        "full": "pulse/share/pulse/examples/by-example/_cache/PulseTutorial.MonotonicRef.fst.checked",
+        "base": 203.0,
+        "patch": 204.0
+      },
+      {
+        "name": "EverCrypt.Hash.Incremental.fsti.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/EverCrypt.Hash.Incremental.fsti.checked",
+        "base": 164.0,
+        "patch": 165.0
+      },
+      {
+        "name": "HACL.fst.checked",
+        "full": "pulse/share/pulse/examples/dice/_cache/HACL.fst.checked",
+        "base": 199.0,
+        "patch": 200.0
+      },
+      {
+        "name": "TaskPool.Examples.fst.checked",
+        "full": "pulse/share/pulse/examples/parallel/_cache/TaskPool.Examples.fst.checked",
+        "base": 164.0,
+        "patch": 165.0
+      },
+      {
+        "name": "Calc.System.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/calc/_cache/Calc.System.fst.checked",
+        "base": 214.0,
+        "patch": 215.0
+      },
+      {
+        "name": "TFTP.Impl.Server.Loop.fst.checked",
+        "full": "pulse/share/pulse/examples/protocol/tftp/_cache/TFTP.Impl.Server.Loop.fst.checked",
+        "base": 660.0,
+        "patch": 661.0
+      },
+      {
+        "name": "ExtractionTest.fst.checked",
+        "full": "pulse/test/_cache/ExtractionTest.fst.checked",
+        "base": 225.0,
+        "patch": 226.0
+      },
+      {
+        "name": "InlineArrayLen.fst.checked",
+        "full": "pulse/test/_cache/InlineArrayLen.fst.checked",
+        "base": 185.0,
+        "patch": 186.0
+      },
+      {
+        "name": "MatchBasic.fst.checked",
+        "full": "pulse/test/_cache/MatchBasic.fst.checked",
+        "base": 175.0,
+        "patch": 176.0
+      }
+    ]
+  },
+  "provenance": {
+    "report_sha256": "2a4368a5f47900a8ffb1041da2de0f77f3d764f808b90222a4761ffcbb7aef73",
+    "archive_sha256": "5a19184db5e79fc559e34034144f8562d15c8c224225b8d5df1a02c3e8787ffa",
+    "comment_sha256": "24fc85a4518a59dab7e2514375b33018b87bcef76cc558b085e1b04b44b731c8",
+    "run_sha256": "87bd522b54447de4c25854973a9d3e7b32bdb2804e9d56679833110b99bcc6bc",
+    "raw_selected_sha256": "1a3af2626423afdfa674b0e3b3b3985b67c87ca31926a9896ff510d310aa879f",
+    "script_sha256": "ea3eb4f855c7a1ffcbe0a35fb35e1ed9e96fa0272129be1f182eed70ec678440"
+  }
+}

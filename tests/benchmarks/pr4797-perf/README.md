@@ -847,3 +847,55 @@ python run_internal_microbenchmarks.py \
   --cpu 16 \
   --output INTERNAL_MICROBENCHMARKS.json
 ```
+
+## Latest CI outliers
+
+Actions run `42562713596` compares exact revisions `9ccacf4a8a` and
+`31a521edd9`. Analyze the unpacked artifact, prepare compiler-specific
+dependencies, and run both compilers through one staged pathname:
+
+```sh
+python analyze_latest_ci_artifact.py \
+  --artifact /workspace/wt11/pr4797-run-42562713596/artifact \
+  --archive /workspace/wt11/pr4797-run-42562713596/bench-pr-4797.zip \
+  --comment /path/to/comment-6733916004.json \
+  --run /path/to/run-42562713596.json \
+  --output LATEST_CI_ARTIFACT.json
+
+python prepare_latest_ci_repro.py \
+  --source /workspace/wt11/FStar-pr4797-latest-repro \
+  --variant base=/workspace/wt11/FStar-pr4797-master-current \
+  --variant head=/workspace/wt11/FStar-pr4797-latest-head-clean \
+  --z3-dir /workspace/wt11/benchmark-tools/bin \
+  --output /workspace/wt11/pr4797-latest-prepared
+
+taskset -c 16 python run_latest_ci_repro.py \
+  --source /workspace/wt11/FStar-pr4797-latest-repro \
+  --prepared /workspace/wt11/pr4797-latest-prepared \
+  --artifact /workspace/wt11/pr4797-run-42562713596/artifact \
+  --stage /workspace/wt11/pr4797-latest-stage \
+  --z3-dir /workspace/wt11/benchmark-tools/bin \
+  --output /workspace/wt11/pr4797-latest-results \
+  --cpu 16 --seed 5101
+
+taskset -c 16 python run_latest_ci_repro.py \
+  --source /workspace/wt11/FStar-pr4797-latest-repro \
+  --prepared /workspace/wt11/pr4797-latest-prepared \
+  --artifact /workspace/wt11/pr4797-run-42562713596/artifact \
+  --stage /workspace/wt11/pr4797-latest-stage \
+  --z3-dir /workspace/wt11/benchmark-tools/bin \
+  --output /workspace/wt11/pr4797-latest-cbor-extended \
+  --cpu 16 --seed 7719 --target cbor-boundary --repetitions 5
+
+python summarize_latest_ci_repro.py \
+  --results /workspace/wt11/pr4797-latest-results \
+  --artifact-analysis LATEST_CI_ARTIFACT.json \
+  --prepared /workspace/wt11/pr4797-latest-prepared \
+  --cbor-extension /workspace/wt11/pr4797-latest-cbor-extended \
+  --output LATEST_CI_REPRO_RESULTS.json
+```
+
+`prepare_latest_ci_repro.py` requires the source HEAD, embedded compiler
+commit, and executable hash to match. The exact head compiler was built from a
+fresh worktree with Z3 5.3.0 on `PATH`; its SHA-256 is
+`633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1`.
