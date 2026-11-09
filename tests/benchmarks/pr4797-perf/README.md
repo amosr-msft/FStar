@@ -887,11 +887,21 @@ taskset -c 16 python run_latest_ci_repro.py \
   --output /workspace/wt11/pr4797-latest-cbor-extended \
   --cpu 16 --seed 7719 --target cbor-boundary --repetitions 5
 
+taskset -c 16 python run_latest_ci_repro.py \
+  --source /workspace/wt11/FStar-pr4797-latest-repro \
+  --prepared /workspace/wt11/pr4797-latest-prepared \
+  --artifact /workspace/wt11/pr4797-run-42562713596/artifact \
+  --stage /workspace/wt11/pr4797-latest-stage \
+  --z3-dir /workspace/wt11/benchmark-tools/bin \
+  --output /workspace/wt11/pr4797-latest-lib-vec-extended \
+  --cpu 16 --seed 92017 --target lib-vec --repetitions 15
+
 python summarize_latest_ci_repro.py \
   --results /workspace/wt11/pr4797-latest-results \
   --artifact-analysis LATEST_CI_ARTIFACT.json \
   --prepared /workspace/wt11/pr4797-latest-prepared \
   --cbor-extension /workspace/wt11/pr4797-latest-cbor-extended \
+  --lib-vec-extension /workspace/wt11/pr4797-latest-lib-vec-extended \
   --output LATEST_CI_REPRO_RESULTS.json
 ```
 

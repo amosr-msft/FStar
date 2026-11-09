@@ -1631,7 +1631,7 @@ embedded revision, binary hash, and install-tree hash are all recorded.
 | Target | CI group CPU head-base | Local paired group CPU | Root / child median | Local F* heap | Assessment |
 |---|---:|---:|---:|---:|---|
 | `tests/calc/_cache/Long.fst.checked` | +1.940 s | +0.030 s, 4/5 | +0.030 / 0.000 s | 883.98 / 883.98 MiB | neutral |
-| `tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked` | +1.719 s | +0.040 s, 5/5 | +0.010 / +0.060 s | 179.98 / 179.98 MiB | neutral at 10 ms resolution |
+| `tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked` | +1.719 s | +0.025 s, 11/20 | 0.000 / -0.005 s | 179.98 / 179.98 MiB | initial residual does not repeat |
 | `tests/custard/pulse/_cache/CborBoundarySlice.fst.checked` | +1.990 s | -0.055 s, 4/10 | +0.070 / -0.110 s | 307.98 / 307.98 MiB | neutral |
 | `pulse/share/pulse/examples/protocol/calc/_cache/Calc.Server.Endpoint.fst.checked` | +0.782 s | -0.100 s, 0/5 | -0.090 / -0.010 s | 403.98 / 403.98 MiB | reversed |
 | `examples/dsls/bool_refinement/_cache/BoolRefinement.fst.checked` | +1.521 s | +0.180 s, 2/3 | +0.040 / +0.190 s | 339.98 / 339.98 MiB | inconclusive screening |
@@ -1645,6 +1645,34 @@ mean -0.044 seconds, range -0.460 to +0.720 seconds, and the bootstrap 95%
 median interval is -0.400 to +0.175 seconds. This does not reproduce the CI's
 +1.990-second observation or localize a stable source effect.
 
+Lib.Vec's original five pairs require a separate qualification. Their group
+CPU deltas were `+0.270`, `+0.040`, `+0.100`, `+0.030`, and `+0.030` seconds:
+5/5 positive, +0.040 seconds median, 1.0092x geometric ratio, and a bootstrap
+median interval of +0.030 to +0.270 seconds. Four 10 ms accounting ticks are
+measurable. This block does not reproduce CI's +1.719 seconds (+11.2%), but it
+was a possible small residual rather than a below-resolution neutral result.
+
+An independent 15-pair extension kept the same exact binaries, Z3, staged
+runtime pathname, source cwd, compiler-specific cache snapshots, and target
+arguments. Results by block are:
+
+| Lib.Vec block | Group CPU median | Geometric ratio | Higher | Range | Root / child median | Wall median |
+|---|---:|---:|---:|---:|---:|---:|
+| original 5 | +0.040 s | 1.0092x | 5/5 | +0.030 to +0.270 s | +0.010 / +0.060 s | +0.111 s |
+| independent 15 | -0.030 s | 0.9969x | 6/15 | -0.320 to +0.140 s | 0.000 / -0.050 s | +0.026 s |
+| combined 20 | +0.025 s | 1.0000x | 11/20 | -0.320 to +0.270 s | 0.000 / -0.005 s | +0.064 s |
+
+The combined mean is effectively zero and its bootstrap median interval is
+-0.080 to +0.090 seconds. Launch order explains more than compiler identity:
+when head ran first, head-base was +0.080 seconds median (8/11 positive);
+when base ran first, head-base was -0.040 seconds (3/9 positive). Expressed
+without variant sign, the first process in each pair cost +0.060 seconds
+median, 14/20 positive. Sampled process counts vary from 81 to 83 in both
+variants with no variant-specific count shift. The initial child-heavy sign
+therefore does not survive the independent block or the order control. Query
+logging would perturb this solver-heavy workload without discriminating a
+remaining positive source effect, so no instrumented solver run was added.
+
 FloatExtract's CI F* heap rose from 78.21 to 105.43 MiB while CPU improved.
 Locally every base and head run reports exactly 115.98 MiB, and paired sampled
 RSS differs by only +0.06 MiB median. The allocation/heap jump is not
@@ -1656,7 +1684,9 @@ as OCaml live heap.
 The 76-process primary measurements have SHA-256
 `b3fa3b461073657a1a05fdc63d743ee334fbc9ef0f838dfef5ef2c4e2767e321`;
 the ten-process Cbor extension has
-`ea09a55e8d21e9e0eac9ec70bf01fae43ffe40583eb39ed0a2208a6a8cb77700`.
+`ea09a55e8d21e9e0eac9ec70bf01fae43ffe40583eb39ed0a2208a6a8cb77700`;
+the 30-process Lib.Vec extension has
+`2f6da0827b5ae25934582ea7cab1b2683812a5ccdb481fc9a6e0a313bfb055e3`.
 `LATEST_CI_REPRO_RESULTS.json` preserves every row, exact preparation and run
 provenance, paired distributions, and uncertainty. None of the selected
 outliers provides evidence for another production correction. This bounded

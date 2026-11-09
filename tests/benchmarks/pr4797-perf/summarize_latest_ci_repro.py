@@ -144,12 +144,59 @@ def load_rows(directory):
     }
 
 
+def summarize_pair_order(rows):
+    by_key = {
+        (row["repeat"], row["variant"]): row for row in rows
+    }
+    summaries = {}
+    for head_first in (True, False):
+        deltas = []
+        for repeat in sorted({row["repeat"] for row in rows}):
+            order = by_key[repeat, "base"].get(
+                "head_first", repeat % 2 == 1
+            )
+            if order != head_first:
+                continue
+            base = by_key[repeat, "base"]
+            head = by_key[repeat, "head"]
+            deltas.append(
+                head["root_cpu_seconds"] + head["child_cpu_seconds"]
+                - base["root_cpu_seconds"] - base["child_cpu_seconds"]
+            )
+        summaries["head_first" if head_first else "base_first"] = {
+            "deltas": deltas,
+            "median": statistics.median(deltas),
+            "mean": statistics.mean(deltas),
+            "head_higher": sum(delta > 0 for delta in deltas),
+            "pairs": len(deltas),
+            "minimum": min(deltas),
+            "maximum": max(deltas),
+        }
+    first_minus_second = []
+    for label, summary in summaries.items():
+        sign = 1 if label == "head_first" else -1
+        first_minus_second.extend(
+            sign * delta for delta in summary["deltas"]
+        )
+    summaries["first_minus_second"] = {
+        "deltas": first_minus_second,
+        "median": statistics.median(first_minus_second),
+        "mean": statistics.mean(first_minus_second),
+        "first_higher": sum(delta > 0 for delta in first_minus_second),
+        "pairs": len(first_minus_second),
+        "minimum": min(first_minus_second),
+        "maximum": max(first_minus_second),
+    }
+    return summaries
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--results", type=Path, required=True)
     parser.add_argument("--artifact-analysis", type=Path, required=True)
     parser.add_argument("--prepared", type=Path, required=True)
     parser.add_argument("--cbor-extension", type=Path, required=True)
+    parser.add_argument("--lib-vec-extension", type=Path, required=True)
     parser.add_argument("--output", type=Path, required=True)
     args = parser.parse_args()
     rows = [
@@ -173,6 +220,21 @@ def main():
     combined_cbor.extend({
         **row, "repeat": row["repeat"] + offset
     } for row in extension["rows"])
+    lib_vec_extension = load_rows(args.lib_vec_extension)
+    original_lib_vec = [
+        row for row in rows if row["target"] == "lib-vec"
+    ]
+    combined_lib_vec = [
+        {**row, "head_first": row["repeat"] % 2 == 1}
+        for row in original_lib_vec
+    ] + [
+        {
+            **row,
+            "repeat": row["repeat"] + len(original_lib_vec) // 2,
+            "head_first": row["repeat"] % 2 == 1,
+        }
+        for row in lib_vec_extension["rows"]
+    ]
     args.output.write_text(json.dumps({
         "summarizer_sha256": sha256(Path(__file__)),
         "artifact_analysis": {
@@ -199,6 +261,21 @@ def main():
             **extension,
             "summary": summarize(extension["rows"], 5179),
             "combined_summary": summarize(combined_cbor, 5189),
+        },
+        "lib_vec_extension": {
+            **lib_vec_extension,
+            "original_summary": summarize(original_lib_vec, 5197),
+            "extension_summary": summarize(
+                lib_vec_extension["rows"], 5209
+            ),
+            "combined_summary": summarize(combined_lib_vec, 5227),
+            "pair_order": {
+                "original": summarize_pair_order(original_lib_vec),
+                "extension": summarize_pair_order(
+                    lib_vec_extension["rows"]
+                ),
+                "combined": summarize_pair_order(combined_lib_vec),
+            },
         },
         "limitations": [
             "Selected targets do not establish or exclude the 1,283-test heavy aggregate.",

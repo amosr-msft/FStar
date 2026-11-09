@@ -7633,6 +7633,2186 @@
       }
     }
   },
+  "lib_vec_extension": {
+    "combined_summary": {
+      "absolute": {
+        "base": {
+          "child_cpu_seconds": 5.49,
+          "fstar_heap_peak_bytes": 188719104.0,
+          "group_cpu_seconds": 10.155000000000001,
+          "root_cpu_seconds": 4.66,
+          "sampled_group_rss_bytes": 303489024.0,
+          "wall_seconds": 16.86627796338871
+        },
+        "head": {
+          "child_cpu_seconds": 5.505,
+          "fstar_heap_peak_bytes": 188719104.0,
+          "group_cpu_seconds": 10.135,
+          "root_cpu_seconds": 4.65,
+          "sampled_group_rss_bytes": 303480832.0,
+          "wall_seconds": 16.855252786539495
+        }
+      },
+      "paired_head_minus_base": {
+        "child_cpu_seconds": {
+          "deltas": [
+            0.0600000000000005,
+            0.07000000000000028,
+            0.0600000000000005,
+            0.019999999999999574,
+            0.03000000000000025,
+            -0.09000000000000075,
+            -0.05999999999999961,
+            -0.1200000000000001,
+            -0.07000000000000028,
+            -0.04999999999999982,
+            0.10000000000000053,
+            0.09999999999999964,
+            -0.03000000000000025,
+            -0.03000000000000025,
+            -0.0699999999999994,
+            0.03000000000000025,
+            -0.10000000000000053,
+            0.03000000000000025,
+            -0.16999999999999993,
+            0.13999999999999968
+          ],
+          "head_higher": 10,
+          "maximum": 0.13999999999999968,
+          "mean": -0.007499999999999974,
+          "median": -0.0050000000000003375,
+          "median_bootstrap_95": {
+            "lower_95": -0.0649999999999995,
+            "resamples": 10000,
+            "upper_95": 0.04500000000000037
+          },
+          "minimum": -0.16999999999999993,
+          "pairs": 20
+        },
+        "fstar_heap_peak_bytes": {
+          "deltas": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "head_higher": 0,
+          "maximum": 0,
+          "mean": 0,
+          "median": 0.0,
+          "median_bootstrap_95": {
+            "lower_95": 0.0,
+            "resamples": 10000,
+            "upper_95": 0.0
+          },
+          "minimum": 0,
+          "pairs": 20
+        },
+        "group_cpu_seconds": {
+          "deltas": [
+            0.27000000000000135,
+            0.040000000000000924,
+            0.10000000000000053,
+            0.02999999999999936,
+            0.03000000000000025,
+            -0.120000000000001,
+            -0.14000000000000057,
+            -0.129999999999999,
+            -0.1399999999999979,
+            -8.881784197001252e-16,
+            0.11000000000000121,
+            0.11999999999999833,
+            -0.03000000000000025,
+            0.0799999999999983,
+            -0.1399999999999988,
+            0.020000000000000462,
+            -0.040000000000000924,
+            0.11999999999999922,
+            -0.3200000000000003,
+            0.14000000000000057
+          ],
+          "geometric_ratio": 0.9999777558731591,
+          "head_higher": 11,
+          "maximum": 0.27000000000000135,
+          "mean": 4.4408920985006264e-17,
+          "median": 0.02499999999999991,
+          "median_bootstrap_95": {
+            "lower_95": -0.08000000000000096,
+            "resamples": 10000,
+            "upper_95": 0.08999999999999941
+          },
+          "minimum": -0.3200000000000003,
+          "pairs": 20
+        },
+        "peak_group_rss_bytes": {
+          "deltas": [
+            237568,
+            12767232,
+            -6955008,
+            7520256,
+            5578752,
+            1671168,
+            -69632,
+            266240,
+            9089024,
+            -3485696,
+            360448,
+            -4349952,
+            -12644352,
+            -647168,
+            -5632000,
+            188416,
+            -5672960,
+            -4788224,
+            167936,
+            -6299648
+          ],
+          "head_higher": 10,
+          "maximum": 12767232,
+          "mean": -634880,
+          "median": 49152.0,
+          "median_bootstrap_95": {
+            "lower_95": -4569088.0,
+            "resamples": 10000,
+            "upper_95": 313344.0
+          },
+          "minimum": -12644352,
+          "pairs": 20
+        },
+        "root_cpu_seconds": {
+          "deltas": [
+            0.20999999999999996,
+            -0.02999999999999936,
+            0.040000000000000036,
+            0.010000000000000675,
+            0.0,
+            -0.03000000000000025,
+            -0.08000000000000007,
+            -0.009999999999999787,
+            -0.06999999999999851,
+            0.04999999999999982,
+            0.010000000000000675,
+            0.019999999999999574,
+            0.0,
+            0.10999999999999943,
+            -0.07000000000000028,
+            -0.009999999999999787,
+            0.05999999999999872,
+            0.08999999999999897,
+            -0.15000000000000036,
+            0.0
+          ],
+          "head_higher": 9,
+          "maximum": 0.20999999999999996,
+          "mean": 0.007499999999999974,
+          "median": 0.0,
+          "median_bootstrap_95": {
+            "lower_95": -0.019999999999999574,
+            "resamples": 10000,
+            "upper_95": 0.029999999999999805
+          },
+          "minimum": -0.15000000000000036,
+          "pairs": 20
+        },
+        "wall_seconds": {
+          "deltas": [
+            0.7386892852373421,
+            -0.09502627095207572,
+            0.2124708923511207,
+            0.11139967478811741,
+            0.04918072931468487,
+            -0.10000176914036274,
+            -0.37710048723965883,
+            0.025969918817281723,
+            -0.2099580392241478,
+            0.27844349574297667,
+            0.21193069918081164,
+            0.11494260467588902,
+            0.025557327084243298,
+            0.2638366986066103,
+            -0.2747229728847742,
+            0.005397012922912836,
+            0.07814695686101913,
+            0.3612069981172681,
+            -0.40970219066366553,
+            0.18826511036604643
+          ],
+          "head_higher": 14,
+          "maximum": 0.7386892852373421,
+          "mean": 0.05994628369808197,
+          "median": 0.063663843087852,
+          "median_bootstrap_95": {
+            "lower_95": -0.04481462901458144,
+            "resamples": 10000,
+            "upper_95": 0.20009790477342904
+          },
+          "minimum": -0.40970219066366553,
+          "pairs": 20
+        }
+      }
+    },
+    "extension_summary": {
+      "absolute": {
+        "base": {
+          "child_cpu_seconds": 5.49,
+          "fstar_heap_peak_bytes": 188719104,
+          "group_cpu_seconds": 10.17,
+          "root_cpu_seconds": 4.699999999999999,
+          "sampled_group_rss_bytes": 303493120,
+          "wall_seconds": 17.001295865979046
+        },
+        "head": {
+          "child_cpu_seconds": 5.45,
+          "fstar_heap_peak_bytes": 188719104,
+          "group_cpu_seconds": 10.100000000000001,
+          "root_cpu_seconds": 4.65,
+          "sampled_group_rss_bytes": 302362624,
+          "wall_seconds": 16.830798156093806
+        }
+      },
+      "paired_head_minus_base": {
+        "child_cpu_seconds": {
+          "deltas": [
+            -0.09000000000000075,
+            -0.05999999999999961,
+            -0.1200000000000001,
+            -0.07000000000000028,
+            -0.04999999999999982,
+            0.10000000000000053,
+            0.09999999999999964,
+            -0.03000000000000025,
+            -0.03000000000000025,
+            -0.0699999999999994,
+            0.03000000000000025,
+            -0.10000000000000053,
+            0.03000000000000025,
+            -0.16999999999999993,
+            0.13999999999999968
+          ],
+          "head_higher": 5,
+          "maximum": 0.13999999999999968,
+          "mean": -0.026000000000000037,
+          "median": -0.04999999999999982,
+          "median_bootstrap_95": {
+            "lower_95": -0.07000000000000028,
+            "resamples": 10000,
+            "upper_95": 0.03000000000000025
+          },
+          "minimum": -0.16999999999999993,
+          "pairs": 15
+        },
+        "fstar_heap_peak_bytes": {
+          "deltas": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "head_higher": 0,
+          "maximum": 0,
+          "mean": 0,
+          "median": 0,
+          "median_bootstrap_95": {
+            "lower_95": 0.0,
+            "resamples": 10000,
+            "upper_95": 0.0
+          },
+          "minimum": 0,
+          "pairs": 15
+        },
+        "group_cpu_seconds": {
+          "deltas": [
+            -0.120000000000001,
+            -0.14000000000000057,
+            -0.129999999999999,
+            -0.1399999999999979,
+            -8.881784197001252e-16,
+            0.11000000000000121,
+            0.11999999999999833,
+            -0.03000000000000025,
+            0.0799999999999983,
+            -0.1399999999999988,
+            0.020000000000000462,
+            -0.040000000000000924,
+            0.11999999999999922,
+            -0.3200000000000003,
+            0.14000000000000057
+          ],
+          "geometric_ratio": 0.9969156087608987,
+          "head_higher": 6,
+          "maximum": 0.14000000000000057,
+          "mean": -0.031333333333333435,
+          "median": -0.03000000000000025,
+          "median_bootstrap_95": {
+            "lower_95": -0.1399999999999979,
+            "resamples": 10000,
+            "upper_95": 0.11000000000000121
+          },
+          "minimum": -0.3200000000000003,
+          "pairs": 15
+        },
+        "peak_group_rss_bytes": {
+          "deltas": [
+            1671168,
+            -69632,
+            266240,
+            9089024,
+            -3485696,
+            360448,
+            -4349952,
+            -12644352,
+            -647168,
+            -5632000,
+            188416,
+            -5672960,
+            -4788224,
+            167936,
+            -6299648
+          ],
+          "head_higher": 6,
+          "maximum": 9089024,
+          "mean": -2123093.3333333335,
+          "median": -647168,
+          "median_bootstrap_95": {
+            "lower_95": -5632000.0,
+            "resamples": 10000,
+            "upper_95": 188416.0
+          },
+          "minimum": -12644352,
+          "pairs": 15
+        },
+        "root_cpu_seconds": {
+          "deltas": [
+            -0.03000000000000025,
+            -0.08000000000000007,
+            -0.009999999999999787,
+            -0.06999999999999851,
+            0.04999999999999982,
+            0.010000000000000675,
+            0.019999999999999574,
+            0.0,
+            0.10999999999999943,
+            -0.07000000000000028,
+            -0.009999999999999787,
+            0.05999999999999872,
+            0.08999999999999897,
+            -0.15000000000000036,
+            0.0
+          ],
+          "head_higher": 6,
+          "maximum": 0.10999999999999943,
+          "mean": -0.005333333333333456,
+          "median": 0.0,
+          "median_bootstrap_95": {
+            "lower_95": -0.06999999999999851,
+            "resamples": 10000,
+            "upper_95": 0.04999999999999982
+          },
+          "minimum": -0.15000000000000036,
+          "pairs": 15
+        },
+        "wall_seconds": {
+          "deltas": [
+            -0.10000176914036274,
+            -0.37710048723965883,
+            0.025969918817281723,
+            -0.2099580392241478,
+            0.27844349574297667,
+            0.21193069918081164,
+            0.11494260467588902,
+            0.025557327084243298,
+            0.2638366986066103,
+            -0.2747229728847742,
+            0.005397012922912836,
+            0.07814695686101913,
+            0.3612069981172681,
+            -0.40970219066366553,
+            0.18826511036604643
+          ],
+          "head_higher": 10,
+          "maximum": 0.3612069981172681,
+          "mean": 0.012147424214830001,
+          "median": 0.025969918817281723,
+          "median_bootstrap_95": {
+            "lower_95": -0.2099580392241478,
+            "resamples": 10000,
+            "upper_95": 0.18826511036604643
+          },
+          "minimum": -0.40970219066366553,
+          "pairs": 15
+        }
+      }
+    },
+    "measurements_sha256": "2f6da0827b5ae25934582ea7cab1b2683812a5ccdb481fc9a6e0a313bfb055e3",
+    "original_summary": {
+      "absolute": {
+        "base": {
+          "child_cpu_seconds": 5.49,
+          "fstar_heap_peak_bytes": 188719104,
+          "group_cpu_seconds": 10.129999999999999,
+          "root_cpu_seconds": 4.64,
+          "sampled_group_rss_bytes": 298528768,
+          "wall_seconds": 16.802054102066904
+        },
+        "head": {
+          "child_cpu_seconds": 5.5200000000000005,
+          "fstar_heap_peak_bytes": 188719104,
+          "group_cpu_seconds": 10.18,
+          "root_cpu_seconds": 4.65,
+          "sampled_group_rss_bytes": 304107520,
+          "wall_seconds": 16.879707416985184
+        }
+      },
+      "paired_head_minus_base": {
+        "child_cpu_seconds": {
+          "deltas": [
+            0.0600000000000005,
+            0.07000000000000028,
+            0.0600000000000005,
+            0.019999999999999574,
+            0.03000000000000025
+          ],
+          "head_higher": 5,
+          "maximum": 0.07000000000000028,
+          "mean": 0.04800000000000022,
+          "median": 0.0600000000000005,
+          "median_bootstrap_95": {
+            "lower_95": 0.019999999999999574,
+            "resamples": 10000,
+            "upper_95": 0.07000000000000028
+          },
+          "minimum": 0.019999999999999574,
+          "pairs": 5
+        },
+        "fstar_heap_peak_bytes": {
+          "deltas": [
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "head_higher": 0,
+          "maximum": 0,
+          "mean": 0,
+          "median": 0,
+          "median_bootstrap_95": {
+            "lower_95": 0.0,
+            "resamples": 10000,
+            "upper_95": 0.0
+          },
+          "minimum": 0,
+          "pairs": 5
+        },
+        "group_cpu_seconds": {
+          "deltas": [
+            0.27000000000000135,
+            0.040000000000000924,
+            0.10000000000000053,
+            0.02999999999999936,
+            0.03000000000000025
+          ],
+          "geometric_ratio": 1.00922074739817,
+          "head_higher": 5,
+          "maximum": 0.27000000000000135,
+          "mean": 0.09400000000000049,
+          "median": 0.040000000000000924,
+          "median_bootstrap_95": {
+            "lower_95": 0.02999999999999936,
+            "resamples": 10000,
+            "upper_95": 0.27000000000000135
+          },
+          "minimum": 0.02999999999999936,
+          "pairs": 5
+        },
+        "peak_group_rss_bytes": {
+          "deltas": [
+            237568,
+            12767232,
+            -6955008,
+            7520256,
+            5578752
+          ],
+          "head_higher": 4,
+          "maximum": 12767232,
+          "mean": 3829760,
+          "median": 5578752,
+          "median_bootstrap_95": {
+            "lower_95": -6955008.0,
+            "resamples": 10000,
+            "upper_95": 12767232.0
+          },
+          "minimum": -6955008,
+          "pairs": 5
+        },
+        "root_cpu_seconds": {
+          "deltas": [
+            0.20999999999999996,
+            -0.02999999999999936,
+            0.040000000000000036,
+            0.010000000000000675,
+            0.0
+          ],
+          "head_higher": 3,
+          "maximum": 0.20999999999999996,
+          "mean": 0.04600000000000026,
+          "median": 0.010000000000000675,
+          "median_bootstrap_95": {
+            "lower_95": -0.02999999999999936,
+            "resamples": 10000,
+            "upper_95": 0.20999999999999996
+          },
+          "minimum": -0.02999999999999936,
+          "pairs": 5
+        },
+        "wall_seconds": {
+          "deltas": [
+            0.7386892852373421,
+            -0.09502627095207572,
+            0.2124708923511207,
+            0.11139967478811741,
+            0.04918072931468487
+          ],
+          "head_higher": 4,
+          "maximum": 0.7386892852373421,
+          "mean": 0.20334286214783787,
+          "median": 0.11139967478811741,
+          "median_bootstrap_95": {
+            "lower_95": -0.09502627095207572,
+            "resamples": 10000,
+            "upper_95": 0.7386892852373421
+          },
+          "minimum": -0.09502627095207572,
+          "pairs": 5
+        }
+      }
+    },
+    "pair_order": {
+      "combined": {
+        "base_first": {
+          "deltas": [
+            0.040000000000000924,
+            0.02999999999999936,
+            -0.14000000000000057,
+            -0.1399999999999979,
+            0.11000000000000121,
+            -0.03000000000000025,
+            -0.1399999999999988,
+            -0.040000000000000924,
+            -0.3200000000000003
+          ],
+          "head_higher": 3,
+          "maximum": 0.11000000000000121,
+          "mean": -0.06999999999999969,
+          "median": -0.040000000000000924,
+          "minimum": -0.3200000000000003,
+          "pairs": 9
+        },
+        "first_minus_second": {
+          "deltas": [
+            0.27000000000000135,
+            0.10000000000000053,
+            0.03000000000000025,
+            -0.120000000000001,
+            -0.129999999999999,
+            -8.881784197001252e-16,
+            0.11999999999999833,
+            0.0799999999999983,
+            0.020000000000000462,
+            0.11999999999999922,
+            0.14000000000000057,
+            -0.040000000000000924,
+            -0.02999999999999936,
+            0.14000000000000057,
+            0.1399999999999979,
+            -0.11000000000000121,
+            0.03000000000000025,
+            0.1399999999999988,
+            0.040000000000000924,
+            0.3200000000000003
+          ],
+          "first_higher": 14,
+          "maximum": 0.3200000000000003,
+          "mean": 0.06299999999999976,
+          "median": 0.05999999999999961,
+          "minimum": -0.129999999999999,
+          "pairs": 20
+        },
+        "head_first": {
+          "deltas": [
+            0.27000000000000135,
+            0.10000000000000053,
+            0.03000000000000025,
+            -0.120000000000001,
+            -0.129999999999999,
+            -8.881784197001252e-16,
+            0.11999999999999833,
+            0.0799999999999983,
+            0.020000000000000462,
+            0.11999999999999922,
+            0.14000000000000057
+          ],
+          "head_higher": 8,
+          "maximum": 0.27000000000000135,
+          "mean": 0.0572727272727271,
+          "median": 0.0799999999999983,
+          "minimum": -0.129999999999999,
+          "pairs": 11
+        }
+      },
+      "extension": {
+        "base_first": {
+          "deltas": [
+            -0.14000000000000057,
+            -0.1399999999999979,
+            0.11000000000000121,
+            -0.03000000000000025,
+            -0.1399999999999988,
+            -0.040000000000000924,
+            -0.3200000000000003
+          ],
+          "head_higher": 1,
+          "maximum": 0.11000000000000121,
+          "mean": -0.09999999999999964,
+          "median": -0.1399999999999979,
+          "minimum": -0.3200000000000003,
+          "pairs": 7
+        },
+        "first_minus_second": {
+          "deltas": [
+            -0.120000000000001,
+            -0.129999999999999,
+            -8.881784197001252e-16,
+            0.11999999999999833,
+            0.0799999999999983,
+            0.020000000000000462,
+            0.11999999999999922,
+            0.14000000000000057,
+            0.14000000000000057,
+            0.1399999999999979,
+            -0.11000000000000121,
+            0.03000000000000025,
+            0.1399999999999988,
+            0.040000000000000924,
+            0.3200000000000003
+          ],
+          "first_higher": 11,
+          "maximum": 0.3200000000000003,
+          "mean": 0.06199999999999957,
+          "median": 0.0799999999999983,
+          "minimum": -0.129999999999999,
+          "pairs": 15
+        },
+        "head_first": {
+          "deltas": [
+            -0.120000000000001,
+            -0.129999999999999,
+            -8.881784197001252e-16,
+            0.11999999999999833,
+            0.0799999999999983,
+            0.020000000000000462,
+            0.11999999999999922,
+            0.14000000000000057
+          ],
+          "head_higher": 5,
+          "maximum": 0.14000000000000057,
+          "mean": 0.028749999999999498,
+          "median": 0.04999999999999938,
+          "minimum": -0.129999999999999,
+          "pairs": 8
+        }
+      },
+      "original": {
+        "base_first": {
+          "deltas": [
+            0.040000000000000924,
+            0.02999999999999936
+          ],
+          "head_higher": 2,
+          "maximum": 0.040000000000000924,
+          "mean": 0.03500000000000014,
+          "median": 0.03500000000000014,
+          "minimum": 0.02999999999999936,
+          "pairs": 2
+        },
+        "first_minus_second": {
+          "deltas": [
+            0.27000000000000135,
+            0.10000000000000053,
+            0.03000000000000025,
+            -0.040000000000000924,
+            -0.02999999999999936
+          ],
+          "first_higher": 3,
+          "maximum": 0.27000000000000135,
+          "mean": 0.06600000000000036,
+          "median": 0.03000000000000025,
+          "minimum": -0.040000000000000924,
+          "pairs": 5
+        },
+        "head_first": {
+          "deltas": [
+            0.27000000000000135,
+            0.10000000000000053,
+            0.03000000000000025
+          ],
+          "head_higher": 3,
+          "maximum": 0.27000000000000135,
+          "mean": 0.13333333333333405,
+          "median": 0.10000000000000053,
+          "minimum": 0.03000000000000025,
+          "pairs": 3
+        }
+      }
+    },
+    "provenance": {
+      "artifact_report_sha256": "2a4368a5f47900a8ffb1041da2de0f77f3d764f808b90222a4761ffcbb7aef73",
+      "cpu": 16,
+      "monitor_sha256": "458a46485e9519961fd9379fff7ca4f5061655fcc0f2c583e5365d991cd6af0d",
+      "prepared_provenance_sha256": "a3c44578c09f6eba00d7fc3a3e2962dfea60e5aabc70688617e96e9f93ae6ee8",
+      "script_sha256": "c17f820ed708f72ec0edab8660824eb9b6b52c7aa28c46deabc5f48565603041",
+      "seed": 92017,
+      "source": "/workspace/wt11/FStar-pr4797-latest-repro",
+      "source_head": "9ccacf4a8a392137d5384f8b39500377ebf53f79",
+      "stage": "/workspace/wt11/pr4797-latest-stage",
+      "targets": {
+        "lib-vec": {
+          "argv": [
+            "--silent",
+            "--odir",
+            "_output",
+            "--cache_dir",
+            "_cache",
+            "--already_cached",
+            "Prims,FStar",
+            "--warn_error",
+            "-321",
+            "-c",
+            "Lib.Vec.Lemmas.fst",
+            "-o",
+            "_cache/Lib.Vec.Lemmas.fst.checked"
+          ],
+          "ci": {
+            "base": {
+              "argv": [
+                "/home/runner/work/FStar/FStar/fstar-base/stage3/out/bin/fstar.exe",
+                "--silent",
+                "--odir",
+                "_output",
+                "--cache_dir",
+                "_cache",
+                "--already_cached",
+                "Prims,FStar",
+                "--warn_error",
+                "-321",
+                "-c",
+                "Lib.Vec.Lemmas.fst",
+                "-o",
+                "_cache/Lib.Vec.Lemmas.fst.checked"
+              ],
+              "cwd": "/home/runner/work/FStar/FStar/fstar-base/tests/hacl",
+              "sha256": "1f1d0855ba3ecf349e47434c460390dab58c834b0737430b0a73ff39b23ed5e0",
+              "values": {
+                "group.mempeak": "323MiB",
+                "group.stime": "1.640s",
+                "group.total": "15.412s",
+                "group.utime": "13.772s",
+                "root.stime": "0.350s",
+                "root.utime": "6.390s",
+                "walltime": "15.863s"
+              }
+            },
+            "head": {
+              "argv": [
+                "/home/runner/work/FStar/FStar/fstar-head/stage3/out/bin/fstar.exe",
+                "--silent",
+                "--odir",
+                "_output",
+                "--cache_dir",
+                "_cache",
+                "--already_cached",
+                "Prims,FStar",
+                "--warn_error",
+                "-321",
+                "-c",
+                "Lib.Vec.Lemmas.fst",
+                "-o",
+                "_cache/Lib.Vec.Lemmas.fst.checked"
+              ],
+              "cwd": "/home/runner/work/FStar/FStar/fstar-head/tests/hacl",
+              "sha256": "5f1dec41202be7a43fd8bb2d008afaeb7d918cb649654ed8833ffcd2a030e48c",
+              "values": {
+                "group.mempeak": "322MiB",
+                "group.stime": "1.761s",
+                "group.total": "17.131s",
+                "group.utime": "15.370s",
+                "root.stime": "0.350s",
+                "root.utime": "7.160s",
+                "walltime": "18.143s"
+              }
+            }
+          },
+          "ramon": "tests/hacl/_cache/Lib.Vec.Lemmas.fst.checked.ramon",
+          "relative_cwd": "tests/hacl",
+          "repetitions": 15,
+          "timeout": 180
+        }
+      },
+      "z3": {
+        "path": "/workspace/wt11/benchmark-tools/bin/z3-5.3.0",
+        "sha256": "4da6a0f78424098b600a9112ebb9d8ce45de248a4913c26dd7d472e6dabef6d3"
+      }
+    },
+    "rows": [
+      {
+        "child_cpu_seconds": 5.9,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303493120,
+        "peak_root_rss_bytes": 262586368,
+        "repeat": 12,
+        "returncode": 0,
+        "root_cpu_seconds": 4.890000000000001,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.958035503979772
+      },
+      {
+        "child_cpu_seconds": 5.8,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 297820160,
+        "peak_root_rss_bytes": 256921600,
+        "repeat": 12,
+        "returncode": 0,
+        "root_cpu_seconds": 4.949999999999999,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 18.03618246084079
+      },
+      {
+        "child_cpu_seconds": 5.53,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 303370240,
+        "peak_root_rss_bytes": 262565888,
+        "repeat": 9,
+        "returncode": 0,
+        "root_cpu_seconds": 4.83,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 17.451615878846496
+      },
+      {
+        "child_cpu_seconds": 5.5600000000000005,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 304017408,
+        "peak_root_rss_bytes": 263110656,
+        "repeat": 9,
+        "returncode": 0,
+        "root_cpu_seconds": 4.720000000000001,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.187779180239886
+      },
+      {
+        "child_cpu_seconds": 5.47,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303534080,
+        "peak_root_rss_bytes": 262737920,
+        "repeat": 6,
+        "returncode": 0,
+        "root_cpu_seconds": 4.72,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.068998184986413
+      },
+      {
+        "child_cpu_seconds": 5.57,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 303894528,
+        "peak_root_rss_bytes": 262987776,
+        "repeat": 6,
+        "returncode": 0,
+        "root_cpu_seconds": 4.73,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 17.280928884167224
+      },
+      {
+        "child_cpu_seconds": 5.54,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 294887424,
+        "peak_root_rss_bytes": 253980672,
+        "repeat": 4,
+        "returncode": 0,
+        "root_cpu_seconds": 4.699999999999999,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.02225082507357
+      },
+      {
+        "child_cpu_seconds": 5.47,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 303976448,
+        "peak_root_rss_bytes": 263073792,
+        "repeat": 4,
+        "returncode": 0,
+        "root_cpu_seconds": 4.630000000000001,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.812292785849422
+      },
+      {
+        "child_cpu_seconds": 5.41,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 304160768,
+        "peak_root_rss_bytes": 263254016,
+        "repeat": 8,
+        "returncode": 0,
+        "root_cpu_seconds": 4.62,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.733269276097417
+      },
+      {
+        "child_cpu_seconds": 5.38,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 291516416,
+        "peak_root_rss_bytes": 250609664,
+        "repeat": 8,
+        "returncode": 0,
+        "root_cpu_seconds": 4.62,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.75882660318166
+      },
+      {
+        "child_cpu_seconds": 5.55,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 302194688,
+        "peak_root_rss_bytes": 261390336,
+        "repeat": 14,
+        "returncode": 0,
+        "root_cpu_seconds": 4.7700000000000005,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.202097638044506
+      },
+      {
+        "child_cpu_seconds": 5.38,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 302362624,
+        "peak_root_rss_bytes": 261578752,
+        "repeat": 14,
+        "returncode": 0,
+        "root_cpu_seconds": 4.62,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.79239544738084
+      },
+      {
+        "child_cpu_seconds": 5.43,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 303591424,
+        "peak_root_rss_bytes": 262684672,
+        "repeat": 1,
+        "returncode": 0,
+        "root_cpu_seconds": 4.65,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.901294096838683
+      },
+      {
+        "child_cpu_seconds": 5.5200000000000005,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 301920256,
+        "peak_root_rss_bytes": 261013504,
+        "repeat": 1,
+        "returncode": 0,
+        "root_cpu_seconds": 4.680000000000001,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.001295865979046
+      },
+      {
+        "child_cpu_seconds": 5.5200000000000005,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 293744640,
+        "peak_root_rss_bytes": 252940288,
+        "repeat": 13,
+        "returncode": 0,
+        "root_cpu_seconds": 4.72,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 17.164420960005373
+      },
+      {
+        "child_cpu_seconds": 5.49,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 298532864,
+        "peak_root_rss_bytes": 257630208,
+        "repeat": 13,
+        "returncode": 0,
+        "root_cpu_seconds": 4.630000000000001,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.803213961888105
+      },
+      {
+        "child_cpu_seconds": 5.46,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303927296,
+        "peak_root_rss_bytes": 263122944,
+        "repeat": 10,
+        "returncode": 0,
+        "root_cpu_seconds": 4.71,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.10552112897858
+      },
+      {
+        "child_cpu_seconds": 5.390000000000001,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 298295296,
+        "peak_root_rss_bytes": 257503232,
+        "repeat": 10,
+        "returncode": 0,
+        "root_cpu_seconds": 4.64,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.830798156093806
+      },
+      {
+        "child_cpu_seconds": 5.4,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 304099328,
+        "peak_root_rss_bytes": 263192576,
+        "repeat": 3,
+        "returncode": 0,
+        "root_cpu_seconds": 4.63,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.79147926485166
+      },
+      {
+        "child_cpu_seconds": 5.5200000000000005,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303833088,
+        "peak_root_rss_bytes": 262926336,
+        "repeat": 3,
+        "returncode": 0,
+        "root_cpu_seconds": 4.64,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.765509346034378
+      },
+      {
+        "child_cpu_seconds": 5.45,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 303767552,
+        "peak_root_rss_bytes": 262934528,
+        "repeat": 11,
+        "returncode": 0,
+        "root_cpu_seconds": 4.61,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.739605745766312
+      },
+      {
+        "child_cpu_seconds": 5.42,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 83,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303579136,
+        "peak_root_rss_bytes": 262672384,
+        "repeat": 11,
+        "returncode": 0,
+        "root_cpu_seconds": 4.62,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.7342087328434
+      },
+      {
+        "child_cpu_seconds": 5.5,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 295895040,
+        "peak_root_rss_bytes": 255062016,
+        "repeat": 7,
+        "returncode": 0,
+        "root_cpu_seconds": 4.63,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.795632315799594
+      },
+      {
+        "child_cpu_seconds": 5.4,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 300244992,
+        "peak_root_rss_bytes": 259338240,
+        "repeat": 7,
+        "returncode": 0,
+        "root_cpu_seconds": 4.61,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.680689711123705
+      },
+      {
+        "child_cpu_seconds": 5.51,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 297062400,
+        "peak_root_rss_bytes": 256159744,
+        "repeat": 15,
+        "returncode": 0,
+        "root_cpu_seconds": 4.7,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 17.16380186425522
+      },
+      {
+        "child_cpu_seconds": 5.37,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 81,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303362048,
+        "peak_root_rss_bytes": 262557696,
+        "repeat": 15,
+        "returncode": 0,
+        "root_cpu_seconds": 4.7,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.975536753889173
+      },
+      {
+        "child_cpu_seconds": 5.5,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303853568,
+        "peak_root_rss_bytes": 263057408,
+        "repeat": 2,
+        "returncode": 0,
+        "root_cpu_seconds": 4.73,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 17.174509045202285
+      },
+      {
+        "child_cpu_seconds": 5.44,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 303783936,
+        "peak_root_rss_bytes": 262991872,
+        "repeat": 2,
+        "returncode": 0,
+        "root_cpu_seconds": 4.65,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 16.797408557962626
+      },
+      {
+        "child_cpu_seconds": 5.430000000000001,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "45d8a1a185faa9e992fe74e55a4cb9d7d79c851265ad8dfba2bd257d09aa4bdc"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "d82edf48e362ad1abf4c3220667327640044c505882a21eaa8b3776fbb460b42"
+        },
+        "peak_group_rss_bytes": 299999232,
+        "peak_root_rss_bytes": 259096576,
+        "repeat": 5,
+        "returncode": 0,
+        "root_cpu_seconds": 4.68,
+        "runtime_binary_sha256": "633eb53e40a84c75dc85ecd77593a97fd179683265644053f70ba49612e694e1",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "d6810f99e2da76d484f272baca0f37ebd17fcc44afe25b94dab324a833b27689"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "head",
+        "wall_seconds": 17.00018972111866
+      },
+      {
+        "child_cpu_seconds": 5.48,
+        "command": [
+          "/workspace/wt11/pr4797-latest-stage/bin/fstar.exe",
+          "--silent",
+          "--odir",
+          "_output",
+          "--cache_dir",
+          "_cache",
+          "--already_cached",
+          "Prims,FStar",
+          "--warn_error",
+          "-321",
+          "-c",
+          "Lib.Vec.Lemmas.fst",
+          "-o",
+          "_cache/Lib.Vec.Lemmas.fst.checked"
+        ],
+        "cwd": "/workspace/wt11/FStar-pr4797-latest-repro/tests/hacl",
+        "fstar_heap_peak_bytes": 188719104,
+        "input_cache_tree": {
+          "files": 5,
+          "sha256": "018a9167ddb777505b4b6154bfe4321815a8150a7091b2ef7180c2547d154501"
+        },
+        "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "observed_processes": 82,
+        "output_hash": {
+          "_cache/Lib.Vec.Lemmas.fst.checked": "e78577a183ac1ee3f0ab38155187fa9e1759c3f057b141773a78715db31edfcf"
+        },
+        "peak_group_rss_bytes": 303484928,
+        "peak_root_rss_bytes": 262578176,
+        "repeat": 5,
+        "returncode": 0,
+        "root_cpu_seconds": 4.63,
+        "runtime_binary_sha256": "9c24fe8a04f8244948b877bbb4eb1d480b6bfd093d0fabdd8e99c53af4ebe098",
+        "runtime_install_tree": {
+          "files": 3866,
+          "sha256": "964186ffd1ef7718d4d9dbb301adf471cdaf6b1fdfa5c82728038ca185e94436"
+        },
+        "target": "lib-vec",
+        "timed_out": false,
+        "variant": "base",
+        "wall_seconds": 16.721746225375682
+      }
+    ]
+  },
   "limitations": [
     "Selected targets do not establish or exclude the 1,283-test heavy aggregate.",
     "CPU 16 affinity does not reserve the CPU from host activity.",
@@ -7913,5 +10093,5 @@
     },
     "sha256": "a3c44578c09f6eba00d7fc3a3e2962dfea60e5aabc70688617e96e9f93ae6ee8"
   },
-  "summarizer_sha256": "9e019da32e5fc7386f6d0655a5023fd6eb0dfcefcd4cd0ae2c8a73bb313b3a4f"
+  "summarizer_sha256": "48c80622c32fa93ceb097c088bcc0c33dc4d3bc2d61ccca0332f7f1c376e767f"
 }
