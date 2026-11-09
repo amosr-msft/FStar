@@ -738,6 +738,37 @@ python summarize_single_index_control.py \
 Uninstrumented performance and instrumented allocation/GC observations are
 kept in separate campaigns.
 
+## Flat-map production candidate
+
+The final flat-only branch is `users/amos/20261109-fstar-flat-root-map` at
+`1b61ce6d3b`.
+
+```sh
+python run_flat_production_differential.py \
+  --variant canonical=/workspace/wt11/FStar-pr4797-root-trie \
+  --variant flat=/workspace/wt11/FStar-pr4797-flat-production \
+  --output FLAT_PRODUCTION_DIFFERENTIAL.json --cpu 16
+
+python run_flat_production_comparison.py \
+  --kind dependency --comparison flat-production \
+  --variant canonical=/workspace/wt11/FStar-pr4797-root-trie \
+  --variant flat-production=/workspace/wt11/FStar-pr4797-flat-production \
+  --z3 /workspace/wt11/benchmark-tools/bin/z3-5.3.0 \
+  --output /workspace/wt11/pr4797-flat-production/dependency \
+  --repetitions 20 --cpu 16 --timeout 180
+```
+
+Run ten Long pairs with `--kind checked --workload long` and the preserved raw
+artifact. Consolidate with:
+
+```sh
+python summarize_flat_production.py \
+  --input /workspace/wt11/pr4797-flat-production \
+  --differential FLAT_PRODUCTION_DIFFERENTIAL.json \
+  --single-index SINGLE_INDEX_CONTROL_RESULTS.json \
+  --output FLAT_PRODUCTION_RESULTS.json
+```
+
 The two OCaml harnesses link against each revision's
 `stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa`. They isolate hot
 `source_file_name` and `mk_rng` cost; they are controls, not end-to-end

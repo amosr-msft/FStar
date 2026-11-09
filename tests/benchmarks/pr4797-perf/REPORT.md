@@ -1309,6 +1309,108 @@ that the simpler backend has no adverse end-to-end signal when evaluated
 properly inside one executable, but ordinary separately linked flat binaries
 remain slower on this host.
 
+## Flat-map production candidate
+
+The selected production candidate is `1b61ce6d3b` on
+`users/amos/20261109-fstar-flat-root-map`, based directly on canonical/root-fixed
+`7df960b9fb`. It removes the trie and component-splitting code. The candidate
+contains no tagged backend, environment selector, or diagnostic code. The
+complete ownership representation is:
+
+```fstar
+type source_root_index = HashTable.t string module_include_path_kind
+
+type normalized_include_path_cache = {
+  paths: list module_include_path;
+  source_roots: source_root_index;
+}
+```
+
+The ordered normalized path list remains for public enumeration and precedence
+callers. Ownership uses only the canonical map. Duplicate insertion is:
+
+```fstar
+let add_source_root roots root =
+  let kind =
+    match HashTable.try_find roots root.dir, root.kind with
+    | Some Recursive, _ | _, Recursive -> Recursive
+    | _ -> Flat
+  in
+  HashTable.add roots root.dir kind
+```
+
+Lookup starts at the normalized filename's parent and probes complete
+directory keys:
+
+```fstar
+let rec find_source_root roots directory immediate =
+  match HashTable.try_find roots directory with
+  | Some Recursive -> Some directory
+  | Some Flat when immediate -> Some directory
+  | _ ->
+    let parent = Filepath.dirname directory in
+    if parent = directory then None
+    else find_source_root roots parent false
+```
+
+Lazy construction creates one table and folds no alternate representation:
+
+```fstar
+let roots = HashTable.create 16 in
+List.iter (add_source_root roots) paths;
+let normalized = { paths; source_roots = roots }
+```
+
+The existing grouped `cache_state_t`, captured hot refs/tables,
+`find_file_cache` equivalent, final source-name cache, `Find.clear`, and epoch
+behavior remain unchanged. The source diff is +26/-58 lines in
+`FStarC.Find.fst`.
+
+Extracted OCaml inlines the `source_root_index` alias into
+`normalized_include_path_cache`. It contains `add_source_root`,
+`find_source_root`, and one source-root table allocation. It contains no
+`source_root_trie`, component insertion/traversal, backend tag, diagnostic
+environment variable, or alternate index allocation.
+
+Full build, `boot-diff`, and complete `tests/ide` pass. Fourteen evidence-only
+public-API scenarios are identical to canonical `7df`: duplicates in both
+orders, nested/sibling roots, Flat fallback, boundaries, filesystem root,
+valid Unix backslashes, and a three-step invalidation/rebuild sequence. Windows
+drive behavior follows the retained platform-aware canonical stripping logic;
+it was not executed on this Linux host.
+
+### Final standalone sanity check
+
+The final standalone binary hash is
+`667968b8748df177213e2ae45faa5156e507469c9b4cf9771cabc7c9e19d0641`.
+It was compared with the preserved canonical binary using exact workload
+inputs, flags, Z3, compiler-specific dependencies, CPU16, and balanced adjacent
+pairs.
+
+| Flat production - canonical | Canonical absolute | Flat absolute | Paired median | Mean | Flat higher |
+|---|---:|---:|---:|---:|---:|
+| dependency root/group CPU, 20 pairs | 3.340 s | 3.510 s | **+0.180 s** | +0.174 s | 20/20 |
+| dependency wall | 5.114 s | 5.328 s | **+0.250 s** | +0.242 s | 20/20 |
+| dependency sampled RSS | 90.93 MiB | 91.06 MiB | +0.18 MiB | +0.23 MiB | 13/20 |
+| Long root CPU, 10 pairs | 17.385 s | 17.435 s | +0.135 s | +0.394 s | 7/10 |
+| Long wall | 26.386 s | 26.489 s | +0.279 s | +0.761 s | 7/10 |
+| Long sampled RSS | 1024.65 MiB | 1027.71 MiB | +3.06 MiB | +0.24 MiB | 6/10 |
+
+Dependency child CPU is zero. Long child CPU median is unchanged. Long F* peak
+heap is byte-identical at 883.98 MiB. Dependency heap was not collected by this
+standalone runner. Long remains highly variable: root CPU deltas range from
+-0.460 to +2.760 seconds, with one large outlier; the median is disclosed but
+not attributed to the map.
+
+This final separately linked candidate still exhibits the earlier dependency
+signal. The corrected single-index same-executable control remains equally
+relevant: when construction, retention, allocation history, GC, and lookup
+differ but layout is fixed, flat is -0.015 seconds dependency CPU and -0.095
+seconds Long CPU. The standalone result is therefore not evidence that the map
+operations are slower; it is an unresolved build/layout-sensitive outcome that
+the user accepted when selecting the simpler implementation. No padding,
+tuning, or broader campaign was added.
+
 ## Limitations
 
 - The CI workflow ran all baseline tests, then all head tests, once each.

@@ -1,0 +1,111 @@
+{
+  "provenance": {
+    "cpu": 16,
+    "harness_sha256": "e47b337c4a9a283752269822be3ccbd8078dea78d6e40610772ef7ee4db15ca4",
+    "runner_sha256": "656b536ea803c645545a37f2853f747c92fec2bbf0524efb3dc4ad07148d5cb0",
+    "variants": {
+      "canonical": {
+        "archive_sha256": "422cfed886c9e4a12baf6d0b49d67b66fafd33f93d7c351e0f22a420bedef6cd",
+        "compile_command": [
+          "ocamlfind",
+          "ocamlopt",
+          "-thread",
+          "-linkpkg",
+          "-package",
+          "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-root-trie/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-root-trie/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+          "/workspace/wt11/FStar-pr4797-root-trie/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/flat_production_differential.ml",
+          "-o",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/flat-production-differential-tksopqnh/canonical.exe"
+        ],
+        "executable_sha256": "63e32c3583b95ea957338c0abfa30d5557eef1a321b8ca733df3c501e935ff3e",
+        "head": "7df960b9fbbeed8c599361d9660f40f2e2f85f9c",
+        "root": "/workspace/wt11/FStar-pr4797-root-trie"
+      },
+      "flat": {
+        "archive_sha256": "4fd4a63679976618a7e340e7ff5b3d600597d41542fc70e2dbc23f876e199f50",
+        "compile_command": [
+          "ocamlfind",
+          "ocamlopt",
+          "-thread",
+          "-linkpkg",
+          "-package",
+          "threads,batteries,dynlink,mtime,mtime.clock,pprint,ppx_deriving.runtime,ppx_deriving_yojson.runtime,ppxlib,ppxlib.ast,process,stdint,yojson,zarith,unix",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-flat-production/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/byte",
+          "-I",
+          "/workspace/wt11/FStar-pr4797-flat-production/stage2/dune/_build/default/fstar-guts/.fstarcompiler.objs/native",
+          "/workspace/wt11/FStar-pr4797-flat-production/stage2/dune/_build/default/fstar-guts/fstarcompiler.cmxa",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/flat_production_differential.ml",
+          "-o",
+          "/workspace/wt11/FStar-pr4797-perf/tests/benchmarks/pr4797-perf/flat-production-differential-tksopqnh/flat.exe"
+        ],
+        "executable_sha256": "ce6a5e144949e337768347c764a65852d487a1082b840787ddd430d6a23ce5c5",
+        "head": "1b61ce6d3b2d0cead2f5174d931b042961529193",
+        "root": "/workspace/wt11/FStar-pr4797-flat-production"
+      }
+    }
+  },
+  "results": {
+    "boundary": {
+      "canonical": "NONE",
+      "flat": "NONE"
+    },
+    "duplicate-flat-recursive": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    },
+    "duplicate-recursive": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    },
+    "duplicate-recursive-flat": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    },
+    "filesystem-root": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    },
+    "flat-immediate": {
+      "canonical": "A.fst",
+      "flat": "A.fst"
+    },
+    "flat-outer-fallback": {
+      "canonical": "flat/deeper/A.fst",
+      "flat": "flat/deeper/A.fst"
+    },
+    "nested-flat-outer-fallback": {
+      "canonical": "flat/nested/deeper/A.fst",
+      "flat": "flat/nested/deeper/A.fst"
+    },
+    "nested-inner-first": {
+      "canonical": "A.fst",
+      "flat": "A.fst"
+    },
+    "nested-outer-first": {
+      "canonical": "A.fst",
+      "flat": "A.fst"
+    },
+    "rebuild": {
+      "canonical": "A/B.fst|C/D.fst|E/F.fst",
+      "flat": "A/B.fst|C/D.fst|E/F.fst"
+    },
+    "recursive-outer": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    },
+    "sibling": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    },
+    "unix-backslash": {
+      "canonical": "A/B.fst",
+      "flat": "A/B.fst"
+    }
+  }
+}
